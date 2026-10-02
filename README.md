@@ -202,7 +202,16 @@ omc-network/
 
 ## 🌍 Website
 
+**Live:** https://omc-network.vercel.app/
+
 The official site is a dependency-free static build with **7-language support** (English · 中文 · 日本語 · Español · 한국어 · Português · Français).
+
+| Page | URL |
+|---|---|
+| Home | https://omc-network.vercel.app/ |
+| Whitepaper | https://omc-network.vercel.app/whitepaper |
+| Testnet | https://omc-network.vercel.app/testnet |
+| Airdrop | https://omc-network.vercel.app/airdrop |
 
 To run locally:
 

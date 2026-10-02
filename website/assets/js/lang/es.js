@@ -270,7 +270,7 @@ window.I18N.es = {
   "claim.btn_claim_all_locked": "Se desbloquea al finalizar el airdrop",
   "claim.btn_claim_all": "🏆 Reclamar Todo al Wallet",
   "claim.end_note": "⏳ El airdrop termina el 31 de diciembre de 2026 (UTC+8). El OMC acumulado se podrá retirar en un solo claim en esta página después de la fecha final.",
-  "warn.text": "<b>Aviso antifraude:</b> el airdrop de OMC es <b>100% GRATIS</b>. Nunca pediremos tu frase semilla, clave privada ni ningún pago más allá de la tarifa de gas de la red. Confía solo en los enlaces publicados en <b>omc.network</b> y nuestras cuentas sociales verificadas. Cualquier contrato llamado \"OMC\" fuera del anuncio oficial es fraudulento.",
+  "warn.text": "<b>Aviso antifraude:</b> el airdrop de OMC es <b>100% GRATIS</b>. Nunca pediremos tu frase semilla, clave privada ni ningún pago más allá de la tarifa de gas de la red. Confía solo en los enlaces publicados en <b>omc-network.vercel.app</b> y nuestras cuentas sociales verificadas. Cualquier contrato llamado \"OMC\" fuera del anuncio oficial es fraudulento.",
   "rules.title": "📋 Reglas del Airdrop",
   "rules.r1": "· Fondo del airdrop: <b>20,000,000 OMC</b> (2% del suministro máximo) = <b>1,000,000 participaciones × 20 OMC</b>, 100% desbloqueado en TGE.",
   "rules.r2": "· Completa las 3 tareas sociales para desbloquear la participación; una wallet por participante.",

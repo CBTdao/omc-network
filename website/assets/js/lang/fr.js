@@ -277,7 +277,7 @@ window.I18N.fr = {
   "claim.btn_claim_all_locked": "Claim déverrouillé après la fin de l'airdrop",
   "claim.btn_claim_all": "🏆 Tout réclamer vers le portefeuille",
   "claim.end_note": "⏳ L'airdrop se termine le 31 décembre 2026 (UTC+8). Les OMC cumulés deviennent retirables en un seul claim sur cette page après la date de fin.",
-  "warn.text": "<b>Avis anti-arnaque :</b> l'airdrop OMC est <b>100 % GRATUIT</b>. Nous ne vous demanderons <b>jamais</b> votre phrase seed, votre clé privée, ni aucun paiement au-delà des frais de gaz réseau. Ne faites confiance qu'aux liens publiés sur <b>omc.network</b> et à nos comptes sociaux vérifiés. Tout contrat nommé « OMC » hors annonce officielle est frauduleux.",
+  "warn.text": "<b>Avis anti-arnaque :</b> l'airdrop OMC est <b>100 % GRATUIT</b>. Nous ne vous demanderons <b>jamais</b> votre phrase seed, votre clé privée, ni aucun paiement au-delà des frais de gaz réseau. Ne faites confiance qu'aux liens publiés sur <b>omc-network.vercel.app</b> et à nos comptes sociaux vérifiés. Tout contrat nommé « OMC » hors annonce officielle est frauduleux.",
   "rules.title": "📋 Règles de l'airdrop",
   "rules.r1": "· Pool d'airdrop : <b>20 000 000 OMC</b> (2 % de l'offre maximale) = <b>1 000 000 participations × 20 OMC</b>, 100 % déverrouillés au TGE.",
   "rules.r2": "· Accomplissez les 3 tâches sociales ci-dessus pour déverrouiller la participation ; un portefeuille par participant.",
