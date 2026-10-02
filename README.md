@@ -14,7 +14,7 @@ Turn idle GPUs worldwide into a high-throughput, low-cost, censorship-resistant 
 [![Supply](https://img.shields.io/badge/Supply-1%2C000%2C000%2C000%20OMC-8b5cf6?style=flat-square)](#tokenomics)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
-[Website](#-website) · [Whitepaper](docs/) · [Testnet](#-testnet) · [Airdrop](#-airdrop) · [X / Twitter](https://x.com/Omniverse_Depin) · [Telegram](https://t.me/OmniverseCompute)
+[Website](#-website) · [Whitepaper](docs/OMC-Whitepaper-EN.pdf) · [Testnet](#-testnet) · [Airdrop](#-airdrop) · [X / Twitter](https://x.com/Omniverse_Depin) · [Telegram](https://t.me/OmniverseCompute)
 
 </div>
 
