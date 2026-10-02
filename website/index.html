@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta.title_index">Omniverse Compute (OMC) — Decentralized GPU Infrastructure Network</title>
+  <meta name="description" content="Omniverse Compute (OMC) is a DePIN-powered decentralized GPU compute grid on BNB Chain. 50-70% cheaper AI compute, L2 micropayments, zk-verified nodes, and a 1B fixed-supply BEP-20 token." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/png" href="assets/img/logo.png" />
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="whitepaper.html" data-i18n="nav.wp">Whitepaper</a>
+        <a href="testnet.html" data-i18n="nav.testnet">Testnet</a>
+        <a href="airdrop.html" data-i18n="nav.airdrop">Airdrop</a>
+        <a href="airdrop.html" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="es">Español</option>
+          <option value="ko">한국어</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="hero.badge">Testnet Phase 1 is Live</span></div>
+      <h1><span data-i18n="hero.t1">Powering the Next-Gen</span><br /><span class="grad" data-i18n="hero.t2">Global AI Compute Grid</span></h1>
+      <p class="sub" data-i18n="hero.sub">Omniverse Compute (OMC) is a decentralized physical infrastructure network (DePIN) that turns idle GPUs worldwide into a high-throughput, low-cost, censorship-resistant compute grid — settled on BNB Chain.</p>
+      <div class="hero-actions">
+        <a href="testnet.html" class="btn btn-primary btn-lg" data-i18n="hero.cta1">Join the Testnet →</a>
+        <a href="whitepaper.html" class="btn btn-ghost btn-lg" data-i18n="hero.cta2">Read Whitepaper</a>
+      </div>
+      <div class="hero-chain">
+        <span class="chip" data-i18n="chip.chain">⛓ Root Settlement <b>BNB Chain</b></span>
+        <span class="chip" data-i18n="chip.scaling">⚡ Scaling <b>Dedicated L2 Rollup</b></span>
+        <span class="chip" data-i18n="chip.token">🪙 Token <b>OMC · BEP-20</b></span>
+        <span class="chip" data-i18n="chip.supply">🔥 Supply <b>1,000,000,000</b></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== STATS ===== -->
+  <div class="stats reveal">
+    <div class="stat"><div class="num">50–70%</div><div class="label" data-i18n="stat1.label">Compute Cost Reduction vs Web2 Cloud</div></div>
+    <div class="stat"><div class="num">$1T+</div><div class="label" data-i18n="stat2.label">AI &amp; DeAI Market Potential</div></div>
+    <div class="stat"><div class="num">2%</div><div class="label" data-i18n="stat3.label">Supply Reserved for Community Airdrop</div></div>
+    <div class="stat"><div class="num">~0</div><div class="label" data-i18n="stat4.label">Marginal Cost of Idle GPU Onboarding</div></div>
+  </div>
+
+  <!-- ===== WHY OMC ===== -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="about.eyebrow">Executive Summary</div>
+        <h2 data-i18n="about.title">Transforming AI Compute Delivery</h2>
+        <p data-i18n="about.sub">AI demand is exploding — LLM training, Sora-grade video generation, real-time 3D rendering. Centralized clouds answer with prohibitive CapEx, quota limits, and vendor lock-in. OMC answers with a permissionless GPU grid.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">🖥️</div>
+          <h3 data-i18n="card1.t">Idle GPU Activation</h3>
+          <p data-i18n="card1.d">Hundreds of thousands of consumer GPUs (RTX 4090/3090), data-center spare capacity and post-PoW mining rigs stay underutilized. OMC aggregates them with zero marginal onboarding cost.</p>
+          <span class="tag">DePIN</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">💸</div>
+          <h3 data-i18n="card2.t">Ultra-Low Gas &amp; Scale</h3>
+          <p data-i18n="card2.d">A dedicated BNB Chain L2 Rollup handles node heartbeats, task allocation and per-second / per-task micropayments — while the L1 anchors final settlement and disputes.</p>
+          <span class="tag">L2 Rollup</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🛡️</div>
+          <h3 data-i18n="card3.t">Trustless Verification</h3>
+          <p data-i18n="card3.d">Redundant multi-node execution plus zk-SNARKs sampled proofs verify compute integrity on-chain — without exposing private data.</p>
+          <span class="tag">zk-SNARKs</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CLIENT SEGMENTS ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="seg.eyebrow">Target Audience</div>
+        <h2 data-i18n="seg.title">Four Primary Client Segments</h2>
+      </div>
+      <div class="grid-4">
+        <div class="card reveal">
+          <div class="icon">🤖</div>
+          <h3 data-i18n="seg1.t">AI Startups</h3>
+          <p data-i18n="seg1.d">LLM fine-tuning, LoRA training &amp; inference — without enterprise discounts or GPU quota walls.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🧩</div>
+          <h3 data-i18n="seg2.t">DeAI Projects</h3>
+          <p data-i18n="seg2.d">24/7 autonomous Agent inference &amp; ZK-ML proof generation, natively crypto-paid.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🎬</div>
+          <h3 data-i18n="seg3.t">3D &amp; VFX Studios</h3>
+          <p data-i18n="seg3.d">Unreal Engine 5, Blender batch rendering and Gaussian Splatting at extreme compute spikes.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🔌</div>
+          <h3 data-i18n="seg4.t">GPU Providers</h3>
+          <p data-i18n="seg4.d">Plug idle hardware into the protocol and earn automated token yield.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ARCHITECTURE ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="arch.eyebrow">Architecture</div>
+        <h2 data-i18n="arch.title">Three-Tier Network Stack</h2>
+      </div>
+      <div style="max-width: 860px; margin: 0 auto;">
+        <div class="arch-row reveal">
+          <div class="tier"><span class="n">L1</span><span data-i18n="arch1.tier">Settlement Layer</span></div>
+          <p data-i18n="arch1.d"><b>BNB Chain mainnet</b> — OMC token issuance, staking smart contracts, DAO governance and final dispute arbitration.</p>
+        </div>
+        <div class="arch-row reveal">
+          <div class="tier"><span class="n">L2</span><span data-i18n="arch2.tier">Orchestration Layer</span></div>
+          <p data-i18n="arch2.d"><b>Dedicated L2 Rollup</b> — high-frequency node heartbeats, task-allocation state mapping, state-channel settlements and low-cost micropayments.</p>
+        </div>
+        <div class="arch-row reveal">
+          <div class="tier"><span class="n">GPU</span><span data-i18n="arch3.tier">Compute Grid</span></div>
+          <p data-i18n="arch3.d"><b>Off-chain containerized grid</b> — Docker/Kubernetes sandboxes with CUDA/ROCm acceleration, NVLink inter-GPU links and P2P data transport.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORKFLOW ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="wf.eyebrow">Workflow</div>
+        <h2 data-i18n="wf.title">Task Distribution &amp; Matching</h2>
+        <p data-i18n="wf.sub">Every job is scored and routed by a weighted bipartite matching engine.</p>
+      </div>
+      <div class="steps" style="max-width: 980px; margin: 0 auto;">
+        <div class="step reveal">
+          <div class="sn">1</div>
+          <h3 data-i18n="step1.t">Task Lockup</h3>
+          <p data-i18n="step1.d">Requesters lock OMC fee tokens in the escrow contract before dispatch.</p>
+        </div>
+        <div class="step reveal">
+          <div class="sn">2</div>
+          <h3 data-i18n="step2.t">Smart Scheduling</h3>
+          <p data-i18n="step2.d">Nodes matched by VRAM, TFLOPS, bandwidth, latency &amp; reputation score.</p>
+        </div>
+        <div class="step reveal">
+          <div class="sn">3</div>
+          <h3 data-i18n="step3.t">Sandbox Execution</h3>
+          <p data-i18n="step3.d">Jobs run in isolated containers; outputs verified redundantly &amp; via ZK proofs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TOKEN UTILITY ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="util.eyebrow">Value Capture</div>
+        <h2 data-i18n="util.title">Token Utility &amp; Deflationary Mechanics</h2>
+      </div>
+      <div class="grid-4">
+        <div class="card reveal">
+          <div class="icon">💠</div>
+          <h3 data-i18n="util1.t">Compute Payment</h3>
+          <p data-i18n="util1.d">Currency for AI training, inference and 3D rendering jobs.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🔒</div>
+          <h3 data-i18n="util2.t">Node Staking</h3>
+          <p data-i18n="util2.d">Collateral proportional to hardware tier before receiving jobs.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🗳️</div>
+          <h3 data-i18n="util3.t">DAO Governance</h3>
+          <p data-i18n="util3.d">Vote on protocol parameters and treasury allocation.</p>
+        </div>
+        <div class="card reveal" style="border-color: rgba(94,162,255,0.5);">
+          <div class="icon">🔥</div>
+          <h3 data-i18n="util4.t">Buyback &amp; Burn</h3>
+          <p data-i18n="util4.d">30% of every 3% protocol fee is bought back and burned. Slashing burns 20%.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROADMAP ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="rd.eyebrow">Roadmap</div>
+        <h2 data-i18n="rd.title">From Testnet to Global Grid</h2>
+      </div>
+      <div class="timeline">
+        <div class="tl-item done reveal">
+          <div class="dot"></div>
+          <div class="phase" data-i18n="ph1.tag">Phase 1 · Q1–Q2 2026</div>
+          <h3 data-i18n="ph1.title">Infrastructure &amp; Testnet</h3>
+          <ul>
+            <li data-i18n="ph1.l1">L2 smart contract deployment</li>
+            <li data-i18n="ph1.l2">Open-source node client release</li>
+            <li data-i18n="ph1.l3">Public testnet launch</li>
+            <li data-i18n="ph1.l4">2% community airdrop campaign</li>
+          </ul>
+        </div>
+        <div class="tl-item reveal">
+          <div class="dot"></div>
+          <div class="phase" data-i18n="ph2.tag">Phase 2 · Q3–Q4 2026</div>
+          <h3 data-i18n="ph2.title">Mainnet &amp; Mining</h3>
+          <ul>
+            <li data-i18n="ph2.l1">Mainnet launch</li>
+            <li data-i18n="ph2.l2">Compute mining activation</li>
+            <li data-i18n="ph2.l3">HuggingFace &amp; Blender plugin integration</li>
+          </ul>
+        </div>
+        <div class="tl-item reveal">
+          <div class="dot"></div>
+          <div class="phase" data-i18n="ph3.tag">Phase 3 · 2027</div>
+          <h3 data-i18n="ph3.title">ZK-ML &amp; Full DAO</h3>
+          <ul>
+            <li data-i18n="ph3.l1">On-chain ZK-ML framework launch</li>
+            <li data-i18n="ph3.l2">Full DAO governance transition</li>
+            <li data-i18n="ph3.l3">Cross-chain compute settlement expansion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 data-i18n="cta.title">Ready to join the grid?</h2>
+        <p data-i18n="cta.sub">Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.</p>
+        <div class="hero-actions">
+          <a href="airdrop.html" class="btn btn-primary btn-lg" data-i18n="cta.b1">🎁 Claim Airdrop</a>
+          <a href="testnet.html" class="btn btn-ghost btn-lg" data-i18n="cta.b2">Run a Node</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_protocol">Protocol</h5>
+          <a href="whitepaper.html" data-i18n="f.wp">Whitepaper</a>
+          <a href="testnet.html" data-i18n="f.testnet">Testnet</a>
+          <a href="index.html#about" data-i18n="f.arch">Architecture</a>
+          <a href="whitepaper.html#s4" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_community">Community</h5>
+          <a href="airdrop.html" data-i18n="f.airdrop">Airdrop</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_resources">Resources</h5>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="testnet.html#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="disc" data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</div>
+        <div>© 2026 Omniverse Compute · omc.network</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js"></script>
+  <script src="assets/js/lang/zh.js"></script>
+  <script src="assets/js/lang/ja.js"></script>
+  <script src="assets/js/lang/es.js"></script>
+  <script src="assets/js/lang/ko.js"></script>
+  <script src="assets/js/lang/pt.js"></script>
+  <script src="assets/js/lang/fr.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Node ----
+node_modules/
+dist/
+build/
+.cache/
+npm-shrinkwrap.json
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+
+# ---- Env / secrets ----
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ---- Blockchain / build artifacts ----
+artifacts/
+cache_hardhat/
+typechain-types/
+.coverage
+coverage.json
+
+# ---- Misc ----
+tmp/
+temp/
+*.tmp

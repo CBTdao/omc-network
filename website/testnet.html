@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta.title_tn">Testnet — Omniverse Compute (OMC)</title>
+  <meta name="description" content="Join the Omniverse Compute testnet: run a GPU node, get test OMC from the faucet, and help validate the DePIN compute grid before mainnet." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/png" href="assets/img/logo.png" />
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="whitepaper.html" data-i18n="nav.wp">Whitepaper</a>
+        <a href="testnet.html" data-i18n="nav.testnet">Testnet</a>
+        <a href="airdrop.html" data-i18n="nav.airdrop">Airdrop</a>
+        <a href="airdrop.html" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="es">Español</option>
+          <option value="ko">한국어</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" style="padding-bottom: 56px;">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="tn.badge">Phase 1 — Testnet is Live</span></div>
+      <h1><span data-i18n="tn.t1">Run a Node.</span><br /><span class="grad" data-i18n="tn.t2">Shape the Grid.</span></h1>
+      <p class="sub" data-i18n="tn.sub">The OMC public testnet is the proving ground for the compute grid. Connect your GPU, execute verification tasks, earn testnet rewards — and secure your position before mainnet.</p>
+      <div class="net-status">
+        <span class="status-pill live"><span class="dot"></span><span data-i18n="tn.status_live">Testnet: ONLINE</span></span>
+        <span class="status-pill warn"><span class="dot"></span><span data-i18n="tn.status_mainnet">Mainnet: Q3–Q4 2026</span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== NETWORK STATS ===== -->
+  <div class="stats reveal">
+    <div class="stat"><div class="num">GPU</div><div class="label" data-i18n="tn.stat1">Active Test Nodes</div></div>
+    <div class="stat"><div class="num">42,860</div><div class="label" data-i18n="tn.stat2">Tasks Executed</div></div>
+    <div class="stat"><div class="num">99.2%</div><div class="label" data-i18n="tn.stat3">Verification Pass Rate</div></div>
+    <div class="stat"><div class="num">~0.4s</div><div class="label" data-i18n="tn.stat4">Avg. Task Dispatch Latency</div></div>
+  </div>
+
+  <!-- ===== ENDPOINTS ===== -->
+  <section class="section" id="endpoints" style="padding-top: 72px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="ep.eyebrow">Network Configuration</div>
+        <h2 data-i18n="ep.title">Testnet Endpoints</h2>
+        <p data-i18n="ep.sub">Add the OMC L2 testnet to your wallet or node client.</p>
+      </div>
+      <div style="max-width: 780px; margin: 0 auto;">
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_network">Network</span><span class="v">BNB Smart Chain Testnet</span>
+          <button data-copy="BNB Smart Chain Testnet">Copy</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_rpc">RPC URL</span><span class="v">https://data-seed-prebsc-1-s1.binance.org:8545/</span>
+          <button data-copy="https://data-seed-prebsc-1-s1.binance.org:8545/">Copy</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_chainid">Chain ID</span><span class="v">97</span>
+          <button data-copy="97">Copy</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_symbol">Symbol</span><span class="v">tBNB</span>
+          <button data-copy="tBNB">Copy</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_explorer">Explorer</span><span class="v">https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5</span>
+          <button data-copy="https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5">Copy</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_faucet">Faucet</span><span class="v">https://testnet.bnbchain.org/faucet-smart</span>
+          <button data-copy="https://testnet.bnbchain.org/faucet-smart">Copy</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_contract">Test Contract</span><span class="v">0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5</span>
+          <button data-copy="0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW TO RUN A NODE ===== -->
+  <section class="section" style="padding-top: 30px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="node.eyebrow">Node Onboarding</div>
+        <h2 data-i18n="node.title">Run a Testnet Node in 4 Steps</h2>
+        <p data-i18n="node.sub">Consumer GPUs are enough for the testnet — RTX 3090 / 4090 recommended for full-tier tasks.</p>
+      </div>
+      <div class="grid-4">
+        <div class="card reveal">
+          <div class="icon">1️⃣</div>
+          <h3 data-i18n="nstep1.t">Get Test OMC</h3>
+          <p data-i18n="nstep1.d">Request tOMC from the faucet — covers gas and your testnet staking deposit.</p>
+          <span class="tag">Faucet</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">2️⃣</div>
+          <h3 data-i18n="nstep2.t">Install Client</h3>
+          <p data-i18n="nstep2.d">Pull the open-source node client: <b>docker compose up</b> on any CUDA / ROCm machine.</p>
+          <span class="tag">Docker / K8s</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">3️⃣</div>
+          <h3 data-i18n="nstep3.t">Stake &amp; Register</h3>
+          <p data-i18n="nstep3.d">Stake tOMC proportional to your hardware tier and register your node heartbeat.</p>
+          <span class="tag">Staking_Min = Deposit × Tier</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">4️⃣</div>
+          <h3 data-i18n="nstep4.t">Execute &amp; Earn</h3>
+          <p data-i18n="nstep4.d">Receive matched tasks, execute in sandbox, pass dual verification — and collect rewards.</p>
+          <span class="tag">Earn tOMC</span>
+        </div>
+      </div>
+
+      <div class="wp-note reveal" style="max-width: 780px; margin: 34px auto 0;" data-i18n="node.note"><b>Verification reminder.</b> Every output is checked by redundant execution (2–3 nodes) and zk-SNARKs sampling. Fraudulent outputs, timeouts and fake heartbeats are slashed — 50% to requesters, 30% to the DAO treasury, 20% permanently burned.</div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="faq.eyebrow">FAQ</div>
+        <h2 data-i18n="faq.title">Testnet Questions</h2>
+      </div>
+      <div style="max-width: 780px; margin: 0 auto;" class="reveal">
+        <div class="card" style="margin-bottom: 14px;">
+          <h3 data-i18n="faq1.q">Do testnet rewards convert to mainnet OMC?</h3>
+          <p data-i18n="faq1.a">Testnet tOMC has no value. However, compute contributions and reputation scores accumulated on the testnet are tracked for the Compute Mining &amp; Node Rewards pool (50% of supply) at mainnet launch.</p>
+        </div>
+        <div class="card" style="margin-bottom: 14px;">
+          <h3 data-i18n="faq2.q">What hardware do I need?</h3>
+          <p data-i18n="faq2.a">Any CUDA or ROCm GPU works on the testnet. Score weighting favors TFLOPS and VRAM — RTX 3090/4090 class cards land in the top hardware tiers, and NVLink-connected rigs get priority for multi-GPU jobs.</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="faq3.q">Is my data private?</h3>
+          <p data-i18n="faq3.a">Task execution happens in isolated Docker/Kubernetes sandboxes. zk-SNARKs sampled verification proves execution integrity on-chain without exposing your data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 data-i18n="cta2.title">Not a GPU owner? Still early.</h2>
+        <p data-i18n="cta2.sub">Claim your community airdrop allocation — 2% of total supply, 100% unlocked at TGE.</p>
+        <div class="hero-actions">
+          <a href="airdrop.html" class="btn btn-primary btn-lg" data-i18n="cta2.b1">🎁 Claim Airdrop</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_protocol">Protocol</h5>
+          <a href="whitepaper.html" data-i18n="f.wp">Whitepaper</a>
+          <a href="testnet.html" data-i18n="f.testnet">Testnet</a>
+          <a href="index.html#about" data-i18n="f.arch">Architecture</a>
+          <a href="whitepaper.html#s4" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_community">Community</h5>
+          <a href="airdrop.html" data-i18n="f.airdrop">Airdrop</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_resources">Resources</h5>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="testnet.html#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="disc">
+          <span data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</span>
+          <span data-i18n="footer.disc_testnet"> Testnet tokens (tOMC) have no monetary value.</span>
+        </div>
+        <div>© 2026 Omniverse Compute · omc.network</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js"></script>
+  <script src="assets/js/lang/zh.js"></script>
+  <script src="assets/js/lang/ja.js"></script>
+  <script src="assets/js/lang/es.js"></script>
+  <script src="assets/js/lang/ko.js"></script>
+  <script src="assets/js/lang/pt.js"></script>
+  <script src="assets/js/lang/fr.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
