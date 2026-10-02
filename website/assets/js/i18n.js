@@ -56,13 +56,8 @@
   function init() {
     var sel = document.getElementById("langSelect");
 
-    /* First visit: auto-detect browser language */
-    if (!currentLang() || !localStorage.getItem(LS_KEY)) {
-      var nav = (navigator.language || "en").slice(0, 2).toLowerCase();
-      var auto = SUPPORTED.indexOf(nav) !== -1 ? nav : "en";
-      try { localStorage.setItem(LS_KEY, auto); } catch (e) {}
-    }
-
+    /* Default language is English. No browser-language auto-detection:
+       a saved choice (from the switcher) wins, otherwise fall back to "en". */
     var lang = currentLang();
     if (sel) {
       sel.value = lang;
