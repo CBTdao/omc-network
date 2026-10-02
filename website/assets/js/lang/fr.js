@@ -238,6 +238,7 @@ window.I18N.fr = {
   /* ===== AIRDROP ===== */
   "ad.badge": "Airdrop communautaire — en cours",
   "ad.sub": "2 % de l'offre totale de 1 milliard est réservé à la communauté — <b>1 000 000 participations × 20 OMC chacune</b>. Accomplissez trois tâches sociales simples, connectez votre portefeuille et participez jusqu'à 10 fois.",
+  "ad.chip_start": "🗓️ Début de l'airdrop <b>1er nov. 2026</b>",
   "ad.chip_per": "🎁 Par participation <b>20 OMC</b>",
   "ad.chip_wallet": "♻️ Par portefeuille <b>jusqu'à 10 participations</b>",
   "ad.chip_daily": "📅 Limite quotidienne <b>2 participations</b>",
@@ -294,6 +295,8 @@ window.I18N.fr = {
   /* ===== JS dynamic ===== */
   "js.btn_verify": "Vérifier",
   "js.btn_verified": "Vérifié ✓",
+  "js.hint_not_started": "⏳ L'airdrop n'a pas encore commencé — il ouvre le 1er novembre 2026 (UTC+8). Complétez les tâches dès maintenant pour être prêt.",
+  "js.hint_ended": "⌛ L'airdrop est terminé. Vous pouvez désormais réclamer votre OMC accumulé ci-dessus.",
   "js.hint_step1": "Étape 1 — connectez votre portefeuille pour continuer.",
   "js.hint_step2": "Étape 2 — accomplissez les 3 tâches sociales pour déverrouiller la participation.",
   "js.hint_ready": "Tout est prêt ! Cliquez sur Participer pour enregistrer chaque participation de +20 OMC.",
@@ -304,6 +307,7 @@ window.I18N.fr = {
   "js.toast_rejected": "Connexion refusée.",
   "js.toast_no_wallet": "Aucun portefeuille Web3 détecté — installez MetaMask ou utilisez un navigateur avec portefeuille.",
   "js.toast_disconnected": "Portefeuille déconnecté.",
+  "js.toast_not_started": "L'airdrop commence le 1er novembre 2026 (UTC+8) — à bientôt !",
   "js.toast_participated": "+20 OMC enregistrés ! Un petit montant de gaz a été déduit — {t}/10 au total · {d}/2 aujourd'hui.",
   "js.toast_claim_all": "{n} OMC ont été envoyés à votre portefeuille ! (démo)",
   "js.copy_done": "Copié ✓"

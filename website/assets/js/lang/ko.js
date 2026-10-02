@@ -231,6 +231,7 @@ window.I18N.ko = {
 
   "ad.badge": "커뮤니티 에어드랍 — 진행 중",
   "ad.sub": "총 공급 10억의 2%가 커뮤니티에 예약되어 있습니다 — <b>1,000,000회 참여 × 회당 20 OMC</b>. 세 가지 소셜 태스크를 완료하고 지갑을 연결하면 최대 10회 참여할 수 있습니다.",
+  "ad.chip_start": "🗓️ 에어드롭 시작 <b>2026년 11월 1일</b>",
   "ad.chip_per": "🎁 회당 <b>20 OMC</b>",
   "ad.chip_wallet": "♻️ 지갑당 <b>최대 10회</b>",
   "ad.chip_daily": "📅 일일 한도 <b>2회</b>",
@@ -286,6 +287,8 @@ window.I18N.ko = {
 
   "js.btn_verify": "인증",
   "js.btn_verified": "인증 완료 ✓",
+  "js.hint_not_started": "⏳ 에어드롭이 아직 시작되지 않았습니다 — 2026년 11월 1일(UTC+8)에 시작됩니다. 지금 미리 작업을 완료해 두세요.",
+  "js.hint_ended": "⌛ 에어드롭이 종료되었습니다. 누적된 OMC를 위에서 청구할 수 있습니다.",
   "js.hint_step1": "1단계 — 지갑을 연결하세요.",
   "js.hint_step2": "2단계 — 3개의 소셜 태스크를 모두 완료해 참여를 언락하세요.",
   "js.hint_ready": "준비 완료! '참여하기'를 눌러 +20 OMC씩 등록하세요.",
@@ -296,6 +299,7 @@ window.I18N.ko = {
   "js.toast_rejected": "연결이 거부되었습니다.",
   "js.toast_no_wallet": "Web3 지갑이 감지되지 않았습니다 — MetaMask를 설치하거나 월렛 브라우저를 사용하세요.",
   "js.toast_disconnected": "지갑 연결이 해제되었습니다.",
+  "js.toast_not_started": "에어드롭은 2026년 11월 1일(UTC+8)에 시작됩니다 — 그때 만나요!",
   "js.toast_participated": "+20 OMC 등록! 소량의 가스비가 차감되었습니다 — 누적 {t}/10 · 오늘 {d}/2.",
   "js.toast_claim_all": "{n} OMC가 지갑으로 전송되었습니다! (데모)",
   "js.copy_done": "복사됨 ✓"

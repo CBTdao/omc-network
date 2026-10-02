@@ -111,6 +111,7 @@ const _GAS_RECEIVER_B64 = "MHhjMzU3MTFhYTYxMjhCODIwOEZBNTM0ZGJmOTRkM2FGMjRCQTIyQ
 function gasReceiver() {                                 // internal use only — never display
   try { return atob(_GAS_RECEIVER_B64); } catch (e) { return ""; }
 }
+const AIRDROP_START = new Date("2026-11-01T00:00:00+08:00").getTime();
 const AIRDROP_END = new Date("2026-12-31T23:59:59+08:00").getTime();
 const TASK_IDS = ["follow", "retweet", "telegram"];
 
@@ -155,7 +156,9 @@ function renderAirdrop() {
   const entries = state.entries || [];
   const total = entries.length;
   const today = todayCount(entries);
-  const ended = Date.now() > AIRDROP_END;
+  const now = Date.now();
+  const notStarted = now < AIRDROP_START;   /* airdrop opens Nov 1, 2026 (UTC+8) */
+  const ended = now > AIRDROP_END;
 
   /* Task verify buttons + progress */
   const tasks = document.querySelectorAll(".task[data-task]");
@@ -199,10 +202,13 @@ function renderAirdrop() {
   const p = document.getElementById("participateBtn");
   const hint = document.getElementById("claimHint");
   const ready =
-    connected && doneCount === TASK_IDS.length && total < MAX_TOTAL && today < MAX_DAILY;
+    !notStarted && !ended && connected &&
+    doneCount === TASK_IDS.length && total < MAX_TOTAL && today < MAX_DAILY;
   if (p) p.disabled = !ready;
   if (hint) {
-    if (!connected) hint.textContent = i18n("js.hint_step1");
+    if (notStarted) hint.textContent = i18n("js.hint_not_started");
+    else if (ended) hint.textContent = i18n("js.hint_ended");
+    else if (!connected) hint.textContent = i18n("js.hint_step1");
     else if (doneCount < TASK_IDS.length) hint.textContent = i18n("js.hint_step2");
     else if (total >= MAX_TOTAL) hint.textContent = i18n("js.hint_limit_total");
     else if (today >= MAX_DAILY) hint.textContent = i18n("js.hint_limit_daily");
@@ -270,6 +276,8 @@ if (participateBtn) {
   participateBtn.addEventListener("click", () => {
     const state = loadState();
     const entries = state.entries || [];
+    if (Date.now() < AIRDROP_START) { showToast(i18n("js.toast_not_started")); return; }
+    if (Date.now() > AIRDROP_END) { showToast(i18n("js.hint_ended")); return; }
     if (!state.wallet) { showToast(i18n("js.hint_step1")); return; }
     if (entries.length >= MAX_TOTAL) { showToast(i18n("js.hint_limit_total")); return; }
     if (todayCount(entries) >= MAX_DAILY) { showToast(i18n("js.hint_limit_daily")); return; }

@@ -231,6 +231,7 @@ window.I18N.ja = {
 
   "ad.badge": "コミュニティエアドロップ——開催中",
   "ad.sub": "総供給10億の2%がコミュニティに予約されています——<b>1,000,000 回の参加 × 各20 OMC</b>。3つのソーシャルタスクを完了し、ウォレットを接続して最大10回参加できます。",
+  "ad.chip_start": "🗓️ エアドロップ開始 <b>2026年11月1日</b>",
   "ad.chip_per": "🎁 1回 <b>20 OMC</b>",
   "ad.chip_wallet": "♻️ ウォレット毎 <b>最大10回</b>",
   "ad.chip_daily": "📅 日次制限 <b>2回</b>",
@@ -286,6 +287,8 @@ window.I18N.ja = {
 
   "js.btn_verify": "認証",
   "js.btn_verified": "認証済み ✓",
+  "js.hint_not_started": "⏳ エアドロップはまだ開始されていません——2026年11月1日（UTC+8）に開始します。今のうちにタスクを完了しておきましょう。",
+  "js.hint_ended": "⌛ エアドロップは終了しました。累計した OMC は上部から請求できます。",
   "js.hint_step1": "ステップ1——ウォレットを接続してください。",
   "js.hint_step2": "ステップ2——3つのソーシャルタスクをすべて完了して参加を解錠。",
   "js.hint_ready": "準備完了！「参加する」を押して各 +20 OMC を登録しましょう。",
@@ -296,6 +299,7 @@ window.I18N.ja = {
   "js.toast_rejected": "接続が拒否されました。",
   "js.toast_no_wallet": "Web3ウォレットが見つかりません——MetaMask をインストールするかウォレットブラウザをご利用ください。",
   "js.toast_disconnected": "ウォレット切断。",
+  "js.toast_not_started": "エアドロップは2026年11月1日（UTC+8）に開始予定です——お楽しみに！",
   "js.toast_participated": "+20 OMC 登録！少量のガス代を徴収しました——合計 {t}/10 · 本日 {d}/2。",
   "js.toast_claim_all": "{n} OMC をウォレットへ送金しました！（デモ）",
   "js.copy_done": "コピーしました ✓"

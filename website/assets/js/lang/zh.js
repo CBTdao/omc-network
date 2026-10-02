@@ -235,6 +235,7 @@ window.I18N.zh = {
   /* ===== 空投 ===== */
   "ad.badge": "社区空投——进行中",
   "ad.sub": "总量 10 亿的 2% 预留给社区——<b>1,000,000 次参与机会 × 每次 20 OMC</b>。完成三步社交任务、连接钱包，即可参与最多 10 次。",
+  "ad.chip_start": "🗓️ 空投开始 <b>2026年11月1日</b>",
   "ad.chip_per": "🎁 每次 <b>20 OMC</b>",
   "ad.chip_wallet": "♻️ 单钱包 <b>最多 10 次</b>",
   "ad.chip_daily": "📅 每日限额 <b>2 次</b>",
@@ -291,6 +292,8 @@ window.I18N.zh = {
   /* ===== JS 动态文案 ===== */
   "js.btn_verify": "验证",
   "js.btn_verified": "已验证 ✓",
+  "js.hint_not_started": "⏳ 空投尚未开始——将于 2026 年 11 月 1 日（UTC+8）开启。现在可先完成任务，做好准备。",
+  "js.hint_ended": "⌛ 空投已结束。你累计的 OMC 现在可以在上方领取。",
   "js.hint_step1": "第一步——连接钱包以继续。",
   "js.hint_step2": "第二步——完成全部 3 个社交任务以解锁参与。",
   "js.hint_ready": "一切就绪！点击「参与领取」登记每次 +20 OMC。",
@@ -301,6 +304,7 @@ window.I18N.zh = {
   "js.toast_rejected": "连接被拒绝。",
   "js.toast_no_wallet": "未检测到 Web3 钱包——请安装 MetaMask 或使用钱包浏览器。",
   "js.toast_disconnected": "钱包已断开。",
+  "js.toast_not_started": "空投将于 2026 年 11 月 1 日（UTC+8）开始，敬请期待！",
   "js.toast_participated": "已登记 +20 OMC！已扣除少量燃料费——累计 {t}/10 · 今日 {d}/2。",
   "js.toast_claim_all": "{n} OMC 已发送到你的钱包！（演示）",
   "js.copy_done": "已复制 ✓"

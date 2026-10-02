@@ -231,6 +231,7 @@ window.I18N.pt = {
 
   "ad.badge": "Airdrop da Comunidade — Ao Vivo",
   "ad.sub": "2% da oferta total de 1B está reservada para a comunidade — <b>1.000.000 participações × 20 OMC cada</b>. Complete três tarefas sociais simples, conecte sua carteira e participe até 10 vezes.",
+  "ad.chip_start": "🗓️ Início do airdrop <b>1 de nov de 2026</b>",
   "ad.chip_per": "🎁 Por Participação <b>20 OMC</b>",
   "ad.chip_wallet": "♻️ Por Carteira <b>até 10 participações</b>",
   "ad.chip_daily": "📅 Limite Diário <b>2 participações</b>",
@@ -286,6 +287,8 @@ window.I18N.pt = {
 
   "js.btn_verify": "Verificar",
   "js.btn_verified": "Verificado ✓",
+  "js.hint_not_started": "⏳ O airdrop ainda não começou — abre em 1 de novembro de 2026 (UTC+8). Complete as tarefas agora para estar pronto.",
+  "js.hint_ended": "⌛ O airdrop terminou. Agora você pode resgatar seu OMC acumulado acima.",
   "js.hint_step1": "Passo 1 — conecte sua carteira para continuar.",
   "js.hint_step2": "Passo 2 — complete as 3 tarefas sociais para desbloquear a participação.",
   "js.hint_ready": "Tudo pronto! Clique em Participar para registrar cada entrada de +20 OMC.",
@@ -296,6 +299,7 @@ window.I18N.pt = {
   "js.toast_rejected": "Conexão recusada.",
   "js.toast_no_wallet": "Nenhuma carteira Web3 detectada — instale a MetaMask ou use um navegador com carteira.",
   "js.toast_disconnected": "Carteira desconectada.",
+  "js.toast_not_started": "O airdrop começa em 1 de novembro de 2026 (UTC+8) — até lá!",
   "js.toast_participated": "+20 OMC registrados! Uma pequena taxa de gás foi deduzida — {t}/10 total · {d}/2 hoje.",
   "js.toast_claim_all": "{n} OMC enviados para sua carteira! (demo)",
   "js.copy_done": "Copiado ✓"

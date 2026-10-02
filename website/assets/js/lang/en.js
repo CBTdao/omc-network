@@ -238,6 +238,7 @@ window.I18N.en = {
   /* ===== AIRDROP ===== */
   "ad.badge": "Community Airdrop — Live Now",
   "ad.sub": "2% of the total 1B supply is reserved for the community — <b>1,000,000 entries × 20 OMC each</b>. Complete three simple social tasks, connect your wallet, and participate up to 10 times.",
+  "ad.chip_start": "🗓️ Airdrop Starts <b>Nov 1, 2026</b>",
   "ad.chip_per": "🎁 Per Entry <b>20 OMC</b>",
   "ad.chip_wallet": "♻️ Per Wallet <b>up to 10 entries</b>",
   "ad.chip_daily": "📅 Daily Limit <b>2 entries</b>",
@@ -294,6 +295,8 @@ window.I18N.en = {
   /* ===== JS dynamic ===== */
   "js.btn_verify": "Verify",
   "js.btn_verified": "Verified ✓",
+  "js.hint_not_started": "⏳ The airdrop hasn't started yet — it opens on Nov 1, 2026 (UTC+8). Complete the tasks now to be ready.",
+  "js.hint_ended": "⌛ The airdrop has ended. Your accumulated OMC can now be claimed above.",
   "js.hint_step1": "Step 1 — connect your wallet to continue.",
   "js.hint_step2": "Step 2 — complete all 3 social tasks to unlock participation.",
   "js.hint_ready": "All set! Hit Participate to register each +20 OMC entry.",
@@ -304,6 +307,7 @@ window.I18N.en = {
   "js.toast_rejected": "Connection rejected.",
   "js.toast_no_wallet": "No Web3 wallet detected — install MetaMask or use a wallet browser.",
   "js.toast_disconnected": "Wallet disconnected.",
+  "js.toast_not_started": "The airdrop starts on Nov 1, 2026 (UTC+8) — see you then!",
   "js.toast_participated": "+20 OMC registered! A small gas fee deducted — {t}/10 total · {d}/2 today.",
   "js.toast_claim_all": "{n} OMC has been sent to your wallet! (demo)",
   "js.copy_done": "Copied ✓"
