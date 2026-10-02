@@ -167,7 +167,7 @@ docker compose up     # any CUDA / ROCm machine
 - [ ] Compute mining activation
 - [ ] HuggingFace & Blender plugin integration
 
-**Phase 3 · Q4 2027 – Q1 2028 — ZK-ML & Full DAO**
+**Phase 3 · Q4 2027 — ZK-ML & Full DAO**
 - [ ] On-chain ZK-ML framework launch
 - [ ] Full DAO governance transition
 - [ ] Cross-chain compute settlement expansion

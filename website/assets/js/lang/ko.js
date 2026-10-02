@@ -103,7 +103,7 @@ window.I18N.ko = {
   "ph2.l1": "메인넷 론칭",
   "ph2.l2": "컴퓨트 마이닝 활성화",
   "ph2.l3": "HuggingFace·Blender 플러그인 통합",
-  "ph3.tag": "3단계 · 2027 Q4–2028 Q1",
+  "ph3.tag": "3단계 · 2027 Q4–",
   "ph3.title": "ZK-ML과 완전한 DAO",
   "ph3.l1": "온체인 ZK-ML 프레임워크 출시",
   "ph3.l2": "완전한 DAO 거버넌스 전환",
@@ -182,7 +182,7 @@ window.I18N.ko = {
   "s5.h": "5 · 로드맵과 거버넌스",
   "s5.l1": "<b>1단계 (2026 Q4–2027 Q1):</b> L2 스마트 컨트랙트 배포, 오픈소스 노드 클라이언트, 테스트넷 론칭, 2% 커뮤니티 에어드랍.",
   "s5.l2": "<b>2단계 (2027 Q2–Q3):</b> 메인넷 론칭, 컴퓨트 마이닝 활성화, HuggingFace·Blender 플러그인 통합.",
-  "s5.l3": "<b>3단계 (2027 Q4–2028 Q1):</b> 온체인 ZK-ML 프레임워크 출시, 완전한 DAO 거버넌스 전환, 크로스체인 컴퓨트 정산 확장.",
+  "s5.l3": "<b>3단계 (2027 Q4–):</b> 온체인 ZK-ML 프레임워크 출시, 완전한 DAO 거버넌스 전환, 크로스체인 컴퓨트 정산 확장.",
   "wp.note": "<b>비고.</b> 본 페이지는 공식 OMC 백서 v2.0의 웹 렌더링 버전입니다. 서명된 PDF가 공식 기준입니다 — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>영문 백서</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>발표자료</a>.",
 
   "tn.badge": "1단계 — 테스트넷 라이브",

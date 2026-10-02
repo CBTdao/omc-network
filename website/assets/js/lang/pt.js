@@ -103,7 +103,7 @@ window.I18N.pt = {
   "ph2.l1": "Lançamento da mainnet",
   "ph2.l2": "Ativação da mineração de computação",
   "ph2.l3": "Integração dos plugins HuggingFace e Blender",
-  "ph3.tag": "Fase 3 · 2027 T4–2028 T1",
+  "ph3.tag": "Fase 3 · 2027 T4–",
   "ph3.title": "ZK-ML e DAO Completa",
   "ph3.l1": "Lançamento do framework ZK-ML on-chain",
   "ph3.l2": "Transição completa para governança DAO",
@@ -182,7 +182,7 @@ window.I18N.pt = {
   "s5.h": "5 · Roadmap e Governança",
   "s5.l1": "<b>Fase 1 (2026 T4–2027 T1):</b> implantação de contratos L2, cliente de nó open-source, lançamento do testnet e o airdrop comunitário de 2%.",
   "s5.l2": "<b>Fase 2 (2027 T2–T3):</b> lançamento da mainnet, ativação da mineração de computação, integração dos plugins HuggingFace e Blender.",
-  "s5.l3": "<b>Fase 3 (2027 T4–2028 T1):</b> lançamento do framework ZK-ML on-chain, transição completa para governança DAO e expansão da liquidação de computação cross-chain.",
+  "s5.l3": "<b>Fase 3 (2027 T4–):</b> lançamento do framework ZK-ML on-chain, transição completa para governança DAO e expansão da liquidação de computação cross-chain.",
   "wp.note": "<b>Nota.</b> Esta página é uma versão web do Whitepaper oficial OMC v2.0 para conveniência do leitor. As versões PDF assinadas continuam sendo a referência oficial — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>whitepaper em inglês</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>apresentação</a>.",
 
   "tn.badge": "Fase 1 — Testnet no ar",

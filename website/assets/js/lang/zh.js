@@ -104,7 +104,7 @@ window.I18N.zh = {
   "ph2.l1": "主网上线",
   "ph2.l2": "算力挖矿激活",
   "ph2.l3": "HuggingFace 与 Blender 插件集成",
-  "ph3.tag": "第三阶段 · 2027 Q4–2028 Q1",
+  "ph3.tag": "第三阶段 · 2027 Q4–",
   "ph3.title": "ZK-ML 与完全 DAO",
   "ph3.l1": "链上 ZK-ML 框架发布",
   "ph3.l2": "全面过渡至 DAO 治理",
@@ -184,7 +184,7 @@ window.I18N.zh = {
   "s5.h": "5 · 路线图与治理",
   "s5.l1": "<b>第一阶段（2026 Q4–2027 Q1）：</b>L2 智能合约部署、开源节点客户端、测试网上线及 2% 社区空投。",
   "s5.l2": "<b>第二阶段（2027 Q2–Q3）：</b>主网上线、算力挖矿激活、HuggingFace 与 Blender 插件集成。",
-  "s5.l3": "<b>第三阶段（2027 Q4–2028 Q1）：</b>链上 ZK-ML 框架发布、全面过渡至 DAO 治理、跨链算力结算扩展。",
+  "s5.l3": "<b>第三阶段（2027 Q4–）：</b>链上 ZK-ML 框架发布、全面过渡至 DAO 治理、跨链算力结算扩展。",
   "wp.note": "<b>说明。</b>本页面为官方 OMC 白皮书 v2.0 的网页呈现版本，仅供参考。签署版 PDF 仍为权威依据——<a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>英文白皮书</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>演示版</a>。",
 
   /* ===== 测试网 ===== */

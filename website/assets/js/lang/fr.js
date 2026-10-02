@@ -107,7 +107,7 @@ window.I18N.fr = {
   "ph2.l1": "Lancement du mainnet",
   "ph2.l2": "Activation du minage de calcul",
   "ph2.l3": "Intégration des plugins HuggingFace & Blender",
-  "ph3.tag": "Phase 3 · 2027 T4–2028 T1",
+  "ph3.tag": "Phase 3 · 2027 T4–",
   "ph3.title": "ZK-ML & DAO complète",
   "ph3.l1": "Lancement du framework ZK-ML on-chain",
   "ph3.l2": "Transition complète vers la gouvernance DAO",
@@ -187,7 +187,7 @@ window.I18N.fr = {
   "s5.h": "5 · Feuille de route & gouvernance",
   "s5.l1": "<b>Phase 1 (2026 T4–2027 T1) :</b> déploiement des contrats intelligents L2, client de nœud open-source, lancement du testnet et airdrop communautaire de 2 %.",
   "s5.l2": "<b>Phase 2 (2027 T2–T3) :</b> lancement du mainnet, activation du minage de calcul, intégration des plugins HuggingFace & Blender.",
-  "s5.l3": "<b>Phase 3 (2027 T4–2028 T1) :</b> lancement du framework ZK-ML on-chain, transition complète vers la gouvernance DAO et extension du règlement de calcul inter-chaînes.",
+  "s5.l3": "<b>Phase 3 (2027 T4–) :</b> lancement du framework ZK-ML on-chain, transition complète vers la gouvernance DAO et extension du règlement de calcul inter-chaînes.",
   "wp.note": "<b>Remarque.</b> Cette page est un rendu web du livre blanc officiel OMC v2.0 pour plus de commodité. Les versions PDF signées restent la référence faisant autorité — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>livre blanc anglais</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>deck de présentation</a>.",
 
   /* ===== TESTNET ===== */
