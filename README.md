@@ -156,18 +156,18 @@ docker compose up     # any CUDA / ROCm machine
 
 ## 🗺 Roadmap
 
-**Phase 1 · Q1–Q2 2026 — Infrastructure & Testnet**
+**Phase 1 · Q4 2026 – Q1 2027 — Infrastructure & Testnet**
 - [x] L2 smart contract deployment
 - [x] Open-source node client release
 - [x] Public testnet launch
 - [ ] 2% community airdrop campaign
 
-**Phase 2 · Q3–Q4 2026 — Mainnet & Mining**
+**Phase 2 · Q2–Q3 2027 — Mainnet & Mining**
 - [ ] Mainnet launch
 - [ ] Compute mining activation
 - [ ] HuggingFace & Blender plugin integration
 
-**Phase 3 · 2027 — ZK-ML & Full DAO**
+**Phase 3 · Q4 2027 – Q1 2028 — ZK-ML & Full DAO**
 - [ ] On-chain ZK-ML framework launch
 - [ ] Full DAO governance transition
 - [ ] Cross-chain compute settlement expansion
