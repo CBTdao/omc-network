@@ -236,7 +236,7 @@ window.I18N.en = {
   "cta2.b1": "🎁 Claim Airdrop",
 
   /* ===== AIRDROP ===== */
-  "ad.badge": "Community Airdrop — Live Now",
+  "ad.badge": "Community Airdrop — 2% of Total Supply",
   "ad.sub": "2% of the total 1B supply is reserved for the community — <b>1,000,000 entries × 20 OMC each</b>. Complete three simple social tasks, connect your wallet, and participate up to 10 times.",
   "ad.chip_start": "🗓️ Airdrop Starts <b>Nov 1, 2026</b>",
   "ad.chip_per": "🎁 Per Entry <b>20 OMC</b>",
@@ -244,6 +244,12 @@ window.I18N.en = {
   "ad.chip_daily": "📅 Daily Limit <b>2 entries</b>",
   "ad.chip_gas": "⛽ Gas <b>a small amount / entry</b>",
   "ad.chip_tge": "🔓 Unlock <b>100% at TGE</b>",
+  "cd.label_start": "Airdrop starts in",
+  "cd.label_end": "Airdrop ends in",
+  "cd.days": "Days",
+  "cd.hours": "Hours",
+  "cd.mins": "Mins",
+  "cd.secs": "Secs",
   "rw1.t": "Early Supporters",
   "rw1.d": "Boost for the first wave of community members",
   "rw2.t": "1,000,000 Entries",

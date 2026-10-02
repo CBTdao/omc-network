@@ -236,7 +236,7 @@ window.I18N.fr = {
   "cta2.b1": "🎁 Réclamer l'airdrop",
 
   /* ===== AIRDROP ===== */
-  "ad.badge": "Airdrop communautaire — en cours",
+  "ad.badge": "Airdrop communautaire — 2 % de l'offre totale",
   "ad.sub": "2 % de l'offre totale de 1 milliard est réservé à la communauté — <b>1 000 000 participations × 20 OMC chacune</b>. Accomplissez trois tâches sociales simples, connectez votre portefeuille et participez jusqu'à 10 fois.",
   "ad.chip_start": "🗓️ Début de l'airdrop <b>1er nov. 2026</b>",
   "ad.chip_per": "🎁 Par participation <b>20 OMC</b>",
@@ -244,6 +244,12 @@ window.I18N.fr = {
   "ad.chip_daily": "📅 Limite quotidienne <b>2 participations</b>",
   "ad.chip_gas": "⛽ Gaz <b>un petit montant / participation</b>",
   "ad.chip_tge": "🔓 Déverrouillage <b>100 % au TGE</b>",
+  "cd.label_start": "L'airdrop commence dans",
+  "cd.label_end": "L'airdrop se termine dans",
+  "cd.days": "Jours",
+  "cd.hours": "Heures",
+  "cd.mins": "Min",
+  "cd.secs": "Sec",
   "rw1.t": "Supporters précoces",
   "rw1.d": "Un boost pour la première vague de membres de la communauté",
   "rw2.t": "1 000 000 de participations",

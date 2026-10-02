@@ -309,7 +309,35 @@ if (claimAllBtn) {
   });
 }
 
+/* ---------- Live countdown — counts down to start, then to end ---------- */
+function tickCountdown() {
+  const box = document.getElementById("countdown");
+  if (!box) return;
+  const now = Date.now();
+  let target, labelText;
+  if (now < AIRDROP_START) { target = AIRDROP_START; labelText = i18n("cd.label_start"); }
+  else if (now < AIRDROP_END) { target = AIRDROP_END; labelText = i18n("cd.label_end"); }
+  else { box.hidden = true; return; }
+
+  box.hidden = false;
+  const diff = Math.max(0, target - now);
+  const pad = (n) => String(n).padStart(2, "0");
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = pad(v); };
+  set("cdD", Math.floor(diff / 86400000));
+  set("cdH", Math.floor((diff % 86400000) / 3600000));
+  set("cdM", Math.floor((diff % 3600000) / 60000));
+  set("cdS", Math.floor((diff % 60000) / 1000));
+
+  const lb = document.getElementById("cdLabel");
+  if (lb && lb.textContent !== labelText) lb.textContent = labelText;
+}
+
 /* ---------- Re-render on language switch ---------- */
 document.addEventListener("i18n:changed", renderAirdrop);
+document.addEventListener("i18n:changed", tickCountdown);
 
 renderAirdrop();
+if (document.getElementById("countdown")) {
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
+}
