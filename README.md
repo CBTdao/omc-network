@@ -183,16 +183,21 @@ omc-network/
 ├── CONTRIBUTING.md
 ├── .gitignore
 ├── website/                  ← Official website (static, 7 languages)
-│   ├── index.html            ← Home
+│   ├── index.html            ← Home (incl. live airdrop progress ticker)
 │   ├── whitepaper.html       ← Whitepaper (web rendering)
 │   ├── testnet.html          ← Testnet & node onboarding
 │   ├── airdrop.html          ← Community airdrop
+│   ├── news.html             ← Project news & announcements
 │   └── assets/
 │       ├── css/style.css
 │       ├── img/logo.png
-│       ├── js/               ← i18n engine + airdrop logic
+│       ├── data/news.js      ← News feed entries
+│       ├── js/               ← i18n engine + wallet sign-in + airdrop logic
 │       │   ├── i18n.js
+│       │   ├── wallet.js     ← Wallet sign-in (EIP-1193 / personal_sign)
 │       │   ├── main.js
+│       │   ├── airdrop-stats.js ← Home-page progress ticker
+│       │   ├── news.js       ← News feed renderer
 │       │   └── lang/         ← en · zh · ja · es · ko · pt · fr
 │       └── docs/             ← Whitepaper PDFs
 └── docs/                     ← Protocol documentation
@@ -212,6 +217,9 @@ The official site is a dependency-free static build with **7-language support** 
 | Whitepaper | https://omc-network.vercel.app/whitepaper |
 | Testnet | https://omc-network.vercel.app/testnet |
 | Airdrop | https://omc-network.vercel.app/airdrop |
+| News | https://omc-network.vercel.app/news |
+
+Sign-in uses the visitor's own browser wallet (EIP-1193 + `personal_sign`); the session is stored locally and no server-side authorisation is claimed yet. The home page ticker reads live numbers when `OMC_STATS.endpoint` is set, and otherwise shows a clearly-labelled preview feed.
 
 To run locally:
 

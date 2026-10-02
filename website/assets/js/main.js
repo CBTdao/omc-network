@@ -119,6 +119,11 @@ function i18n(key, params) {
   return window.i18nT ? window.i18nT(key, params) : key;
 }
 
+/* Wallet session lives in wallet.js (shared by every page) */
+function walletAddress() {
+  return window.OMCWallet ? window.OMCWallet.address() : "";
+}
+
 function loadState() {
   try {
     const s = JSON.parse(localStorage.getItem(AIRDROP_KEY)) || {};
@@ -179,14 +184,15 @@ function renderAirdrop() {
   if (cnt) cnt.textContent = doneCount + " / " + TASK_IDS.length;
   if (fill) fill.style.width = (doneCount / TASK_IDS.length) * 100 + "%";
 
-  /* Wallet */
+  /* Wallet (session owned by wallet.js) */
   const connectBtn = document.getElementById("connectBtn");
   const wa = document.getElementById("walletAddr");
-  const connected = !!state.wallet;
+  const wallet = walletAddress();
+  const connected = !!wallet;
   if (connectBtn) {
-    setLabeledBtn(connectBtn, "🦊", connected ? shortAddr(state.wallet) : i18n("claim.connect"));
+    setLabeledBtn(connectBtn, "🦊", connected ? (window.OMCWallet ? OMCWallet.short(wallet) : shortAddr(wallet)) : i18n("claim.connect"));
   }
-  if (wa) wa.textContent = connected ? state.wallet : "";
+  if (wa) wa.textContent = connected ? wallet : "";
 
   /* Accumulated rewards (display only during the airdrop) */
   const accum = document.getElementById("accumNum");
@@ -241,34 +247,18 @@ document.querySelectorAll(".t-btn.verify").forEach((btn) => {
   });
 });
 
-/* ---------- Wallet connect (demo: window.ethereum if present) ---------- */
+/* ---------- Wallet connect (shared session via wallet.js) ---------- */
 const connectBtn = document.getElementById("connectBtn");
 if (connectBtn) {
   connectBtn.addEventListener("click", () => {
-    const state = loadState();
-    if (state.wallet) {
-      delete state.wallet;
-      saveState(state);
-      renderAirdrop();
-      showToast(i18n("js.toast_disconnected"));
-      return;
-    }
-    if (window.ethereum) {
-      window.ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then((accounts) => {
-          const st = loadState();
-          st.wallet = accounts && accounts[0] ? accounts[0] : "";
-          saveState(st);
-          renderAirdrop();
-          showToast(i18n("js.toast_connected"));
-        })
-        .catch(() => showToast(i18n("js.toast_rejected")));
-    } else {
-      showToast(i18n("js.toast_no_wallet"));
-    }
+    if (!window.OMCWallet) return;
+    if (OMCWallet.isConnected()) { OMCWallet.signOut(); return; }
+    OMCWallet.open();          /* sign-in modal (connect + personal_sign) */
   });
 }
+
+/* wallet.js owns the session and broadcasts every change */
+document.addEventListener("omc:wallet", renderAirdrop);
 
 /* ---------- Participate: +20 OMC · 0.01 BNB gas ---------- */
 const participateBtn = document.getElementById("participateBtn");
@@ -278,7 +268,7 @@ if (participateBtn) {
     const entries = state.entries || [];
     if (Date.now() < AIRDROP_START) { showToast(i18n("js.toast_not_started")); return; }
     if (Date.now() > AIRDROP_END) { showToast(i18n("js.hint_ended")); return; }
-    if (!state.wallet) { showToast(i18n("js.hint_step1")); return; }
+    if (!walletAddress()) { showToast(i18n("js.hint_step1")); return; }
     if (entries.length >= MAX_TOTAL) { showToast(i18n("js.hint_limit_total")); return; }
     if (todayCount(entries) >= MAX_DAILY) { showToast(i18n("js.hint_limit_daily")); return; }
     entries.push(Date.now());

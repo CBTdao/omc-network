@@ -22,7 +22,9 @@
         <a href="whitepaper.html" data-i18n="nav.wp">Whitepaper</a>
         <a href="testnet.html" data-i18n="nav.testnet">Testnet</a>
         <a href="airdrop.html" data-i18n="nav.airdrop">Airdrop</a>
+        <a href="news.html" data-i18n="nav.news">News</a>
         <a href="airdrop.html" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <div class="nav-wallet" id="walletNav"></div>
         <select class="lang-select" id="langSelect" aria-label="Language">
           <option value="en">EN</option>
           <option value="zh">中文</option>
@@ -63,6 +65,55 @@
     <div class="stat"><div class="num">2%</div><div class="label" data-i18n="stat3.label">Supply Reserved for Community Airdrop</div></div>
     <div class="stat"><div class="num">~0</div><div class="label" data-i18n="stat4.label">Marginal Cost of Idle GPU Onboarding</div></div>
   </div>
+
+  <!-- ===== AIRDROP PROGRESS (live ticker) ===== -->
+  <section class="section" id="airdrop-progress" style="padding-bottom: 40px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="tk.eyebrow">Airdrop Progress</div>
+        <h2 data-i18n="tk.title">Community Airdrop — Live</h2>
+        <p data-i18n="tk.sub">Pool of 20,000,000 OMC: entries claimed, participants and the latest participations, refreshed live.</p>
+      </div>
+
+      <div class="ticker-panel reveal" id="airdropTicker">
+        <div class="tk-left">
+          <div class="tk-status">
+            <span class="tk-live-dot"></span>
+            <span class="tk-live">Live</span>
+            <span class="tk-demo" hidden data-i18n="tk.demo">Preview data</span>
+          </div>
+          <div class="tk-metrics">
+            <div class="tk-m"><span data-i18n="tk.claimed">Entries claimed</span><b id="tkClaimed">0</b><i>/ 1,000,000</i></div>
+            <div class="tk-m"><span data-i18n="tk.participants">Participants</span><b id="tkParts">0</b></div>
+            <div class="tk-m"><span data-i18n="tk.remaining">Entries remaining</span><b id="tkLeft">1,000,000</b></div>
+            <div class="tk-m"><span data-i18n="tk.your">Your entries</span><b id="tkMine">—</b></div>
+          </div>
+          <div class="tk-progress">
+            <div class="tk-progress-head">
+              <span data-i18n="tk.pool">Pool claimed</span>
+              <span id="tkPct">0.000%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="tkFill"></div></div>
+          </div>
+          <div class="tk-actions">
+            <a class="btn btn-primary" href="airdrop.html" data-i18n="tk.cta">Open airdrop page →</a>
+            <span class="tk-note" id="tkNote" data-i18n="tk.demo_note">Preview feed — connect a data source to show on-chain numbers.</span>
+          </div>
+        </div>
+
+        <div class="tk-right">
+          <div class="tk-window-head">
+            <span data-i18n="tk.feed">Latest participations</span>
+            <span class="tk-before" id="tkBefore" data-i18n="tk.before">Opens Nov 1, 2026 · 00:00 UTC+8</span>
+          </div>
+          <div class="tk-window"><div class="tk-feed" id="tkFeed"></div></div>
+          <div class="tk-window-foot">
+            <span data-i18n="tk.wallet_note">Sign in with your wallet to see your own progress</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ===== WHY OMC ===== -->
   <section class="section" id="about">
@@ -294,6 +345,7 @@
         <div class="f-col">
           <h5 data-i18n="footer.h_community">Community</h5>
           <a href="airdrop.html" data-i18n="f.airdrop">Airdrop</a>
+          <a href="news.html" data-i18n="nav.news">News</a>
           <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
           <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
         </div>
@@ -319,6 +371,8 @@
   <script src="assets/js/lang/pt.js"></script>
   <script src="assets/js/lang/fr.js"></script>
   <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/wallet.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/airdrop-stats.js"></script>
 </body>
 </html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta.title_news">News — Omniverse Compute (OMC)</title>
+  <meta name="description" content="Official Omniverse Compute (OMC) project updates: testnet milestones, airdrop campaigns, engineering progress and governance announcements." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/png" href="assets/img/logo.png" />
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="whitepaper.html" data-i18n="nav.wp">Whitepaper</a>
+        <a href="testnet.html" data-i18n="nav.testnet">Testnet</a>
+        <a href="airdrop.html" data-i18n="nav.airdrop">Airdrop</a>
+        <a href="news.html" data-i18n="nav.news">News</a>
+        <a href="airdrop.html" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <div class="nav-wallet" id="walletNav"></div>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="es">Español</option>
+          <option value="ko">한국어</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" style="padding-bottom: 34px;">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="nw.eyebrow">Project Updates</span></div>
+      <h1><span data-i18n="nw.title">News &amp; Announcements</span></h1>
+      <p class="sub" data-i18n="nw.sub">Official updates from the OMC core team — testnet milestones, airdrop campaigns, engineering progress and governance.</p>
+      <div class="news-filters" id="newsFilters">
+        <button class="nf active" data-kind="all" data-i18n="nw.all">All</button>
+        <button class="nf" data-kind="dev" data-i18n="nw.dev">Engineering</button>
+        <button class="nf" data-kind="airdrop" data-i18n="nw.airdrop">Airdrop</button>
+        <button class="nf" data-kind="eco" data-i18n="nw.eco">Ecosystem</button>
+        <button class="nf" data-kind="gov" data-i18n="nw.gov">Governance</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== FEED ===== -->
+  <section class="section" style="padding-top: 40px;">
+    <div class="container">
+      <div class="news-layout">
+        <div class="news-main">
+          <div class="news-count" id="newsCount"></div>
+          <div class="news-list" id="newsList"></div>
+        </div>
+
+        <aside class="news-side">
+          <div class="card reveal">
+            <h3 data-i18n="nw.side_t">Follow the updates</h3>
+            <p data-i18n="nw.side_d">News is published here first, then mirrored to X and Telegram.</p>
+            <div class="news-side-links">
+              <a class="btn btn-ghost" href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener">𝕏 <span data-i18n="nw.side_x">Follow on X</span></a>
+              <a class="btn btn-ghost" href="https://t.me/OmniverseCompute" target="_blank" rel="noopener">✈️ <span data-i18n="nw.side_tg">Join Telegram</span></a>
+              <a class="btn btn-ghost" href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener">🐙 <span data-i18n="nw.side_repo">Star on GitHub</span></a>
+            </div>
+          </div>
+          <div class="card reveal">
+            <h3 data-i18n="nw.latest">Latest</h3>
+            <div class="news-latest" id="newsLatest"></div>
+          </div>
+        </aside>
+      </div>
+      <p class="claim-note" style="margin-top: 26px;" data-i18n="nw.note">Announcements are maintained by the OMC core team. Dates are shown in UTC+8.</p>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 data-i18n="cta.title">Ready to join the grid?</h2>
+        <p data-i18n="cta.sub">Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.</p>
+        <div class="hero-actions">
+          <a href="airdrop.html" class="btn btn-primary btn-lg" data-i18n="cta.b1">🎁 Claim Airdrop</a>
+          <a href="testnet.html" class="btn btn-ghost btn-lg" data-i18n="cta.b2">Run a Node</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_protocol">Protocol</h5>
+          <a href="whitepaper.html" data-i18n="f.wp">Whitepaper</a>
+          <a href="testnet.html" data-i18n="f.testnet">Testnet</a>
+          <a href="index.html#about" data-i18n="f.arch">Architecture</a>
+          <a href="whitepaper.html#s4" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_community">Community</h5>
+          <a href="airdrop.html" data-i18n="f.airdrop">Airdrop</a>
+          <a href="news.html" data-i18n="nav.news">News</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_resources">Resources</h5>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="testnet.html#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="disc" data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</div>
+        <div>© 2026 Omniverse Compute · omc-network.vercel.app</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js"></script>
+  <script src="assets/js/lang/zh.js"></script>
+  <script src="assets/js/lang/ja.js"></script>
+  <script src="assets/js/lang/es.js"></script>
+  <script src="assets/js/lang/ko.js"></script>
+  <script src="assets/js/lang/pt.js"></script>
+  <script src="assets/js/lang/fr.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/wallet.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/data/news.js"></script>
+  <script src="assets/js/news.js"></script>
+</body>
+</html>
