@@ -1287,6 +1287,16 @@ footer {
 
 .wl-note { margin-top: 10px; font-size: 11.5px; color: var(--muted-2); }
 
+/* “Why does my wallet show a risk warning?” explainer */
+.wl-risk { margin-top: 10px; text-align: left; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--panel); overflow: hidden; }
+.wl-risk summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 10px 14px; font-size: 12.5px; font-weight: 600; color: var(--fg); }
+.wl-risk summary::-webkit-details-marker { display: none; }
+.wl-risk summary::after { content: "▾"; margin-left: auto; color: var(--muted-2); transition: transform .18s ease; }
+.wl-risk[open] summary::after { transform: rotate(180deg); }
+.wl-risk-ic { font-size: 14px; }
+.wl-risk p { margin: 0; padding: 0 14px 12px; font-size: 12px; line-height: 1.65; color: var(--muted-2); }
+.wl-risk p b, .wl-risk p strong { color: var(--fg); }
+
 /* ============================================================
    AIRDROP PROGRESS TICKER (airdrop-stats.js)
    ============================================================ */

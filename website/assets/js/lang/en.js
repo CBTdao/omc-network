@@ -346,6 +346,8 @@ window.I18N.en = {
   "wl.err_rejected": "Signature request was rejected.",
   "wl.err_no": "No wallet provider found in this browser.",
   "wl.err_account": "Could not read a wallet address.",
+"wl.risk_q": "Wallet shows a “Proceed with caution” warning?",
+"wl.risk_a": "MetaMask and some other wallets show a generic caution banner on newly launched domains and airdrop-related pages. It is the wallet’s built-in guard, not a judgment about this site. OMC only asks for one free, read-only signature — no transfers, no token approvals, no gas. If the banner appears, choose “Connect anyway” to continue.",
   "tk.eyebrow": "Airdrop Progress",
   "tk.title": "Community Airdrop — Live",
   "tk.sub": "Pool of 20,000,000 OMC: entries claimed, participants and the latest participations, refreshed live.",

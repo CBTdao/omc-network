@@ -346,6 +346,8 @@ window.I18N.fr = {
   "wl.err_rejected": "La demande de signature a été refusée.",
   "wl.err_no": "Aucun fournisseur de portefeuille détecté.",
   "wl.err_account": "Impossible de lire l'adresse du portefeuille.",
+"wl.risk_q": "Votre portefeuille affiche « Continuer à vos propres risques » ?",
+"wl.risk_a": "MetaMask et certains autres portefeuilles affichent un bandeau de prudence générique sur les domaines récemment lancés et les pages liées aux airdrops. C'est une protection intégrée du portefeuille, pas un jugement sur ce site. OMC ne demande qu'une signature gratuite en lecture seule — aucun transfert, aucune approbation de jetons, aucun gaz. Si le bandeau apparaît, choisissez « Connecter quand même » pour continuer.",
   "tk.eyebrow": "Progression de l'airdrop",
   "tk.title": "Airdrop communautaire — en direct",
   "tk.sub": "Réserve de 20 000 000 OMC : entrées réclamées, participants et dernières participations, actualisés en direct.",

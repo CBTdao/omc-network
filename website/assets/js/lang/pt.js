@@ -338,6 +338,8 @@ window.I18N.pt = {
   "wl.err_rejected": "A solicitação de assinatura foi rejeitada.",
   "wl.err_no": "Nenhum provedor de carteira encontrado.",
   "wl.err_account": "Não foi possível ler o endereço da carteira.",
+"wl.risk_q": "A carteira mostra o aviso “Continuar por sua conta e risco”?",
+"wl.risk_a": "A MetaMask e outras carteiras exibem um aviso genérico de cautela em domínios recém-lançados e páginas relacionadas a airdrops. É uma proteção padrão da carteira, não um julgamento sobre este site. A OMC solicita apenas uma assinatura gratuita somente leitura — sem transferências, sem aprovações de tokens e sem gás. Se o aviso aparecer, escolha “Conectar mesmo assim” para continuar.",
   "tk.eyebrow": "Progresso do airdrop",
   "tk.title": "Airdrop da comunidade — ao vivo",
   "tk.sub": "Fundo de 20.000.000 OMC: entradas resgatadas, participantes e as últimas participações, atualizadas ao vivo.",
