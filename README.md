@@ -192,9 +192,9 @@ omc-network/
 │       ├── css/style.css
 │       ├── img/logo.png
 │       ├── data/news.js      ← News feed entries
-│       ├── js/               ← i18n engine + wallet sign-in + airdrop logic
+│       ├── js/               ← i18n engine + airdrop logic (wallet connect on airdrop page only)
 │       │   ├── i18n.js
-│       │   ├── wallet.js     ← Wallet sign-in (EIP-1193 / personal_sign)
+│       │   ├── wallet.js     ← Wallet connect for airdrop claims (EIP-1193 / personal_sign)
 │       │   ├── main.js
 │       │   ├── airdrop-stats.js ← Home-page progress ticker
 │       │   ├── news.js       ← News feed renderer
@@ -219,7 +219,7 @@ The official site is a dependency-free static build with **7-language support** 
 | Airdrop | https://omc-network.vercel.app/airdrop |
 | News | https://omc-network.vercel.app/news |
 
-Sign-in uses the visitor's own browser wallet (EIP-1193 + `personal_sign`); the session is stored locally and no server-side authorisation is claimed yet. The home page ticker reads live numbers when `OMC_STATS.endpoint` is set, and otherwise shows a clearly-labelled preview feed.
+Wallet connection is used **only on the airdrop page** to sign a free `personal_sign` challenge (EIP-1193); the session is stored locally and no server-side authorisation is claimed yet. There is deliberately no sitewide sign-in entry — wallets show a generic "proceed with caution" banner on newly launched domains and airdrop pages, so visitors are only asked to connect at the moment they claim. The home page ticker reads live numbers when `OMC_STATS.endpoint` is set, and otherwise shows a clearly-labelled preview feed.
 
 To run locally:
 
