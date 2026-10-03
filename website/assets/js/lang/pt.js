@@ -277,7 +277,7 @@ window.I18N.pt = {
   "claim.btn_claim_all_locked": "Resgate libera ao fim do airdrop",
   "claim.btn_claim_all": "🏆 Resgatar Tudo para a Carteira",
   "claim.end_note": "⏳ O airdrop termina em 31 de dezembro de 2026 (UTC+8). O OMC acumulado poderá ser retirado em um único claim nesta página após a data final.",
-  "warn.text": "<b>Aviso antifraude:</b> o airdrop da OMC é <b>100% GRÁTIS</b>. Nunca pediremos sua frase-semente, chave privada ou qualquer pagamento além da taxa de gás da rede. Confie apenas nos links publicados em <b>omc-network.vercel.app</b> e em nossas contas sociais verificadas. Qualquer contrato chamado \"OMC\" fora do anúncio oficial é fraudulento.",
+  "warn.text": "<b>Aviso antifraude:</b> o airdrop da OMC é <b>100% GRÁTIS</b>. Nunca pediremos sua frase-semente, chave privada ou qualquer pagamento além da taxa de gás da rede. Confie apenas nos links publicados em <b>omc.network</b> e em nossas contas sociais verificadas. Qualquer contrato chamado \"OMC\" fora do anúncio oficial é fraudulento.",
   "rules.title": "📋 Regras do Airdrop",
   "rules.r1": "· Fundo do airdrop: <b>20.000.000 OMC</b> (2% da oferta máxima) = <b>1.000.000 participações × 20 OMC</b>, 100% desbloqueado no TGE.",
   "rules.r2": "· Complete as 3 tarefas sociais para desbloquear a participação; uma carteira por participante.",

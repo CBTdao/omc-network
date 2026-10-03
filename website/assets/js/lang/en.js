@@ -284,7 +284,7 @@ window.I18N.en = {
   "claim.btn_claim_all_locked": "Claim unlocks after airdrop ends",
   "claim.btn_claim_all": "🏆 Claim All to Wallet",
   "claim.end_note": "⏳ Airdrop ends Dec 31, 2026 (UTC+8). Accumulated OMC becomes withdrawable in a single claim on this page after the end date.",
-  "warn.text": "<b>Anti-scam notice:</b> the OMC airdrop is <b>100% FREE</b>. We will <b>never</b> ask for your seed phrase, private key, or any payment beyond the network gas fee. Only trust links published on <b>omc-network.vercel.app</b> and our verified social accounts. Any contract named \"OMC\" outside the official announcement is fraudulent.",
+  "warn.text": "<b>Anti-scam notice:</b> the OMC airdrop is <b>100% FREE</b>. We will <b>never</b> ask for your seed phrase, private key, or any payment beyond the network gas fee. Only trust links published on <b>omc.network</b> and our verified social accounts. Any contract named \"OMC\" outside the official announcement is fraudulent.",
   "rules.title": "📋 Airdrop Rules",
   "rules.r1": "· Airdrop pool: <b>20,000,000 OMC</b> (2% of max supply) = <b>1,000,000 entries × 20 OMC</b>, 100% unlocked at TGE.",
   "rules.r2": "· Complete all 3 social tasks above to unlock participation; one wallet per participant.",

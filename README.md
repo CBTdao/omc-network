@@ -207,17 +207,17 @@ omc-network/
 
 ## 🌍 Website
 
-**Live:** https://omc-network.vercel.app/
+**Live:** https://omc.network/
 
 The official site is a dependency-free static build with **7-language support** (English · 中文 · 日本語 · Español · 한국어 · Português · Français).
 
 | Page | URL |
 |---|---|
-| Home | https://omc-network.vercel.app/ |
-| Whitepaper | https://omc-network.vercel.app/whitepaper |
-| Testnet | https://omc-network.vercel.app/testnet |
-| Airdrop | https://omc-network.vercel.app/airdrop |
-| News | https://omc-network.vercel.app/news |
+| Home | https://omc.network/ |
+| Whitepaper | https://omc.network/whitepaper |
+| Testnet | https://omc.network/testnet |
+| Airdrop | https://omc.network/airdrop |
+| News | https://omc.network/news |
 
 Wallet connection is used **only on the airdrop page** to sign a free `personal_sign` challenge (EIP-1193); the session is stored locally and no server-side authorisation is claimed yet. There is deliberately no sitewide sign-in entry — wallets show a generic "proceed with caution" banner on newly launched domains and airdrop pages, so visitors are only asked to connect at the moment they claim. The home page ticker reads live numbers when `OMC_STATS.endpoint` is set, and otherwise shows a clearly-labelled preview feed.
 
