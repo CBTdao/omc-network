@@ -1034,7 +1034,7 @@ footer {
   padding: 54px 24px 30px;
 }
 
-.footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 34px; margin-bottom: 40px; }
+.footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px; }
 
 .footer-grid .brand { margin-bottom: 14px; }
 
@@ -1086,6 +1086,7 @@ footer {
   .wp-layout { grid-template-columns: 1fr; }
   .wp-toc { position: static; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid > div:first-child { grid-column: 1 / -1; }
   .arch-row { grid-template-columns: 1fr; gap: 8px; }
 }
 
