@@ -109,12 +109,8 @@ img { max-width: 100%; display: block; }
 .brand .logo {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
+  flex: none;
   display: block;
-  background: #0a1128;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 18px rgba(43, 107, 243, 0.45);
 }
 
 .brand small {
