@@ -24,6 +24,7 @@
         <a href="index.html" data-i18n="nav.home">Home</a>
         <a href="news.html" data-i18n="nav.news">News</a>
         <a href="whitepaper.html" data-i18n="nav.wp">Whitepaper</a>
+        <a href="calculator.html" data-i18n="nav.calc">Calculator</a>
         <a href="testnet.html" data-i18n="nav.testnet">Testnet</a>
         <a href="airdrop.html" data-i18n="nav.airdrop">Airdrop</a>
         <a href="airdrop.html" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
@@ -266,13 +267,13 @@
           <th>Other decentralized networks</th>
           <th>OMC</th>
           </tr></thead><tbody>
-          <tr><td>Price per GPU-hour (H100 SXM, on-demand, Aug–Oct 2026)</td><td>$9.00–$14.50</td><td>$2.49–$4.25 (Lambda, RunPod, Vultr, CoreWeave)</td><td>$1.25–$3.00 (Akash, io.net, Render)</td><td>Target: below marketplace median; measured benchmark to be published (§2)</td></tr>
+          <tr><td>Price per GPU-hour (H100 SXM, on-demand, Aug–Oct 2026)</td><td>$6.88–$12.29</td><td>$2.49–$6.16 (Lambda, RunPod, Vultr, CoreWeave)</td><td>$1.25–$3.00 (Akash, io.net, Render)</td><td>Target: below marketplace median; measured benchmark to be published (§2)</td></tr>
           <tr><td>Verification of results</td><td>Provider trust</td><td>Platform trust</td><td>On-chain attestation (Akash); Proof-of-Render and node tiers (Render); proof-of-time-difference and hardware scans (io.net)</td><td>Tiered policy per job, see Section 5</td></tr>
           <tr><td>Confidential computing</td><td>Confidential VMs available; H100 CC on selected instances</td><td>Limited</td><td>Limited / varies by network</td><td>Optional TEE tier</td></tr>
           <tr><td>Payment</td><td>Fiat</td><td>Fiat and crypto</td><td>Native token (AKT / IO / RENDER)</td><td>OMC and stablecoins</td></tr>
           <tr><td>Supported workloads</td><td>Broad, including multi-node training</td><td>Broad, including multi-node clusters</td><td>Mainly single-node inference, fine-tuning and rendering; multi-node training is impractical</td><td>See Section 3</td></tr>
           </tbody></table></div>
-          <p>Hyperscaler figures are per-GPU-hour for H100 SXM5 80GB in 8-GPU instances (AWS p5.48xlarge $12.29; Azure ND H100 v5 $12.25–$14.50; GCP a3-highgpu-8g $9.00–$11.50), spot/preemptible runs $1.95–$2.80, with 1-year commitments around −30% to −38% and 3-year around −50% to −62% (nOps, August 2026; cloudprice.app, 2026). Decentralized network figures are ranges published across 2026 sources (decentralised.news, 2026; gpumarketdepin.com, 2026) and vary by supply and workload class. Network uptime reported for decentralized networks (Akash 99.4%, Render 99.8%, io.net 98.6%) remains below hyperscaler SLAs (99.9%–99.99%).</p>
+          <p>Hyperscaler figures are per-GPU-hour for H100 SXM5 80GB in 8-GPU instances (AWS p5.48xlarge $6.88; Google Cloud a3-highgpu-8g $11.06; Azure ND96isr H100 v5 $12.29), spot/preemptible runs $1.95–$2.80, with 1-year commitments around −30% to −38% and 3-year around −50% to −62% (vendor published pricing pages, observed September 2026 and cross-checked against independent trackers). Decentralized network figures are ranges published across 2026 sources (decentralised.news, 2026; gpumarketdepin.com, 2026) and vary by supply and workload class. Network uptime reported for decentralized networks (Akash 99.4%, Render 99.8%, io.net 98.6%) remains below hyperscaler SLAs (99.9%–99.99%).</p>
           <p>The characteristics OMC intends to differentiate on — verification policy by job type, USD-denominated staking, utilization-linked emissions and BNB Chain ecosystem integration — are stated here as design commitments; measured evidence will be published as the network runs.</p>
           <h2 id="sec10">10 · Roadmap</h2>
           <div class="table-wrap">
@@ -354,6 +355,7 @@
         </div>
         <div class="f-col">
           <h5 data-i18n="footer.h_resources">Resources</h5>
+          <a href="calculator.html" data-i18n="f.calculator">GPU Cost Calculator</a>
           <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
           <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
           <a href="testnet.html#endpoints" data-i18n="f.rpc">RPC Endpoints</a>

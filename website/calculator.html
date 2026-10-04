@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta.title_calc">GPU Cloud Cost Calculator — H100 &amp; H200 On-Demand Pricing | OMC</title>
+  <meta name="description" content="Estimate monthly GPU cloud spend on AWS, Google Cloud and Azure from published on-demand list prices — with the rates, sources and caveats the headline numbers leave out." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/assets/img/logo.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"GPU Cloud Cost Calculator","url":"https://omc.network/calculator","applicationCategory":"BusinessApplication","operatingSystem":"Any","description":"Estimate monthly GPU cloud spend on AWS, Google Cloud and Azure from published on-demand list prices.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"GPU Cloud Cost Calculator","item":"https://omc.network/calculator"}]}
+  </script>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="news.html" data-i18n="nav.news">News</a>
+        <a href="whitepaper.html" data-i18n="nav.wp">Whitepaper</a>
+        <a href="calculator.html" data-i18n="nav.calc">Calculator</a>
+        <a href="testnet.html" data-i18n="nav.testnet">Testnet</a>
+        <a href="airdrop.html" data-i18n="nav.airdrop">Airdrop</a>
+        <a href="airdrop.html" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="es">Español</option>
+          <option value="ko">한국어</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero hero-sm">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="calc.badge">Public list prices · no login required</span></div>
+      <h1 data-i18n="calc.title">GPU Cloud Cost Calculator</h1>
+      <p class="sub" data-i18n="calc.sub">Enter a GPU type, a count and monthly usage to estimate what the cluster costs on AWS, Google Cloud and Azure at published on-demand list prices — and to see what those hourly rates leave out.</p>
+      <div class="hero-chain">
+        <span class="chip" data-i18n="calc.chip1">📊 Source <b>Vendor public list prices</b></span>
+        <span class="chip" data-i18n="calc.chip2">🗓 Observed <b>September 2026</b></span>
+        <span class="chip" data-i18n="calc.chip3">🧮 Basis <b>On-demand only</b></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CALCULATOR ===== -->
+  <section class="section" id="calc" style="padding-top: 40px;">
+    <div class="container">
+      <div class="calc-grid">
+
+        <!-- Inputs -->
+        <div class="calc-panel">
+          <h2 class="calc-h2" data-i18n="calc.form.title">Your workload</h2>
+
+          <label class="calc-label" data-i18n="calc.in.gpu">GPU model</label>
+          <div class="seg" id="segGpu" role="group">
+            <button type="button" class="active" data-gpu="H100">H100 80GB</button>
+            <button type="button" data-gpu="H200">H200 141GB</button>
+          </div>
+
+          <label class="calc-label" style="margin-top: 22px;" data-i18n="calc.in.count">Number of GPUs</label>
+          <div class="stepper">
+            <button type="button" id="btnMinus" aria-label="Decrease">−</button>
+            <input type="number" id="inCount" value="8" min="1" max="512" step="1" inputmode="numeric" />
+            <button type="button" id="btnPlus" aria-label="Increase">+</button>
+          </div>
+
+          <label class="calc-label" style="margin-top: 22px;" data-i18n="calc.in.hours">Hours per month</label>
+          <div class="seg seg-wrap" id="segHours" role="group">
+            <button type="button" data-hours="730" class="active" data-i18n="calc.hours.247">24/7 · 730 h</button>
+            <button type="button" data-hours="365" data-i18n="calc.hours.12">12 h/day · 365 h</button>
+            <button type="button" data-hours="240" data-i18n="calc.hours.8">8 h/day · 240 h</button>
+            <button type="button" data-hours="120" data-i18n="calc.hours.4">4 h/day · 120 h</button>
+          </div>
+          <input type="range" id="inHours" min="1" max="730" step="1" value="730" class="range" />
+          <div class="calc-readout"><span data-i18n="calc.hours.label">Selected usage</span>: <b id="outHours">730</b> h</div>
+
+          <div class="calc-note" data-i18n="calc.node.note">Hyperscaler rates are 8-GPU node prices divided by eight GPUs. Most hyperscaler H100/H200 capacity is sold as full 8-GPU nodes; AWS also offers a single-GPU p5.4xlarge at the same per-GPU rate.</div>
+        </div>
+
+        <!-- Results -->
+        <div class="calc-results">
+          <div class="calc-cards" id="calcCards">
+            <div class="calc-card" data-prov="aws">
+              <div class="cc-head"><span class="cc-name">AWS</span><span class="cc-spec">p5.48xlarge</span></div>
+              <div class="cc-month" data-role="month">$0</div>
+              <div class="cc-sub"><span data-i18n="calc.out.permonth">per month</span> · <b data-role="hour">$0</b> <span data-i18n="calc.out.pergpu">/ GPU-hour</span></div>
+            </div>
+            <div class="calc-card" data-prov="gcp">
+              <div class="cc-head"><span class="cc-name">Google Cloud</span><span class="cc-spec">a3-highgpu-8g</span></div>
+              <div class="cc-month" data-role="month">$0</div>
+              <div class="cc-sub"><span data-i18n="calc.out.permonth">per month</span> · <b data-role="hour">$0</b> <span data-i18n="calc.out.pergpu">/ GPU-hour</span></div>
+            </div>
+            <div class="calc-card" data-prov="azure">
+              <div class="cc-head"><span class="cc-name">Azure</span><span class="cc-spec">ND96isr H100 v5</span></div>
+              <div class="cc-month" data-role="month">$0</div>
+              <div class="cc-sub"><span data-i18n="calc.out.permonth">per month</span> · <b data-role="hour">$0</b> <span data-i18n="calc.out.pergpu">/ GPU-hour</span></div>
+            </div>
+          </div>
+
+          <div class="calc-spread" id="calcSpread">
+            <span data-i18n="calc.spread.label">Spread across the three hyperscalers — most expensive ÷ least expensive on-demand list price</span>
+            <b id="spreadX">—</b>
+          </div>
+
+          <div class="calc-omc">
+            <div class="co-head">
+              <span class="co-name" data-i18n="calc.omc.name">OMC Network</span>
+              <span class="co-badge" data-i18n="calc.omc.badge">TBA · mainnet Q1 2027</span>
+            </div>
+            <p class="co-note" data-i18n="calc.omc.note">OMC has not published network rates and is not selling compute today. Enter a hypothetical rate below to see the arithmetic — the number is your own assumption, not a quotation, forecast or commitment by OMC.</p>
+            <div class="co-row">
+              <label class="calc-label" for="inHypo" data-i18n="calc.omc.hypo_label">Hypothetical OMC rate ($/GPU-hour)</label>
+              <input type="number" id="inHypo" min="0" step="0.01" placeholder="e.g. 2.50" inputmode="decimal" />
+            </div>
+            <div class="co-out" id="coOut" hidden>
+              <div class="co-line"><span data-i18n="calc.omc.hypo_cost">Hypothetical monthly cost at your rate</span><b id="coMonth">$0</b></div>
+              <div class="co-line"><span data-i18n="calc.omc.vs_aws">Versus AWS on-demand</span><b id="coDelta">—</b></div>
+            </div>
+            <div class="co-warn" data-i18n="calc.omc.hypo_note">Hypothetical only. Any figure here is computed from the rate you typed and must not be read as an OMC price commitment.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RATE TABLE ===== -->
+  <section class="section" id="rates" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="calc.table.eyebrow">Reference data</div>
+        <h2 data-i18n="calc.table.title">Published on-demand list prices</h2>
+        <p data-i18n="calc.table.sub">USD per GPU-hour. Hyperscaler figures are 8-GPU node prices divided by eight; Lambda and CoreWeave are quoted per GPU or per node as noted.</p>
+      </div>
+
+      <div class="table-wrap reveal">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>GPU</th>
+              <th>AWS</th>
+              <th>Google Cloud</th>
+              <th>Azure</th>
+              <th>Lambda</th>
+              <th>CoreWeave</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>H100 80GB</b><span class="ct-spec">SXM5 · node spec in notes</span></td>
+              <td><b>$6.88</b><span class="ct-spec">p5.48xlarge · $55.04 ÷ 8</span></td>
+              <td><b>$11.06</b><span class="ct-spec">a3-highgpu-8g · $88.49 ÷ 8</span></td>
+              <td><b>$12.29</b><span class="ct-spec">ND96isr H100 v5 · $98.32 ÷ 8</span></td>
+              <td><b>$3.99</b><span class="ct-spec">per GPU, on demand</span></td>
+              <td><b>$6.16</b><span class="ct-spec">HGX H100 · $49.24 ÷ 8</span></td>
+            </tr>
+            <tr>
+              <td><b>H200 141GB</b><span class="ct-spec">SXM · node spec in notes</span></td>
+              <td><b>$7.91</b><span class="ct-spec">p5en.48xlarge · $63.30 ÷ 8</span></td>
+              <td><b>$10.60</b><span class="ct-spec">a3-ultragpu-8g · $84.81 ÷ 8</span></td>
+              <td><b>$13.78</b><span class="ct-spec">ND96isr H200 v5 · $110.24 ÷ 8</span></td>
+              <td><span class="ct-na">—</span></td>
+              <td><b>$6.31</b><span class="ct-spec">HGX H200 · $50.44 ÷ 8</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="calc-note reveal" data-i18n="calc.table.note">On-demand list prices as published by each vendor, observed September 2026 in US regions (AWS us-east-1, Google Cloud us-central1, Azure East US). Excludes tax, storage, networking and support. Spot, preemptible and committed-use prices are lower — Google, for example, prices H200 below H100, so read the row, not the generation. Rates change often: confirm current pricing with the vendor before relying on any figure here. Sources: AWS EC2 on-demand pricing, Google Cloud accelerator-optimized pricing, Azure Retail Prices API, Lambda and CoreWeave public pricing pages.</div>
+    </div>
+  </section>
+
+  <!-- ===== WHAT THE RATE LEAVES OUT ===== -->
+  <section class="section" id="mechanics" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="calc.mech.eyebrow">Total cost of ownership</div>
+        <h2 data-i18n="calc.mech.title">What the hourly rate leaves out</h2>
+        <p data-i18n="calc.mech.sub">Three cost mechanisms most price tables ignore, and which decide the real bill far more than the headline rate.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">⏱️</div>
+          <h3>Idle hours are billed</h3>
+          <p>A p5.48xlarge bills $55.04 per hour whether its eight GPUs are training or doing nothing — roughly $4,000 over a single long weekend. On-demand pricing charges for wall-clock time, not for work delivered.</p>
+          <span class="tag">Wall-clock billing</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">📡</div>
+          <h3>Egress sits on another page</h3>
+          <p>Outbound data is priced separately: about $0.09/GB on AWS, $0.08/GB on Azure and $0.08–0.12/GB on Google Cloud. For a mid-sized H100 deployment moving checkpoints and outputs, that commonly adds four figures a month.</p>
+          <span class="tag">Data transfer</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🔒</div>
+          <h3>Discounts do not cover the GPUs</h3>
+          <p>The capacity AI teams actually buy is often excluded from the discounts designed to save money: AWS Spot is outside Savings Plans, Capacity Blocks are outside both Savings Plans and Reserved Instances, and Google excludes A3/A4 from flexible committed-use discounts.</p>
+          <span class="tag">Commitment structure</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW OMC DIFFERS ===== -->
+  <section class="section" id="omc-model" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="calc.omcdiff.eyebrow">Design intent</div>
+        <h2 data-i18n="calc.omcdiff.title">How OMC's model is designed to differ</h2>
+        <p data-i18n="calc.omcdiff.sub">A comparison of billing mechanics, not prices. OMC has published no network rates; the items below are design commitments from the whitepaper and may change before mainnet.</p>
+      </div>
+
+      <div class="table-wrap reveal">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>Hyperscaler on-demand</th>
+              <th>OMC <span class="ct-spec">(designed)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Billing unit</b></td><td>Per hour, whole instance</td><td>Per job, with per-second micropayments on the L2 rollup</td></tr>
+            <tr><td><b>Idle time</b></td><td>Running hours are billed</td><td>Intended to settle only for accepted, verified work</td></tr>
+            <tr><td><b>Capacity access</b></td><td>Regional quota limits and availability gates</td><td>Permissionless, subject to supply on the network</td></tr>
+            <tr><td><b>Commitment</b></td><td>None required; discounts need 1–3 year commitments</td><td>No commitment required by design</td></tr>
+            <tr><td><b>Payment</b></td><td>Fiat, via vendor billing</td><td>OMC or supported stablecoins (USDT / USDC on BNB Chain)</td></tr>
+            <tr><td><b>Result verification</b></td><td>Provider trust</td><td>Tiered verification policy per job type (spot-check re-execution, redundancy, TEE)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="calc-note reveal" data-i18n="calc.omcdiff.note">Design commitments reflect OMC whitepaper v3.0 and are stated as intent, not as shipped functionality. OMC is in testnet; mainnet is targeted for Q1 2027. Nothing here is a price commitment, a service-level commitment or an offer to sell compute.</div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" id="faq" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="calc.faq.eyebrow">Questions</div>
+        <h2 data-i18n="calc.faq.title">Frequently asked questions</h2>
+      </div>
+      <div class="faq-wrap reveal">
+        <details class="faq">
+          <summary>Why is there no OMC price in the calculator?</summary>
+          <p>Because there is no published OMC network rate to quote. The mainnet is targeted for Q1 2027, and until rates are set and published, any figure we printed would be an invention. Instead the calculator lets you type your own hypothetical rate and shows you the arithmetic — clearly labelled as your assumption, not our price.</p>
+        </details>
+        <details class="faq">
+          <summary>What exactly does "per GPU-hour" mean in the table?</summary>
+          <p>Hyperscalers sell GPU capacity inside fixed machine shapes. AWS p5.48xlarge, Google's a3-highgpu-8g and Azure's ND96isr H100 v5 each bundle eight H100 GPUs, so the honest comparable number is the node price divided by eight. Comparing a per-node price against a per-GPU price is the single most common way GPU price tables mislead — a headline "$49.24" can be more expensive per GPU than a "$3.99" once the unit is aligned.</p>
+        </details>
+        <details class="faq">
+          <summary>Do these figures include storage, networking and support?</summary>
+          <p>No. They are compute list prices only. Storage, egress, load balancers, snapshots and any support tier sit on top, and for sustained deployments those lines are material — egress alone commonly adds four figures a month for a mid-sized training cluster.</p>
+        </details>
+        <details class="faq">
+          <summary>Why not show spot, reserved or committed-use rates?</summary>
+          <p>Spot and committed rates are real and often far lower, but they are not like-for-like: spot capacity can be reclaimed, and committed-use discounts require one- to three-year commitments and often exclude the newest GPU families. Mixing them into one table is how "cheapest" claims get made. This page sticks to on-demand list prices, which are the only rates that are both published and directly comparable.</p>
+        </details>
+        <details class="faq">
+          <summary>How current is this data, and how often is it updated?</summary>
+          <p>The rates were observed in September 2026 from vendor pricing pages. GPU pricing changes frequently, so we date every figure rather than presenting it as permanent. Treat this as a well-sourced starting point for your own modelling, and confirm live pricing with the vendor before you commit budget.</p>
+        </details>
+        <details class="faq">
+          <summary>Can I buy compute on OMC today?</summary>
+          <p>No. OMC is operating a public testnet. Mainnet — when the network can accept paying jobs and providers can earn — is targeted for Q1 2027. You can join the testnet now and claim the community airdrop, but there is no compute to purchase and no price to pay.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 data-i18n="calc.cta.title">Model your own workload</h2>
+        <p data-i18n="calc.cta.sub">The methodology behind OMC's delivered-cost comparisons, and the full billing design, are documented in the whitepaper.</p>
+        <div class="hero-actions">
+          <a href="whitepaper.html" class="btn btn-primary btn-lg" data-i18n="calc.cta.b1">Read the whitepaper →</a>
+          <a href="testnet.html" class="btn btn-ghost btn-lg" data-i18n="calc.cta.b2">Join the testnet</a>
+        </div>
+      </div>
+      <div class="calc-note reveal" style="margin-top: 26px;" data-i18n="calc.disclaim">Disclaimer: this calculator is an educational tool. Figures are third-party list prices observed in September 2026 and are provided without warranty; they are not an offer, a quotation or financial advice. OMC publishes no network rate and sells no compute today.</div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_protocol">Protocol</h5>
+          <a href="whitepaper.html" data-i18n="f.wp">Whitepaper</a>
+          <a href="testnet.html" data-i18n="f.testnet">Testnet</a>
+          <a href="index.html#about" data-i18n="f.arch">Architecture</a>
+          <a href="whitepaper.html#sec7" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_community">Community</h5>
+          <a href="airdrop.html" data-i18n="f.airdrop">Airdrop</a>
+          <a href="news.html" data-i18n="nav.news">News</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_ecosystem">Ecosystem</h5>
+          <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
+          <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_resources">Resources</h5>
+          <a href="calculator.html" data-i18n="f.calculator">GPU Cost Calculator</a>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="testnet.html#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+          <a href="about.html" data-i18n="f.about">About &amp; Contact</a>
+          <a href="privacy.html" data-i18n="f.privacy">Privacy Policy</a>
+          <a href="aup.html" data-i18n="f.aup">Acceptable Use</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="disc" data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</div>
+        <div>© 2026 Omniverse Compute · omc.network</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js"></script>
+  <script src="assets/js/lang/zh.js"></script>
+  <script src="assets/js/lang/ja.js"></script>
+  <script src="assets/js/lang/es.js"></script>
+  <script src="assets/js/lang/ko.js"></script>
+  <script src="assets/js/lang/pt.js"></script>
+  <script src="assets/js/lang/fr.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/calculator.js"></script>
+</body>
+</html>
