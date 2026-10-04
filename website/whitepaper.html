@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="meta.title_wp">Whitepaper — Omniverse Compute (OMC)</title>
-  <meta name="description" content="OMC Whitepaper v2.0 — technical architecture, node verification, staking & slashing, tokenomics and roadmap of the Omniverse Compute decentralized GPU network." />
+  <meta name="description" content="OMC Whitepaper v3.0 — the full text of the official Omniverse Compute whitepaper: architecture, verification, staking & slashing, tokenomics, governance, roadmap, risk factors and references." />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
@@ -44,7 +44,7 @@
   <section class="section" style="padding-top: 64px;">
     <div class="container">
       <div class="section-head reveal">
-        <div class="eyebrow" data-i18n="wp.eyebrow">Whitepaper · v2.0</div>
+        <div class="eyebrow" data-i18n="wp.eyebrow">Whitepaper · v3.0</div>
         <h2 data-i18n="wp.title">Omniverse Compute (OMC)</h2>
         <p data-i18n="wp.sub">Decentralized GPU Computing Network — BNB Chain Ecosystem &amp; Layer 2 Rollup Dedicated Scaling Network. Native Token: OMC (BEP-20).</p>
       </div>
@@ -53,11 +53,11 @@
       <div class="dl-cards reveal" style="max-width: 860px; margin: 0 auto 50px;">
         <a class="dl-card" href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank">
           <span class="ic">📄</span>
-          <span><b data-i18n="wp.dl_en_b">Whitepaper v2.0 (English)</b><span data-i18n="wp.dl_en_s">Full document · PDF · 5 pages</span></span>
+          <span><b data-i18n="wp.dl_en_b">Whitepaper v3.0 (English)</b><span data-i18n="wp.dl_en_s">Full document · PDF · 18 pages</span></span>
         </a>
         <a class="dl-card" href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank">
           <span class="ic">📊</span>
-          <span><b data-i18n="wp.dl_deck_b">Whitepaper Deck</b><span data-i18n="wp.dl_deck_s">Presentation deck · PDF · 11 slides</span></span>
+          <span><b data-i18n="wp.dl_deck_b">Whitepaper Deck</b><span data-i18n="wp.dl_deck_s">Presentation deck · PDF · 13 slides</span></span>
         </a>
       </div>
 
@@ -65,158 +65,254 @@
         <!-- TOC -->
         <aside class="wp-toc reveal">
           <h4 data-i18n="toc.h">Contents</h4>
-          <a href="#s1" data-i18n="toc.s1">1 · Background &amp; Market</a>
-          <a href="#s2" data-i18n="toc.s2">2 · Technical Architecture</a>
-          <a href="#s3" data-i18n="toc.s3">3 · Verification, Staking &amp; Slashing</a>
-          <a href="#s4" data-i18n="toc.s4">4 · Tokenomics</a>
-          <a href="#s5" data-i18n="toc.s5">5 · Roadmap &amp; Governance</a>
+          <a href="#sec1">1 · Executive Summary</a>
+<a href="#sec2">2 · Problem and Opportunity</a>
+<a href="#sec3">3 · Supported Workloads and Limits</a>
+<a href="#sec4">4 · Architecture</a>
+<a href="#sec5">5 · Verification and Trust</a>
+<a href="#sec6">6 · Security and Privacy</a>
+<a href="#sec7">7 · Economics and the OMC Token</a>
+<a href="#sec8">8 · Governance</a>
+<a href="#sec9">9 · Competitive Landscape</a>
+<a href="#sec10">10 · Roadmap</a>
+<a href="#sec11">11 · Team, Audits and Legal</a>
+<a href="#sec12">12 · Risk Factors</a>
+<a href="#sec13">13 · References and Data Sources</a>
         </aside>
 
         <!-- Body -->
         <article class="wp-body reveal">
-          <!-- Executive summary -->
-          <div class="wp-note" data-i18n="wp.summary"><b>Executive Summary.</b> Omniverse Compute (OMC) utilizes the Decentralized Physical Infrastructure Network (DePIN) paradigm to build a high-throughput, low-cost, transparent and censorship-resistant global GPU compute sharing grid. Driven by explosive demand in AI LLM training, multimodal inference, real-time 3D cloud rendering and embodied AI, traditional centralized cloud infrastructure faces severe challenges including prohibitive CapEx, strict quota restrictions and vendor lock-in. OMC leverages BNB Chain as its root settlement layer alongside a dedicated Layer 2 Rollup for high-frequency task scheduling and per-second / per-task micropayments.</div>
-
-          <!-- Section 1 -->
-          <h2 id="s1" data-i18n="s1.h">1 · Background, Industry Outlook &amp; Commercial Value</h2>
-          <h3 data-i18n="s1_1.h">1.1 The Inevitable Boom &amp; Economics of DePIN Compute Networks</h3>
-          <ul>
-            <li data-i18n="s1_1.l1"><b>Compute as the New Oil:</b> as AI transitions from discriminative to generative models, computing demand for LLMs, Sora-grade video generation and spatial simulation is exploding exponentially. Traditional data-center expansion faces severe power-grid and hardware supply-chain bottlenecks.</li>
-            <li data-i18n="s1_1.l2"><b>Reshaping Compute Economics:</b> globally, hundreds of thousands of consumer-grade GPUs (e.g. RTX 4090/3090), data-center idle capacity and post-PoW mining rigs remain underutilized. DePIN reduces marginal cost to near zero, providing <b>50–70% direct cost savings</b> for compute requesters.</li>
-            <li data-i18n="s1_1.l3"><b>Trillion-Dollar Ecosystem Flywheel:</b> connecting Compute Providers, AI Developers, DeAI Autonomous Agents and VFX Studios into a unified tokenized ecosystem with perpetual deflationary value capture.</li>
-          </ul>
-
-          <h3 data-i18n="s1_2.h">1.2 Target Market Demand &amp; Four Client Personas</h3>
-          <ul>
-            <li data-i18n="s1_2.l1"><b>AI Startups &amp; Independent Developers</b> — lacking big-tech enterprise discounts, facing high hourly API costs and GPU quota limits. Use cases: LLM fine-tuning, LoRA training, model inference.</li>
-            <li data-i18n="s1_2.l2"><b>Web3 AI &amp; DeAI Ecosystem Projects</b> — requiring censorship-resistant, natively crypto-paid compute networks for 24/7 Agent inference and ZK-ML proof generation.</li>
-            <li data-i18n="s1_2.l3"><b>Cloud Rendering, 3D CG &amp; Metaverse Studios</b> — facing extreme compute spikes for VFX, Unreal Engine 5 real-time rendering, Blender offline batch rendering and Gaussian Splatting 3D reconstruction.</li>
-            <li data-i18n="s1_2.l4"><b>Hardware Providers &amp; Mining Transition Operations</b> — connecting idle hardware (RTX 4090s, mining rigs, data-center servers) into the OMC protocol to generate automated token yield.</li>
-          </ul>
-
-          <!-- Section 2 -->
-          <h2 id="s2" data-i18n="s2.h">2 · Technical Architecture &amp; System Design</h2>
-          <h3 data-i18n="s2_1.h">2.1 Layered Architecture</h3>
-          <ul>
-            <li data-i18n="s2_1.l1"><b>L1 Root Settlement Layer:</b> BNB Chain handles OMC token issuance, staking smart contracts, DAO governance and final dispute arbitration.</li>
-            <li data-i18n="s2_1.l2"><b>L2 Rollup Orchestration Layer:</b> a dedicated Layer 2 Rollup executing high-frequency node heartbeats, task-allocation state mapping, state-channel settlements and low-cost micropayments.</li>
-            <li data-i18n="s2_1.l3"><b>Off-Chain Compute Grid:</b> containerized Docker/Kubernetes sandbox supporting CUDA/ROCm hardware acceleration, NVLink inter-GPU communication and P2P data transport.</li>
-          </ul>
-
-          <h3 data-i18n="s2_2.h">2.2 Task Matching Engine &amp; Scheduling Algorithm</h3>
-          <p data-i18n="s2_2.p">The decentralized scheduling engine assigns tasks based on Node VRAM, Floating Point Performance (TFLOPS), Network Bandwidth, Geographic Latency and Historical Reputation Score using a weighted bipartite matching algorithm:</p>
-          <div class="wp-block formula">Score = 0.35 × TFLOPS + 0.25 × VRAM + 0.15 × Bandwidth + 0.25 × Reputation</div>
-          <div class="wp-block formula">def calculate_node_score(node):
-    weight_flops       = 0.35
-    weight_vram        = 0.25
-    weight_bandwidth   = 0.15
-    weight_reputation  = 0.25
-
-    score = (node.tflops * weight_flops) + \
-            (node.vram_gb * weight_vram) + \
-            (node.bandwidth_mbps * weight_bandwidth) + \
-            (node.reputation_score * weight_reputation)
-    return score</div>
-
-          <!-- Section 3 -->
-          <h2 id="s3" data-i18n="s3.h">3 · Node Verification, Staking &amp; Slashing Mechanisms</h2>
-          <h3 data-i18n="s3_1.h">3.1 Dual-Verification System</h3>
-          <ul>
-            <li data-i18n="s3_1.l1"><b>Redundant Computation Verification:</b> high-precision tasks are dispatched to 2–3 independent nodes simultaneously to compare output feature hashes.</li>
-            <li data-i18n="s3_1.l2"><b>zk-SNARKs Sampling Verification:</b> lightweight zero-knowledge proofs enable on-chain verification of execution traces without compromising data privacy.</li>
-          </ul>
-
-          <h3 data-i18n="s3_2.h">3.2 Staking &amp; Slashing Rules</h3>
-          <ul>
-            <li data-i18n="s3_2.l1"><b>Staking Threshold:</b> nodes must stake OMC proportional to hardware tier before receiving jobs. <code>Staking_Min = Base_Deposit × Card_Tier_Multiplier</code></li>
-            <li data-i18n="s3_2.l2"><b>Slashing Triggers:</b> fraudulent outputs, task timeouts, unexpected offline dropouts, or fake heartbeat signals.</li>
-            <li data-i18n="s3_2.l3"><b>Slashing Re-allocation:</b> 50% compensates affected task requesters, 30% goes to DAO Treasury, and 20% is permanently burned. <code>Burn_Amount = Slashed_Tokens × 20%</code></li>
-          </ul>
-
-          <!-- Section 4 -->
-          <h2 id="s4" data-i18n="s4.h">4 · Tokenomics &amp; Deflationary Value Capture</h2>
-          <h3 data-i18n="s4_1.h">4.1 Token Distribution (1,000,000,000 OMC Fixed Supply)</h3>
-          <ul>
-            <li data-i18n="s4_1.l1"><b>Token Name / Symbol:</b> Omniverse Compute (OMC)</li>
-            <li data-i18n="s4_1.l2"><b>Token Standard:</b> BEP-20 (BNB Chain Ecosystem)</li>
-            <li data-i18n="s4_1.l3"><b>Max Total Supply:</b> 1,000,000,000 OMC</li>
-          </ul>
-
-          <div class="alloc-bar reveal">
-            <div class="alloc-seg" style="width:50%; background:#2b6bf3;">50%</div>
-            <div class="alloc-seg" style="width:20%; background:#7c3aed;">20%</div>
-            <div class="alloc-seg" style="width:15%; background:#3fa7d6;">15%</div>
-            <div class="alloc-seg" style="width:10%; background:#f0a13c;">10%</div>
-            <div class="alloc-seg" style="width:5%; background:#2fbf71;">5%</div>
+          <div class="wp-note" style="margin-bottom: 26px;">
+          <p>This document is provided for informational purposes only. It is not an offer to sell, or a solicitation of an offer to buy, any token or security, and it is not investment, legal, tax or accounting advice. OMC is a utility token intended for use within the OMC network; no return, price appreciation or liquidity is promised or implied. Statements about future development are forward-looking and may not be realized. The availability of the token may be restricted in some jurisdictions; it is the reader's responsibility to comply with local laws. Readers should review Section 12 (Risk Factors) and obtain independent professional advice before participating.</p>
           </div>
-          <div class="alloc-legend reveal">
-            <span><i style="background:#2b6bf3;"></i><em data-i18n="leg1" style="font-style:normal;">Compute Mining &amp; Node Rewards · 50%</em></span>
-            <span><i style="background:#7c3aed;"></i><em data-i18n="leg2" style="font-style:normal;">Investors (incl. 2% Airdrop) · 20%</em></span>
-            <span><i style="background:#3fa7d6;"></i><em data-i18n="leg3" style="font-style:normal;">Ecosystem &amp; Grants · 15%</em></span>
-            <span><i style="background:#f0a13c;"></i><em data-i18n="leg4" style="font-style:normal;">Team &amp; Core Contributors · 10%</em></span>
-            <span><i style="background:#2fbf71;"></i><em data-i18n="leg5" style="font-style:normal;">Treasury &amp; Liquidity · 5%</em></span>
-          </div>
+          <h2 id="sec1">1 · Executive Summary</h2>
+          <p>Omniverse Compute (OMC) is a decentralized physical infrastructure network (DePIN) that connects owners of idle GPU capacity with people who need compute: AI developers, Web3 and decentralized-AI projects, and rendering studios. Providers earn OMC and fees by running verified jobs. Requesters get access to GPU capacity without cloud quotas, long-term contracts or vendor lock-in.</p>
+          <p>OMC is built on three ideas:</p>
+          <ol><li><strong>Honest scope.</strong> OMC targets workloads that distribute well across independent machines: inference, fine-tuning on a single node, batch rendering and other embarrassingly parallel jobs. It does not claim to replace tightly coupled data-center clusters for frontier-scale model training.</li><li><strong>Verification you can price.</strong> Every job is covered by a verification policy chosen by job type, combining spot-check re-execution, optional full redundancy, hardware-based confidential computing where available, and economic penalties through staking and slashing.</li><li><strong>Token demand tied to usage.</strong> Fees are paid per job, a share of every fee is used to buy back and burn OMC, and reward emissions are paid only against verified work.</li></ol>
+          <p>Settlement and governance run on BNB Chain. High-frequency scheduling, heartbeats and micropayments run on a dedicated Layer 2 rollup built on the OP Stack (opBNB). Jobs execute off-chain in sandboxed containers on provider hardware.</p>
+          <h2 id="sec2">2 · Problem and Opportunity</h2>
+          <p><strong>Demand.</strong> Generative AI has made GPU compute a scarce, expensive input. Small teams and independent developers face high hourly prices, regional quota limits and dependence on a few cloud vendors. Rendering studios face sharp, short-lived peaks in demand.</p>
+          <p><strong>Supply.</strong> Large amounts of capability sit underused: consumer and workstation GPUs, idle capacity in small data centers, and hardware formerly used for proof-of-work mining.</p>
+          <p><strong>Gap.</strong> There is no widely trusted way for strangers to rent each other GPU time with guarantees about correctness, data protection and payment. OMC aims to provide that missing layer.</p>
+          <h3>Target users</h3>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Segment</th>
+          <th>Typical workloads</th>
+          <th>What they need</th>
+          </tr></thead><tbody>
+          <tr><td>AI startups and independent developers</td><td>Inference, LoRA/QLoRA fine-tuning, batch embedding jobs</td><td>Lower cost, no quota waits, simple APIs</td></tr>
+          <tr><td>Web3 and decentralized-AI projects</td><td>Agent inference, ZK proof generation</td><td>Crypto-native payment, censorship resistance</td></tr>
+          <tr><td>Rendering and 3D studios</td><td>Blender batch rendering, Unreal Engine offline rendering, 3D reconstruction</td><td>Burst capacity, per-job pricing</td></tr>
+          <tr><td>GPU owners and small data centers</td><td>Monetizing idle hardware</td><td>Predictable earnings, low operating friction</td></tr>
+          </tbody></table></div>
+          <p><strong>Cost position.</strong> We expect savings versus hyperscale on-demand pricing for suitable workloads, but we do not publish a fixed percentage until it is measured. Published benchmarks compare delivered cost per job, including verification overhead, against named alternatives. The benchmark methodology and the underlying rate data are published with the DCF forum <em>GPU Pricing Watch</em> series (see Section 13); the first delivered-cost report is published alongside the mainnet release.</p>
+          <h2 id="sec3">3 · Supported Workloads and Limits</h2>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Workload class</th>
+          <th>Status</th>
+          <th>Notes</th>
+          </tr></thead><tbody>
+          <tr><td>Batch rendering (Blender, UE offline)</td><td>Supported on testnet; mainnet rollout in Phase 2</td><td>Deterministic seeds allow tolerance-based verification</td></tr>
+          <tr><td>Model inference</td><td>Supported on testnet; mainnet rollout in Phase 2</td><td>Latency-sensitive jobs use region-aware scheduling</td></tr>
+          <tr><td>Single-node fine-tuning (LoRA/QLoRA)</td><td>Supported on testnet; mainnet rollout in Phase 2</td><td>Job must fit within one node's VRAM</td></tr>
+          <tr><td>Multi-GPU jobs within one machine</td><td>Supported where the node has the required interconnect</td><td>Interconnect such as NVLink is a node attribute, declared and verified at registration</td></tr>
+          <tr><td>Multi-node distributed training over the public internet</td><td>Not supported</td><td>Bandwidth and latency make this impractical on consumer networks</td></tr>
+          <tr><td>Cluster jobs on co-located data-center nodes</td><td>Research track</td><td>Requires verified low-latency fabric between nodes</td></tr>
+          </tbody></table></div>
+          <p>Consumer GPUs generally do not offer NVLink. OMC treats interconnect as a declared, tested hardware attribute and never assumes it.</p>
+          <h2 id="sec4">4 · Architecture</h2>
+          <h3>4.1 Layers</h3>
+          <p><strong>L1 settlement (BNB Chain).</strong> OMC token contract, staking contracts, DAO governance, and final dispute arbitration.</p>
+          <p><strong>L2 rollup orchestration.</strong> Node heartbeats, job allocation records, state-channel settlement and micropayments run on an OP Stack rollup on BNB Chain (opBNB). At launch a single sequencer operated by the project submits batches to L1. The published path to decentralization covers rotating sequencer sets, and the rollup's data-availability layer, challenge window, withdrawal delay and user exit procedure are documented in the technical documentation released with mainnet.</p>
+          <p><strong>Off-chain compute grid.</strong> Provider nodes run jobs in isolated containers with CUDA or ROCm acceleration. Inputs and outputs move over encrypted peer-to-peer or relayed channels.</p>
+          <h3>4.2 Job Lifecycle</h3>
+          <ol><li>The requester submits a job: container image, resource needs (VRAM, driver version, region), maximum price, verification policy and data-protection level.</li><li><strong>Escrow:</strong> the maximum price is locked in the L2 payment contract.</li><li>The scheduler selects eligible nodes (Section 4.3).</li><li>The node pulls the image, receives encrypted inputs, executes the job and returns outputs with an execution attestation.</li><li>Verification runs according to the job's policy (Section 5).</li><li><strong>Settlement:</strong> if verification passes, the node is paid from escrow, the protocol fee is split (Section 7.1) and the node's reputation is updated. If it fails, the job is re-run on another node and the faulty node is penalized (Section 7.5).</li></ol>
+          <h3>4.3 Scheduling</h3>
+          <p>Scheduling has two stages.</p>
+          <p><strong>Stage 1: hard filters.</strong> A node is eligible only if it meets the job's minimum VRAM, driver and CUDA/ROCm versions, region constraints, confidential-computing requirement if any, minimum stake and minimum reputation.</p>
+          <p><strong>Stage 2: scoring.</strong> Each eligible node is scored on normalized metrics. Each metric is converted to a percentile rank (0 to 1) among eligible nodes for that job class, so that different units can be combined fairly:</p>
+          <p><code>Score = w_f × N(TFLOPS) + w_v × N(VRAM) + w_b × N(Bandwidth) + w_l × N(Latency, lower is better) + w_r × N(Reputation)</code></p>
+          <p>The weights sum to 1 and are set per job class. <strong>Proposed</strong> defaults:</p>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Job class</th>
+          <th>TFLOPS</th>
+          <th>VRAM</th>
+          <th>Bandwidth</th>
+          <th>Latency</th>
+          <th>Reputation</th>
+          </tr></thead><tbody>
+          <tr><td>Batch and rendering</td><td>0.30</td><td>0.20</td><td>0.15</td><td>0.10</td><td>0.25</td></tr>
+          <tr><td>Inference</td><td>0.20</td><td>0.15</td><td>0.10</td><td>0.30</td><td>0.25</td></tr>
+          </tbody></table></div>
+          <p>Assignment is solved per scheduling window as a weighted matching problem that maximizes total score across all pending jobs and eligible nodes. To avoid concentrating work on a few top nodes, the final pick is drawn at random from the top-k scoring candidates. Weights and k are governance parameters.</p>
+          <h2 id="sec5">5 · Verification and Trust</h2>
+          <p>No single technique can verify every GPU workload, so OMC uses a policy selected per job.</p>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Mechanism</th>
+          <th>How it works</th>
+          <th>Best for</th>
+          <th>Cost to requester</th>
+          </tr></thead><tbody>
+          <tr><td>Spot-check re-execution</td><td>A random share of jobs (audit rate <em>a</em>) is silently re-run on an independent node and results are compared</td><td>All deterministic or near-deterministic jobs</td><td>Base price × (1 + a). Default <em>a</em> is <strong>proposed</strong> at 5% to 10%</td></tr>
+          <tr><td>Full redundancy</td><td>The job runs on 2 or 3 independent nodes and outputs are compared</td><td>High-value or high-precision jobs, chosen by the requester</td><td>2× to 3×</td></tr>
+          <tr><td>Confidential computing (TEE)</td><td>Job runs inside a hardware-protected environment with remote attestation</td><td>Sensitive data or proprietary models; requires supporting GPUs</td><td>Premium for TEE-capable nodes</td></tr>
+          <tr><td>Zero-knowledge proofs</td><td>Cryptographic proof of execution</td><td>Research track; currently too costly for general GPU workloads</td><td>Not offered at launch</td></tr>
+          </tbody></table></div>
+          <p><strong>Handling non-determinism.</strong> GPU floating-point results can differ across devices and drivers. OMC therefore compares outputs using task-specific rules: exact hashes for deterministic jobs, numerical tolerance or perceptual metrics for rendering, and fixed seeds with deterministic kernels where inference supports it. Job types that cannot be verified reliably are labeled as such, and requesters are told before submitting.</p>
+          <p><strong>Reputation.</strong> Each node has a score built from verified completions, uptime, timeouts and dispute outcomes. Scores decay without activity and cannot be transferred.</p>
+          <p><strong>Disputes.</strong> A requester may dispute a result within 48 hours of the output being returned (<strong>proposed</strong>). The protocol first re-executes the job on an independent node. If the parties still disagree, the case escalates to L1 arbitration by a DAO-elected arbitrator set drawn from a pool of nine candidates, each posting a bond; a ruling is issued within seven days of escalation (<strong>proposed</strong>). Evidence (attestations, logs, hashes) is recorded on L2.</p>
+          <h2 id="sec6">6 · Security and Privacy</h2>
+          <p>Provider hardware is untrusted by default. OMC applies defense in depth, and is explicit about what it cannot guarantee.</p>
+          <p><strong>Isolation.</strong> Jobs run in hardened sandboxes — gVisor by default, with higher-isolation tiers (Kata Containers or microVMs) selectable for sensitive workloads (<strong>proposed</strong>) — with no host access and no outbound network access by default.</p>
+          <p><strong>Encryption.</strong> Inputs, outputs and images are encrypted in transit and at rest. Keys are released to a node only after it is assigned the job.</p>
+          <p><strong>Data-protection levels.</strong> Standard (public or non-sensitive data), Protected (encrypted, ephemeral storage wiped after the job), and Confidential (TEE-only nodes).</p>
+          <p><strong>Honest limitation.</strong> On non-TEE nodes, a malicious provider could in principle observe data or model weights in GPU memory. Requesters with proprietary models or regulated data should choose the Confidential level or not use the network.</p>
+          <p><strong>Provider protection.</strong> Resource limits and abuse detection protect providers from malicious containers. Prohibited content and workloads are defined in the Acceptable Use Policy published on the official website.</p>
+          <p><strong>Assurance.</strong> Smart contracts and the node client are audited before mainnet and the audit reports are public (see Section 11). A bug bounty program runs from mainnet, paying severity-based rewards starting at $50,000 for critical findings on a public bounty platform (<strong>proposed</strong>).</p>
+          <h2 id="sec7">7 · Economics and the OMC Token</h2>
+          <p>Parameters marked <strong>proposed</strong> in this section are design targets: they will be validated on testnet and may change through governance before mainnet.</p>
+          <h3>7.1 Payments and Fee Flows</h3>
+          <p>Requesters pay per job in OMC or in supported stablecoins (USDT and USDC on BNB Chain). Paying in OMC receives a 10% fee discount (<strong>proposed</strong>). A protocol fee of 3% is applied at each job settlement and is split as follows:</p>
+          <ul><li>30% of the fee is used to buy back OMC on the market and burn it automatically through smart contracts.</li><li>70% goes to the Reputation Reward Pool, held by the Treasury contract and distributed to nodes in proportion to their reputation-weighted verified work.</li></ul>
+          <p>The burn equals <strong>0.9% of settled job volume</strong> (3% × 30%). As an illustration only, not a forecast: if monthly settled volume were $10 million, the monthly buyback and burn would be about $90,000. Actual volume, and therefore burn, depends entirely on network usage. The protocol publishes settled volume, fees, burns and emissions on a public dashboard.</p>
+          <h3>7.2 Token Utility</h3>
+          <ul><li><strong>Payment</strong> for compute jobs (with a fee discount).</li><li><strong>Staking</strong> by node operators as security for honest behavior.</li><li><strong>Governance</strong> voting on protocol parameters, treasury use and upgrades.</li><li><strong>Rewards</strong> to providers for verified work.</li></ul>
+          <p>OMC has a fixed maximum supply of 1,000,000,000 tokens on BNB Chain (BEP-20). The only mechanisms that reduce supply are the fee buyback-and-burn and the slashing burn.</p>
+          <h3>7.3 Token Distribution</h3>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Category</th>
+          <th>Share</th>
+          <th>Amount (OMC)</th>
+          <th>Vesting</th>
+          </tr></thead><tbody>
+          <tr><td>Compute mining and node rewards</td><td>50%</td><td>500,000,000</td><td>0% at TGE. Released over 10 years according to the emission schedule in 7.4</td></tr>
+          <tr><td>Institutional investors</td><td>10%</td><td>100,000,000</td><td>5% at TGE, 6-month cliff, then 24 months monthly linear</td></tr>
+          <tr><td>Private investors</td><td>8%</td><td>80,000,000</td><td>10% at TGE, 3-month cliff, then 18 months monthly linear</td></tr>
+          <tr><td>Community airdrop</td><td>2%</td><td>20,000,000</td><td>100% at TGE</td></tr>
+          <tr><td>Ecosystem and grants</td><td>15%</td><td>150,000,000</td><td>5% at TGE, 6-month lock, then 36 months monthly linear</td></tr>
+          <tr><td>Team and core contributors</td><td>10%</td><td>100,000,000</td><td>0% at TGE, 12-month cliff, then 24 months monthly linear</td></tr>
+          <tr><td>Treasury and liquidity</td><td>5%</td><td>50,000,000</td><td>50% at TGE for initial liquidity; the remainder managed by the DAO Treasury</td></tr>
+          </tbody></table></div>
+          <p>The airdrop is listed separately from investor allocations. Circulating supply at TGE is about 65.5 million OMC (6.55% of maximum supply): 20M airdrop, 5M institutional, 8M private, 7.5M ecosystem and 25M treasury liquidity. A public vesting dashboard shows locked and unlocked balances for every category.</p>
+          <h3>7.4 Emission Schedule for Node Rewards</h3>
+          <p>The 500,000,000 OMC reward pool is released in five two-year epochs, with emission halving at the start of each epoch. Within an epoch, release is linear by day.</p>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Epoch</th>
+          <th>Years</th>
+          <th>Emission ceiling (OMC)</th>
+          <th>Share of pool</th>
+          </tr></thead><tbody>
+          <tr><td>1</td><td>1–2</td><td>258.06M</td><td>51.6%</td></tr>
+          <tr><td>2</td><td>3–4</td><td>129.03M</td><td>25.8%</td></tr>
+          <tr><td>3</td><td>5–6</td><td>64.52M</td><td>12.9%</td></tr>
+          <tr><td>4</td><td>7–8</td><td>32.26M</td><td>6.5%</td></tr>
+          <tr><td>5</td><td>9–10</td><td>16.13M</td><td>3.2%</td></tr>
+          </tbody></table></div>
+          <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. This ties new supply to real usage rather than to the calendar.</p>
+          <h3>7.5 Staking and Slashing</h3>
+          <p>Nodes must stake OMC before receiving jobs. The required stake is set in USD terms and converted at a time-weighted average price, so that it does not drift with token volatility:</p>
+          <p><code>Staking_Min (OMC) = Base_Deposit_USD × Tier_Multiplier ÷ OMC_TWAP</code></p>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Tier</th>
+          <th>Hardware</th>
+          <th>Tier_Multiplier</th>
+          </tr></thead><tbody>
+          <tr><td>1</td><td>Consumer GPUs (up to 24 GB VRAM)</td><td>1× (<strong>proposed</strong>)</td></tr>
+          <tr><td>2</td><td>Workstation and professional GPUs</td><td>2× (<strong>proposed</strong>)</td></tr>
+          <tr><td>3</td><td>Data-center GPUs (80 GB VRAM and above)</td><td>4× (<strong>proposed</strong>)</td></tr>
+          </tbody></table></div>
+          <p>Base_Deposit_USD is $200 (<strong>proposed</strong>), set before mainnet and adjustable by governance.</p>
+          <p>Slashing triggers and <strong>proposed</strong> penalties (percent of stake):</p>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Offense</th>
+          <th>Penalty</th>
+          </tr></thead><tbody>
+          <tr><td>Job timeout</td><td>2%</td></tr>
+          <tr><td>Unexpected offline during an active job</td><td>5%</td></tr>
+          <tr><td>Incorrect output (failed verification)</td><td>30%</td></tr>
+          <tr><td>Proven fraud or fake heartbeat</td><td>100%</td></tr>
+          </tbody></table></div>
+          <p>Slashed tokens are allocated 50% to compensate affected requesters, 30% to the DAO Treasury and 20% burned (Burn = Slashed × 20%). Penalty sizes will be calibrated on testnet and published before mainnet.</p>
+          <h2 id="sec8">8 · Governance</h2>
+          <p>Governance moves from team-led to community-led in stages.</p>
+          <p><strong>Launch stage.</strong> Protocol upgrades are controlled by a 4-of-7 multisignature wallet held by core contributors, with a 3-day timelock (<strong>proposed</strong>). All changes are announced publicly before execution. Individual signers are not disclosed at this stage; the signing policy, key-management practice and any signer rotation will be published before mainnet.</p>
+          <p><strong>Transition stage.</strong> OMC holders vote on parameters (scheduling weights, audit rates, fee split, slashing sizes, emission scaling) and Treasury spending. <strong>Proposed</strong> thresholds: a proposal threshold of 100,000 OMC, a quorum of 10% of circulating supply, a 7-day voting period and a 2-day execution delay.</p>
+          <p><strong>Full DAO stage (2027 or later).</strong> The multisig is removed or limited to emergency security actions with transparent, time-limited powers.</p>
+          <p>Treasury reports are published quarterly.</p>
+          <h2 id="sec9">9 · Competitive Landscape</h2>
+          <p>OMC competes with centralized hyperscale clouds, centralized GPU marketplaces, and other decentralized compute networks. Sources and dates for every figure are listed in Section 13.</p>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Dimension</th>
+          <th>Hyperscale cloud</th>
+          <th>GPU marketplaces</th>
+          <th>Other decentralized networks</th>
+          <th>OMC</th>
+          </tr></thead><tbody>
+          <tr><td>Price per GPU-hour (H100 SXM, on-demand, Aug–Oct 2026)</td><td>$9.00–$14.50</td><td>$2.49–$4.25 (Lambda, RunPod, Vultr, CoreWeave)</td><td>$1.25–$3.00 (Akash, io.net, Render)</td><td>Target: below marketplace median; measured benchmark to be published (§2)</td></tr>
+          <tr><td>Verification of results</td><td>Provider trust</td><td>Platform trust</td><td>On-chain attestation (Akash); Proof-of-Render and node tiers (Render); proof-of-time-difference and hardware scans (io.net)</td><td>Tiered policy per job, see Section 5</td></tr>
+          <tr><td>Confidential computing</td><td>Confidential VMs available; H100 CC on selected instances</td><td>Limited</td><td>Limited / varies by network</td><td>Optional TEE tier</td></tr>
+          <tr><td>Payment</td><td>Fiat</td><td>Fiat and crypto</td><td>Native token (AKT / IO / RENDER)</td><td>OMC and stablecoins</td></tr>
+          <tr><td>Supported workloads</td><td>Broad, including multi-node training</td><td>Broad, including multi-node clusters</td><td>Mainly single-node inference, fine-tuning and rendering; multi-node training is impractical</td><td>See Section 3</td></tr>
+          </tbody></table></div>
+          <p>Hyperscaler figures are per-GPU-hour for H100 SXM5 80GB in 8-GPU instances (AWS p5.48xlarge $12.29; Azure ND H100 v5 $12.25–$14.50; GCP a3-highgpu-8g $9.00–$11.50), spot/preemptible runs $1.95–$2.80, with 1-year commitments around −30% to −38% and 3-year around −50% to −62% (nOps, August 2026; cloudprice.app, 2026). Decentralized network figures are ranges published across 2026 sources (decentralised.news, 2026; gpumarketdepin.com, 2026) and vary by supply and workload class. Network uptime reported for decentralized networks (Akash 99.4%, Render 99.8%, io.net 98.6%) remains below hyperscaler SLAs (99.9%–99.99%).</p>
+          <p>The characteristics OMC intends to differentiate on — verification policy by job type, USD-denominated staking, utilization-linked emissions and BNB Chain ecosystem integration — are stated here as design commitments; measured evidence will be published as the network runs.</p>
+          <h2 id="sec10">10 · Roadmap</h2>
+          <div class="table-wrap">
+          <table>
+          <thead><tr>
+          <th>Phase</th>
+          <th>Target</th>
+          <th>Deliverables</th>
+          <th>Status and evidence</th>
+          </tr></thead><tbody>
+          <tr><td>1</td><td>Q1–Q2 2026</td><td>L2 contract deployment, open-source node client, testnet, community airdrop</td><td><strong>Completed.</strong> Testnet live on BNB Chain testnet (Chapel); token contract <code>0x3c7edae9da38b72db7ae98921ef0759d19de7cc</code>; explorer <code>testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc</code>; repository <code>github.com/CBTdao/omc-network</code>; 2% community airdrop (20,000,000 OMC) published</td></tr>
+          <tr><td>2</td><td>Q3 2026 – Q1 2027</td><td>Mainnet launch, reward emission start, Hugging Face and Blender integrations, completed audits</td><td><strong>In progress.</strong> Mainnet launch is targeted for Q1 2027; the start of reward emissions, the Hugging Face and Blender integrations and the first completed audits follow within this phase. Audit reports are published here as they are completed</td></tr>
+          <tr><td>3</td><td>2027 Q2 and later</td><td>TEE tier, zero-knowledge verification research results, DAO transition, cross-chain settlement</td><td>Planned</td></tr>
+          </tbody></table></div>
+          <p>Each milestone will be accompanied by measurable indicators published on the dashboard: active nodes, total TFLOPS, jobs completed, verified failure rate, settled volume and average time to settlement.</p>
+          <h2 id="sec11">11 · Team, Audits and Legal</h2>
+          <p><strong>Core team and advisors.</strong> OMC is developed by a pseudonymous collective of core contributors. Consistent with that practice, the project does not publish individual names, employment histories or personal profiles at this stage, and no advisory board is disclosed. All code contributions are public and attributable to the contributing accounts in the repository. If named advisors are engaged, their roles and the scope of their engagement will be published in this section.</p>
+          <p><strong>Legal entity and jurisdiction.</strong> The network and the token are operated as an open-source project. The legal entity that will issue and hold the token, its registration details and the jurisdiction governing the token will be published in this section and on the official website before the token generation event. Until that disclosure is made, no other statement of entity or jurisdiction should be relied upon.</p>
+          <p><strong>Funding.</strong> No external financing has been raised to date; development has been funded by contributor resources. If financing is raised, the amount, the investors and any terms that affect token holders will be disclosed here.</p>
+          <p><strong>Smart contract audits.</strong> Independent audits of the smart contracts and the node client will be completed before mainnet launch. The full reports — auditor, scope, date and the status of every finding — will be published in this section. No audit report has been published yet, and nothing in this document should be read as audit assurance.</p>
+          <p><strong>Contacts:</strong></p>
+          <ul><li>Website: <a href="https://omc.network" target="_blank" rel="noopener">https://omc.network</a></li><li>Forum: <a href="https://forum.omc.network" target="_blank" rel="noopener">https://forum.omc.network</a></li><li>Repository: <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener">https://github.com/CBTdao/omc-network</a></li><li>X: <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener">https://x.com/Omniverse_Depin</a></li><li>Telegram: <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener">https://t.me/OmniverseCompute</a></li><li>Contact: support@omc.network</li><li>Security disclosure: security@omc.network</li></ul>
+          <h2 id="sec12">12 · Risk Factors</h2>
+          <p><strong>Technical risk.</strong> Verification methods may fail on some workloads, smart contracts may contain bugs despite audits, and the L2 rollup may have availability or security issues.</p>
+          <p><strong>Security and privacy risk.</strong> Non-TEE nodes cannot fully protect data in use. Sandbox escapes and side-channel attacks are possible.</p>
+          <p><strong>Market risk.</strong> Token prices can be extremely volatile and may fall to zero. Liquidity may be thin. Unlock events may add selling pressure.</p>
+          <p><strong>Adoption risk.</strong> The network needs enough requesters and providers. If demand is low, reward emissions are not matched by fee revenue and the burn is small.</p>
+          <p><strong>Competition risk.</strong> Established clouds and other decentralized networks may offer lower prices or better reliability.</p>
+          <p><strong>Hardware and supply risk.</strong> GPU prices, availability, export controls or energy costs may affect the provider base.</p>
+          <p><strong>Regulatory risk.</strong> Laws on tokens, data protection and cross-border services may change and may restrict use in some countries.</p>
+          <p><strong>Governance risk.</strong> Voting power may concentrate, and early-stage control by a multisig carries key-management risk.</p>
+          <p><strong>Dependency risk.</strong> OMC depends on BNB Chain and third-party infrastructure.</p>
+          <p>This list is not exhaustive.</p>
+          <h2 id="sec13">13 · References and Data Sources</h2>
+          <p>Market and infrastructure data cited in this document:</p>
+          <ol><li><em>GPU pricing across providers in 2026 (H100, A100, L4 ranked)</em> — cloudprice.app, 2026. <a href="https://cloudprice.app/blog/gpu-pricing-across-providers-2026-h100-a100-l4" target="_blank" rel="noopener">https://cloudprice.app/blog/gpu-pricing-across-providers-2026-h100-a100-l4</a></li><li><em>Cloud GPU Pricing Comparison 2026: AWS vs Azure vs GCP</em> — nOps, August 2026. <a href="https://www.nops.io/blog/cloud-gpu-pricing-optimization" target="_blank" rel="noopener">https://www.nops.io/blog/cloud-gpu-pricing-optimization</a></li><li><em>Cloud GPU Pricing Comparison 2026: AWS vs Azure vs GCP</em> — Economize, 2026. <a href="https://economize.cloud/blog/cloud-gpu-pricing-comparison" target="_blank" rel="noopener">https://economize.cloud/blog/cloud-gpu-pricing-comparison</a></li><li><em>AWS vs Azure vs GCP: H100 GPU Pricing 2026</em> — Tech Insider, 2026. <a href="https://tech-insider.org/aws-vs-azure-vs-google-cloud-gpu-pricing-2026/" target="_blank" rel="noopener">https://tech-insider.org/aws-vs-azure-vs-google-cloud-gpu-pricing-2026/</a></li><li><em>The Decentralized Compute Risk Matrix: Render vs. Akash vs. io.net</em> — Decentralised News, 2026. <a href="https://decentralised.news/the-decentralized-compute-risk-matrix" target="_blank" rel="noopener">https://decentralised.news/the-decentralized-compute-risk-matrix</a></li><li><em>GPU Market DePIN 2026: Decentralized Compute vs Big Tech</em> — gpumarketdepin.com, 2026. <a href="https://gpumarketdepin.com/gpu-market-depin-2026-decentralized-compute-vs-big-tech" target="_blank" rel="noopener">https://gpumarketdepin.com/gpu-market-depin-2026-decentralized-compute-vs-big-tech</a></li><li><em>Akash vs io.net vs Render: Best DePIN GPU for AI Training</em> — Misar.Blog, 2026. <a href="https://www.misar.blog/@synor/articles/akash-vs-ionet-vs-render" target="_blank" rel="noopener">https://www.misar.blog/@synor/articles/akash-vs-ionet-vs-render</a></li><li><em>Render vs Akash vs io.net: Cheapest DePIN GPU Networks for AI Inference 2026</em> — Crypto AI World, February 2026. <a href="https://cryptoaiworld.com/2026/02/22/render-vs-akash-vs-io-net-cheapest-depin-gpu-networks-for-ai-inference-2026" target="_blank" rel="noopener">https://cryptoaiworld.com/2026/02/22/render-vs-akash-vs-io-net-cheapest-depin-gpu-networks-for-ai-inference-2026</a></li></ol>
+          <p>Benchmark methodology for OMC's own delivered-cost claims (Section 2) is published with the DCF forum "GPU Pricing Watch" series: <a href="https://forum.omc.network" target="_blank" rel="noopener">https://forum.omc.network</a></p>
+          <p>All third-party figures were verified against the sources above at the time of writing. GPU prices change quickly; readers should confirm current rates before relying on them.</p>
 
-          <div class="table-wrap reveal" style="margin-top: 22px;">
-            <table>
-              <thead>
-                <tr>
-                  <th data-i18n="tok.th1">Category</th>
-                  <th data-i18n="tok.th2">Allocation</th>
-                  <th data-i18n="tok.th3">Amount (OMC)</th>
-                  <th data-i18n="tok.th4">Vesting Schedule</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><b data-i18n="tok.r1c1">Compute Mining &amp; Node Rewards</b></td>
-                  <td><span class="pct">50%</span></td>
-                  <td>500,000,000</td>
-                  <td data-i18n="tok.r1c4">0% at TGE; linear decay release over 10 years based on compute contributions (halving every 2 years).</td>
-                </tr>
-                <tr>
-                  <td><b data-i18n="tok.r2c1">Investors (Institutional / Private / Airdrop)</b></td>
-                  <td><span class="pct">20%</span></td>
-                  <td>200,000,000</td>
-                  <td data-i18n="tok.r2c4">Institutional 10% (TGE 5%, 6m cliff, 24m monthly); Private 8% (TGE 10%, 3m cliff, 18m monthly); <b>Airdrop 2% (TGE 100%)</b>.</td>
-                </tr>
-                <tr>
-                  <td><b data-i18n="tok.r3c1">Ecosystem &amp; Grants</b></td>
-                  <td><span class="pct">15%</span></td>
-                  <td>150,000,000</td>
-                  <td data-i18n="tok.r3c4">5% at TGE, 6-month lockup, 36-month monthly linear vesting for grants &amp; API subsidies.</td>
-                </tr>
-                <tr>
-                  <td><b data-i18n="tok.r4c1">Team &amp; Core Contributors</b></td>
-                  <td><span class="pct">10%</span></td>
-                  <td>100,000,000</td>
-                  <td data-i18n="tok.r4c4">0% at TGE, 12-month cliff, 24-month monthly linear vesting.</td>
-                </tr>
-                <tr>
-                  <td><b data-i18n="tok.r5c1">Treasury &amp; Liquidity</b></td>
-                  <td><span class="pct">5%</span></td>
-                  <td>50,000,000</td>
-                  <td data-i18n="tok.r5c4">50% unlocked at TGE for DEX/CEX initial liquidity; remainder managed by DAO Treasury.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <h3 data-i18n="s4_2.h">4.2 Deflationary Mechanics</h3>
-          <ul>
-            <li data-i18n="s4_2.l1"><b>Protocol Fee Burn:</b> a 3% protocol service fee is levied per job settlement; <b>30% of this fee is automatically bought back and burned</b> via smart contracts, while 70% enters the Treasury to reward high-reputation nodes.</li>
-            <li data-i18n="s4_2.l2"><b>Dual Burn Engine:</b> service-fee burn + slashing penalty burn constantly decrease circulating supply to reinforce OMC value growth.</li>
-          </ul>
-
-          <!-- Section 5 -->
-          <h2 id="s5" data-i18n="s5.h">5 · Roadmap &amp; Governance</h2>
-          <ul>
-            <li data-i18n="s5.l1"><b>Phase 1 (Q4 2026 – Q1 2027):</b> L2 smart contract deployment, open-source node client, testnet launch, and the 2% community airdrop.</li>
-            <li data-i18n="s5.l2"><b>Phase 2 (Q2–Q3 2027):</b> Mainnet launch, compute mining activation, HuggingFace &amp; Blender plugin integration.</li>
-            <li data-i18n="s5.l3"><b>Phase 3 (Q4 2027 –):</b> On-chain ZK-ML framework launch, full DAO governance transition, and cross-chain compute settlement expansion.</li>
-          </ul>
-
-          <div class="wp-note" style="margin-top: 34px;" data-i18n="wp.note"><b>Note.</b> This page is a web rendering of the official OMC Whitepaper v2.0 for convenience. The signed PDF versions remain the authoritative reference — <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank">English whitepaper</a> · <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank">presentation deck</a>.</div>
+          <div class="wp-note" style="margin-top: 34px;" data-i18n="wp.note"><b>Note.</b> This page reproduces the official OMC Whitepaper v3.0 (English) as a web document. The PDF versions remain the authoritative reference — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>English whitepaper (PDF, 18 pages)</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>presentation deck</a>.</div>
         </article>
       </div>
     </div>
@@ -242,7 +338,7 @@
           <a href="whitepaper.html" data-i18n="f.wp">Whitepaper</a>
           <a href="testnet.html" data-i18n="f.testnet">Testnet</a>
           <a href="index.html#about" data-i18n="f.arch">Architecture</a>
-          <a href="whitepaper.html#s4" data-i18n="f.tokenomics">Tokenomics</a>
+          <a href="whitepaper.html#sec7" data-i18n="f.tokenomics">Tokenomics</a>
         </div>
         <div class="f-col">
           <h5 data-i18n="footer.h_community">Community</h5>
@@ -263,6 +359,7 @@
           <a href="testnet.html#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
           <a href="about.html" data-i18n="f.about">About &amp; Contact</a>
           <a href="privacy.html" data-i18n="f.privacy">Privacy Policy</a>
+          <a href="aup.html" data-i18n="f.aup">Acceptable Use</a>
         </div>
       </div>
       <div class="footer-bottom">

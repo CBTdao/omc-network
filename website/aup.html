@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta.title_aup">Acceptable Use Policy — Omniverse Compute (OMC)</title>
+  <meta name="description" content="OMC Acceptable Use Policy — the rules for requesting jobs and providing GPU capacity on the Omniverse Compute network: prohibited content, prohibited workloads, provider and requester obligations, and enforcement." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/assets/img/logo.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="news.html" data-i18n="nav.news">News</a>
+        <a href="whitepaper.html" data-i18n="nav.wp">Whitepaper</a>
+        <a href="testnet.html" data-i18n="nav.testnet">Testnet</a>
+        <a href="airdrop.html" data-i18n="nav.airdrop">Airdrop</a>
+        <a href="airdrop.html" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="es">Español</option>
+          <option value="ko">한국어</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top: 64px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="aup.eyebrow">Acceptable Use Policy · v1.0</div>
+        <h2 data-i18n="aup.title">Acceptable Use Policy</h2>
+        <p data-i18n="aup.sub">Rules for everyone who requests jobs or provides GPU capacity on the OMC network. Last updated: October 4, 2026.</p>
+      </div>
+
+      <div class="wp-body reveal" style="max-width: 860px; margin: 0 auto;">
+        <div class="wp-note" data-i18n="aup.note"><b>Language.</b> This policy is published in English; the English version is the authoritative reference. Report violations to <a href='mailto:security@omc.network'>security@omc.network</a>.</div>
+
+        <h3>1 · Scope</h3>
+        <p>This Acceptable Use Policy ("AUP") governs all use of the OMC network: submitting compute jobs, providing GPU capacity, operating nodes, and interacting with the protocol's smart contracts. It applies to every participant, including those acting through automated systems. It supplements — and does not replace — the network's technical documentation and any terms shown in the product interface.</p>
+
+        <h3>2 · Prohibited content</h3>
+        <p>You may not submit, store, process or distribute content that:</p>
+        <ul>
+          <li>is illegal under the laws applicable to you or to the network's participants, including content that infringes intellectual property, privacy or data-protection rights;</li>
+          <li>depicts or sexualizes minors, or constitutes child sexual abuse material in any form;</li>
+          <li>promotes terrorism, violent extremism, targeted harassment, doxxing or credible threats of violence;</li>
+          <li>constitutes malware, phishing kits, credential theft, or the distribution of viruses, ransomware or botnets;</li>
+          <li>is designed to deceive: deepfakes of real people presented as authentic, forged documents, or fraud schemes.</li>
+        </ul>
+
+        <h3>3 · Prohibited workloads</h3>
+        <p>You may not use OMC compute capacity to:</p>
+        <ul>
+          <li>mine proof-of-work cryptocurrencies other than through the protocol's own verified-job rewards;</li>
+          <li>operate services whose purpose is denial-of-service, email or message spam, mass scanning, or password cracking against systems you do not own;</li>
+          <li>bypass export controls or sanctions, or provide compute to persons or entities prohibited by applicable law;</li>
+          <li>train or operate models for unlawful surveillance, unauthorized profiling of individuals, or weapons targeting;</li>
+          <li>circumvent the network's verification, staking or payment mechanisms, including fake heartbeats, self-dealing jobs, or colluding nodes.</li>
+        </ul>
+
+        <h3>4 · Network integrity</h3>
+        <p>Attacks on the network itself are prohibited: exploiting smart-contract bugs outside a disclosed and authorized bug-bounty program, Sybil attacks on rewards or airdrops, manipulation of reputation scores, interference with scheduling or settlement, and any attempt to steal staked funds or job escrow. Security research is welcome only under responsible disclosure through <a href="mailto:security@omc.network">security@omc.network</a>.</p>
+
+        <h3>5 · Provider obligations</h3>
+        <p>Providers must run the official node client unmodified in its verification-relevant parts, declare hardware attributes honestly (VRAM, interconnect, region, confidential-computing capability), keep staking requirements met, complete accepted jobs within the agreed limits, and wipe job data as required by the job's data-protection level. Providers are responsible for the physical and legal security of their own hardware.</p>
+
+        <h3>6 · Requester obligations</h3>
+        <p>Requesters must submit jobs they are legally entitled to run, hold the rights to the data and model weights they upload, respect the data-protection level they select, and pay from escrow as settled by the protocol. Requesters should not submit job types that the network has labeled as unverifiable if they require strong correctness guarantees.</p>
+
+        <h3>7 · Enforcement</h3>
+        <p>Violations may result in: immediate job termination without payment; slashing of staked OMC under the protocol's published rules; loss of reputation or node eligibility; and, where warranted, blacklisting of the account or node. Illegal activity may be reported to the competent authorities. Severe violations — in particular those in Section 2 — may result in permanent exclusion and forfeiture under the slashing rules applicable at the time.</p>
+
+        <h3>8 · Reporting and appeals</h3>
+        <p>Report violations, suspicious jobs or compromised nodes to <a href="mailto:security@omc.network">security@omc.network</a>, including job identifiers, timestamps and any supporting evidence. If your node or job was penalized and you believe this was an error, contact the same address with the job identifiers; disputes follow the process described in the whitepaper (Section 5).</p>
+
+        <h3>9 · Changes</h3>
+        <p>This AUP may be updated as the network develops. Material changes are announced on the News page before taking effect, and the version date at the top of this page is updated accordingly. Continued use of the network after a change takes effect constitutes acceptance of the updated policy.</p>
+
+        <div class="wp-note" style="margin-top: 34px;"><b>Related documents.</b> <a href="privacy.html">Privacy Policy</a> · <a href="about.html">About &amp; Contact</a> · <a href="whitepaper.html">Whitepaper v3.0</a></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_protocol">Protocol</h5>
+          <a href="whitepaper.html" data-i18n="f.wp">Whitepaper</a>
+          <a href="testnet.html" data-i18n="f.testnet">Testnet</a>
+          <a href="index.html#about" data-i18n="f.arch">Architecture</a>
+          <a href="whitepaper.html#sec7" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_community">Community</h5>
+          <a href="airdrop.html" data-i18n="f.airdrop">Airdrop</a>
+          <a href="news.html" data-i18n="nav.news">News</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_ecosystem">Ecosystem</h5>
+          <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
+          <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_resources">Resources</h5>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="testnet.html#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+          <a href="about.html" data-i18n="f.about">About &amp; Contact</a>
+          <a href="privacy.html" data-i18n="f.privacy">Privacy Policy</a>
+          <a href="aup.html" data-i18n="f.aup">Acceptable Use</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="disc" data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</div>
+        <div>© 2026 Omniverse Compute · omc.network</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js"></script>
+  <script src="assets/js/lang/zh.js"></script>
+  <script src="assets/js/lang/ja.js"></script>
+  <script src="assets/js/lang/es.js"></script>
+  <script src="assets/js/lang/ko.js"></script>
+  <script src="assets/js/lang/pt.js"></script>
+  <script src="assets/js/lang/fr.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
