@@ -414,5 +414,8 @@ window.I18N.en = {
   "nw10.t": "Industry voice: Vitalik Buterin — decentralized computing belongs in the d/acc toolbox",
   "nw10.d": "In his November 2024 essay “d/acc”, the Ethereum founder argues that open, verifiable and decentralized computing is a defensive technology worth building — including markets that route idle GPUs to real workloads. Industry commentary, not an endorsement of OMC. Related analysis →",
   "nw11.t": "Industry voice: Sam Altman — the cost of intelligence trends toward the cost of energy",
-  "nw11.d": "In “The Intelligence Age” (September 2024), OpenAI's CEO argues that intelligence becomes a utility as its cost falls toward the price of energy — making compute supply and power access the hard constraints. Industry commentary, not an endorsement of OMC. Related analysis →"
+  "nw11.d": "In “The Intelligence Age” (September 2024), OpenAI's CEO argues that intelligence becomes a utility as its cost falls toward the price of energy — making compute supply and power access the hard constraints. Industry commentary, not an endorsement of OMC. Related analysis →",
+
+  "f.about": "About & Contact",
+  "f.privacy": "Privacy Policy"
 };

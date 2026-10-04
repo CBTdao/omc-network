@@ -414,5 +414,8 @@ window.I18N.fr = {
   "nw10.t": "Tribune : Vitalik Buterin — le calcul décentralisé fait partie de la boîte à outils d/acc",
   "nw10.d": "Dans son essai « d/acc » (novembre 2024), le fondateur d'Ethereum défend le calcul ouvert, vérifiable et décentralisé comme technologie défensive — y compris les marchés qui acheminent les GPU inutilisés vers de vraies charges de travail. Commentaire du secteur ; ne constitue pas un soutien à OMC. Analyse associée →",
   "nw11.t": "Tribune : Sam Altman — le coût de l'intelligence tend vers celui de l'énergie",
-  "nw11.d": "Dans « The Intelligence Age » (septembre 2024), le PDG d'OpenAI soutient que l'intelligence devient un service public à mesure que son coût tend vers le prix de l'électricité — l'offre de calcul et l'accès à l'énergie restent les contraintes les plus dures. Commentaire du secteur ; ne constitue pas un soutien à OMC. Analyse associée →"
+  "nw11.d": "Dans « The Intelligence Age » (septembre 2024), le PDG d'OpenAI soutient que l'intelligence devient un service public à mesure que son coût tend vers le prix de l'électricité — l'offre de calcul et l'accès à l'énergie restent les contraintes les plus dures. Commentaire du secteur ; ne constitue pas un soutien à OMC. Analyse associée →",
+
+  "f.about": "À propos et contact",
+  "f.privacy": "Politique de confidentialité"
 };

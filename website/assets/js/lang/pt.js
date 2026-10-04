@@ -406,5 +406,8 @@ window.I18N.pt = {
   "nw10.t": "Voz do setor: Vitalik Buterin — computação descentralizada faz parte do kit d/acc",
   "nw10.d": "Em seu ensaio “d/acc” (novembro de 2024), o fundador da Ethereum defende a computação aberta, verificável e descentralizada como tecnologia defensiva — incluindo mercados que direcionam GPUs ociosas a cargas de trabalho reais. Comentário do setor; não constitui endosso à OMC. Análise relacionada →",
   "nw11.t": "Voz do setor: Sam Altman — o custo da inteligência tende ao custo da energia",
-  "nw11.d": "Em “The Intelligence Age” (setembro de 2024), o CEO da OpenAI argumenta que a inteligência vira um serviço público à medida que seu custo cai na direção do preço da energia — e que oferta de computação e acesso a energia são as restrições mais duras. Comentário do setor; não constitui endosso à OMC. Análise relacionada →"
+  "nw11.d": "Em “The Intelligence Age” (setembro de 2024), o CEO da OpenAI argumenta que a inteligência vira um serviço público à medida que seu custo cai na direção do preço da energia — e que oferta de computação e acesso a energia são as restrições mais duras. Comentário do setor; não constitui endosso à OMC. Análise relacionada →",
+
+  "f.about": "Sobre e contato",
+  "f.privacy": "Política de Privacidade"
 };
