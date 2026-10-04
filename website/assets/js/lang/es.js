@@ -366,7 +366,7 @@ window.I18N.es = {
   /* ===== news page ===== */
   "nw.eyebrow": "Novedades del proyecto",
   "nw.title": "Noticias y anuncios",
-  "nw.sub": "Actualizaciones oficiales del equipo central de OMC: hitos del testnet, campañas de airdrop, progreso técnico y gobernanza.",
+  "nw.sub": "Actualizaciones oficiales del equipo central de OMC: hitos de la testnet, campañas de airdrop, avances técnicos, noticias del ecosistema y voces del sector.",
   "nw.all": "Todo",
   "nw.dev": "Ingeniería",
   "nw.airdrop": "Airdrop",
@@ -394,5 +394,17 @@ window.I18N.es = {
   "nw5.t": "Hoja de ruta actualizada: la Fase 1 va de Q4 2026 a Q1 2027",
   "nw5.d": "La Fase 1 cubre el despliegue de contratos L2, el cliente de nodo de código abierto, el testnet público y el airdrop comunitario del 2%. La mainnet y la minería de cómputo llegan en Q2–Q3 2027, con el framework ZK-ML y la gobernanza DAO completa desde Q4 2027.",
   "nw6.t": "Aviso antiescándalos: el airdrop es 100% gratuito",
-  "nw6.d": "Nunca pedimos tu frase semilla, tu clave privada ni ningún pago más allá del gas de la red. Confía solo en los enlaces publicados en este sitio y en nuestras cuentas verificadas: cualquier contrato llamado OMC fuera de los anuncios oficiales es fraudulento."
+  "nw6.d": "Nunca pedimos tu frase semilla, tu clave privada ni ningún pago más allá del gas de la red. Confía solo en los enlaces publicados en este sitio y en nuestras cuentas verificadas: cualquier contrato llamado OMC fuera de los anuncios oficiales es fraudulento.",
+
+  "nw.vo": "Voces del sector",
+  "nw7.t": "El ecosistema crece a tres sitios: foro DCF y AITop en línea",
+  "nw7.d": "El ecosistema OMC abarca ahora omc.network, top.omc.network (rankings independientes de herramientas de IA, sin afiliación) y forum.omc.network — el Decentralized Compute Forum, con ensayos en profundidad y comentarios abiertos. Los tres sitios están interconectados.",
+  "nw8.t": "Voz del sector: Jensen Huang — los centros de datos se convierten en «fábricas de IA»",
+  "nw8.d": "En la GTC 2024, el CEO de NVIDIA describió la evolución del centro de datos de archivo a fábrica de IA que produce a escala un nuevo bien: la inteligencia. El cuello de botella ya no son los chips, sino la computación y la energía. Comentario del sector; no constituye un respaldo a OMC. Análisis relacionado →",
+  "nw9.t": "El foro DCF estrena la serie a fondo sobre precios de GPU",
+  "nw9.d": "Nuevo en forum.omc.network: la serie Pricing Watch cubre el coste real de un entrenamiento, el diferencial de H100 entre hiperescaladores y mercados descentralizados, y el arbitraje reservado vs. spot. Sin patrocinios ni enlaces de afiliación, con metodología publicada en cada pieza.",
+  "nw10.t": "Voz del sector: Vitalik Buterin — la computación descentralizada es parte del kit d/acc",
+  "nw10.d": "En su ensayo «d/acc» (noviembre de 2024), el fundador de Ethereum defiende la computación abierta, verificable y descentralizada como tecnología defensiva, incluidos los mercados que dirigen GPUs inactivas a cargas de trabajo reales. Comentario del sector; no constituye un respaldo a OMC. Análisis relacionado →",
+  "nw11.t": "Voz del sector: Sam Altman — el coste de la inteligencia tiende al coste de la energía",
+  "nw11.d": "En «The Intelligence Age» (septiembre de 2024), el CEO de OpenAI sostiene que la inteligencia se vuelve un servicio público a medida que su coste baja hacia el precio de la energía, y que la oferta de cómputo y el acceso a la energía son las restricciones más duras. Comentario del sector; no constituye un respaldo a OMC. Análisis relacionado →"
 };

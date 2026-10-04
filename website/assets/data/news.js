@@ -58,5 +58,50 @@ window.OMC_NEWS = [
     t: "nw6.t",
     d: "nw6.d",
     href: "airdrop.html"
+  },
+  {
+    id: "n7",
+    date: "2026-10-04",
+    kind: "eco",
+    t: "nw7.t",
+    d: "nw7.d",
+    href: "https://forum.omc.network/?utm_source=site&utm_medium=news",
+    external: true
+  },
+  {
+    id: "n8",
+    date: "2026-10-04",
+    kind: "vo",
+    t: "nw8.t",
+    d: "nw8.d",
+    href: "https://forum.omc.network/posts/the-power-wall-not-gpus?utm_source=site&utm_medium=news",
+    external: true
+  },
+  {
+    id: "n9",
+    date: "2026-10-03",
+    kind: "dev",
+    t: "nw9.t",
+    d: "nw9.d",
+    href: "https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam?utm_source=site&utm_medium=news",
+    external: true
+  },
+  {
+    id: "n10",
+    date: "2026-10-03",
+    kind: "vo",
+    t: "nw10.t",
+    d: "nw10.d",
+    href: "https://forum.omc.network/posts/depin-2026-who-actually-has-users?utm_source=site&utm_medium=news",
+    external: true
+  },
+  {
+    id: "n11",
+    date: "2026-10-02",
+    kind: "vo",
+    t: "nw11.t",
+    d: "nw11.d",
+    href: "https://forum.omc.network/posts/real-cost-of-training-a-model-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];

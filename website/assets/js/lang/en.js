@@ -374,7 +374,7 @@ window.I18N.en = {
   /* ===== news page ===== */
   "nw.eyebrow": "Project Updates",
   "nw.title": "News & Announcements",
-  "nw.sub": "Official updates from the OMC core team — testnet milestones, airdrop campaigns, engineering progress and governance.",
+  "nw.sub": "Official updates from the OMC core team — testnet milestones, airdrop campaigns, engineering progress, ecosystem news and industry voices.",
   "nw.all": "All",
   "nw.dev": "Engineering",
   "nw.airdrop": "Airdrop",
@@ -402,5 +402,17 @@ window.I18N.en = {
   "nw5.t": "Roadmap updated: Phase 1 runs Q4 2026 – Q1 2027",
   "nw5.d": "Phase 1 covers L2 contract deployment, the open-source node client, the public testnet and the 2% community airdrop. Mainnet and compute mining follow in Q2–Q3 2027, with the ZK-ML framework and full DAO governance from Q4 2027.",
   "nw6.t": "Anti-scam notice: the airdrop is 100% free",
-  "nw6.d": "We never ask for your seed phrase, private key or any payment beyond the network gas fee. Only trust links published on this website and our verified social accounts — any contract named OMC outside official announcements is fraudulent."
+  "nw6.d": "We never ask for your seed phrase, private key or any payment beyond the network gas fee. Only trust links published on this website and our verified social accounts — any contract named OMC outside official announcements is fraudulent.",
+
+  "nw.vo": "Industry Voices",
+  "nw7.t": "Ecosystem grows to three sites: DCF forum and AITop are live",
+  "nw7.d": "The OMC ecosystem now spans omc.network, top.omc.network (independent, no-affiliate AI tool rankings) and forum.omc.network — the Decentralized Compute Forum, with in-depth essays and open comment sections. All three are cross-linked.",
+  "nw8.t": "Industry voice: Jensen Huang — data centers are becoming “AI factories”",
+  "nw8.d": "At GTC 2024, NVIDIA's CEO described a shift from file-cabinet data centers to AI factories that manufacture a new commodity at scale: intelligence. Compute and power — not chips — are becoming the binding constraint. Industry commentary, not an endorsement of OMC. Related analysis →",
+  "nw9.t": "DCF forum launches the GPU pricing deep-dive series",
+  "nw9.d": "New on forum.omc.network: a Pricing Watch series covering the real cost of a training run, H100 rate spreads between hyperscalers and decentralized marketplaces, and the reserved-vs-spot arbitrage. No sponsors, no affiliate links — the methodology is published with every piece.",
+  "nw10.t": "Industry voice: Vitalik Buterin — decentralized computing belongs in the d/acc toolbox",
+  "nw10.d": "In his November 2024 essay “d/acc”, the Ethereum founder argues that open, verifiable and decentralized computing is a defensive technology worth building — including markets that route idle GPUs to real workloads. Industry commentary, not an endorsement of OMC. Related analysis →",
+  "nw11.t": "Industry voice: Sam Altman — the cost of intelligence trends toward the cost of energy",
+  "nw11.d": "In “The Intelligence Age” (September 2024), OpenAI's CEO argues that intelligence becomes a utility as its cost falls toward the price of energy — making compute supply and power access the hard constraints. Industry commentary, not an endorsement of OMC. Related analysis →"
 };

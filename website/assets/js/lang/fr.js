@@ -374,7 +374,7 @@ window.I18N.fr = {
   /* ===== news page ===== */
   "nw.eyebrow": "Nouveautés du projet",
   "nw.title": "Actualités et annonces",
-  "nw.sub": "Mises à jour officielles de l'équipe principale OMC : jalons du testnet, campagnes d'airdrop, avancement technique et gouvernance.",
+  "nw.sub": "Les mises à jour officielles de l'équipe OMC — jalons du testnet, campagnes d'airdrop, progrès techniques, actualités de l'écosystème et tribunes du secteur.",
   "nw.all": "Tout",
   "nw.dev": "Ingénierie",
   "nw.airdrop": "Airdrop",
@@ -402,5 +402,17 @@ window.I18N.fr = {
   "nw5.t": "Feuille de route mise à jour : la phase 1 couvre Q4 2026 – Q1 2027",
   "nw5.d": "La phase 1 couvre le déploiement des contrats L2, le client de nœud open source, le testnet public et l'airdrop communautaire de 2 %. Le mainnet et le minage de calcul suivent en Q2–Q3 2027, avec le framework ZK-ML et la gouvernance DAO complète à partir de Q4 2027.",
   "nw6.t": "Alerte anti-arnaque : l'airdrop est 100 % gratuit",
-  "nw6.d": "Nous ne demandons jamais votre phrase de récupération, votre clé privée ni aucun paiement au-delà des frais de réseau. Ne faites confiance qu'aux liens publiés sur ce site et à nos comptes vérifiés — tout contrat nommé OMC hors annonces officielles est frauduleux."
+  "nw6.d": "Nous ne demandons jamais votre phrase de récupération, votre clé privée ni aucun paiement au-delà des frais de réseau. Ne faites confiance qu'aux liens publiés sur ce site et à nos comptes vérifiés — tout contrat nommé OMC hors annonces officielles est frauduleux.",
+
+  "nw.vo": "Tribune du secteur",
+  "nw7.t": "L'écosystème passe à trois sites : le forum DCF et AITop en ligne",
+  "nw7.d": "L'écosystème OMC couvre désormais omc.network, top.omc.network (classements indépendants d'outils d'IA, sans affiliation) et forum.omc.network — le Decentralized Compute Forum, avec des essais de fond et des commentaires ouverts. Les trois sites sont interconnectés.",
+  "nw8.t": "Tribune : Jensen Huang — les data centers deviennent des « usines à IA »",
+  "nw8.d": "Lors du GTC 2024, le PDG de NVIDIA a décrit la mutation du data center « meuble de classement » en usine à IA produisant à grande échelle une nouvelle marchandise : l'intelligence. Le goulot d'étranglement n'est plus la puce, mais le calcul et l'électricité. Commentaire du secteur ; ne constitue pas un soutien à OMC. Analyse associée →",
+  "nw9.t": "Le forum DCF lance la série de fond sur les prix des GPU",
+  "nw9.d": "Nouveau sur forum.omc.network : la série Pricing Watch couvre le coût réel d'un entraînement, l'écart de prix H100 entre hyperscalers et marchés décentralisés, et l'arbitrage réservé vs spot. Sans sponsors ni liens d'affiliation — méthodologie publiée avec chaque article.",
+  "nw10.t": "Tribune : Vitalik Buterin — le calcul décentralisé fait partie de la boîte à outils d/acc",
+  "nw10.d": "Dans son essai « d/acc » (novembre 2024), le fondateur d'Ethereum défend le calcul ouvert, vérifiable et décentralisé comme technologie défensive — y compris les marchés qui acheminent les GPU inutilisés vers de vraies charges de travail. Commentaire du secteur ; ne constitue pas un soutien à OMC. Analyse associée →",
+  "nw11.t": "Tribune : Sam Altman — le coût de l'intelligence tend vers celui de l'énergie",
+  "nw11.d": "Dans « The Intelligence Age » (septembre 2024), le PDG d'OpenAI soutient que l'intelligence devient un service public à mesure que son coût tend vers le prix de l'électricité — l'offre de calcul et l'accès à l'énergie restent les contraintes les plus dures. Commentaire du secteur ; ne constitue pas un soutien à OMC. Analyse associée →"
 };

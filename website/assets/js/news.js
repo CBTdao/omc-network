@@ -10,7 +10,7 @@
   if (!list) return;
 
   var LANGS = { en: "en-US", zh: "zh-CN", ja: "ja-JP", es: "es-ES", ko: "ko-KR", pt: "pt-BR", fr: "fr-FR" };
-  var KIND_KEY = { dev: "nw.dev", airdrop: "nw.airdrop", eco: "nw.eco", gov: "nw.gov" };
+  var KIND_KEY = { dev: "nw.dev", airdrop: "nw.airdrop", eco: "nw.eco", gov: "nw.gov", vo: "nw.vo" };
   var active = "all";
 
   function T(k, p) { return window.i18nT ? window.i18nT(k, p) : k; }
