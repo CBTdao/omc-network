@@ -32,7 +32,7 @@ window.OMC_NEWS = [
     kind: "airdrop",
     t: "nw2.t",
     d: "nw2.d",
-    href: "airdrop.html"
+    href: "/airdrop"
   },
   {
     id: "n3",
@@ -57,7 +57,7 @@ window.OMC_NEWS = [
     kind: "airdrop",
     t: "nw6.t",
     d: "nw6.d",
-    href: "airdrop.html"
+    href: "/airdrop"
   },
   {
     id: "n7",

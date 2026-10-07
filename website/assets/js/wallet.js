@@ -183,7 +183,7 @@
       '  </div>',
       onNet ? "" : '  <button class="wl-menu-item" id="wlSwitch" data-i18n="wl.switch_net">Switch to BSC Testnet</button>',
       '  <a class="wl-menu-item" href="' + EXPLORER + '/address/' + s.address + '" target="_blank" rel="noopener" data-i18n="wl.explorer">View on BscScan ↗</a>',
-      '  <a class="wl-menu-item" href="airdrop.html" data-i18n="wl.open_airdrop">Open airdrop page →</a>',
+      '  <a class="wl-menu-item" href="/airdrop" data-i18n="wl.open_airdrop">Open airdrop page →</a>',
       '  <button class="wl-menu-item danger" id="wlOut" data-i18n="wl.signout">Sign out</button>',
       '</div>'
     ].join("");
