@@ -233,6 +233,17 @@ python -m http.server 8080
 
 ## 🤝 Contributing
 
+## 🧩 Ecosystem
+
+OMC runs a small editorial network alongside the protocol site — independent in voice, disclosed in writing on every page:
+
+| Property | URL | What it is |
+|---|---|---|
+| **AITop** | [top.omc.network](https://top.omc.network) | AI tool comparisons and rankings — one table per question, 37 pages |
+| **DCF** | [forum.omc.network](https://forum.omc.network) | Decentralized Compute Forum — GPU market analysis, a 12-network comparison tracker, and hands-on testnet guides |
+
+---
+
 We welcome contributions. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ---
@@ -241,6 +252,10 @@ We welcome contributions. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before 
 
 | | |
 |---|---|
+| Website | [omc.network](https://omc.network) |
+| Testnet & node onboarding | [omc.network/testnet](https://omc.network/testnet) |
+| AI tool comparisons (AITop) | [top.omc.network](https://top.omc.network) |
+| Compute research forum (DCF) | [forum.omc.network](https://forum.omc.network) |
 | X / Twitter | [@Omniverse_Depin](https://x.com/Omniverse_Depin) |
 | Telegram | [t.me/OmniverseCompute](https://t.me/OmniverseCompute) |
 | Test Contract | [`0x3C7EDae9...dE7Cc5`](https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5) |
