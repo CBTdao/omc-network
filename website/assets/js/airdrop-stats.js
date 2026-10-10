@@ -24,8 +24,8 @@ window.OMC_STATS = {
   pool: 20000000,                                // OMC reserved for the airdrop
   perEntry: 20,                                  // OMC per entry
   totalEntries: 1000000,                         // pool ÷ perEntry
-  startAt: "2026-11-01T00:00:00+08:00",
-  endAt: "2027-01-01T23:59:59+08:00",
+  startAt: "2027-01-01T00:00:00+08:00",
+  endAt: "2027-04-01T23:59:59+08:00",
   refreshMs: 6000,                               // poll / advance cadence
   maxRows: 10
 };

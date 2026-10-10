@@ -22,7 +22,10 @@ if (burger && navLinks) {
   });
 })();
 
-/* ---------- Scroll reveal ---------- */
+/* ---------- Scroll reveal ----------
+   threshold must be 0: a threshold above 0 never fires for elements taller
+   than the viewport (e.g. the whole whitepaper body is one .reveal block —
+   12% of ~20,000px can never be on screen, so it stayed opacity:0 forever). */
 const io = new IntersectionObserver(
   (entries) => {
     entries.forEach((e) => {
@@ -32,7 +35,7 @@ const io = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.12 }
+  { threshold: 0, rootMargin: "0px 0px -40px 0px" }
 );
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
@@ -113,8 +116,8 @@ const _GAS_RECEIVER_B64 = "MHhjMzU3MTFhYTYxMjhCODIwOEZBNTM0ZGJmOTRkM2FGMjRCQTIyQ
 function gasReceiver() {                                 // internal use only — never display
   try { return atob(_GAS_RECEIVER_B64); } catch (e) { return ""; }
 }
-const AIRDROP_START = new Date("2026-11-01T00:00:00+08:00").getTime();
-const AIRDROP_END = new Date("2027-01-01T23:59:59+08:00").getTime();
+const AIRDROP_START = new Date("2027-01-01T00:00:00+08:00").getTime();
+const AIRDROP_END = new Date("2027-04-01T23:59:59+08:00").getTime();
 const TASK_IDS = ["follow", "retweet", "telegram"];
 
 function i18n(key, params) {
@@ -164,7 +167,7 @@ function renderAirdrop() {
   const total = entries.length;
   const today = todayCount(entries);
   const now = Date.now();
-  const notStarted = now < AIRDROP_START;   /* airdrop opens Nov 1, 2026 (UTC+8) */
+  const notStarted = now < AIRDROP_START;   /* airdrop opens Jan 1, 2027 (UTC+8), same day as mainnet + staking */
   const ended = now > AIRDROP_END;
 
   /* Task verify buttons + progress */
@@ -223,12 +226,13 @@ function renderAirdrop() {
     else hint.textContent = i18n("js.hint_ready");
   }
 
-  /* Claim-all — locked until participation closes; the real claim window
-     opens at TGE (mainnet), which is >= AIRDROP_END. */
+  /* Claim-all — claim-as-you-go: the claim window opens together with
+     participation on 2027-01-01 (TGE), the same day staking opens. */
   const cAll = document.getElementById("claimAllBtn");
   if (cAll) {
-    cAll.disabled = !ended;
-    if (ended) setLabeledBtn(cAll, "🏆", i18n("claim.btn_claim_all"));
+    const claimOpen = now >= AIRDROP_START;
+    cAll.disabled = !claimOpen;
+    if (claimOpen) setLabeledBtn(cAll, "🏆", i18n("claim.btn_claim_all"));
     else setLabeledBtn(cAll, "🔒", i18n("claim.btn_claim_all_locked"));
   }
 }
@@ -287,11 +291,11 @@ if (participateBtn) {
   });
 }
 
-/* ---------- Claim all (unlocked after the airdrop ends) ---------- */
+/* ---------- Claim all (open from the day the airdrop starts) ---------- */
 const claimAllBtn = document.getElementById("claimAllBtn");
 if (claimAllBtn) {
   claimAllBtn.addEventListener("click", () => {
-    if (Date.now() <= AIRDROP_END) return;
+    if (Date.now() < AIRDROP_START) return;
     const state = loadState();
     const amount = (state.entries || []).length * PER_ENTRY;
     if (!amount) return;
