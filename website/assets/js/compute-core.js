@@ -34,9 +34,17 @@
   };
 
   /* Function selectors — keccak256(signature)[0..4].
-     Generated 2026-10-10 with ethers.keccak256 against the compiled ABI.
-     Regenerate with contracts/tools/compile.js after ANY ABI change: a
-     stale selector silently reverts on write and returns garbage on read. */
+     Generated 2026-10-10 with ethers (Interface(...).getFunction(n).selector)
+     against the compiled ABI in contracts/artifacts/. Regenerate with
+     contracts/tools/compile.js after ANY ABI change: a stale selector silently
+     reverts on write and returns garbage on read.
+
+     Name note: the market contract names its getters after the constants they
+     return (PROTOCOL_FEE_BPS(), DISPUTE_WINDOW()), not protocolFeeBps(). The
+     keys below are the REAL on-chain names. Some selectors coincide across
+     contracts by accident of sharing a signature (market protocolStats() and
+     staking protocolStats() are both 0x5cba5713 because both were declared
+     with the same argument list) — that is fine, the address disambiguates. */
   var SEL = {
     /* ERC-20 */
     balanceOf: "0x70a08231",
@@ -47,24 +55,49 @@
     claimFaucet: "0x4fe15335",
     faucetReadyAt: "0xc8f4bbc7",
     faucetClaims: "0xedc7a3ac",
-    maxFaucetClaims: "0x3966c493",
     /* staking — read through, never duplicated */
     minStakeForTier: "0x128285cf",
     nodeSummary: "0xfd371224",
     nodeCount: "0x6da49b83",
+    TIER_COUNT: "0x36331c8f",
     stakingStats: "0x5cba5713",
-    /* market */
+    /* market — requester side */
     createJob: "0x31c27fd5",
     cancelJob: "0x1dffa3dc",
     dispute: "0x86d6282c",
     getJob: "0xbf22c457",
     jobCount: "0x4c5d8a0f",
+    nextJobId: "0xb0c2aa5e",
     isEligible: "0xbfcbd230",
     providerStanding: "0xd65354fd",
+    /* market — scheduler side. These four are onlyScheduler; the page never
+       calls them, but decoding their events / reading their effects needs the
+       names, and the scheduler service shares this file's encoder. */
+    assign: "0xe07d3b5a",
+    confirmDelivery: "0x42e3578e",
+    settle: "0x9a9c29f6",
+    fail: "0x7f44f581",
+    resolveDispute: "0x34b25ee2",
+    /* market — views */
     marketStats: "0x5cba5713",
-    protocolFeeBps: "0xbe378228",
-    disputeWindow: "0xf585dc57"
+    totalEscrowed: "0xf9168231",
+    totalSettledVolume: "0x779f6f4c",
+    totalFees: "0x13114a9d",
+    assignedJobCount: "0x5f7adaf5",
+    settledJobs: "0xefcc8831",
+    failedJobs: "0xc6730ea0",
+    scheduler: "0xd1ad17bf",
+    paused: "0x5c975abb",
+    protocolFeeBps: "0xbe378228",   /* PROTOCOL_FEE_BPS() */
+    disputeWindow: "0xf585dc57",    /* DISPUTE_WINDOW()   */
+    omcFeeDiscountBps: "0x2d3be913" /* OMC_FEE_DISCOUNT_BPS() */
   };
+
+  /* JobState — must match the enum order in OMCComputeMarket.sol. A job in
+     state >= SETTLED is terminal; ASSIGNED/DELIVERED means a provider holds
+     it and the requester is waiting, not that anything went wrong. */
+  var JOB_STATE = ["NONE", "ESCROWED", "ASSIGNED", "DELIVERED", "SETTLED",
+                   "DISPUTED", "REFUNDED", "CANCELLED"];
 
   /* published, contract-level constants — read back at runtime by loadParams() */
   var PARAMS = {
@@ -258,7 +291,20 @@
     },
     marketStats: function () { return SEL.marketStats; },
     protocolFeeBps: function () { return SEL.protocolFeeBps; },
-    disputeWindow: function () { return SEL.disputeWindow; }
+    disputeWindow: function () { return SEL.disputeWindow; },
+    omcFeeDiscountBps: function () { return SEL.omcFeeDiscountBps; },
+
+    /* ---- scheduler-side writes (onlyScheduler). The /ai-tools page never
+       signs these; the scheduler service reuses this file so there is exactly
+       one encoder in the project. Keeping them here means the service cannot
+       drift from the page on a selector or an argument order. ---- */
+    assign: function (id, provider) { return SEL.assign + numArg(BigInt(id)) + addrArg(provider); },
+    confirmDelivery: function (id, resultHash) { return SEL.confirmDelivery + numArg(BigInt(id)) + bytes32Arg(resultHash); },
+    settle: function (id, amount) { return SEL.settle + numArg(BigInt(id)) + numArg(amount); },
+    fail: function (id, reason) { return SEL.fail + numArg(BigInt(id)) + numArg(BigInt(reason)); },
+    resolveDispute: function (id, inFavourOfProvider) {
+      return SEL.resolveDispute + numArg(BigInt(id)) + word(inFavourOfProvider ? 1 : 0);
+    }
   };
 
   /* ---------------- decoders ---------------- */
@@ -284,6 +330,26 @@
       specHash: "0x" + hex.slice(13 * 64, 14 * 64),
       resultHash: "0x" + hex.slice(14 * 64, 15 * 64)
     };
+  }
+
+  /* A delivered job carries a non-zero resultHash. That hash is the ONLY
+     thing the chain knows about the output — the image itself has to be
+     fetched out of band. The status line below is what the page shows so a
+     requester can tell "waiting" apart from "done" without guessing. */
+  var ZERO32 = "0x" + "0".repeat(64);
+
+  function jobStateName(state) {
+    return JOB_STATE[state] || ("UNKNOWN(" + state + ")");
+  }
+
+  function hasResult(job) {
+    return !!(job && job.resultHash && job.resultHash !== ZERO32);
+  }
+
+  /* terminal states: no further chain movement is possible without the
+     requester or the arbiter acting */
+  function isTerminal(job) {
+    return !!job && job.state >= 4; /* SETTLED and beyond */
   }
 
   /* providerStanding(address,uint8,uint8) -> (bool,uint256,uint256,uint256) */
@@ -507,6 +573,11 @@
     decMarketStats: decMarketStats,
     decStakingStats: decStakingStats,
     decWord: decWord,
+    JOB_STATE: JOB_STATE,
+    jobStateName: jobStateName,
+    hasResult: hasResult,
+    isTerminal: isTerminal,
+    ZERO32: ZERO32,
     fmt: fmt,
     fmtDuration: fmtDuration,
     parseAmount: parseAmount,
