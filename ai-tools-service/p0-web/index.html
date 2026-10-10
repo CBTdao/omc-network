@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OMC AI 图像超分 · P0 内测</title>
+<style>
+:root{--bg:#0b1424;--card:#111e33;--line:#243a58;--tx:#e8eef8;--mut:#8fa3bd;--ac:#4ea8ff;--ok:#35c98b;--bad:#ff7a7a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.7 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;padding:20px}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-size:20px;margin:6px 0 4px}
+.sub{color:var(--mut);font-size:13px;margin-bottom:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+#drop{border:2px dashed var(--line);border-radius:12px;padding:36px 20px;text-align:center;cursor:pointer;transition:.18s}
+#drop:hover,#drop.over{border-color:var(--ac);background:rgba(78,168,255,.06)}
+#drop b{color:var(--ac)}
+#drop .hint{color:var(--mut);font-size:13px;margin-top:8px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:14px}
+label{font-size:13px;color:var(--mut)}
+select,input[type=range]{background:#0a1120;border:1px solid var(--line);color:var(--tx);border-radius:7px;padding:6px 10px;font-size:13px}
+button{background:var(--ac);color:#06121f;border:0;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--ac);border:1px solid var(--ac)}
+#cmp{position:relative;margin-top:16px;user-select:none;overflow:hidden;border-radius:10px;border:1px solid var(--line);display:none;background:#0a1120}
+#cmp img{display:block;width:100%;height:auto;pointer-events:none}
+#cmp .after{position:absolute;inset:0;overflow:hidden;width:50%}
+#cmp .after img{width:100%;height:100%;object-fit:cover}
+#handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:var(--ac);cursor:ew-resize;transform:translateX(-50%)}
+#handle::after{content:"⇔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;line-height:34px;text-align:center;background:var(--ac);color:#06121f;border-radius:50%;font-size:15px;font-weight:700}
+.badge{position:absolute;top:10px;font-size:11px;background:rgba(6,18,31,.8);color:#cfe4ff;padding:3px 9px;border-radius:6px}
+.badge.l{left:10px}.badge.r{right:10px}
+#stat{font-size:13px;color:var(--mut);margin-top:12px;min-height:22px;font-family:Consolas,monospace}
+#stat b{color:var(--ok)}
+.err{color:var(--bad)}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(78,168,255,.3);border-top-color:var(--ac);border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes s{to{transform:rotate(360deg)}}
+.note{font-size:12px;color:var(--mut);margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>OMC AI 图像超分 · P0 内测</h1>
+  <div class="sub">本地 GPU 推理 · Real-ESRGAN x4 · 不接钱包、不上传云端 · 仅用于验证链路</div>
+
+  <div class="panel">
+    <div id="drop">
+      <div><b>点击选择</b> 或把图片拖到这里</div>
+      <div class="hint">支持 PNG / JPG · 建议先用小图试（4GB 显存限制）</div>
+    </div>
+    <input type="file" id="file" accept="image/*" hidden>
+
+    <div class="row">
+      <label>切块大小 <select id="tile">
+        <option value="128">128（省显存，慢）</option>
+        <option value="256" selected>256（推荐）</option>
+        <option value="384">384（快，吃显存）</option>
+      </select></label>
+      <button id="go" disabled>开始超分</button>
+      <button id="dl" class="ghost" disabled>下载结果</button>
+    </div>
+
+    <div id="stat"></div>
+
+    <div id="cmp">
+      <img id="before" alt="原图">
+      <div class="after"><img id="after" alt="超分后"></div>
+      <div class="badge l">原图</div>
+      <div class="badge r">4x 超分</div>
+      <div id="handle"></div>
+    </div>
+
+    <div class="note">
+      P0 验证件：跑通「上传 → 本地推理 → 下载」。<br>
+      后续阶段会替换为链上任务（createJob → 节点接单 → settle），此处不涉及任何代币。
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var API = location.origin.replace(/\/$/, "");
+  if (location.protocol === "file:") API = "http://127.0.0.1:8787";
+  else if (location.port !== "8787") API = "http://127.0.0.1:8787";
+
+  var $ = function(id){ return document.getElementById(id); };
+  var fileInput = $("file"), drop = $("drop"), go = $("go"), dl = $("dl");
+  var stat = $("stat"), cmp = $("cmp"), before = $("before"), after = $("after");
+  var handle = $("handle");
+  var current = null;      // 原始 File
+  var resultB64 = null;    // 输出 dataURL
+
+  // ---- 健康检查 ----
+  fetch(API + "/api/health").then(function(r){ return r.json(); }).then(function(j){
+    if (j.ok) stat.innerHTML = "服务就绪 · 推理后端 <b>" + j.provider + "</b> · 模型 " + j.model;
+    else stat.innerHTML = '<span class="err">服务异常：' + (j.error||"") + "</span>";
+  }).catch(function(){
+    stat.innerHTML = '<span class="err">连不上本地推理服务。请先启动 p0-worker/server.py</span>';
+  });
+
+  // ---- 选文件 ----
+  drop.addEventListener("click", function(){ fileInput.click(); });
+  ["dragenter","dragover"].forEach(function(e){
+    drop.addEventListener(e, function(ev){ ev.preventDefault(); drop.classList.add("over"); });
+  });
+  ["dragleave","drop"].forEach(function(e){
+    drop.addEventListener(e, function(ev){ ev.preventDefault(); drop.classList.remove("over"); });
+  });
+  drop.addEventListener("drop", function(ev){
+    var f = ev.dataTransfer.files && ev.dataTransfer.files[0];
+    if (f) takeFile(f);
+  });
+  fileInput.addEventListener("change", function(){
+    if (fileInput.files[0]) takeFile(fileInput.files[0]);
+  });
+
+  function takeFile(f){
+    if (!/^image\//.test(f.type)) { alert("请选择图片文件"); return; }
+    current = f;
+    resultB64 = null;
+    dl.disabled = true;
+    cmp.style.display = "none";
+    var url = URL.createObjectURL(f);
+    before.src = url;
+    go.disabled = false;
+    stat.innerHTML = "已选择：" + f.name + " · " + Math.round(f.size/1024) + " KB";
+  }
+
+  // ---- 提交 ----
+  go.addEventListener("click", function(){
+    if (!current) return;
+    go.disabled = true;
+    stat.innerHTML = '<span class="spin"></span>推理中（首次会含模型预热）…';
+
+    var fr = new FileReader();
+    fr.onload = function(){
+      var t0 = Date.now();
+      fetch(API + "/api/upscale", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ image: fr.result, tile: parseInt($("tile").value,10), pad: 16 })
+      }).then(function(r){ return r.json(); }).then(function(j){
+        if (!j.ok) throw new Error(j.error || "处理失败");
+        resultB64 = j.image;
+        after.src = j.image;
+        // 等图片解码完再显示，避免闪
+        after.onload = function(){
+          cmp.style.display = "block";
+          handle.style.left = "50%";
+          document.querySelector("#cmp .after").style.width = "50%";
+        };
+        var total = Date.now() - t0;
+        stat.innerHTML = "完成 · <b>" + j.in_w + "×" + j.in_h + "</b> → <b>" + j.out_w + "×" + j.out_h +
+          "</b> · 推理 " + (j.infer_ms/1000).toFixed(2) + "s · 端到端 " + (total/1000).toFixed(2) + "s · " + j.provider;
+        dl.disabled = false;
+        go.disabled = false;
+      }).catch(function(e){
+        stat.innerHTML = '<span class="err">失败：' + e.message + "</span>";
+        go.disabled = false;
+      });
+    };
+    fr.readAsDataURL(current);
+  });
+
+  // ---- 下载 ----
+  dl.addEventListener("click", function(){
+    if (!resultB64) return;
+    var name = (current ? current.name.replace(/\.[^.]+$/, "") : "image") + "_x4.png";
+    var a = document.createElement("a");
+    a.href = resultB64; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  // ---- 对比滑块 ----
+  var dragging = false;
+  function move(clientX){
+    var r = cmp.getBoundingClientRect();
+    var p = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+    handle.style.left = (p*100) + "%";
+    document.querySelector("#cmp .after").style.width = (p*100) + "%";
+  }
+  handle.addEventListener("mousedown", function(e){ dragging = true; e.preventDefault(); });
+  document.addEventListener("mousemove", function(e){ if (dragging) move(e.clientX); });
+  document.addEventListener("mouseup", function(){ dragging = false; });
+  handle.addEventListener("touchstart", function(e){ dragging = true; }, {passive:true});
+  document.addEventListener("touchmove", function(e){ if (dragging) move(e.touches[0].clientX); }, {passive:true});
+  document.addEventListener("touchend", function(){ dragging = false; });
+})();
+</script>
+</body>
+</html>

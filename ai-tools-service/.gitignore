@@ -1,0 +1,17 @@
+# Local Python environment — recreate with: pip install -r requirements.txt
+.venv/
+
+# Model weights — the served copy lives at website/assets/models/ in the site repo
+models/
+
+# Generated upscale output and job scratch space
+output/
+.p1-jobs/
+
+# Python noise
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# runtime logs
+*.log
