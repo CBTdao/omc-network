@@ -28,7 +28,7 @@
     ],
     explorer: "https://testnet.bscscan.com",
     token: "0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6",
-    staking: "0x5B993101885Cb5704318b10554fdA31f3c816b95",
+    staking: "0xA49537fA46172693c553E9A1824CdF7CA810AAFc",
     market: "0x5795393f33F6E27797499b1C61422ACeF0555709",
     deployBlock: 135890000
   };
