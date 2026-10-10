@@ -198,9 +198,9 @@
           <div class="stk-panel" style="margin-top:20px;">
             <h3 data-i18n="stk.h_tiers">Tier ladder</h3>
             <p class="p-sub" data-i18n="stk.h_tiers_sub">Every tier minimum is read live from the contract, so this table can never drift from the code.</p>
-            <div class="note" data-i18n="stk.tier_scope" style="margin-bottom:12px;">These amounts are the <b>testnet</b> ladder. On mainnet the minimum follows Whitepaper §7.5 — a USD base deposit × tier multiplier ÷ OMC TWAP — so it does not drift with token volatility. The fixed ladder is a testnet convenience.</div>
+            <div class="note" data-i18n="stk.tier_scope" style="margin-bottom:12px;">This is the staking ladder for the whole protocol — the same five tiers, at the same OMC minimums, on testnet and on mainnet. The table is read live from the contract, so it cannot drift from what is deployed.</div>
             <table class="tier-table">
-              <thead><tr><th data-i18n="stk.th_tier">Tier</th><th data-i18n="stk.th_min">Minimum stake</th></tr></thead>
+              <thead><tr><th data-i18n="stk.th_tier">Tier</th><th data-i18n="stk.th_hw">Hardware</th><th data-i18n="stk.th_min">Minimum stake</th></tr></thead>
               <tbody id="stkTierTable"></tbody>
             </table>
           </div>

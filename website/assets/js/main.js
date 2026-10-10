@@ -114,7 +114,7 @@ function gasReceiver() {                                 // internal use only â€
   try { return atob(_GAS_RECEIVER_B64); } catch (e) { return ""; }
 }
 const AIRDROP_START = new Date("2026-11-01T00:00:00+08:00").getTime();
-const AIRDROP_END = new Date("2026-12-31T23:59:59+08:00").getTime();
+const AIRDROP_END = new Date("2027-01-01T23:59:59+08:00").getTime();
 const TASK_IDS = ["follow", "retweet", "telegram"];
 
 function i18n(key, params) {

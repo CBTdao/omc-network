@@ -178,7 +178,17 @@
   }
 
   /* the ladder is read straight from the contract one rung at a time, so the
-     table can never drift from the deployed minimums */
+     table can never drift from the deployed minimums. The hardware column is
+     static copy: it tells the reader which machine each rung is priced for,
+     which is the whole point of calling a tier a hardware class. */
+  var HW = {
+    1: "stk.hw1",
+    2: "stk.hw2",
+    3: "stk.hw3",
+    4: "stk.hw4",
+    5: "stk.hw5"
+  };
+
   function paintTiers() {
     var wrap = $("stkTiers");
     if (wrap) {
@@ -196,7 +206,7 @@
       var rows = "";
       for (var i = 1; i <= state.tierCount; i++) {
         rows += '<tr class="' + (i === state.tier ? "cur" : "") + '"><td>Tier ' + i + "</td><td>" +
-          S.fmt(tierMin(i), 0) + " tOMC</td></tr>";
+          T(HW[i]) + "</td><td>" + S.fmt(tierMin(i), 0) + " tOMC</td></tr>";
       }
       tbl.innerHTML = rows;
     }

@@ -25,7 +25,7 @@ window.OMC_STATS = {
   perEntry: 20,                                  // OMC per entry
   totalEntries: 1000000,                         // pool ÷ perEntry
   startAt: "2026-11-01T00:00:00+08:00",
-  endAt: "2026-12-31T23:59:59+08:00",
+  endAt: "2027-01-01T23:59:59+08:00",
   refreshMs: 6000,                               // poll / advance cadence
   maxRows: 10
 };

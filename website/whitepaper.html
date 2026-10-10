@@ -227,6 +227,7 @@
           <tr><td>Treasury and liquidity</td><td>5%</td><td>50,000,000</td><td>50% at TGE for initial liquidity; the remainder managed by the DAO Treasury</td></tr>
           </tbody></table></div>
           <p>The airdrop is listed separately from investor allocations. Circulating supply at TGE is about 65.5 million OMC (6.55% of maximum supply): 20M airdrop, 5M institutional, 8M private, 7.5M ecosystem and 25M treasury liquidity. A public vesting dashboard shows locked and unlocked balances for every category.</p>
+          <p><strong>TGE, mainnet launch, staking and the airdrop claim window open on the same date (2027 Q1, January 1).</strong> This is deliberate, because the OMC a participant needs in order to stake is the OMC they accumulate during the airdrop campaign: the campaign runs from 2026-11-01 to 2027-01-01, and on the day it closes the accumulated balance becomes claimable and immediately stakeable. A wallet that has maxed out the airdrop holds 100 OMC — exactly the tier-2 staking minimum — so a participant can go from zero to a registered, staked node without buying tokens first.</p>
           <h3>7.4 Emission Schedule for Node Rewards</h3>
           <p>The 500,000,000 OMC reward pool is released in <strong>equal annual instalments over 10 years</strong>. The ceiling is the same in every year, and within a year release is linear by day. There is no halving step and no epoch structure: a provider that joins in year 7 is mining against the same annual ceiling as one that joined in year 1.</p>
           <div class="table-wrap">
@@ -250,21 +251,22 @@
           <p>The schedule is deliberately flat. A halving curve front-loads roughly three quarters of the pool into the first four years and then leaves late-joining providers with a fraction of the early rate; a flat curve keeps the reward rate for a given unit of verified work legible for the whole decade, which is what a provider buying hardware to run for several years actually needs to underwrite. The supply that is not released in the early years is not removed from the pool — it is simply released later, so the total is unchanged at 500,000,000 OMC over 10 years.</p>
           <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. Because the annual ceiling is flat, an under-utilized network accumulates a smaller reserve per year than an exponentially decaying schedule would, and that reserve can only re-enter circulation by DAO vote. This ties new supply to real usage rather than to the calendar.</p>
           <h3>7.5 Staking and Slashing</h3>
-          <p>Nodes must stake OMC before receiving jobs. The required stake is set in USD terms and converted at a time-weighted average price, so that it does not drift with token volatility:</p>
-          <p><code>Staking_Min (OMC) = Base_Deposit_USD × Tier_Multiplier ÷ OMC_TWAP</code></p>
+          <p>Nodes must stake OMC before receiving jobs. The required stake is a published ladder: five hardware tiers, each with its own fixed minimum. The same ladder is used on the testnet and on mainnet, so a node that registers on the testnet is already positioned for the tier it will hold at launch.</p>
           <div class="table-wrap">
           <table>
           <thead><tr>
           <th>Tier</th>
           <th>Hardware</th>
-          <th>Tier_Multiplier</th>
+          <th>Minimum stake (OMC)</th>
           </tr></thead><tbody>
-          <tr><td>1</td><td>Consumer GPUs (up to 24 GB VRAM)</td><td>1× (<strong>proposed</strong>)</td></tr>
-          <tr><td>2</td><td>Workstation and professional GPUs</td><td>2× (<strong>proposed</strong>)</td></tr>
-          <tr><td>3</td><td>Data-center GPUs (80 GB VRAM and above)</td><td>4× (<strong>proposed</strong>)</td></tr>
+          <tr><td>1</td><td>Consumer GPU, up to 24 GB VRAM (RTX 3090 / 4090 class)</td><td>20 (<strong>proposed</strong>)</td></tr>
+          <tr><td>2</td><td>Workstation / professional GPU (RTX A6000, L40S class)</td><td>100 (<strong>proposed</strong>)</td></tr>
+          <tr><td>3</td><td>Data-center GPU, 80 GB class (A100 / H100 single card)</td><td>500 (<strong>proposed</strong>)</td></tr>
+          <tr><td>4</td><td>Multi-GPU data-center node (2–8 accelerators)</td><td>1,000 (<strong>proposed</strong>)</td></tr>
+          <tr><td>5</td><td>Cluster-scale deployment (multi-node)</td><td>5,000 (<strong>proposed</strong>)</td></tr>
           </tbody></table></div>
-          <p>Base_Deposit_USD is $200 (<strong>proposed</strong>), set before mainnet and adjustable by governance.</p>
-          <p>The mechanism matters more than the numbers. Because the requirement is denominated in USD and converted at TWAP, the <em>economic</em> size of the deposit stays fixed while the OMC amount floats — a provider's exposure does not change just because the token moved. A hard-coded token amount cannot do this: it silently becomes a different economic requirement every time the price moves, which is why the <strong>testnet</strong> ladder (a fixed 20 / 100 / 500 / 1000 / 5000 tOMC) is explicitly a testnet convenience, adopted so that the staking, registration, heartbeat and slashing paths can be exercised with faucet tokens alone. It is not the mainnet rule and is not a template for it.</p>
+          <p>The steps are deliberately non-linear. Tier 1 is priced at one airdrop entry (20 OMC) and tier 2 at one full airdrop (5 × 20 = 100 OMC), so a wallet that maxes out the community airdrop can reach tier 2 without buying anything. Tiers 3–5 escalate hard, because a node at those levels is underwriting data-center and cluster-scale capacity and a proportionally larger slashing exposure — the tiers separate provider classes rather than pricing a small step up in hardware.</p>
+          <p>Amounts are <strong>proposed</strong> and adjustable by governance before mainnet. The USD value of a given tier therefore moves with the token price; the ladder fixes the OMC amount, not the dollar amount, and governance is expected to revisit the rungs if the token's price range changes materially.</p>
           <p>Slashing triggers and <strong>proposed</strong> penalties (percent of stake):</p>
           <div class="table-wrap">
           <table>
@@ -302,7 +304,7 @@
           <tr><td>Supported workloads</td><td>Broad, including multi-node training</td><td>Broad, including multi-node clusters</td><td>Mainly single-node inference, fine-tuning and rendering; multi-node training is impractical</td><td>See Section 3</td></tr>
           </tbody></table></div>
           <p>Hyperscaler figures are per-GPU-hour for H100 SXM5 80GB in 8-GPU instances (AWS p5.48xlarge $6.88; Google Cloud a3-highgpu-8g $11.06; Azure ND96isr H100 v5 $12.29), spot/preemptible runs $1.95–$2.80, with 1-year commitments around −30% to −38% and 3-year around −50% to −62% (vendor published pricing pages, observed September 2026 and cross-checked against independent trackers). Decentralized network figures are ranges published across 2026 sources (decentralised.news, 2026; gpumarketdepin.com, 2026) and vary by supply and workload class. Network uptime reported for decentralized networks (Akash 99.4%, Render 99.8%, io.net 98.6%) remains below hyperscaler SLAs (99.9%–99.99%).</p>
-          <p>The characteristics OMC intends to differentiate on — verification policy by job type, USD-denominated staking, utilization-linked emissions and BNB Chain ecosystem integration — are stated here as design commitments; measured evidence will be published as the network runs.</p>
+          <p>The characteristics OMC intends to differentiate on — verification policy by job type, a published hardware-tier staking ladder, utilization-linked emissions and BNB Chain ecosystem integration — are stated here as design commitments; measured evidence will be published as the network runs.</p>
           <h2 id="sec10">10 · Roadmap</h2>
           <div class="table-wrap">
           <table>
@@ -312,9 +314,9 @@
           <th>Deliverables</th>
           <th>Status and evidence</th>
           </tr></thead><tbody>
-          <tr><td>1</td><td>Q4 2026 – Q1 2027</td><td>L2 contract deployment, open-source node client, testnet, community airdrop</td><td><strong>In progress.</strong> Testnet live on BNB Chain testnet (Chapel); token contract <code>0x3c7edae9da38b72db7ae98921ef0759d19de7cc</code>; explorer <code>testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc</code>; repository <code>github.com/CBTdao/omc-network</code>; 2% community airdrop (20,000,000 OMC) opens November 1, 2026</td></tr>
-          <tr><td>2</td><td>Q2–Q3 2027</td><td>Mainnet launch, reward emission start, Hugging Face and Blender integrations, completed audits</td><td><strong>Planned.</strong> Mainnet launch is targeted for Q2–Q3 2027; the start of reward emissions, the Hugging Face and Blender integrations and the first completed audits follow within this phase. Audit reports are published here as they are completed</td></tr>
-          <tr><td>3</td><td>2027 Q4 and later</td><td>TEE tier, zero-knowledge verification research results, DAO transition, cross-chain settlement</td><td>Planned</td></tr>
+          <tr><td>1</td><td>2026 Q4</td><td>L2 contract deployment, open-source node client, testnet, community airdrop</td><td><strong>In progress.</strong> Testnet live on BNB Chain testnet (Chapel); token contract <code>0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6</code>; staking contract <code>0x5B993101885Cb5704318b10554fdA31f3c816b95</code>; explorer <code>testnet.bscscan.com/token/0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6</code>; repository <code>github.com/CBTdao/omc-network</code>; 2% community airdrop (20,000,000 OMC) opens November 1, 2026 and runs to January 1, 2027</td></tr>
+          <tr><td>2</td><td>2027 Q1</td><td>Mainnet launch, reward emission start, airdrop claim window, staking opens, Hugging Face and Blender integrations, completed audits</td><td><strong>Planned.</strong> Mainnet opens on 2027 Q1 (January 1). The community airdrop claim window and staking open at the same moment, so the OMC a wallet accumulated during the campaign becomes claimable and stakeable together. Reward emissions, the Hugging Face and Blender integrations and the first completed audits follow within this phase. Audit reports are published here as they are completed</td></tr>
+          <tr><td>3</td><td>2027 Q2 and later</td><td>TEE tier, zero-knowledge verification research results, DAO transition, cross-chain settlement</td><td>Planned</td></tr>
           </tbody></table></div>
           <p>Each milestone will be accompanied by measurable indicators published on the dashboard: active nodes, total TFLOPS, jobs completed, verified failure rate, settled volume and average time to settlement.</p>
           <h2 id="sec11">11 · Team, Audits and Legal</h2>
