@@ -95,6 +95,10 @@ const FRONT_END_CALLS = {
     "isOverdue(address)",
     "nodeCount()",
     "market()",
+    /* the published APR ceiling: the front end shows the rate actually in
+       force, which is min(schedule, totalStake * maxAprBps / BPS / year) */
+    "effectiveEmissionPerSecond()",
+    "maxAprBps()",
   ],
   OMCComputeMarket: [
     "createJob(bytes32,uint8,uint8,uint8,uint256,uint64,bool)",

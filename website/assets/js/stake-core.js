@@ -28,7 +28,7 @@
     ],
     explorer: "https://testnet.bscscan.com",
     token: "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
-    staking: "0xD4b1bB57637eFb62016a81B584fa8BE66Fb482d6",
+    staking: "0x3226dffED51e28CEf526F8c078B2EC9a092E36e6",
     deployBlock: 135890000,
     /* Legacy points-only contract — no transfer/stake support. Kept read-only. */
     legacy: "0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5"
@@ -63,6 +63,9 @@
     tierMinStake: "0x500f1240",
     minStakeForTier: "0x128285cf",
     emissionPerSecond: "0xd1164400",
+    /* the rate actually paid, after the contract clamps emission by total
+       stake - different from the schedule whenever the ceiling binds */
+    effectiveEmissionPerSecond: "0xb5b331ff",
     workUnitReward: "0x9a0d9917",
     heartbeatInterval: "0x561a4fac",
     heartbeatGrace: "0x618f1eba",
@@ -259,6 +262,7 @@
     minStakeForTier: function (t) { return SEL.minStakeForTier + numArg(BigInt(t)); },
     tierMinStake: function (i) { return SEL.tierMinStake + numArg(BigInt(i)); },
     emissionPerSecond: function () { return SEL.emissionPerSecond; },
+    effectiveEmissionPerSecond: function () { return SEL.effectiveEmissionPerSecond; },
     workUnitReward: function () { return SEL.workUnitReward; },
     heartbeatInterval: function () { return SEL.heartbeatInterval; },
     heartbeatGrace: function () { return SEL.heartbeatGrace; },

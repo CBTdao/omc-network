@@ -82,7 +82,13 @@ function stakingContract(d, runner) {
 
 async function deploy() {
   const { wallet, balance } = await connect();
-  if (balance < ethers.parseEther("0.008")) throw new Error("deployer needs more tBNB");
+  /* ~12.3 KB of code costs 32k + 200*12595 ≈ 2.55M gas ≈ 0.00025 tBNB at the
+     0.1 gwei testnet gas price, so 0.008 tBNB was ~30x the real cost. */
+  if (balance < ethers.parseEther("0.0012")) {
+    throw new Error(
+      "deployer needs more tBNB (has " + ethers.formatEther(balance) + ", needs about 0.00025)"
+    );
+  }
 
   const d = load();
   if (d.market) {

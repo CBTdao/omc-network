@@ -8,8 +8,16 @@
  *
  * Usage:
  *   node contracts/tools/redeploy-staking.js deploy
- *   node contracts/tools/redeploy-staking.js fund      (mint + fund reward pool)
- *   node contracts/tools/redeploy-staking.js handover  (owner -> FINAL_OWNER)
+ *   node contracts/tools/redeploy-staking.js fund       (fund the reward pool)
+ *   node contracts/tools/redeploy-staking.js configure  (verifier/treasury/requester -> FINAL_OWNER)
+ *   node contracts/tools/redeploy-staking.js handover   (configure + owner -> FINAL_OWNER)
+ *
+ * `configure` and `handover` differ on one point only: who ends up owning the
+ * contract. On this testnet we deliberately keep ownership with the deployer
+ * key, because the previous staking was handed to a wallet whose private key
+ * has never been on this machine — which left every owner-only knob
+ * (setMarket, setEmissionPerSecond, setMaxAprBps) unreachable from here. The
+ * economic sinks still point at FINAL_OWNER, so the money flows are unchanged.
  */
 const fs = require("fs");
 const path = require("path");
@@ -27,7 +35,17 @@ const RPCS = [
 ];
 
 const FINAL_OWNER = "0xc35711aa6128B8208FA534dbf94d3aF24BA22B4B";
-const REWARD_FUNDING = 5_000_000n * 10n ** 18n;
+
+/* The deployer holds 4,999,970 tOMC left over from the first mint (the token
+   was handed over to FINAL_OWNER, so the deployer can no longer mint). Funding
+   the pool with the round 5,000,000 would revert for the sake of 30 tokens. */
+const REWARD_FUNDING = 4_999_000n * 10n ** 18n;
+
+/* BSC testnet gas is 0.1 gwei, and deploying ~13.9 KB of code costs
+   32k + 200*13926 ≈ 2.82M gas ≈ 0.00028 tBNB. The old floor of 0.008 tBNB was
+   ~28x the real cost and rejected a balance that comfortably covers the whole
+   migration (staking + market + ~10 wiring transactions ≈ 0.0006 tBNB). */
+const MIN_GAS = ethers.parseEther("0.0012");
 
 function artifact(name) {
   return JSON.parse(fs.readFileSync(path.join(ART, `${name}.json`), "utf8"));
@@ -72,8 +90,11 @@ async function connect() {
 
 async function deploy() {
   const { provider, wallet, balance } = await connect();
-  if (balance < ethers.parseEther("0.008")) {
-    throw new Error("deployer needs more tBNB");
+  if (balance < MIN_GAS) {
+    throw new Error(
+      "deployer needs more tBNB (has " + ethers.formatEther(balance) +
+      ", migration needs about 0.0006)"
+    );
   }
   const d = load();
   const stk = artifact("OMCStaking");
@@ -90,16 +111,48 @@ async function deploy() {
     console.log(`      tier ${t}:`, ethers.formatEther(await staking.minStakeForTier(t)), "tOMC");
   }
 
+  console.log("[check] APR ceiling");
+  const apr = await staking.maxAprBps();
+  const eff = await staking.effectiveEmissionPerSecond();
+  const ec = await staking.emissionConstraint();
+  console.log("      maxAprBps                =", apr.toString(), "bps =", Number(apr) / 100, "%");
+  console.log("      emissionPerSecond        =", ethers.formatEther(await staking.emissionPerSecond()), "tOMC/s");
+  console.log("      effectiveEmissionPerSecond =", ethers.formatEther(eff), "tOMC/s  (capped by: " + ec[1] + ")");
+
   d.prevStaking = d.staking;
   d.staking = stakingAddr;
   d.stakingTx = staking.deploymentTransaction().hash;
   d.deployedAt = new Date().toISOString();
   d.handedOverAt = null;
   d.rewardLiquidity = "0";
+  d.maxAprBps = apr.toString();
   d.tierLadder = ["20", "100", "500", "1000", "5000"];
   save(d);
   console.log("\nsaved →", DEPLOYMENTS);
   void provider;
+}
+
+/** point the economic sinks at FINAL_OWNER; ownership stays with the deployer */
+async function configure() {
+  const { wallet } = await connect();
+  const d = load();
+  const staking = new ethers.Contract(d.staking, artifact("OMCStaking").abi, wallet);
+
+  const owner = await staking.owner();
+  if (owner.toLowerCase() !== wallet.address.toLowerCase()) {
+    throw new Error("deployer is not the owner of " + d.staking + " (owner " + owner + ")");
+  }
+
+  console.log("setting verifier / treasury / requesterPool to", FINAL_OWNER);
+  await (await staking.setVerifier(FINAL_OWNER)).wait();
+  await (await staking.setTreasury(FINAL_OWNER)).wait();
+  await (await staking.setRequesterPool(FINAL_OWNER)).wait();
+
+  console.log("verifier  =", await staking.verifier());
+  console.log("treasury  =", await staking.treasury());
+  console.log("requester =", await staking.requesterPool());
+  console.log("owner     =", await staking.owner(), "(kept on the deployer on purpose)");
+  save(d);
 }
 
 async function fund() {
@@ -129,6 +182,8 @@ async function fund() {
   save(d);
   const stats = await staking.protocolStats();
   console.log("rewardLiquidity =", ethers.formatEther(stats[2]), "tOMC");
+  const ec = await staking.emissionConstraint();
+  console.log("effectiveEmissionPerSecond =", ethers.formatEther(ec[0]), "tOMC/s (capped by: " + ec[1] + ")");
 }
 
 async function handover() {
@@ -150,9 +205,9 @@ async function handover() {
 }
 
 const cmd = process.argv[2];
-const run = { deploy, fund, handover }[cmd];
+const run = { deploy, fund, configure, handover }[cmd];
 if (!run) {
-  console.log("usage: node contracts/tools/redeploy-staking.js deploy|fund|handover");
+  console.log("usage: node contracts/tools/redeploy-staking.js deploy|fund|configure|handover");
   process.exit(1);
 }
 run().catch((e) => {

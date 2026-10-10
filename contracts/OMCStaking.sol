@@ -31,6 +31,14 @@ interface IERC20Like {
  *      the published split stays exact.
  *   4. Rewards are only paid for verified work; a node in bad standing earns
  *      nothing until it heartbeats again.
+ *   5. The annualised staking reward has a published ceiling (`maxAprBps`,
+ *      default 20%). Emission is a rate per second, so a fixed schedule pays
+ *      the same absolute amount however little is staked — a near-empty pool
+ *      therefore implies a meaningless APR (864 tOMC/day against 362 tOMC
+ *      staked is ~87,000%/year). The rate actually used is
+ *      `min(emissionPerSecond, totalStake * maxAprBps / BPS / SECONDS_PER_YEAR)`,
+ *      so the ceiling always binds while stake is small and the 10-year
+ *      schedule takes over on its own once enough stake exists.
  *
  * DESIGN NOTES (read before trusting this in production)
  * ------------------------------------------------------
@@ -47,6 +55,9 @@ interface IERC20Like {
  *   - Task rewards are attested by a `verifier` address. On a testnet that is a
  *     trusted role acting on off-chain verification results; that is stated
  *     openly on the site rather than hidden.
+ *   - The APR ceiling needs no oracle: rewards and stake are denominated in the
+ *     same token, so the cap is arithmetic rather than a price feed. It also
+ *     means the ceiling can never be dodged by moving the price.
  *   - Not audited. Testnet only. No value is promised or implied.
  */
 contract OMCStaking {
@@ -117,6 +128,15 @@ contract OMCStaking {
     /// @dev reward emission, in tOMC wei per second, shared by earning nodes
     uint256 public emissionPerSecond = 1e16; // 0.01 tOMC/s ≈ 864 tOMC / day
 
+    /// @dev ceiling on the annualised staking reward, in bps (2000 = 20%/year).
+    ///      See published rule 5. Emission is a per-second rate, so it must be
+    ///      clamped by how much is actually staked or a small pool pays an
+    ///      absurd rate. Read `effectiveEmissionPerSecond()` for the live value.
+    uint256 public maxAprBps = 2_000; // 20% / year
+
+    /// @dev the year the ceiling is quoted over (365 days, not 365.25)
+    uint256 public constant SECONDS_PER_YEAR = 365 days;
+
     /// @dev reward paid per verified work unit
     uint256 public workUnitReward = 1e18;
 
@@ -171,6 +191,7 @@ contract OMCStaking {
     event MarketChanged(address indexed from, address indexed to);
     event JobSlashed(address indexed who, uint256 amount, uint8 reason);
     event EmissionChanged(uint256 from, uint256 to);
+    event MaxAprChanged(uint256 from, uint256 to);
     event HeartbeatParamsChanged(uint256 interval, uint256 grace);
     event WorkUnitRewardChanged(uint256 from, uint256 to);
     event TierBaseDepositChanged(uint256 from, uint256 to);
@@ -240,13 +261,36 @@ contract OMCStaking {
         return _overdueIntervals(who) > 0;
     }
 
+    /// @notice the emission rate actually in force, after the APR ceiling.
+    ///         Zero when nothing is staked: the ceiling is quoted per unit of
+    ///         stake, so with no stake there is no rate to quote.
+    function effectiveEmissionPerSecond() public view returns (uint256) {
+        if (totalStake == 0 || maxAprBps == 0) return 0;
+        uint256 cap = (totalStake * maxAprBps) / BPS / SECONDS_PER_YEAR;
+        return cap < emissionPerSecond ? cap : emissionPerSecond;
+    }
+
+    /// @notice which of the two constraints is binding right now, for the UI
+    ///         and for anyone auditing the published ceiling
+    /// @return rate      same value as effectiveEmissionPerSecond()
+    /// @return cappedBy  "apr" | "schedule" | "none"
+    function emissionConstraint() external view returns (uint256 rate, string memory cappedBy) {
+        rate = effectiveEmissionPerSecond();
+        if (totalStake == 0) return (rate, "none");
+        uint256 cap = (totalStake * maxAprBps) / BPS / SECONDS_PER_YEAR;
+        return (rate, cap < emissionPerSecond ? "apr" : "schedule");
+    }
+
     /// @notice emission that has accrued but is not covered by the reward pool
-    ///         yet — capped so the contract never owes more than it holds
+    ///         yet — capped by the APR ceiling, and capped so the contract never
+    ///         owes more than it holds
     function _accruableNow() internal view returns (uint256) {
         if (totalStake == 0 || lastAccrual == 0) return 0;
         uint256 dt = block.timestamp - lastAccrual;
         if (dt == 0) return 0;
-        uint256 want = dt * emissionPerSecond;
+        uint256 rate = effectiveEmissionPerSecond();
+        if (rate == 0) return 0;
+        uint256 want = dt * rate;
         uint256 free = rewardLiquidity > accruedNotPaid ? rewardLiquidity - accruedNotPaid : 0;
         return want > free ? free : want;
     }
@@ -585,6 +629,16 @@ contract OMCStaking {
         _accrue();
         emit EmissionChanged(emissionPerSecond, v);
         emissionPerSecond = v;
+    }
+
+    /// @notice set the ceiling on the annualised staking reward, in bps.
+    ///         Bounded to (0, BPS] so it cannot be switched off by accident —
+    ///         it is a published consumer-protection promise, not a dial.
+    function setMaxAprBps(uint256 v) external onlyOwner {
+        require(v > 0 && v <= BPS, "OMCS: apr");
+        _accrue();                 // settle everything owed at the OLD ceiling first
+        emit MaxAprChanged(maxAprBps, v);
+        maxAprBps = v;
     }
 
     /// @notice tune the liveness window; interval must stay >= 1 minute

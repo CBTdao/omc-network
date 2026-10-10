@@ -23,6 +23,7 @@
     allowance: 0n,
     node: null,
     proto: null,
+    effEmission: null,
     base: 0n,
     tierCount: 5,
     tier: 1,
@@ -279,7 +280,12 @@
     if (!p) return;
     set("stkProtoTotal", S.fmt(p.totalStake) + " tOMC");
     set("stkProtoLiquidity", S.fmt(p.rewardLiquidity) + " tOMC");
-    set("stkProtoEmission", S.fmt(p.emissionPerSecond, 4) + " /s");
+    /* The contract holds two numbers: the emission schedule, and a ceiling it
+       enforces per unit of stake. While the ceiling binds the schedule is
+       fiction, so show what is actually paid. */
+    var eff = (state.effEmission === null || state.effEmission === undefined)
+      ? p.emissionPerSecond : state.effEmission;
+    set("stkProtoEmission", S.fmt(eff * 86400n, 6) + " /day");
     set("stkProtoNodes", p.nodes.toString());
     set("stkProtoSlashed", S.fmt(p.totalSlashed) + " tOMC");
     set("stkProtoWork", p.totalWorkUnits.toString());
@@ -364,6 +370,7 @@
       S.ethCall(S.CFG.token, S.enc.maxFaucetClaims()).then(function (h) { state.faucetMax = S.decWord(h); }).catch(function () {}),
       S.ethCall(S.CFG.staking, S.enc.nodeSummary(addr)).then(function (h) { state.node = S.decNodeSummary(h); }),
       S.ethCall(S.CFG.staking, S.enc.protocolStats()).then(function (h) { state.proto = S.decProtocolStats(h); }),
+      S.ethCall(S.CFG.staking, S.enc.effectiveEmissionPerSecond()).then(function (h) { state.effEmission = S.decWord(h); }).catch(function () {}),
       S.ethCall(S.CFG.staking, S.enc.heartbeatInterval()).then(function (h) { state.heartbeatInterval = Number(S.decWord(h)); }),
       S.ethCall(S.CFG.staking, S.enc.heartbeatGrace()).then(function (h) { state.heartbeatGrace = Number(S.decWord(h)); }),
       /* the node's own published endpoint comes from the contract, not from
@@ -475,6 +482,10 @@
     }).catch(function () { paintActions(); });
     S.ethCall(S.CFG.staking, S.enc.protocolStats()).then(function (h) {
       state.proto = S.decProtocolStats(h);
+      paintProto();
+    }).catch(function () {});
+    S.ethCall(S.CFG.staking, S.enc.effectiveEmissionPerSecond()).then(function (h) {
+      state.effEmission = S.decWord(h);
       paintProto();
     }).catch(function () {});
 

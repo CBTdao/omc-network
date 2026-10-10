@@ -34,6 +34,7 @@ function build(file) {
 }
 
 const JOBS = [
+  { file: "OMCStaking.sol", base: "verify-OMCStaking-standard-json" },
   { file: "OMCComputeMarket.sol", base: "verify-OMCComputeMarket-standard-json" },
   { file: "OMCTestToken.sol", base: "verify-OMCTestToken-standard-json" },
 ];
