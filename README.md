@@ -113,7 +113,9 @@ OMC runs on **BNB Smart Chain Testnet**.
 | Chain ID | `97` |
 | Native Symbol | `tBNB` |
 | Faucet | https://testnet.bnbchain.org/faucet-smart |
-| **Test Contract (tOMC)** | [`0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5`](https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5) |
+| **tOMC (test token)** | [`0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6`](https://testnet.bscscan.com/token/0x8b6a8a46cb2779688212f033e6a4fc8e604363f6) — transferable ERC-20, faucet pays 100 tOMC / hour |
+| **OMCStaking** | [`0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B`](https://testnet.bscscan.com/address/0xb721083b54ec6bdde3228d078f74af0f06dfb33b) — tier staking, heartbeat liveness, real 5%/interval slashing (50% requesters / 30% treasury / 20% burn) |
+| Legacy points contract | `0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5` — points only, **cannot transfer or stake**; kept for reference |
 
 ### Run a Node in 4 Steps
 
@@ -186,6 +188,7 @@ omc-network/
 │   ├── index.html            ← Home (incl. live airdrop progress ticker)
 │   ├── whitepaper.html       ← Whitepaper (web rendering)
 │   ├── testnet.html          ← Testnet & node onboarding
+│   ├── stake.html            ← Live testnet staking dApp (real contracts)
 │   ├── airdrop.html          ← Community airdrop
 │   ├── news.html             ← Project news & announcements
 │   └── assets/
@@ -200,6 +203,12 @@ omc-network/
 │       │   ├── news.js       ← News feed renderer
 │       │   └── lang/         ← en · zh · ja · es · ko · pt · fr
 │       └── docs/             ← Whitepaper PDFs
+├── contracts/                ← Testnet contracts + deploy tooling
+│   ├── OMCTestToken.sol      ← tOMC: transferable ERC-20 + faucet (100/h)
+│   ├── OMCStaking.sol        ← tier stake · heartbeat · real slashing
+│   ├── tools/compile.js      ← solc build (viaIR, paris evm)
+│   ├── tools/deploy.js       ← deploy / verify / handover
+│   └── deployments/bsc-testnet.json ← live addresses (git-tracked)
 └── docs/                     ← Protocol documentation
 ```
 
@@ -216,10 +225,11 @@ The official site is a dependency-free static build with **7-language support** 
 | Home | https://omc.network/ |
 | Whitepaper | https://omc.network/whitepaper |
 | Testnet | https://omc.network/testnet |
+| Stake | https://omc.network/stake |
 | Airdrop | https://omc.network/airdrop |
 | News | https://omc.network/news |
 
-Wallet connection is used **only on the airdrop page** to sign a free `personal_sign` challenge (EIP-1193); the session is stored locally and no server-side authorisation is claimed yet. There is deliberately no sitewide sign-in entry — wallets show a generic "proceed with caution" banner on newly launched domains and airdrop pages, so visitors are only asked to connect at the moment they claim. The home page ticker reads live numbers when `OMC_STATS.endpoint` is set, and otherwise shows a clearly-labelled preview feed.
+Wallet connection is used on the **airdrop page** (free `personal_sign` challenge) and on the **stake page** (real `eth_sendTransaction` calls against the testnet contracts) (EIP-1193); the session is stored locally and no server-side authorisation is claimed yet. There is deliberately no sitewide sign-in entry — wallets show a generic "proceed with caution" banner on newly launched domains and airdrop pages, so visitors are only asked to connect at the moment they claim. The home page ticker reads live numbers when `OMC_STATS.endpoint` is set, and otherwise shows a clearly-labelled preview feed.
 
 To run locally:
 

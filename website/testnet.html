@@ -47,6 +47,7 @@
         <a href="/whitepaper" data-i18n="nav.wp">Whitepaper</a>
         <a href="/calculator" data-i18n="nav.calc">Calculator</a>
         <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
+        <a href="/stake" data-i18n="nav.stake">Stake</a>
         <a href="/airdrop" data-i18n="nav.airdrop">Airdrop</a>
         <a href="/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
         <select class="lang-select" id="langSelect" aria-label="Language">
@@ -110,17 +111,26 @@
           <button data-copy="tBNB">Copy</button>
         </div>
         <div class="endpoint reveal">
-          <span class="k" data-i18n="ep.k_explorer">Explorer</span><span class="v">https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5</span>
-          <button data-copy="https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5">Copy</button>
+          <span class="k" data-i18n="ep.k_explorer">Explorer</span><span class="v">https://testnet.bscscan.com/token/0x8b6a8a46cb2779688212f033e6a4fc8e604363f6</span>
+          <button data-copy="https://testnet.bscscan.com/token/0x8b6a8a46cb2779688212f033e6a4fc8e604363f6">Copy</button>
         </div>
         <div class="endpoint reveal">
           <span class="k" data-i18n="ep.k_faucet">Faucet</span><span class="v">https://testnet.bnbchain.org/faucet-smart</span>
           <button data-copy="https://testnet.bnbchain.org/faucet-smart">Copy</button>
         </div>
         <div class="endpoint reveal">
-          <span class="k" data-i18n="ep.k_contract">Test Contract</span><span class="v">0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5</span>
+          <span class="k" data-i18n="ep.k_contract">tOMC (test token)</span><span class="v">0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6</span>
+          <button data-copy="0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6">Copy</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="ep.k_staking">OMCStaking</span><span class="v">0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B</span>
+          <button data-copy="0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B">Copy</button>
+        </div>
+        <div class="endpoint reveal" style="opacity:.72;">
+          <span class="k" data-i18n="ep.k_legacy">Legacy (points only)</span><span class="v">0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5</span>
           <button data-copy="0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5">Copy</button>
         </div>
+        <p class="wp-note" style="margin-top:14px;" data-i18n="ep.migrate_note"><b>About the addresses.</b> The <b>legacy</b> contract from the first testnet drop only keeps points and <b>cannot transfer or stake</b> — it is listed for reference only. Staking runs on <b>OMCStaking</b> against the new <b>tOMC</b> token above; request those from the faucet on the <a href="/stake">staking page</a>.</p>
       </div>
     </div>
   </section>
@@ -161,6 +171,9 @@
       </div>
 
       <div class="wp-note reveal" style="max-width: 780px; margin: 34px auto 0;" data-i18n="node.note"><b>Verification reminder.</b> Each job runs under a per-job verification policy — spot-check re-execution or full redundancy (2–3 nodes). Fraudulent outputs, timeouts and fake heartbeats are slashed — 50% to requesters, 30% to the DAO treasury, 20% permanently burned.</div>
+      <div class="hero-actions reveal" style="margin-top: 26px;">
+        <a href="/stake" class="btn btn-primary" data-i18n="node.cta">Stake tOMC &amp; register a node →</a>
+      </div>
     </div>
   </section>
 

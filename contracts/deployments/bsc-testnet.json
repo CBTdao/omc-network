@@ -1,0 +1,15 @@
+{
+  "chainId": 97,
+  "network": "BNB Smart Chain Testnet",
+  "deployedAt": "2026-10-10T02:22:32.873Z",
+  "deployer": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+  "owner": "0xc35711aa6128B8208FA534dbf94d3aF24BA22B4B",
+  "token": "0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6",
+  "staking": "0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B",
+  "tokenTx": "0xd4472a25eb5c54438811c3d992f093508d4be6e0aa3f0026fb35ae2de14feb68",
+  "stakingTx": "0x5303322314a7dab750b19e8bfc7a454a667e83bb9ab508c74687abf06542b4ea",
+  "rewardLiquidity": "5000000000000000000000000",
+  "rewardFundingTx": null,
+  "legacyPointsContract": "0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5",
+  "handedOverAt": "2026-10-10T02:25:21.339Z"
+}

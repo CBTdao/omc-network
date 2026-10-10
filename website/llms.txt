@@ -13,5 +13,6 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://omc.network/](https://omc.network/): Omniverse Compute (OMC) — Decentralized GPU Infrastructure Network
 - [https://omc.network/news](https://omc.network/news): News — Omniverse Compute (OMC)
 - [https://omc.network/privacy](https://omc.network/privacy): Privacy Policy — Omniverse Compute (OMC)
+- [https://omc.network/stake](https://omc.network/stake): Stake — Omniverse Compute (OMC)
 - [https://omc.network/testnet](https://omc.network/testnet): Testnet — Omniverse Compute (OMC)
 - [https://omc.network/whitepaper](https://omc.network/whitepaper): Whitepaper — Omniverse Compute (OMC)
