@@ -40,10 +40,13 @@ contract OMCTestToken {
     uint256 public constant MAX_SUPPLY = 1_000_000_000e18;
 
     /// @dev amount handed out by one `claimFaucet()` call
-    uint256 public constant FAUCET_AMOUNT = 100e18;
+    uint256 public constant FAUCET_AMOUNT = 20e18;
 
     /// @dev one claim per address per cooldown window
-    uint256 public constant FAUCET_COOLDOWN = 1 hours;
+    uint256 public constant FAUCET_COOLDOWN = 1 days;
+
+    /// @dev lifetime claims per address (mirrors the mainnet airdrop cap)
+    uint256 public constant MAX_FAUCET_CLAIMS = 5;
 
     /// @dev lifetime budget of the faucet, so it can never mint the whole cap
     uint256 public constant FAUCET_CAP = 100_000_000e18;
@@ -123,6 +126,7 @@ contract OMCTestToken {
 
     /// @notice claim FAUCET_AMOUNT tOMC; one claim per FAUCET_COOLDOWN per address
     function claimFaucet() external returns (uint256 amount) {
+        require(faucetClaims[msg.sender] < MAX_FAUCET_CLAIMS, "tOMC: faucet limit");
         require(faucetMinted + FAUCET_AMOUNT <= FAUCET_CAP, "tOMC: faucet empty");
         uint256 readyAt = lastFaucetAt[msg.sender] == 0
             ? 0

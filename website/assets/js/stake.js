@@ -27,7 +27,9 @@
     tierCount: 5,
     tier: 1,
     busy: false,
-    faucetReadyAt: 0, /* unused since the faucet moved to the airdrop page */
+    faucetReadyAt: 0,
+    faucetClaims: 0n,
+    faucetMax: 5n,
     heartbeatInterval: 1800,
     heartbeatGrace: 600
   };
@@ -85,9 +87,12 @@
 
   /* ---------------- actions ---------------- */
 
-  /* The faucet button is now a link to /airdrop — test tOMC is handed out by
-     the airdrop (once a day, five per address, 20 each), matching mainnet
-     rules. The old on-chain hourly faucet is retired from the UI. */
+  /* Test tOMC is claimed in place: 20 per claim, once a day, five per address
+     — the same rules the mainnet airdrop will use. The limits live on-chain
+     in the token contract (FAUCET_AMOUNT / FAUCET_COOLDOWN / MAX_FAUCET_CLAIMS). */
+  function doFaucet() {
+    tx("claimFaucet", S.CFG.token, S.enc.claimFaucet(), 150000);
+  }
 
   function doApprove() {
     var amt = S.parseAmount($("stkAmount").value);
@@ -286,8 +291,11 @@
     var n = state.node;
     var reg = !!(n && n.registered);
     var b = state.busy;
+    var now = Math.floor(Date.now() / 1000);
+    var capped = state.faucetClaims >= state.faucetMax;
+    var cooling = now < state.faucetReadyAt;
 
-    $("stkBtnFaucet").disabled = !connected || b;
+    $("stkBtnFaucet").disabled = !connected || b || capped || cooling;
     $("stkBtnApprove").disabled = !connected || b;
     $("stkBtnStake").disabled = !connected || b;
     $("stkBtnRegister").disabled = !connected || b;
@@ -304,12 +312,35 @@
     }
   }
 
+  function paintFaucet() {
+    var btn = $("stkBtnFaucet");
+    var note = $("stkFaucetNote");
+    if (!btn || !note) return;
+    var c = Number(state.faucetClaims), m = Number(state.faucetMax);
+    var now = Math.floor(Date.now() / 1000);
+    if (c >= m) {
+      btn.disabled = true;
+      note.textContent = T("stk.faucet_done");
+    } else if (now < state.faucetReadyAt) {
+      var left = state.faucetReadyAt - now;
+      var hh = String(Math.floor(left / 3600)).padStart(2, "0");
+      var mm = String(Math.floor((left % 3600) / 60)).padStart(2, "0");
+      var ss = String(left % 60).padStart(2, "0");
+      note.textContent = T("stk.faucet_claimed").replace("{n}", String(c)) + " · " + T("stk.faucet_next").replace("{t}", hh + ":" + mm + ":" + ss);
+      btn.disabled = true;
+    } else {
+      note.textContent = T("stk.faucet_claimed").replace("{n}", String(c));
+      btn.disabled = state.busy || !(window.OMCWallet && window.OMCWallet.address());
+    }
+  }
+
   function paintAll() {
     paintWallet();
     paintTiers();
     paintBalance();
     paintNode();
     paintProto();
+    paintFaucet();
     paintActions();
   }
 
@@ -319,6 +350,7 @@
     var addr = window.OMCWallet && window.OMCWallet.address();
     if (!addr) {
       state.tokenBal = 0n; state.allowance = 0n; state.node = null;
+      state.faucetReadyAt = 0; state.faucetClaims = 0n;
       paintAll();
       return Promise.resolve();
     }
@@ -327,6 +359,9 @@
     var jobs = [
       S.ethCall(S.CFG.token, S.enc.balanceOf(addr)).then(function (h) { state.tokenBal = S.decWord(h); }),
       S.ethCall(S.CFG.token, S.enc.allowance(addr, S.CFG.staking)).then(function (h) { state.allowance = S.decWord(h); }),
+      S.ethCall(S.CFG.token, S.enc.faucetReadyAt(addr)).then(function (h) { state.faucetReadyAt = Number(S.decWord(h)); }).catch(function () {}),
+      S.ethCall(S.CFG.token, S.enc.faucetClaims(addr)).then(function (h) { state.faucetClaims = S.decWord(h); }).catch(function () {}),
+      S.ethCall(S.CFG.token, S.enc.maxFaucetClaims()).then(function (h) { state.faucetMax = S.decWord(h); }).catch(function () {}),
       S.ethCall(S.CFG.staking, S.enc.nodeSummary(addr)).then(function (h) { state.node = S.decNodeSummary(h); }),
       S.ethCall(S.CFG.staking, S.enc.protocolStats()).then(function (h) { state.proto = S.decProtocolStats(h); }),
       S.ethCall(S.CFG.staking, S.enc.heartbeatInterval()).then(function (h) { state.heartbeatInterval = Number(S.decWord(h)); }),
@@ -374,6 +409,7 @@
       }
     });
 
+    $("stkBtnFaucet").addEventListener("click", doFaucet);
     $("stkBtnApprove").addEventListener("click", doApprove);
     $("stkBtnStake").addEventListener("click", doStake);
     $("stkBtnRegister").addEventListener("click", doRegister);
@@ -444,7 +480,7 @@
 
     refresh();
     setInterval(function () { if (!state.busy) refresh(); }, 20000);
-    setInterval(function () { if (!state.busy) { paintNode(); } }, 1000);
+    setInterval(function () { if (!state.busy) { paintNode(); paintFaucet(); } }, 1000);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

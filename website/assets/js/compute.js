@@ -29,6 +29,9 @@
     tier: 1,
     paidInOMC: true,
     tokenBal: 0n,
+    faucetReadyAt: 0,
+    faucetClaims: 0n,
+    faucetMax: 5n,
     deadlineHours: 24,
     busy: false
   };
@@ -383,8 +386,63 @@
     return "0x" + out;
   }
 
-  /* The faucet button is now a link to /airdrop (once a day, five per
-     address, 20 each) — same rules the mainnet airdrop will use. */
+  /* ---------------- faucet ---------------- */
+
+  /* Test tOMC is claimed in place: 20 per claim, once a day, five per address
+     — the same rules the mainnet airdrop will use. The limits live on-chain
+     in the token contract (FAUCET_AMOUNT / FAUCET_COOLDOWN / MAX_FAUCET_CLAIMS). */
+  function doFaucet() {
+    if (!window.OMCWallet || !window.OMCWallet.address()) return;
+    if (state.busy) return;
+    state.busy = true;
+    paintAll();
+    C.send(C.CFG.token, C.enc.claimFaucet(), 150000)
+      .then(function (hash) {
+        log("claimFaucet submitted " + hash.slice(0, 12) + "…");
+        return C.rcpt(hash).then(function (r) {
+          if (r.status !== "0x1") {
+            log("✗ claimFaucet reverted", "e");
+          } else {
+            log("✓ claimFaucet confirmed", "g");
+          }
+          return refreshAll();
+        });
+      })
+      .catch(function (e) {
+        var m = (e && (e.shortMessage || e.message)) || "error";
+        if (/user rejected|denied/i.test(m)) m = "rejected in wallet";
+        log("✗ claimFaucet — " + m, "e");
+      })
+      .then(function () { state.busy = false; paintAll(); });
+  }
+
+  function paintFaucet() {
+    var btn = $("cmpBtnFaucet");
+    var note = $("cmpFaucetNote");
+    if (!btn || !note) return;
+    var has = !!(window.OMCWallet && window.OMCWallet.address());
+    var c = Number(state.faucetClaims), m = Number(state.faucetMax);
+    var now = Math.floor(Date.now() / 1000);
+    if (!has) {
+      note.textContent = T("cst.faucet_air");
+      btn.disabled = true;
+      return;
+    }
+    if (c >= m) {
+      btn.disabled = true;
+      note.textContent = T("stk.faucet_done");
+    } else if (now < state.faucetReadyAt) {
+      var left = state.faucetReadyAt - now;
+      var hh = String(Math.floor(left / 3600)).padStart(2, "0");
+      var mm = String(Math.floor((left % 3600) / 60)).padStart(2, "0");
+      var ss = String(left % 60).padStart(2, "0");
+      note.textContent = T("stk.faucet_claimed").replace("{n}", String(c)) + " · " + T("stk.faucet_next").replace("{t}", hh + ":" + mm + ":" + ss);
+      btn.disabled = true;
+    } else {
+      note.textContent = T("stk.faucet_claimed").replace("{n}", String(c));
+      btn.disabled = state.busy;
+    }
+  }
 
   /* ---------------- paint ---------------- */
 
@@ -415,6 +473,7 @@
     if (b) b.className = "pill " + (has ? "live" : "idle");
     set("cmpTileBal", C.fmt(state.tokenBal, 2));
     paintCreate();
+    paintFaucet();
   }
 
   /* ============================================================
@@ -444,12 +503,22 @@
     state.addr = a || "";
     if (!a) {
       state.tokenBal = 0n;
+      state.faucetReadyAt = 0;
+      state.faucetClaims = 0n;
       paintWallet();
       return Promise.resolve();
     }
-    return C.ethCall(C.CFG.token, C.enc.balanceOf(a))
-      .then(function (hex) {
-        state.tokenBal = C.decWord(hex);
+    return Promise.all([
+      C.ethCall(C.CFG.token, C.enc.balanceOf(a)),
+      C.ethCall(C.CFG.token, C.enc.faucetReadyAt(a)).catch(function () { return "0x" + "0".repeat(64); }),
+      C.ethCall(C.CFG.token, C.enc.faucetClaims(a)).catch(function () { return "0x" + "0".repeat(64); }),
+      C.ethCall(C.CFG.token, C.enc.maxFaucetClaims()).catch(function () { return "0x" + "0".repeat(63) + "5"; })
+    ])
+      .then(function (r) {
+        state.tokenBal = C.decWord(r[0]);
+        state.faucetReadyAt = Number(C.decWord(r[1]));
+        state.faucetClaims = C.decWord(r[2]);
+        state.faucetMax = C.decWord(r[3]);
         paintWallet();
       })
       .catch(function () {
@@ -519,6 +588,8 @@
     if (bc) bc.addEventListener("click", doCreateJob);
     var ba = $("cmpBtnApprove");
     if (ba) ba.addEventListener("click", doApprove);
+    var bf = $("cmpBtnFaucet");
+    if (bf) bf.addEventListener("click", doFaucet);
 
     /* wallet.js broadcasts "omc:wallet" on every connect / sign-out / chain
        change — subscribe the same way main.js and airdrop-stats.js do. */

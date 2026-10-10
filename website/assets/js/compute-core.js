@@ -27,9 +27,9 @@
       "https://endpoints.omniatech.io/v1/bsc/testnet/public"
     ],
     explorer: "https://testnet.bscscan.com",
-    token: "0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6",
-    staking: "0xA49537fA46172693c553E9A1824CdF7CA810AAFc",
-    market: "0x5795393f33F6E27797499b1C61422ACeF0555709",
+    token: "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
+    staking: "0xD4b1bB57637eFb62016a81B584fa8BE66Fb482d6",
+    market: "0xBd1575bE1b0b9349468482eA2B1D4611fcD13CaE",
     deployBlock: 135890000
   };
 
@@ -45,6 +45,9 @@
     /* test token faucet */
     faucetRemaining: "0x94ea409c",
     claimFaucet: "0x4fe15335",
+    faucetReadyAt: "0xc8f4bbc7",
+    faucetClaims: "0xedc7a3ac",
+    maxFaucetClaims: "0x3966c493",
     /* staking — read through, never duplicated */
     minStakeForTier: "0x128285cf",
     nodeSummary: "0xfd371224",
@@ -225,6 +228,9 @@
     approve: function (s, v) { return SEL.approve + addrArg(s) + numArg(v); },
     faucetRemaining: function () { return SEL.faucetRemaining; },
     claimFaucet: function () { return SEL.claimFaucet; },
+    faucetReadyAt: function (a) { return SEL.faucetReadyAt + addrArg(a); },
+    faucetClaims: function (a) { return SEL.faucetClaims + addrArg(a); },
+    maxFaucetClaims: function () { return SEL.maxFaucetClaims; },
 
     minStakeForTier: function (t) { return SEL.minStakeForTier + numArg(BigInt(t)); },
     nodeSummary: function (a) { return SEL.nodeSummary + addrArg(a); },

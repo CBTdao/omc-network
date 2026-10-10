@@ -27,8 +27,8 @@
       "https://endpoints.omniatech.io/v1/bsc/testnet/public"
     ],
     explorer: "https://testnet.bscscan.com",
-    token: "0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6",
-    staking: "0xA49537fA46172693c553E9A1824CdF7CA810AAFc",
+    token: "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
+    staking: "0xD4b1bB57637eFb62016a81B584fa8BE66Fb482d6",
     deployBlock: 135890000,
     /* Legacy points-only contract — no transfer/stake support. Kept read-only. */
     legacy: "0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5"
@@ -47,6 +47,8 @@
     /* test token */
     claimFaucet: "0x4fe15335",
     faucetReadyAt: "0xc8f4bbc7",
+    faucetClaims: "0xedc7a3ac",
+    maxFaucetClaims: "0x3966c493",
     faucetRemaining: "0x94ea409c",
     faucetAmount: "0x76697640",
     /* staking */
@@ -229,6 +231,8 @@
     approve: function (s, v) { return SEL.approve + addrArg(s) + numArg(v); },
     claimFaucet: function () { return SEL.claimFaucet; },
     faucetReadyAt: function (a) { return SEL.faucetReadyAt + addrArg(a); },
+    faucetClaims: function (a) { return SEL.faucetClaims + addrArg(a); },
+    maxFaucetClaims: function () { return SEL.maxFaucetClaims; },
     faucetRemaining: function () { return SEL.faucetRemaining; },
     faucetAmount: function () { return SEL.faucetAmount; },
     stake: function (amount, tier) {

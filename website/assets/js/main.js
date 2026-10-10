@@ -89,7 +89,6 @@ function showToast(msg) {
    - Per wallet: max 5 entries (lifetime) = 100 OMC, which is exactly the
      tier-2 staking minimum, so a maxed-out airdrop reaches tier 2
    - Daily cap: 1 entry / calendar day (resets 00:00 UTC+8)
-   - Each participation deducts 0.01 BNB network gas
    - During the campaign: page only DISPLAYS accumulated OMC
    - Claim window OPENS AT TGE (mainnet launch), which the white paper
      defines as "100% at TGE" for the community airdrop:
@@ -100,22 +99,16 @@ const PER_ENTRY = 20;                                   // OMC per entry
 const MAX_TOTAL = 5;                                    // per wallet, lifetime
 const MAX_DAILY = 1;                                    // per UTC+8 calendar day
 /* ============================================================
-   GAS FEE (fuel fee) — PUBLIC RULE: 0.01 BNB per participation.
-   The receiving address is intentionally ANONYMOUS / NOT DISCLOSED:
-   it must never be rendered in the UI or printed in visible copy.
-   Stored in obfuscated form so a casual "view source" does not
-   reveal a copy-pasteable address.
+   AIRDROP COST — PUBLIC: free to participate; the UI never quotes
+   a network-fee figure. Any wallet-level fee is shown by the wallet
+   itself at signing time, not by this page.
    ============================================================ */
 /* ============================================================
    GAS FEE (fuel fee) — PUBLIC: described only as "a small amount".
    The exact amount and the receiving address are NOT disclosed:
    never render them in the UI or in visible copy.
    ============================================================ */
-const GAS_BNB = 0.01;                                   // internal only — public UI shows "a small amount"
-const _GAS_RECEIVER_B64 = "MHhjMzU3MTFhYTYxMjhCODIwOEZBNTM0ZGJmOTRkM2FGMjRCQTIyQjRC";
-function gasReceiver() {                                 // internal use only — never display
-  try { return atob(_GAS_RECEIVER_B64); } catch (e) { return ""; }
-}
+/* internal only — the UI never quotes a network-fee figure */
 const AIRDROP_START = new Date("2027-01-01T00:00:00+08:00").getTime();
 const AIRDROP_END = new Date("2027-04-01T23:59:59+08:00").getTime();
 const TASK_IDS = ["follow", "retweet", "telegram"];
@@ -267,7 +260,7 @@ if (connectBtn) {
 /* wallet.js owns the session and broadcasts every change */
 document.addEventListener("omc:wallet", renderAirdrop);
 
-/* ---------- Participate: +20 OMC · 0.01 BNB gas ---------- */
+/* ---------- Participate: +20 OMC ---------- */
 const participateBtn = document.getElementById("participateBtn");
 if (participateBtn) {
   participateBtn.addEventListener("click", () => {
