@@ -101,10 +101,10 @@
     var amt = S.parseAmount($("stkAmount").value);
     if (amt === null || amt <= 0n) return toast(T("stk.err_amount"));
     var tier = state.tier;
-    var min = state.base * BigInt(tier);
+    var min = tierMin(tier);
     var total = (state.node && state.node.stake ? state.node.stake : 0n);
     if (state.node && state.node.registered) {
-      if (total + amt < state.base * BigInt(tier)) return toast(T("stk.err_below_tier"));
+      if (total + amt < tierMin(tier)) return toast(T("stk.err_below_tier"));
     } else if (amt < min) {
       return toast(T("stk.err_below_tier"));
     }
@@ -177,28 +177,36 @@
     set("stkTilePending", S.fmt(state.node ? state.node.pending : 0n));
   }
 
+  /* the ladder is read straight from the contract one rung at a time, so the
+     table can never drift from the deployed minimums */
   function paintTiers() {
     var wrap = $("stkTiers");
-    if (!wrap) return;
-    wrap.innerHTML = "";
-    for (var t = 1; t <= state.tierCount; t++) {
-      var d = document.createElement("div");
-      d.className = "tier" + (t === state.tier ? " sel" : "");
-      d.setAttribute("data-tier", String(t));
-      d.innerHTML = "<b>T" + t + "</b><span>" + S.fmt(state.base * BigInt(t), 0) + "</span>";
-      wrap.appendChild(d);
+    if (wrap) {
+      wrap.innerHTML = "";
+      for (var t = 1; t <= state.tierCount; t++) {
+        var d = document.createElement("div");
+        d.className = "tier" + (t === state.tier ? " sel" : "");
+        d.setAttribute("data-tier", String(t));
+        d.innerHTML = "<b>T" + t + "</b><span>" + S.fmt(tierMin(t), 0) + "</span>";
+        wrap.appendChild(d);
+      }
     }
     var tbl = $("stkTierTable");
     if (tbl) {
       var rows = "";
       for (var i = 1; i <= state.tierCount; i++) {
         rows += '<tr class="' + (i === state.tier ? "cur" : "") + '"><td>Tier ' + i + "</td><td>" +
-          S.fmt(state.base * BigInt(i), 0) + " tOMC</td></tr>";
+          S.fmt(tierMin(i), 0) + " tOMC</td></tr>";
       }
       tbl.innerHTML = rows;
     }
     var cur = state.node && state.node.tier ? state.node.tier : 0;
     set("stkNodeTier", cur ? "Tier " + cur : "—");
+  }
+
+  function tierMin(t) {
+    if (state.ladder && state.ladder[t] !== undefined) return state.ladder[t];
+    return 0n;
   }
 
   function paintNode() {
@@ -401,7 +409,7 @@
 
   function paintStakeHint() {
     var amt = S.parseAmount($("stkAmount").value);
-    var min = state.base * BigInt(state.tier);
+    var min = tierMin(state.tier);
     var e = $("stkStakeHint");
     if (!e) return;
     e.style.color = "";
@@ -425,9 +433,17 @@
     if (!$("stkApp")) return;
     state.tierCount = 5;
     bind();
-    /* one metadata read so the tier table renders before a wallet is connected */
-    S.ethCall(S.CFG.staking, S.enc.tierBaseDeposit()).then(function (h) {
-      state.base = S.decNodeSummaryBig(h);
+    /* read the whole ladder up front so the tier table renders — and the
+       stake-minimum hint is correct — before a wallet is connected */
+    var ladders = [];
+    for (var t = 1; t <= state.tierCount; t++) {
+      ladders.push(S.ethCall(S.CFG.staking, S.enc.minStakeForTier(t)));
+    }
+    Promise.all(ladders).then(function (hexes) {
+      state.ladder = {};
+      for (var i = 0; i < hexes.length; i++) {
+        state.ladder[i + 1] = S.decWord(hexes[i]);
+      }
       paintTiers();
       paintStakeHint();
       paintActions();

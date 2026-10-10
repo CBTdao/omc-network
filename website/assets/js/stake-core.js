@@ -28,7 +28,7 @@
     ],
     explorer: "https://testnet.bscscan.com",
     token: "0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6",
-    staking: "0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B",
+    staking: "0x5B993101885Cb5704318b10554fdA31f3c816b95",
     deployBlock: 135890000,
     /* Legacy points-only contract — no transfer/stake support. Kept read-only. */
     legacy: "0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5"
@@ -57,7 +57,9 @@
     claim: "0x4e71d92d",
     deregister: "0xaff5edb1",
     /* read-only */
-    tierBaseDeposit: "0x8af4898c",
+    tierBaseDeposit: "0x8af4898c",   /* deprecated mirror; the ladder is authoritative */
+    tierMinStake: "0x500f1240",
+    minStakeForTier: "0x128285cf",
     emissionPerSecond: "0xd1164400",
     workUnitReward: "0x9a0d9917",
     heartbeatInterval: "0x561a4fac",
@@ -243,6 +245,8 @@
     claim: function () { return SEL.claim; },
     deregister: function () { return SEL.deregister; },
     tierBaseDeposit: function () { return SEL.tierBaseDeposit; },
+    minStakeForTier: function (t) { return SEL.minStakeForTier + numArg(BigInt(t)); },
+    tierMinStake: function (i) { return SEL.tierMinStake + numArg(BigInt(i)); },
     emissionPerSecond: function () { return SEL.emissionPerSecond; },
     workUnitReward: function () { return SEL.workUnitReward; },
     heartbeatInterval: function () { return SEL.heartbeatInterval; },

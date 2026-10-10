@@ -17,7 +17,13 @@ interface IERC20Like {
  *
  * PUBLISHED RULES THIS CONTRACT IMPLEMENTS
  * ----------------------------------------
- *   1. `Staking_Min = Deposit × Tier`  ->  `minStakeForTier(tier)`
+ *   1. Staking minimums are a published ladder, not a formula:
+ *      `minStakeForTier(tier)` -> 20 / 100 / 500 / 1000 / 5000 OMC for tiers 1..5.
+ *      Tier 1 is priced at one airdrop entry (20 OMC) and tier 2 at one full
+ *      airdrop (5 × 20 = 100 OMC), so a wallet that maxes out the airdrop can
+ *      reach tier 2 without buying anything. Tiers 3..5 require OMC from the
+ *      compute-mining pool or the open market, which is what gives the ladder
+ *      its meaning.
  *   2. Node registration + heartbeat; missed heartbeats are one of the slashing
  *      triggers.
  *   3. Slashing split: 50% to the requesters who were harmed, 30% to the DAO
@@ -77,7 +83,21 @@ contract OMCStaking {
     address public requesterPool;
     bool public paused;
 
-    /// @dev minimum stake for tier 1; tier T needs tierBaseDeposit * T
+    /// @dev published staking ladder, one entry per tier (tier 1 .. tier 5).
+    ///      20 / 100 / 500 / 1000 / 5000 OMC. The steps are deliberately
+    ///      non-linear: tier 1 = one airdrop entry, tier 2 = one full airdrop,
+    ///      tiers 3..5 escalate hard so a higher tier really means a bigger
+    ///      machine rather than just more free tokens.
+    uint256[TIER_COUNT] public tierMinStake = [
+        20e18,
+        100e18,
+        500e18,
+        1000e18,
+        5000e18
+    ];
+
+    /// @dev kept for backward-compatible reads; equals tierMinStake[1] (tier 2).
+    ///      Deprecated — use `tierMinStake(tier)` / `minStakeForTier(tier)`.
     uint256 public tierBaseDeposit = 100e18;
 
     /// @dev reward emission, in tOMC wei per second, shared by earning nodes
@@ -138,6 +158,7 @@ contract OMCStaking {
     event HeartbeatParamsChanged(uint256 interval, uint256 grace);
     event WorkUnitRewardChanged(uint256 from, uint256 to);
     event TierBaseDepositChanged(uint256 from, uint256 to);
+    event TierMinStakeChanged(uint256 indexed tier, uint256 from, uint256 to);
     event PausedSet(bool paused);
     event OwnershipTransferred(address indexed from, address indexed to);
 
@@ -176,10 +197,10 @@ contract OMCStaking {
 
     /* ------------------------------- views ------------------------------ */
 
-    /// @notice published rule: Staking_Min = Deposit × Tier
+    /// @notice published rule: 20 / 100 / 500 / 1000 / 5000 OMC for tiers 1..5
     function minStakeForTier(uint8 tier) public view returns (uint256) {
         require(tier >= 1 && tier <= TIER_COUNT, "OMCS: tier");
-        return tierBaseDeposit * tier;
+        return tierMinStake[tier - 1];
     }
 
     function nodeCount() external view returns (uint256) {
@@ -241,7 +262,7 @@ contract OMCStaking {
     {
         Node memory n = node[who];
         (uint256 p, ) = pendingOf(who);
-        uint256 minS = n.tier >= 1 && n.tier <= TIER_COUNT ? tierBaseDeposit * n.tier : 0;
+        uint256 minS = n.tier >= 1 && n.tier <= TIER_COUNT ? minStakeForTier(n.tier) : 0;
         return (
             n.tier,
             n.registered,
@@ -507,6 +528,14 @@ contract OMCStaking {
         require(v > 0, "OMCS: zero");
         emit TierBaseDepositChanged(tierBaseDeposit, v);
         tierBaseDeposit = v;
+    }
+
+    /// @notice update one rung of the staking ladder (tier 1..TIER_COUNT)
+    function setTierMinStake(uint8 tier, uint256 v) external onlyOwner {
+        require(tier >= 1 && tier <= TIER_COUNT, "OMCS: tier");
+        require(v > 0, "OMCS: zero");
+        emit TierMinStakeChanged(tier, tierMinStake[tier - 1], v);
+        tierMinStake[tier - 1] = v;
     }
 
     function setPaused(bool v) external onlyOwner {

@@ -147,21 +147,39 @@ async function verify() {
   await (await token.claimFaucet()).wait();
   console.log("    faucetBalance after :", ethers.formatEther(await tokenOwner.balanceOf(actor.address)));
 
-  console.log("[2] approve + stake(100, tier 1)");
-  await (await token.approve(d.staking, ethers.parseEther("100"))).wait();
-  await (await staking.stake(ethers.parseEther("100"), 1)).wait();
+  /* read the entry tier straight from the contract so this check can never
+     drift from the deployed ladder (tier 1 = 20 tOMC since 2026-10-10) */
+  const tier1Min = await stakingOwner.minStakeForTier(1);
+  console.log("[2] approve + stake(" + ethers.formatEther(tier1Min) + ", tier 1)");
+  await (await token.approve(d.staking, tier1Min)).wait();
+  await (await staking.stake(tier1Min, 1)).wait();
+
+  /* prove the ladder rejects a below-minimum tier-1 stake */
+  try {
+    await (await staking.stake(ethers.parseEther("1"), 1)).wait();
+    console.log("    !! below-minimum tier-1 stake unexpectedly succeeded");
+  } catch (e) {
+    console.log("    below-minimum tier-1 stake correctly rejected");
+  }
+
+  console.log("[2b] tier ladder read back from the contract");
+  for (let t = 1; t <= 5; t++) {
+    console.log(`     tier ${t}:`, ethers.formatEther(await stakingOwner.minStakeForTier(t)), "tOMC");
+  }
 
   console.log("[3] registerNode(1, …)");
   await (await staking.registerNode(1, "https://node.example.test:9190")).wait();
 
   console.log("[4] verifier reportWork(5 units)");
+  const beforeWork = await tokenOwner.balanceOf(actor.address);
   await (await stakingOwner.reportWork(actor.address, 5)).wait();
+  const pend = await stakingOwner.pendingOf(actor.address);
+  console.log("    pending after reportWork:", ethers.formatEther(pend[0]), "tOMC (accrued + reported)");
 
   console.log("[5] claim()");
-  const before = await tokenOwner.balanceOf(actor.address);
   await (await staking.claim()).wait();
   const after = await tokenOwner.balanceOf(actor.address);
-  console.log("    claimed:", ethers.formatEther(after - before), "tOMC");
+  console.log("    credited to the node :", ethers.formatEther(after - beforeWork), "tOMC");
 
   console.log("[6] slashing path — shrink the liveness window to 60s and go dark");
   await (await stakingOwner.setHeartbeatParams(60, 0)).wait();

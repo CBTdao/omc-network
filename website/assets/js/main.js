@@ -83,8 +83,9 @@ function showToast(msg) {
    AIRDROP — participate & accumulate (frontend demo)
    Rules:
    - Pool: 20,000,000 OMC = 1,000,000 entries × 20 OMC
-   - Per wallet: max 10 entries (lifetime)
-   - Daily cap: 2 entries / calendar day (resets 00:00 UTC+8)
+   - Per wallet: max 5 entries (lifetime) = 100 OMC, which is exactly the
+     tier-2 staking minimum, so a maxed-out airdrop reaches tier 2
+   - Daily cap: 1 entry / calendar day (resets 00:00 UTC+8)
    - Each participation deducts 0.01 BNB network gas
    - During the campaign: page only DISPLAYS accumulated OMC
    - Claim window OPENS AT TGE (mainnet launch), which the white paper
@@ -93,8 +94,8 @@ function showToast(msg) {
    ============================================================ */
 const AIRDROP_KEY = "omc_airdrop_v1";
 const PER_ENTRY = 20;                                   // OMC per entry
-const MAX_TOTAL = 10;                                   // per wallet, lifetime
-const MAX_DAILY = 2;                                    // per UTC+8 calendar day
+const MAX_TOTAL = 5;                                    // per wallet, lifetime
+const MAX_DAILY = 1;                                    // per UTC+8 calendar day
 /* ============================================================
    GAS FEE (fuel fee) — PUBLIC RULE: 0.01 BNB per participation.
    The receiving address is intentionally ANONYMOUS / NOT DISCLOSED:

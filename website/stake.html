@@ -108,12 +108,12 @@
         <div>
           <div class="stk-panel">
             <h3 data-i18n="stk.h_stake">1 · Stake tOMC</h3>
-            <p class="p-sub" data-i18n="stk.h_stake_sub">A tier is a hardware class. The minimum deposit is fixed for each tier — there is no way to buy a higher tier with less stake.</p>
+            <p class="p-sub" data-i18n="stk.h_stake_sub">A tier is a hardware class. Each tier has its own fixed minimum stake, published as a ladder — you cannot reach a higher tier with less stake.</p>
 
             <div class="field">
               <label data-i18n="stk.l_tier">Hardware tier</label>
               <div class="tiers" id="stkTiers"></div>
-              <div class="note" data-i18n="stk.tier_note">Tier minimum = tier number × base deposit.</div>
+              <div class="note" data-i18n="stk.tier_note">Tier 1 = 20 tOMC (one airdrop entry), tier 2 = 100 tOMC (a maxed-out airdrop). Tiers 3-5 require OMC from mining or the market.</div>
             </div>
 
             <div class="field">
@@ -197,7 +197,7 @@
 
           <div class="stk-panel" style="margin-top:20px;">
             <h3 data-i18n="stk.h_tiers">Tier ladder</h3>
-            <p class="p-sub" data-i18n="stk.h_tiers_sub">Base deposit is read live from the contract, so this table can never drift from the code.</p>
+            <p class="p-sub" data-i18n="stk.h_tiers_sub">Every tier minimum is read live from the contract, so this table can never drift from the code.</p>
             <table class="tier-table">
               <thead><tr><th data-i18n="stk.th_tier">Tier</th><th data-i18n="stk.th_min">Minimum stake</th></tr></thead>
               <tbody id="stkTierTable"></tbody>
@@ -230,8 +230,8 @@
         </div>
         <div class="endpoint reveal">
           <span class="k" data-i18n="stk.k_staking">OMCStaking</span>
-          <span class="v">0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B</span>
-          <button data-copy="0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B">Copy</button>
+          <span class="v">0x5B993101885Cb5704318b10554fdA31f3c816b95</span>
+          <button data-copy="0x5B993101885Cb5704318b10554fdA31f3c816b95">Copy</button>
         </div>
       </div>
     </div>
