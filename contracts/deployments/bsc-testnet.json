@@ -19,5 +19,13 @@
     "500",
     "1000",
     "5000"
-  ]
+  ],
+  "market": "0x5795393f33F6E27797499b1C61422ACeF0555709",
+  "marketTx": "0x414e34a2220d54a98fac2d949687893a0d94ca4734ebcf80ab4cb6fd6ca90298",
+  "marketDeployedAt": "2026-10-10T05:04:53.119Z",
+  "marketOwner": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+  "marketScheduler": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+  "marketTreasury": "0xc35711aa6128B8208FA534dbf94d3aF24BA22B4B",
+  "marketRequesterPool": "0xc35711aa6128B8208FA534dbf94d3aF24BA22B4B",
+  "marketFeeBurn": "0x000000000000000000000000000000000000dEaD"
 }

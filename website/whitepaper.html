@@ -46,6 +46,7 @@
         <a href="/news" data-i18n="nav.news">News</a>
         <a href="/whitepaper" data-i18n="nav.wp">Whitepaper</a>
         <a href="/calculator" data-i18n="nav.calc">Calculator</a>
+        <a href="/compute" data-i18n="nav.compute">Compute</a>
         <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
         <a href="/stake" data-i18n="nav.stake">Stake</a>
         <a href="/airdrop" data-i18n="nav.airdrop">Airdrop</a>
@@ -76,7 +77,7 @@
       <div class="dl-cards reveal" style="max-width: 860px; margin: 0 auto 50px;">
         <a class="dl-card" href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank">
           <span class="ic">📄</span>
-          <span><b data-i18n="wp.dl_en_b">Whitepaper v3.0 (English)</b><span data-i18n="wp.dl_en_s">Full document · PDF · 18 pages</span></span>
+          <span><b data-i18n="wp.dl_en_b">Whitepaper v3.0 (English)</b><span data-i18n="wp.dl_en_s">Full document · PDF · 19 pages</span></span>
         </a>
         <a class="dl-card" href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank">
           <span class="ic">📊</span>
@@ -207,7 +208,7 @@
           <ul><li>30% of the fee is used to buy back OMC on the market and burn it automatically through smart contracts.</li><li>70% goes to the Reputation Reward Pool, held by the Treasury contract and distributed to nodes in proportion to their reputation-weighted verified work.</li></ul>
           <p>The burn equals <strong>0.9% of settled job volume</strong> (3% × 30%). As an illustration only, not a forecast: if monthly settled volume were $10 million, the monthly buyback and burn would be about $90,000. Actual volume, and therefore burn, depends entirely on network usage. The protocol publishes settled volume, fees, burns and emissions on a public dashboard.</p>
           <h3>7.2 Token Utility</h3>
-          <ul><li><strong>Payment</strong> for compute jobs (with a fee discount).</li><li><strong>Staking</strong> by node operators as security for honest behavior.</li><li><strong>Governance</strong> voting on protocol parameters, treasury use and upgrades.</li><li><strong>Rewards</strong> to providers for verified work.</li></ul>
+          <ul><li><strong>Payment</strong> for compute jobs, with a fee discount for settling in OMC (Section 7.6).</li><li><strong>Staking</strong> by node operators as security for honest behavior — the stake is simultaneously the right to accept work, the source of a buyer's refund and the discount qualification (Sections 7.5, 7.6).</li><li><strong>Governance</strong> voting on protocol parameters, treasury use and upgrades.</li><li><strong>Rewards</strong> to providers for verified work.</li></ul>
           <p>OMC has a fixed maximum supply of 1,000,000,000 tokens on BNB Chain (BEP-20). The only mechanisms that reduce supply are the fee buyback-and-burn and the slashing burn.</p>
           <h3>7.3 Token Distribution</h3>
           <div class="table-wrap">
@@ -280,6 +281,14 @@
           <tr><td>Proven fraud or fake heartbeat</td><td>100%</td></tr>
           </tbody></table></div>
           <p>Slashed tokens are allocated 50% to compensate affected requesters, 30% to the DAO Treasury and 20% burned (Burn = Slashed × 20%). Penalty sizes will be calibrated on testnet and published before mainnet.</p>
+          <h3>7.6 The Compute Market: What the Stake Is Actually For</h3>
+          <p>Staking only has meaning if the stake is doing work. In OMC it performs three concrete jobs, all of them enforced by a contract rather than by policy. The mechanism is the <strong>Compute Market</strong> — the buyer-facing half of the network. Suppliers register GPUs and stake; buyers post jobs and escrow payment. The market contract sits between them.</p>
+          <p><strong>1. The stake is the right to accept work.</strong> A provider cannot be assigned a job unless its staked balance clears the hardware tier that job requires. The check reads the same ladder defined in Section 7.5 — the market contract does not keep its own copy. There is no separate reputation score gating assignment: eligibility is stake, and it is verified on chain at the moment of assignment. Below the tier minimum, the assignment reverts.</p>
+          <p><strong>2. The stake is the source of the buyer's refund.</strong> When a job is created the payment is escrowed, not transferred. Settlement releases it only against an accepted result, and the contract settles at or below the buyer's stated ceiling, returning the difference. If a provider fails — missing the deadline, dropping offline mid-job, delivering output that fails verification — the penalty is taken from <em>that provider's</em> stake, never from another user's escrow, and the majority share is paid directly to the buyer. <strong>A refund is the seller's debt, not a redistribution of someone else's deposit.</strong> This is the property that makes the escrow trustworthy: the money that can pay the buyer back is locked before the job starts.</p>
+          <p><strong>3. The stake earns a settlement discount.</strong> A buyer paying in OMC rather than a stablecoin receives a reduction on the protocol fee described in Section 7.1. The discount is a governance parameter, not a return: it changes what a buyer pays, not what a staker earns. It is deliberately modest, because an aggressive discount would convert a security deposit into a yield product and attract capital with no intention of running hardware.</p>
+          <p><strong>Job lifecycle.</strong> A job moves through a fixed state machine: escrowed → assigned → delivered → settled, with <code>disputed</code>, <code>refunded</code> and <code>cancelled</code> as terminal branches. The buyer may cancel an unassigned job and recover the escrow in full. Once a result is delivered, the buyer has a <strong>48-hour dispute window</strong> (Section 5) to contest it; uncontested results release automatically, so payment cannot be stalled indefinitely by buyer inaction.</p>
+          <p><strong>Verification policy is chosen per job.</strong> Buyers pick the assurance level their workload justifies — spot-check re-execution of a sample, full redundant execution across independent nodes, or hardware attestation (TEE) — and the cost scales with it. This keeps cheap, low-risk jobs cheap rather than forcing every buyer to pay for redundant execution they do not need.</p>
+          <p><strong>Scope at launch.</strong> The market is a testnet tool. It does not sell production compute and publishes no price list or rate; buyers quote their own ceiling and the arithmetic is shown, not an offer. Mainnet deployment follows the same schedule as staking (Section 10).</p>
           <h2 id="sec8">8 · Governance</h2>
           <p>Governance moves from team-led to community-led in stages.</p>
           <p><strong>Launch stage.</strong> Protocol upgrades are controlled by a 4-of-7 multisignature wallet held by core contributors, with a 3-day timelock (<strong>proposed</strong>). All changes are announced publicly before execution. Individual signers are not disclosed at this stage; the signing policy, key-management practice and any signer rotation will be published before mainnet.</p>
@@ -343,7 +352,7 @@
           <p>Benchmark methodology for OMC's own delivered-cost claims (Section 2) is published with the DCF forum "GPU Pricing Watch" series: <a href="https://forum.omc.network" target="_blank" rel="noopener">https://forum.omc.network</a></p>
           <p>All third-party figures were verified against the sources above at the time of writing. GPU prices change quickly; readers should confirm current rates before relying on them.</p>
 
-          <div class="wp-note" style="margin-top: 34px;" data-i18n="wp.note"><b>Note.</b> This page reproduces the official OMC Whitepaper v3.0 (English) as a web document. The PDF versions remain the authoritative reference — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>English whitepaper (PDF, 18 pages)</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>presentation deck</a>.</div>
+          <div class="wp-note" style="margin-top: 34px;" data-i18n="wp.note"><b>Note.</b> This page reproduces the official OMC Whitepaper v3.0 (English) as a web document. The PDF versions remain the authoritative reference — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>English whitepaper (PDF, 19 pages)</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>presentation deck</a>.</div>
         </article>
       </div>
     </div>
@@ -353,7 +362,7 @@
     <div class="footer-inner">
       <div class="footer-grid">
         <div>
-          <a class="brand" href="/whitepaper">
+          <a class="brand" href="/">
             <img class="logo" src="assets/img/logo.png" alt="OMC" />
             <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
           </a>
@@ -386,6 +395,7 @@
         <div class="f-col">
           <h5 data-i18n="footer.h_resources">Resources</h5>
           <a href="/calculator" data-i18n="f.calculator">GPU Cost Calculator</a>
+          <a href="/compute" data-i18n="f.compute">AI Compute Station</a>
           <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
           <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
           <a href="/testnet#endpoints" data-i18n="f.rpc">RPC Endpoints</a>

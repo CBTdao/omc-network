@@ -1,0 +1,204 @@
+/* ============================================================
+   OMC — /compute (AI Compute Station)
+   Page-scoped styles only. Everything else comes from style.css
+   and stake.css (the shared panel / wallet / table chrome).
+   ============================================================ */
+
+/* ---------- tier picker ---------- */
+.cmp-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.cmp-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  cursor: pointer;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 13px;
+  color: var(--text);
+  font: inherit;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+}
+.cmp-tier:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.cmp-tier.on {
+  border-color: var(--accent-2);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent-2) inset;
+}
+.cmp-tier .tn { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-2); }
+.cmp-tier .th { font-size: 12.5px; line-height: 1.35; color: var(--text); }
+.cmp-tier .tm { font-size: 12px; color: var(--accent-2); font-family: Consolas, monospace; margin-top: 3px; }
+
+/* ---------- segmented control ---------- */
+.cmp-seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.cmp-seg.two { grid-template-columns: repeat(2, 1fr); }
+.cmp-seg button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: pointer;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 10px 12px;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.18s, background 0.18s;
+}
+.cmp-seg button:hover { border-color: var(--border-strong); }
+.cmp-seg button.on { border-color: var(--accent-2); background: var(--accent-soft); }
+.cmp-seg button b { font-size: 13.5px; font-weight: 600; }
+.cmp-seg button small { font-size: 11.5px; color: var(--muted-2); line-height: 1.35; }
+
+.mini-lbl {
+  display: block;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 6px;
+}
+
+.cmp-select {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--text);
+  font: inherit;
+  padding: 11px 13px;
+}
+.cmp-select option { background: #0d1730; color: var(--text); }
+
+/* ---------- quote box ---------- */
+.cmp-quote {
+  position: relative;
+  background: linear-gradient(160deg, rgba(43, 107, 243, 0.14), rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+}
+.cmp-quote.empty { background: var(--panel); border-style: dashed; border-color: var(--border); }
+.cmp-quote .qh {
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 10px;
+}
+.cmp-quote.empty .qh { margin-bottom: 0; color: var(--muted); text-transform: none; letter-spacing: 0; font-size: 13.5px; }
+
+.cmp-quote .qbig {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.cmp-quote .qlo, .cmp-quote .qhi {
+  font-size: 30px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.cmp-quote .qhi { color: var(--accent-2); }
+.cmp-quote .qdash { color: var(--muted-2); font-size: 20px; }
+.cmp-quote .qunit { font-size: 14px; color: var(--muted); }
+
+.cmp-quote .qrows {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cmp-quote .qrow { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+.cmp-quote .qrow span { color: var(--muted); }
+.cmp-quote .qrow b { color: var(--text); font-family: Consolas, monospace; font-weight: 600; }
+
+.cmp-quote .qfoot {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--orange);
+}
+
+/* ---------- "who stands behind the job" ---------- */
+.cmp-why { display: flex; flex-direction: column; gap: 14px; }
+.cmp-why .cw { display: flex; gap: 12px; }
+.cmp-why .cwn {
+  flex: 0 0 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-2);
+  background: var(--accent-soft);
+  border: 1px solid rgba(94, 162, 255, 0.3);
+}
+.cmp-why .cw b { display: block; font-size: 13.5px; margin-bottom: 3px; }
+.cmp-why .cw p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+
+.cmp-xlink {
+  display: block;
+  margin-top: 16px;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--panel);
+  font-size: 13px;
+  color: var(--text) !important;
+  transition: border-color 0.18s, background 0.18s;
+}
+.cmp-xlink:hover { border-color: var(--accent-2); background: var(--panel-strong); }
+
+/* ---------- lifecycle steps ---------- */
+.cmp-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+.cmp-steps .cs {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 16px 15px;
+}
+.cmp-steps .cs span {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-2);
+  background: var(--accent-soft);
+  border: 1px solid rgba(94, 162, 255, 0.3);
+  margin-bottom: 9px;
+}
+.cmp-steps .cs b { display: block; font-size: 14px; margin-bottom: 5px; }
+.cmp-steps .cs p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 780px) {
+  .cmp-seg { grid-template-columns: 1fr; }
+  .cmp-seg.two { grid-template-columns: 1fr; }
+  .cmp-quote .qlo, .cmp-quote .qhi { font-size: 25px; }
+}

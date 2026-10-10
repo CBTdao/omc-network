@@ -71,6 +71,15 @@ contract OMCStaking {
     uint256 public constant SLASH_TREASURY_BPS = 3_000;
     uint256 public constant SLASH_BURN_BPS = 2_000;
 
+    /// @dev job-failure penalties charged by the compute market, whitepaper 7.5:
+    ///      timeout 2% / offline 5% / bad output 30% / fraud 100%. Same split
+    ///      above applies, so a failed job compensates its requester out of the
+    ///      provider's bond instead of out of somebody else's escrow.
+    uint256 public constant SLASH_JOB_TIMEOUT_BPS = 200; // 2%
+    uint256 public constant SLASH_JOB_OFFLINE_BPS = 500; // 5%
+    uint256 public constant SLASH_JOB_BAD_OUTPUT_BPS = 3_000; // 30%
+    uint256 public constant SLASH_JOB_FRAUD_BPS = 10_000; // 100%
+
     address public constant BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
 
     /* -------------------------------- state ----------------------------- */
@@ -81,6 +90,11 @@ contract OMCStaking {
     address public verifier;
     address public treasury;
     address public requesterPool;
+
+    /// @dev the compute market contract; the only address allowed to charge a
+    ///      job-failure penalty (see `slashFor`). Zero until one is registered.
+    address public market;
+
     bool public paused;
 
     /// @dev published staking ladder, one entry per tier (tier 1 .. tier 5).
@@ -154,6 +168,8 @@ contract OMCStaking {
     event VerifierChanged(address indexed from, address indexed to);
     event TreasuryChanged(address indexed from, address indexed to);
     event RequesterPoolChanged(address indexed from, address indexed to);
+    event MarketChanged(address indexed from, address indexed to);
+    event JobSlashed(address indexed who, uint256 amount, uint8 reason);
     event EmissionChanged(uint256 from, uint256 to);
     event HeartbeatParamsChanged(uint256 interval, uint256 grace);
     event WorkUnitRewardChanged(uint256 from, uint256 to);
@@ -171,6 +187,11 @@ contract OMCStaking {
 
     modifier onlyVerifier() {
         require(msg.sender == verifier, "OMCS: not verifier");
+        _;
+    }
+
+    modifier onlyMarket() {
+        require(msg.sender == market && market != address(0), "OMCS: not market");
         _;
     }
 
@@ -193,6 +214,7 @@ contract OMCStaking {
         emit VerifierChanged(address(0), verifier);
         emit TreasuryChanged(address(0), treasury);
         emit RequesterPoolChanged(address(0), requesterPool);
+        emit MarketChanged(address(0), address(0));
     }
 
     /* ------------------------------- views ------------------------------ */
@@ -423,6 +445,55 @@ contract OMCStaking {
         n.lastHeartbeat = block.timestamp; // must heartbeat again to resume earning
     }
 
+    /// @notice a completed job failed verification; charge the provider's bond.
+    ///         Only the market contract calls this, and the reason index maps
+    ///         1:1 onto the penalty table the whitepaper publishes in 7.5:
+    ///           0 = timeout      2%
+    ///           1 = offline      5%
+    ///           2 = bad output   30%
+    ///           3 = fraud        100%
+    /// @return slashed the amount taken off the bond
+    function slashFor(address who, uint8 reason) external onlyMarket notPaused returns (uint256 slashed) {
+        Node storage n = node[who];
+        require(n.registered, "OMCS: not registered");
+        require(n.stake > 0, "OMCS: nothing staked");
+
+        uint256 bps;
+        if (reason == 0) bps = SLASH_JOB_TIMEOUT_BPS;
+        else if (reason == 1) bps = SLASH_JOB_OFFLINE_BPS;
+        else if (reason == 2) bps = SLASH_JOB_BAD_OUTPUT_BPS;
+        else if (reason == 3) bps = SLASH_JOB_FRAUD_BPS;
+        else revert("OMCS: reason");
+
+        _settle(who);
+        // a node that just failed a job is no longer earning until it heartbeats
+        if (n.earning) {
+            totalStake -= n.stake;
+            n.earning = false;
+        }
+
+        slashed = (n.stake * bps) / BPS;
+        if (slashed > n.stake) slashed = n.stake;
+        if (slashed == 0) return 0;
+
+        n.stake -= slashed;
+        n.slashedTotal += slashed;
+        totalSlashed += slashed;
+
+        uint256 toRequesters = (slashed * SLASH_REQUESTERS_BPS) / BPS;
+        uint256 toTreasury = (slashed * SLASH_TREASURY_BPS) / BPS;
+        uint256 burned = slashed - toRequesters - toTreasury;
+
+        // the requester-compensation slice is paid to the market contract, which
+        // forwards it to the requester whose job failed
+        if (toRequesters > 0) require(token.transfer(market, toRequesters), "OMCS: transfer");
+        if (toTreasury > 0) require(token.transfer(treasury, toTreasury), "OMCS: transfer");
+        if (burned > 0) require(token.transfer(BURN_ADDRESS, burned), "OMCS: transfer");
+
+        emit Slashed(who, slashed, toRequesters, toTreasury, burned, 0, msg.sender);
+        emit JobSlashed(who, slashed, reason);
+    }
+
     /// @notice leave the node registry so the full stake can be withdrawn
     function deregister() external {
         Node storage n = node[msg.sender];
@@ -502,6 +573,12 @@ contract OMCStaking {
         require(r != address(0), "OMCS: zero");
         emit RequesterPoolChanged(requesterPool, r);
         requesterPool = r;
+    }
+
+    /// @notice register the compute market that may charge job-failure penalties
+    function setMarket(address m) external onlyOwner {
+        emit MarketChanged(market, m);
+        market = m;
     }
 
     function setEmissionPerSecond(uint256 v) external onlyOwner {

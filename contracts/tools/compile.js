@@ -16,7 +16,7 @@ const OUT = path.join(ROOT, "artifacts");
 const solc = require("solc");
 const { keccak256, toUtf8Bytes } = require("ethers");
 
-const FILES = ["OMCTestToken.sol", "OMCStaking.sol"];
+const FILES = ["OMCTestToken.sol", "OMCStaking.sol", "OMCComputeMarket.sol"];
 
 const sources = {};
 for (const f of FILES) {
@@ -94,6 +94,20 @@ const FRONT_END_CALLS = {
     "minStakeForTier(uint8)",
     "isOverdue(address)",
     "nodeCount()",
+    "market()",
+  ],
+  OMCComputeMarket: [
+    "createJob(bytes32,uint8,uint8,uint8,uint256,uint64,bool)",
+    "cancelJob(uint256)",
+    "dispute(uint256)",
+    "getJob(uint256)",
+    "jobCount()",
+    "protocolStats()",
+    "minStakeForTier(uint8)",
+    "isEligible(address,uint8)",
+    "providerStanding(address,uint8,uint8)",
+    "PROTOCOL_FEE_BPS()",
+    "DISPUTE_WINDOW()",
   ],
 };
 

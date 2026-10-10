@@ -47,6 +47,7 @@
         <a href="/news" data-i18n="nav.news">News</a>
         <a href="/whitepaper" data-i18n="nav.wp">Whitepaper</a>
         <a href="/calculator" data-i18n="nav.calc">Calculator</a>
+        <a href="/compute" data-i18n="nav.compute">Compute</a>
         <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
         <a href="/stake" data-i18n="nav.stake">Stake</a>
         <a href="/airdrop" data-i18n="nav.airdrop">Airdrop</a>
@@ -304,11 +305,39 @@
     </div>
   </section>
 
+  <!-- ===== WHAT THE STAKE IS FOR ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container stk-wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="stk.use_eyebrow">A stake that does something</div>
+        <h2 data-i18n="stk.use_title">Staking is not a yield product. It is a three-part job.</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">🎟️</div>
+          <h3 data-i18n="stk.u1_t">It buys you the right to take work</h3>
+          <p data-i18n="stk.u1_d">The AI Compute Station only assigns a job to a provider whose stake clears the hardware tier. Below the minimum, the assignment reverts — that check is on chain, not in a UI.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">💸</div>
+          <h3 data-i18n="stk.u2_t">It is where the buyer's refund comes from</h3>
+          <p data-i18n="stk.u2_d">If a provider misses a deadline, goes offline or returns a bad result, the penalty is taken from <em>that provider's</em> stake and 50% of it goes straight to the buyer. A refund is the seller's debt, not another customer's deposit.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🏷️</div>
+          <h3 data-i18n="stk.u3_t">It earns you a fee discount</h3>
+          <p data-i18n="stk.u3_d">Pay for compute in OMC instead of tOMC and the 3% protocol fee is cut to 2.7%. The discount is a policy parameter, not a promise of profit.</p>
+        </div>
+      </div>
+      <div class="wp-note reveal" style="max-width:820px;margin:30px auto 0;" data-i18n="stk.use_note"><b>Read this before you stake.</b> Staked tOMC is testnet-only and worth nothing. There is no advertised rate of return anywhere on this site, because none exists — releasing a handshake, missing a heartbeat, or delivering a result that fails verification all cost you real collateral. <a href="/compute">See the buyer side →</a></div>
+    </div>
+  </section>
+
   <footer>
     <div class="footer-inner">
       <div class="footer-grid">
         <div>
-          <a class="brand" href="/testnet">
+          <a class="brand" href="/">
             <img class="logo" src="assets/img/logo.png" alt="OMC" />
             <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
           </a>
@@ -341,6 +370,7 @@
         <div class="f-col">
           <h5 data-i18n="footer.h_resources">Resources</h5>
           <a href="/calculator" data-i18n="f.calculator">GPU Cost Calculator</a>
+          <a href="/compute" data-i18n="f.compute">AI Compute Station</a>
           <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
           <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
           <a href="/testnet#endpoints" data-i18n="f.rpc">RPC Endpoints</a>

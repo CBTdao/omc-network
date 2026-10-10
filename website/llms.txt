@@ -10,6 +10,7 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://omc.network/airdrop](https://omc.network/airdrop): Airdrop — Omniverse Compute (OMC)
 - [https://omc.network/aup](https://omc.network/aup): Acceptable Use Policy — Omniverse Compute (OMC)
 - [https://omc.network/calculator](https://omc.network/calculator): GPU Cloud Cost Calculator — H100 & H200 On-Demand Pricing | OMC
+- [https://omc.network/compute](https://omc.network/compute): AI Compute Station — Buy GPU Compute with Staked Collateral | OMC
 - [https://omc.network/](https://omc.network/): Omniverse Compute (OMC) — Decentralized GPU Infrastructure Network
 - [https://omc.network/news](https://omc.network/news): News — Omniverse Compute (OMC)
 - [https://omc.network/privacy](https://omc.network/privacy): Privacy Policy — Omniverse Compute (OMC)
