@@ -113,6 +113,7 @@ window.I18N.en = {
   "ph2.l1": "Mainnet launch",
   "ph2.l2": "Compute mining activation",
   "ph2.l3": "HuggingFace & Blender plugin integration",
+  "ph2.l4": "Airdrop claim window and staking open the same day as mainnet",
   "ph3.tag": "Phase 3 · 2027 Q2 –",
   "ph3.title": "Full DAO &amp; Advanced Verification",
   "ph3.l1": "TEE confidential-computing tier (ZK proofs on the research track)",

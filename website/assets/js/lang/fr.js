@@ -113,6 +113,7 @@ window.I18N.fr = {
   "ph2.l1": "Lancement du mainnet",
   "ph2.l2": "Activation du minage de calcul",
   "ph2.l3": "Intégration des plugins HuggingFace & Blender",
+  "ph2.l4": "La fenêtre de réclamation de l'airdrop et le staking ouvrent le même jour que le mainnet",
   "ph3.tag": "Phase 3 · 2027 T2 –",
   "ph3.title": "DAO complète et vérification avancée",
   "ph3.l1": "Palier de calcul confidentiel TEE (preuves ZK en piste de recherche)",

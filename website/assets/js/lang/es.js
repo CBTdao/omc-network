@@ -109,6 +109,7 @@ window.I18N.es = {
   "ph2.l1": "Lanzamiento del mainnet",
   "ph2.l2": "Activación de la minería de cómputo",
   "ph2.l3": "Integración de plugins HuggingFace y Blender",
+  "ph2.l4": "La ventana de reclamo del airdrop y el staking abren el mismo día que la mainnet",
   "ph3.tag": "Fase 3 · 2027 Q2 –",
   "ph3.title": "DAO completa y verificación avanzada",
   "ph3.l1": "Nivel de computación confidencial TEE (pruebas ZK en la vía de investigación)",
