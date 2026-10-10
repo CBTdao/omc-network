@@ -159,8 +159,8 @@
         <div class="card reveal">
           <div class="icon">3️⃣</div>
           <h3 data-i18n="nstep3.t">Stake &amp; Register</h3>
-          <p data-i18n="nstep3.d">Stake tOMC proportional to your hardware tier and register your node heartbeat.</p>
-          <span class="tag">Staking_Min = Deposit × Tier</span>
+          <p data-i18n="nstep3.d">Stake tOMC to clear your hardware tier's minimum and register your node heartbeat.</p>
+          <span class="tag">Testnet: fixed ladder 20/100/500/1000/5000 tOMC</span>
         </div>
         <div class="card reveal">
           <div class="icon">4️⃣</div>
@@ -171,6 +171,7 @@
       </div>
 
       <div class="wp-note reveal" style="max-width: 780px; margin: 34px auto 0;" data-i18n="node.note"><b>Verification reminder.</b> Each job runs under a per-job verification policy — spot-check re-execution or full redundancy (2–3 nodes). Fraudulent outputs, timeouts and fake heartbeats are slashed — 50% to requesters, 30% to the DAO treasury, 20% permanently burned.</div>
+      <div class="wp-note reveal" style="max-width: 780px; margin: 14px auto 0;" data-i18n="node.stake_note"><b>Testnet staking is a fixed ladder.</b> Here the minimum stake is a flat published ladder — 20 / 100 / 500 / 1000 / 5000 tOMC for tiers 1–5 — so the testnet can be exercised with faucet tokens alone. On mainnet the minimum follows Whitepaper §7.5: a USD base deposit × tier multiplier ÷ OMC TWAP, so it does not drift with token volatility. The ladder is a testnet convenience, not the mainnet rule.</div>
       <div class="hero-actions reveal" style="margin-top: 26px;">
         <a href="/stake" class="btn btn-primary" data-i18n="node.cta">Stake tOMC &amp; register a node →</a>
       </div>

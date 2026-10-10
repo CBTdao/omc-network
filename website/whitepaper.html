@@ -228,22 +228,27 @@
           </tbody></table></div>
           <p>The airdrop is listed separately from investor allocations. Circulating supply at TGE is about 65.5 million OMC (6.55% of maximum supply): 20M airdrop, 5M institutional, 8M private, 7.5M ecosystem and 25M treasury liquidity. A public vesting dashboard shows locked and unlocked balances for every category.</p>
           <h3>7.4 Emission Schedule for Node Rewards</h3>
-          <p>The 500,000,000 OMC reward pool is released in five two-year epochs, with emission halving at the start of each epoch. Within an epoch, release is linear by day.</p>
+          <p>The 500,000,000 OMC reward pool is released in <strong>equal annual instalments over 10 years</strong>. The ceiling is the same in every year, and within a year release is linear by day. There is no halving step and no epoch structure: a provider that joins in year 7 is mining against the same annual ceiling as one that joined in year 1.</p>
           <div class="table-wrap">
           <table>
           <thead><tr>
-          <th>Epoch</th>
-          <th>Years</th>
+          <th>Year</th>
           <th>Emission ceiling (OMC)</th>
           <th>Share of pool</th>
           </tr></thead><tbody>
-          <tr><td>1</td><td>1–2</td><td>258.06M</td><td>51.6%</td></tr>
-          <tr><td>2</td><td>3–4</td><td>129.03M</td><td>25.8%</td></tr>
-          <tr><td>3</td><td>5–6</td><td>64.52M</td><td>12.9%</td></tr>
-          <tr><td>4</td><td>7–8</td><td>32.26M</td><td>6.5%</td></tr>
-          <tr><td>5</td><td>9–10</td><td>16.13M</td><td>3.2%</td></tr>
+          <tr><td>1</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>2</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>3</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>4</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>5</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>6</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>7</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>8</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>9</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>10</td><td>50.00M</td><td>10.0%</td></tr>
           </tbody></table></div>
-          <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. This ties new supply to real usage rather than to the calendar.</p>
+          <p>The schedule is deliberately flat. A halving curve front-loads roughly three quarters of the pool into the first four years and then leaves late-joining providers with a fraction of the early rate; a flat curve keeps the reward rate for a given unit of verified work legible for the whole decade, which is what a provider buying hardware to run for several years actually needs to underwrite. The supply that is not released in the early years is not removed from the pool — it is simply released later, so the total is unchanged at 500,000,000 OMC over 10 years.</p>
+          <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. Because the annual ceiling is flat, an under-utilized network accumulates a smaller reserve per year than an exponentially decaying schedule would, and that reserve can only re-enter circulation by DAO vote. This ties new supply to real usage rather than to the calendar.</p>
           <h3>7.5 Staking and Slashing</h3>
           <p>Nodes must stake OMC before receiving jobs. The required stake is set in USD terms and converted at a time-weighted average price, so that it does not drift with token volatility:</p>
           <p><code>Staking_Min (OMC) = Base_Deposit_USD × Tier_Multiplier ÷ OMC_TWAP</code></p>

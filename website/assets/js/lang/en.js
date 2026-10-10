@@ -166,10 +166,11 @@ window.I18N.en = {
   "nstep2.t": "Install Client",
   "nstep2.d": "Pull the open-source node client: <b>docker compose up</b> on any CUDA / ROCm machine.",
   "nstep3.t": "Stake & Register",
-  "nstep3.d": "Stake tOMC proportional to your hardware tier and register your node heartbeat.",
+  "nstep3.d": "Stake tOMC to clear your hardware tier's minimum and register your node heartbeat.",
   "nstep4.t": "Execute & Earn",
   "nstep4.d": "Receive matched tasks, execute in sandbox, pass dual verification — and collect rewards.",
   "node.note": "<b>Verification reminder.</b> Each job runs under a per-job verification policy — spot-check re-execution or full redundancy (2–3 nodes). Fraudulent outputs, timeouts and fake heartbeats are slashed — 50% to requesters, 30% to the DAO treasury, 20% permanently burned.",
+  "node.stake_note": "<b>Testnet staking is a fixed ladder.</b> Here the minimum stake is a flat published ladder — 20 / 100 / 500 / 1000 / 5000 tOMC for tiers 1–5 — so the testnet can be exercised with faucet tokens alone. On mainnet the minimum follows Whitepaper §7.5: a USD base deposit × tier multiplier ÷ OMC TWAP, so it does not drift with token volatility. The ladder is a testnet convenience, not the mainnet rule.",
   "node.cta": "Stake tOMC &amp; register a node →",
   "faq.eyebrow": "FAQ",
   "faq.title": "Testnet Questions",
@@ -493,6 +494,7 @@ window.I18N.en = {
 
   "stk.h_tiers": "Tier ladder",
   "stk.h_tiers_sub": "Every tier minimum is read live from the contract, so this table can never drift from the code.",
+  "stk.tier_scope": "These amounts are the <b>testnet</b> ladder. On mainnet the minimum follows Whitepaper §7.5 — a USD base deposit × tier multiplier ÷ OMC TWAP — so it does not drift with token volatility. The fixed ladder is a testnet convenience.",
   "stk.th_tier": "Tier",
   "stk.th_min": "Minimum stake",
 
