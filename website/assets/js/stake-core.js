@@ -285,12 +285,17 @@
      offset, then length, then the right-padded UTF-8 body */
   function decString(hex) {
     if (!hex || hex.length < 128) return "";
+    /* `hex` is prefix-less throughout this module (see decodeUintAt), so every
+       offset is a plain multiple of 64 characters. Layout of ABI-encoded
+       `string`: [offset word][length word][right-padded body]. */
     try {
-      var offBytes = Number(decodeUintAt(hex, 0)); /* byte offset from start of data */
-      var offWords = offBytes / 32;
-      var len = Number(decodeUintAt(hex, offWords));
-      if (!isFinite(len) || len <= 0 || len > 4096) return "";
-      var start = 2 + offWords * 64 + 64; /* skip selector-less data + length word */
+      var offWord = Number(decodeUintAt(hex, 0)); /* byte offset to the length word */
+      if (!isFinite(offWord) || offWord % 32 !== 0) return "";
+      var lenWord = offWord / 32;
+      var len = Number(decodeUintAt(hex, lenWord));
+      if (!isFinite(len) || len <= 0 || len > 8192) return "";
+      var start = (lenWord + 1) * 64;
+      if (start + len * 2 > hex.length) return "";
       var body = hex.slice(start, start + len * 2);
       var out = "";
       for (var i = 0; i < body.length; i += 2) out += String.fromCharCode(parseInt(body.substr(i, 2), 16));

@@ -139,7 +139,13 @@
             <div class="field">
               <label data-i18n="stk.l_endpoint">Node endpoint</label>
               <input id="stkEndpoint" type="text" placeholder="https://node.example.test:9190" autocomplete="off" />
-              <div class="note" data-i18n="stk.endpoint_note">Any URL you can keep reachable. This is what the verifier arbitrates against.</div>
+              <div class="note" data-i18n="stk.endpoint_note">A reachable address that identifies this node. During the testnet the verifier only checks that it responds — it does not grade your hardware.</div>
+              <ul class="ep-guide">
+                <li data-i18n="stk.ep_have">Have a server? Use its public address, e.g. http://203.0.113.10:9190 or https://node.yourdomain.com</li>
+                <li data-i18n="stk.ep_none">No server? A GitHub Pages site, a gist, or any static page you control also works — the field only has to stay reachable.</li>
+                <li data-i18n="stk.ep_demo">Just trying the flow? Any placeholder such as https://example.com registers fine — swap in a real address before you rely on it.</li>
+              </ul>
+              <div class="note ep-warn" data-i18n="stk.ep_arb">The verifier requests this address to decide whether the node is online. If it stays unreachable past the grace period, slashing starts.</div>
             </div>
             <button id="stkBtnRegister" class="stk-btn" type="button" disabled data-i18n="stk.btn_register">Register / update tier</button>
             <div class="stk-row">

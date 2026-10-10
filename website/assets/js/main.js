@@ -86,8 +86,9 @@ function showToast(msg) {
    - Per wallet: max 10 entries (lifetime)
    - Daily cap: 2 entries / calendar day (resets 00:00 UTC+8)
    - Each participation deducts 0.01 BNB network gas
-   - During the airdrop: page only DISPLAYS accumulated OMC
-   - After it ends (2026-12-31 23:59:59 UTC+8):
+   - During the campaign: page only DISPLAYS accumulated OMC
+   - Claim window OPENS AT TGE (mainnet launch), which the white paper
+     defines as "100% at TGE" for the community airdrop:
      single claim of the whole amount on this page
    ============================================================ */
 const AIRDROP_KEY = "omc_airdrop_v1";
@@ -221,7 +222,8 @@ function renderAirdrop() {
     else hint.textContent = i18n("js.hint_ready");
   }
 
-  /* Claim-all — locked until the airdrop ends */
+  /* Claim-all — locked until participation closes; the real claim window
+     opens at TGE (mainnet), which is >= AIRDROP_END. */
   const cAll = document.getElementById("claimAllBtn");
   if (cAll) {
     cAll.disabled = !ended;
