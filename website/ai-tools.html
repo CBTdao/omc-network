@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta.title_ai">Image Upscaler — Runs in Your Browser | Omniverse Compute (OMC)</title>
+  <link rel="canonical" href="https://omc.network/ai-tools">
+  <script type="application/ld+json">
+{"@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"],"@context":"https://schema.org"}
+</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"OMC Image Upscaler","url":"https://omc.network/ai-tools","applicationCategory":"MultimediaApplication","operatingSystem":"Any modern browser with WebGPU or WebAssembly","description":"A 4x image upscaler powered by Real-ESRGAN that runs entirely inside your browser. Your image is never uploaded to a server. Requires no account and no wallet.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}}
+</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"AI Tools","item":"https://omc.network/ai-tools"}]}
+</script>
+  <meta property="og:site_name" content="Omniverse Compute">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Image Upscaler — Runs in Your Browser | Omniverse Compute (OMC)">
+  <meta property="og:description" content="A free 4x image upscaler that runs entirely in your browser. No upload, no account, no wallet. Powered by Real-ESRGAN.">
+  <meta property="og:url" content="https://omc.network/ai-tools">
+  <meta property="og:image" content="https://omc.network/og-image.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Image Upscaler — Runs in Your Browser | Omniverse Compute (OMC)">
+  <meta name="twitter:description" content="Free 4x image upscaling in your own browser. Nothing is uploaded. Powered by Real-ESRGAN.">
+  <meta name="twitter:image" content="https://omc.network/og-image.png">
+  <meta name="description" content="A free 4x image upscaler that runs entirely in your browser using Real-ESRGAN. Your image never leaves your device. No account, no wallet, no upload." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/stake.css" />
+  <link rel="stylesheet" href="assets/css/ai-tools.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/assets/img/logo.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/" data-i18n="nav.home">Home</a>
+        <a href="/news" data-i18n="nav.news">News</a>
+        <a href="/whitepaper" data-i18n="nav.wp">Whitepaper</a>
+        <a href="/calculator" data-i18n="nav.calc">Calculator</a>
+        <a href="/compute" data-i18n="nav.compute">Compute</a>
+        <a href="/ai-tools" data-i18n="nav.aitools">AI Tools</a>
+        <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
+        <a href="/stake" data-i18n="nav.stake">Stake</a>
+        <a href="/airdrop" data-i18n="nav.airdrop">Airdrop</a>
+        <a href="/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="es">Español</option>
+          <option value="ko">한국어</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" style="padding-bottom: 44px;">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="ai.badge">Free tool · runs on your device</span></div>
+      <h1><span data-i18n="ai.t1">Upscale 4×.</span><br /><span class="grad" data-i18n="ai.t2">Nothing Leaves Your Browser.</span></h1>
+      <p class="sub" data-i18n="ai.sub">Real-ESRGAN runs inside this page. The model is downloaded once, then every image is processed by your own GPU or CPU — no server, no upload, no account, no wallet. This is the free tier of the OMC compute network: the same class of work the paid network settles on chain.</p>
+      <div class="net-status">
+        <span class="status-pill live"><span class="dot"></span><span data-i18n="ai.status_local">Inference happens on your device</span></span>
+        <span class="status-pill warn"><span class="dot"></span><span data-i18n="ai.status_free">No payment, no signup</span></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 26px;">
+    <div class="container ai-wrap">
+
+      <div class="stk-warn" data-i18n="ai.disclaim"><b>How this is honest.</b> This page does not talk to the OMC network at all — there is no chain call, no escrow and no token involved. It is a plain client-side tool that happens to use the same model family the paid network runs. If you want the checkout, job records and provider collateral, that lives on the Compute Station.</div>
+
+      <div class="ai-priv">
+        <span class="lbl" data-i18n="ai.priv_lbl">Local only</span>
+        <span data-i18n="ai.priv_txt">Your image is read into this tab and never uploaded. The only network request this page makes is the one-time download of the model file and the inference runtime.</span>
+      </div>
+
+      <div class="stk-grid">
+        <!-- ===== LEFT: the tool ===== -->
+        <div>
+          <div class="stk-panel">
+            <h3 data-i18n="ai.h_tool">1 · Pick an image</h3>
+            <p class="p-sub" data-i18n="ai.h_tool_sub">The model is 64 MB and is fetched once, then cached by the browser. Nothing runs until you ask it to.</p>
+
+            <div class="ai-drop" id="aiDrop">
+              <div class="big"><b data-i18n="ai.drop_b">Click to choose</b> <span data-i18n="ai.drop_a">or drop an image here</span></div>
+              <div class="hint" data-i18n="ai.drop_hint">PNG or JPG. Keep the long edge under 4096 px — a 4× result is 16× the pixels and a large photo will take minutes.</div>
+              <input type="file" id="aiFile" accept="image/*" />
+            </div>
+
+            <div class="ai-ctl">
+              <div class="grow">
+                <label data-i18n="ai.l_tile">Tile size</label>
+                <select id="aiTile">
+                  <option value="128" data-i18n="ai.tile_128">128 — lowest memory, slowest</option>
+                  <option value="256" selected data-i18n="ai.tile_256">256 — recommended</option>
+                  <option value="384" data-i18n="ai.tile_384">384 — faster, needs more memory</option>
+                </select>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <div class="note" data-i18n="ai.tile_note">A big image is cut into tiles, upscaled one at a time and blended back with overlap. Tiles are why a modest device can still finish a large picture — they trade speed for memory.</div>
+            </div>
+
+            <div class="stk-row" style="margin-top:16px;gap:10px;">
+              <button id="aiPrep" class="stk-btn sec" type="button" data-i18n="ai.btn_prep">Prepare model (64 MB)</button>
+              <button id="aiGo" class="stk-btn" type="button" disabled data-i18n="ai.btn_go">Upscale 4×</button>
+            </div>
+            <div class="stk-row" style="margin-top:10px;">
+              <button id="aiDl" class="stk-btn sec" type="button" disabled data-i18n="ai.btn_dl">Download result</button>
+              <button id="aiReset" class="stk-btn sec" type="button" disabled data-i18n="ai.btn_reset">Start over</button>
+            </div>
+
+            <div class="ai-prog" id="aiProg"><i id="aiProgBar"></i></div>
+
+            <div class="ai-status">
+              <div class="ai-stat"><div class="l" data-i18n="ai.s_ep">Runtime</div><div class="v" id="aiEp">—</div></div>
+              <div class="ai-stat"><div class="l" data-i18n="ai.s_model">Model</div><div class="v" id="aiModel">—</div></div>
+              <div class="ai-stat"><div class="l" data-i18n="ai.s_in">Input</div><div class="v" id="aiIn">—</div></div>
+              <div class="ai-stat"><div class="l" data-i18n="ai.s_out">Output</div><div class="v" id="aiOut">—</div></div>
+              <div class="ai-stat"><div class="l" data-i18n="ai.s_time">Elapsed</div><div class="v" id="aiTime">—</div></div>
+            </div>
+
+            <div class="ai-cmp" id="aiCmp">
+              <img id="aiBefore" alt="Original" />
+              <div class="after"><img id="aiAfter" alt="Upscaled" /></div>
+              <div class="badge l" data-i18n="ai.badge_before">Original</div>
+              <div class="badge r" data-i18n="ai.badge_after">Real-ESRGAN 4×</div>
+              <div class="handle" id="aiHandle"></div>
+            </div>
+
+            <div class="stk-log" id="aiLog"></div>
+          </div>
+        </div>
+
+        <!-- ===== RIGHT: honesty + reference ===== -->
+        <div>
+          <div class="stk-panel">
+            <h3 data-i18n="ai.h_how">What is actually happening</h3>
+            <p class="p-sub" data-i18n="ai.h_how_sub">No black box — here is the whole pipeline, in order.</p>
+
+            <div class="cmp-why">
+              <div class="cw"><span class="cwn">1</span><div>
+                <b data-i18n="ai.w1_t">The model loads into this tab</b>
+                <p data-i18n="ai.w1_d">A 64 MB Real-ESRGAN export is fetched once and handed to ONNX Runtime compiled to WebAssembly. It is then cached, so a second visit does not download it again.</p>
+              </div></div>
+              <div class="cw"><span class="cwn">2</span><div>
+                <b data-i18n="ai.w2_t">Your image is decoded and cut into tiles</b>
+                <p data-i18n="ai.w2_d">The file is drawn to a canvas, sliced into overlapping tiles and normalised to the float range the network expects. This all happens in memory inside the page.</p>
+              </div></div>
+              <div class="cw"><span class="cwn">3</span><div>
+                <b data-i18n="ai.w3_t">Tiles are blended back into one picture</b>
+                <p data-i18n="ai.w3_d">Each tile is upscaled 4×, the overlap is cropped off, and neighbouring tiles are averaged so the seams do not show. Then you get a download button.</p>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="stk-panel" style="margin-top:20px;">
+            <h3 data-i18n="ai.h_ref">Why speed depends on your device</h3>
+            <p class="p-sub" data-i18n="ai.h_ref_sub">The same model runs on a phone and on a desktop GPU, and the difference is large. These are measured reference points, not promises about your machine.</p>
+            <table class="ai-timing">
+              <thead><tr><th data-i18n="ai.th_size">Input</th><th data-i18n="ai.th_out">Output</th><th data-i18n="ai.th_time">Reference time</th></tr></thead>
+              <tbody>
+                <tr><td>320 × 200</td><td>1280 × 800</td><td>~2 s</td></tr>
+                <tr><td>640 × 400</td><td>2560 × 1600</td><td>~8 s</td></tr>
+                <tr><td>1024 × 640</td><td>4096 × 2560</td><td>~23 s</td></tr>
+              </tbody>
+            </table>
+            <div class="note" data-i18n="ai.ref_note">Measured on a modest dedicated GPU. Integrated graphics and phones will be slower — often several times slower. A 12-megapixel phone photo is not a realistic input for this page; crop it first.</div>
+          </div>
+
+          <div class="stk-panel" style="margin-top:20px;">
+            <h3 data-i18n="ai.h_free">Free here, settled on chain there</h3>
+            <p class="p-sub" data-i18n="ai.h_free_sub">Two different things, deliberately kept apart.</p>
+            <div class="cmp-why">
+              <div class="cw"><span class="cwn">A</span><div>
+                <b data-i18n="ai.f1_t">This page — free, no wallet</b>
+                <p data-i18n="ai.f1_d">A convenience tool. Your device pays the compute cost in electricity and time. There is no job record and nothing to settle.</p>
+              </div></div>
+              <div class="cw"><span class="cwn">B</span><div>
+                <b data-i18n="ai.f2_t">The network — paid, on chain</b>
+                <p data-i18n="ai.f2_d">When you need a guaranteed run on someone else's GPU with verifiable output and a refund if it fails, that is a job on the Compute Station, settled in tOMC on BNB Smart Chain Testnet.</p>
+              </div></div>
+            </div>
+            <a class="cmp-xlink" href="/compute"><span data-i18n="ai.to_compute">Need a guaranteed run, not a free tool? Open the Compute Station.</span> →</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width:820px;margin:30px auto 0;">
+        <div class="wp-note reveal" data-i18n="ai.note_model"><b>Model and licence.</b> Real-ESRGAN x4plus (RRDBNet, 23 blocks), exported to ONNX without weight changes. Licensed BSD-3-Clause, which permits commercial use. This page runs it unmodified; it is the same model family the paid network is benchmarked with.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HONEST BOUNDARIES ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container ai-wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="ai.lim_eyebrow">Boundaries</div>
+        <h2 data-i18n="ai.lim_title">What this tool will and will not do</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">🔒</div>
+          <h3 data-i18n="ai.l1_t">It will not upload your image</h3>
+          <p data-i18n="ai.l1_d">There is no upload endpoint. The runtime and the model file are the only things fetched from the network, and both are static assets. You can watch the network tab and see for yourself.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🐢</div>
+          <h3 data-i18n="ai.l2_t">It will not be fast on weak hardware</h3>
+          <p data-i18n="ai.l2_d">Speed is a property of your device, not of the page. If you are on integrated graphics, start with a small image and expect to wait. There is no server-side fallback here by design.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🧾</div>
+          <h3 data-i18n="ai.l3_t">It will not pretend to be the network</h3>
+          <p data-i18n="ai.l3_d">No wallet, no token, no fake job counter. It is a tool, labelled as a tool. The chain-backed service is a separate page with its own escrow, verification and penalties.</p>
+        </div>
+      </div>
+      <div class="wp-note reveal" style="max-width:820px;margin:30px auto 0;" data-i18n="ai.lim_note"><b>Why build the free tool first.</b> The network's honest weakness is that it has no jobs yet. A tool that is useful on its own — even with the chain switched off — earns attention before it asks anyone to trust a marketplace. This page is that first step; the paid side is built to be earned, not assumed.</div>
+    </div>
+  </section>
+
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="/">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_protocol">Protocol</h5>
+          <a href="/whitepaper" data-i18n="f.wp">Whitepaper</a>
+          <a href="/testnet" data-i18n="f.testnet">Testnet</a>
+          <a href="/stake" data-i18n="f.stake">Staking</a>
+          <a href="/whitepaper#sec7" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_community">Community</h5>
+          <a href="/airdrop" data-i18n="f.airdrop">Airdrop</a>
+          <a href="/news" data-i18n="nav.news">News</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_ecosystem">Ecosystem</h5>
+          <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
+          <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
+        </div>
+        <div class="f-col">
+          <h5 data-i18n="footer.h_resources">Resources</h5>
+          <a href="/calculator" data-i18n="f.calculator">GPU Cost Calculator</a>
+          <a href="/compute" data-i18n="f.compute">AI Compute Station</a>
+          <a href="/ai-tools" data-i18n="f.aitools">Image Upscaler</a>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="/testnet#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+          <a href="/about" data-i18n="f.about">About &amp; Contact</a>
+          <a href="/privacy" data-i18n="f.privacy">Privacy Policy</a>
+          <a href="/aup" data-i18n="f.aup">Acceptable Use</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="disc">
+          <span data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</span>
+          <span data-i18n="footer.disc_testnet"> Testnet tokens (tOMC) have no monetary value.</span>
+        </div>
+        <div>© 2026 Omniverse Compute · omc.network</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js"></script>
+  <script src="assets/js/lang/zh.js"></script>
+  <script src="assets/js/lang/ja.js"></script>
+  <script src="assets/js/lang/es.js"></script>
+  <script src="assets/js/lang/ko.js"></script>
+  <script src="assets/js/lang/pt.js"></script>
+  <script src="assets/js/lang/fr.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/ai-tools.js"></script>
+</body>
+</html>

@@ -7,6 +7,7 @@ This site is static HTML in English. Chinese is available via the language toggl
 ## Site pages
 
 - [https://omc.network/about](https://omc.network/about): About & Contact — Omniverse Compute (OMC)
+- [https://omc.network/ai-tools](https://omc.network/ai-tools): Image Upscaler — 4x upscaling that runs in your browser | OMC
 - [https://omc.network/airdrop](https://omc.network/airdrop): Airdrop — Omniverse Compute (OMC)
 - [https://omc.network/aup](https://omc.network/aup): Acceptable Use Policy — Omniverse Compute (OMC)
 - [https://omc.network/calculator](https://omc.network/calculator): GPU Cloud Cost Calculator — H100 & H200 On-Demand Pricing | OMC

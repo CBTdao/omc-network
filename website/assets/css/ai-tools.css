@@ -1,0 +1,208 @@
+/* ============================================================
+   OMC — /ai-tools (Image Upscaler)
+   Page-scoped styles only. The shared panel / button / log chrome
+   comes from style.css and stake.css.
+   ============================================================ */
+
+.ai-wrap { max-width: 1080px; margin: 0 auto; }
+
+/* ---------- drop zone ---------- */
+.ai-drop {
+  position: relative;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 44px 22px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--panel);
+  transition: border-color 0.18s, background 0.18s;
+}
+.ai-drop:hover, .ai-drop.over {
+  border-color: var(--accent-2);
+  background: var(--accent-soft);
+}
+.ai-drop .big { font-size: 15.5px; font-weight: 600; }
+.ai-drop .big b { color: var(--accent-2); }
+.ai-drop .hint { color: var(--muted-2); font-size: 12.5px; margin-top: 8px; line-height: 1.6; }
+.ai-drop input[type="file"] { display: none; }
+
+/* ---------- controls ---------- */
+.ai-ctl {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-top: 16px;
+}
+.ai-ctl .grow { flex: 1 1 200px; }
+.ai-ctl label {
+  display: block;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 6px;
+}
+.ai-ctl select {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--text);
+  font: inherit;
+  padding: 11px 13px;
+}
+.ai-ctl select option { background: #0d1730; color: var(--text); }
+
+/* ---------- local-only badge ---------- */
+.ai-priv {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(47, 191, 113, 0.08);
+  border: 1px solid rgba(47, 191, 113, 0.32);
+  border-radius: 12px;
+  padding: 12px 15px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+.ai-priv .lbl {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7ee6ab;
+  border: 1px solid rgba(47, 191, 113, 0.4);
+  border-radius: 20px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+/* ---------- status strip ---------- */
+.ai-status {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.ai-stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 9px 13px;
+  min-width: 120px;
+}
+.ai-stat .l { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-2); }
+.ai-stat .v { font-size: 13.5px; font-family: Consolas, monospace; color: var(--text); margin-top: 2px; word-break: break-all; }
+.ai-stat .v.good { color: #7ee6ab; }
+.ai-stat .v.warn { color: #f5b56b; }
+
+/* ---------- progress ---------- */
+.ai-prog {
+  height: 6px;
+  border-radius: 20px;
+  background: var(--panel-strong);
+  overflow: hidden;
+  margin-top: 14px;
+  display: none;
+}
+.ai-prog.on { display: block; }
+.ai-prog i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width 0.25s ease;
+}
+
+/* ---------- compare slider ---------- */
+.ai-cmp {
+  position: relative;
+  margin-top: 18px;
+  user-select: none;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: none;
+  background: #0a1120;
+  touch-action: none;
+}
+.ai-cmp.on { display: block; }
+.ai-cmp img { display: block; width: 100%; height: auto; pointer-events: none; }
+.ai-cmp .after {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  width: 50%;
+}
+.ai-cmp .after img { width: 100%; height: 100%; object-fit: cover; }
+.ai-cmp .handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: var(--accent-2);
+  cursor: ew-resize;
+  transform: translateX(-50%);
+}
+.ai-cmp .handle::after {
+  content: "⇔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  background: var(--accent-2);
+  color: #06121f;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+.ai-cmp .badge {
+  position: absolute;
+  top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  background: rgba(6, 18, 31, 0.82);
+  color: #cfe4ff;
+  padding: 3px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+.ai-cmp .badge.l { left: 10px; }
+.ai-cmp .badge.r { right: 10px; }
+
+/* ---------- spinner ---------- */
+.ai-spin {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(94, 162, 255, 0.3);
+  border-top-color: var(--accent-2);
+  border-radius: 50%;
+  animation: ai-spin 0.7s linear infinite;
+  vertical-align: -2px;
+  margin-right: 7px;
+}
+@keyframes ai-spin { to { transform: rotate(360deg); } }
+
+/* ---------- reference timing table ---------- */
+.ai-timing { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.ai-timing th, .ai-timing td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); }
+.ai-timing th { color: var(--muted-2); font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase; }
+.ai-timing td:last-child, .ai-timing th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 780px) {
+  .ai-drop { padding: 32px 16px; }
+  .ai-stat { flex: 1 1 44%; min-width: 0; }
+}
