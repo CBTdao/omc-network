@@ -17,6 +17,10 @@
  *   4. the lifecycle ESCROWED -> ASSIGNED -> DELIVERED -> SETTLED applies
  *   5. the settlement split matches the contract's 3% / 30:70 with the 10% OMC discount
  *   6. scheduler-only calls are rejected when signed by anyone else
+ *   7. liveness: announce / ttl / forget / allowlist / pruning behave as the
+ *      scheduler assumes
+ *   8. the provider picker refuses to hand a job to an eligible-but-dead node,
+ *      and prefers a live one — the failure that would otherwise look green
  *
  * Usage: node p1-service/offline-wiring-check.js
  */
@@ -30,6 +34,8 @@ const { ethers } = require("ethers");
 
 const store = require("./store.js");
 const C = require("./chain.js");
+const liveness = require("./liveness.js");
+const P = require("./provider-select.js");
 
 let pass = 0, fail = 0;
 function ok(cond, name, extra) {
@@ -239,7 +245,137 @@ section("6. page and service agree on the digest");
      "the page and the service fold specHash identically");
 }
 
-console.log("\n" + "=".repeat(60));
-console.log("wiring check: " + pass + " passed, " + fail + " failed");
-console.log("=".repeat(60));
-process.exit(fail === 0 ? 0 : 1);
+/* -------- 7. worker liveness registry ----------------------------------- */
+
+/**
+ * The registry is exercised against a relocated file (OMC_LIVENESS_FILE) so
+ * the assertions never disturb a real deployment's workers.json.
+ */
+function freshRegistryPath(tag) {
+  return path.join(os.tmpdir(), "omc-liveness-" + tag + "-" + process.pid + ".json");
+}
+
+section("7. worker liveness registry");
+{
+  const tmp = freshRegistryPath("a");
+  process.env.OMC_LIVENESS_FILE = tmp;
+  delete process.env.OMC_LIVE_NODES;
+
+  const LIVE = "0xAAAA000000000000000000000000000000000001";
+  const DEAD = "0xBBBB000000000000000000000000000000000002";
+
+  ok(!liveness.isLive(LIVE), "an address nobody has announced is not live");
+  ok(liveness.liveAddresses().length === 0, "an absent registry reads as empty");
+
+  liveness.announce(LIVE, { tier: 1, mode: "test" });
+  ok(fs.existsSync(tmp), "announcing creates the registry file");
+  ok(liveness.isLive(LIVE), "an announced address is live");
+  ok(liveness.isLive(LIVE.toLowerCase()), "liveness is address-case-insensitive");
+  ok(!liveness.isLive(DEAD), "...and only that address");
+
+  liveness.announce(LIVE, { tier: 1, mode: "infer" });
+  const reg = JSON.parse(fs.readFileSync(tmp, "utf8"));
+  ok(Object.keys(reg.workers).length === 1, "re-announcing refreshes rather than duplicates");
+  ok(reg.workers[LIVE.toLowerCase()].mode === "infer", "the refresh carries the new context");
+
+  // Age the record past the default TTL by rewriting atMs directly.
+  fs.writeFileSync(tmp, JSON.stringify({
+    workers: { [LIVE.toLowerCase()]: { address: LIVE, atMs: Date.now() - 120 * 1000 } },
+  }));
+  ok(!liveness.isLive(LIVE), "an announcement older than the ttl stops counting as live");
+  ok(liveness.isLive(LIVE, 300 * 1000), "a longer ttl brings it back — the ttl is the only knob");
+  ok(liveness.snapshot().stale.length === 1, "snapshot separates stale from live");
+
+  liveness.forget(LIVE);
+  ok(!liveness.isLive(LIVE), "forget withdraws the announcement");
+
+  process.env.OMC_LIVE_NODES = DEAD + ", 0xCCCC000000000000000000000000000000000003";
+  ok(liveness.isLive(DEAD), "OMC_LIVE_NODES is honoured with no file entry (cross-host workers)");
+  ok(liveness.liveAddresses().length === 2, "the allowlist adds on top of the file, not instead of it");
+  ok(liveness.snapshot().allowlist.length === 2, "snapshot reports the allowlist it applied");
+  delete process.env.OMC_LIVE_NODES;
+
+  // Pruning: announce() drops entries older than 4x the ttl so a vanished host
+  // cannot leave the file growing forever.
+  fs.writeFileSync(tmp, JSON.stringify({
+    workers: { [DEAD.toLowerCase()]: { address: DEAD, atMs: Date.now() - 10 * 60 * 1000 } },
+  }));
+  liveness.announce(LIVE, { tier: 1 }, 1000);
+  ok(!(DEAD.toLowerCase() in JSON.parse(fs.readFileSync(tmp, "utf8")).workers),
+     "announce prunes entries older than 4x the ttl");
+  ok(liveness.isLive(LIVE, 1000), "the fresh entry survives the prune");
+
+  fs.rmSync(tmp, { force: true });
+  delete process.env.OMC_LIVENESS_FILE;
+}
+
+/* -------- 8. provider selection ------------------------------------------ */
+
+/* Section 8 awaits the picker, and the rest of this file is plain CommonJS, so
+   the async half is confined to its own IIFE rather than making the module ESM
+   just to get a top-level await. */
+
+(async () => {
+  section("8. provider selection never feeds a dead node a job");
+  {
+    const tmp = freshRegistryPath("b");
+    const NODE_A = "0xAAAA000000000000000000000000000000000001";   // light load, NOT running
+    const NODE_B = "0xBBBB000000000000000000000000000000000002";   // heavy load, running
+
+    const stubSk = {
+      nodeCount: async () => 2,
+      nodeAddresses: async (i) => [NODE_A, NODE_B][i],
+      nodeSummary: async (a) => ({
+        tier: 1n, stake: ethers.parseEther("20"), overdue: false,
+        workUnits: a === NODE_A ? 0n : 5n,
+      }),
+    };
+    const stubMkt = { isEligible: async () => true };
+
+    // Nobody is running anything, and nothing in the registry says otherwise.
+    process.env.OMC_LIVENESS_FILE = path.join(os.tmpdir(), "omc-liveness-absent-" + process.pid + ".json");
+    delete process.env.OMC_LIVE_NODES;
+    ok(!fs.existsSync(process.env.OMC_LIVENESS_FILE), "the absent-registry fixture really is absent");
+
+    let pick = await P.pickProvider(stubMkt, stubSk, 1);
+    ok(pick.addr === null, "with no live worker the picker refuses to assign at all");
+    ok(/no live worker/.test(pick.reason), "and the reason names the real cause");
+    ok(pick.rows.length === 2 && pick.rows.every((r) => r.eligible && !r.live),
+       "the decision is backed by a per-node breakdown the operator can read");
+
+    pick = await P.pickProvider(stubMkt, stubSk, 1, { allowOffline: true });
+    ok(pick.addr === NODE_A, "allowOffline falls back to the least-loaded eligible node");
+    ok(pick.warned === true, "the fallback is flagged so it is never a silent choice");
+
+    // Now start a worker on the heavy node: it must win despite the worse load.
+    process.env.OMC_LIVENESS_FILE = tmp;
+    liveness.announce(NODE_B, { tier: 1, mode: "test" });
+    pick = await P.pickProvider(stubMkt, stubSk, 1);
+    ok(pick.addr === NODE_B, "a live worker beats a lighter but unattended node");
+    ok(pick.picked.live === true, "the pick is recorded as live");
+
+    liveness.announce(NODE_A, { tier: 1, mode: "test" });
+    pick = await P.pickProvider(stubMkt, stubSk, 1);
+    ok(pick.addr === NODE_A, "among live workers the least-loaded one wins (load spreads)");
+
+    // An empty registry is a different failure and must say so.
+    const emptySk = Object.assign({}, stubSk, { nodeCount: async () => 0 });
+    pick = await P.pickProvider(stubMkt, emptySk, 1);
+    ok(pick.addr === null && /no node is eligible/.test(pick.reason),
+       "zero registered nodes is reported as an eligibility problem, not a liveness one");
+
+    // A tier nobody can serve must not fall back to a lower-tier node.
+    const stubMktStrict = { isEligible: async (a, t) => t === 1 };
+    pick = await P.pickProvider(stubMktStrict, stubSk, 3);
+    ok(pick.addr === null && /no node is eligible for tier 3/.test(pick.reason),
+       "a tier with no eligible node reports the tier it could not fill");
+
+    fs.rmSync(tmp, { force: true });
+    delete process.env.OMC_LIVENESS_FILE;
+  }
+
+  console.log("\n" + "=".repeat(60));
+  console.log("wiring check: " + pass + " passed, " + fail + " failed");
+  console.log("=".repeat(60));
+  process.exit(fail === 0 ? 0 : 1);
+})();

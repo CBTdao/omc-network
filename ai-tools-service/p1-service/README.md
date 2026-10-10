@@ -24,6 +24,8 @@ forward is done here.
 | `bootstrap-node.js` | funds → stakes → `registerNode()` a node this machine holds the key for | node key + funder |
 | `chain.js` | shared addresses, ABIs, RPC, job decoding | — |
 | `store.js` | the out-of-band image channel | — |
+| `liveness.js` | who is actually *running* a worker, not just who is eligible | — |
+| `provider-select.js` | the one picker both the scheduler and the rehearsal use | — |
 | `e2e-rehearsal.js` | runs one job all the way through, on testnet | both |
 | `offline-wiring-check.js` | proves the wiring without spending gas | — |
 
@@ -48,8 +50,32 @@ the provider.
 `specHash` folds the tier and policies in with the image so that two jobs on
 the same picture at different tiers cannot collide onto one commitment.
 
-## Running
+## Who gets the next job
 
+`isEligible()` is necessary but not sufficient: a node stays eligible while its
+heartbeat is fresh even if its operator stopped the process. Handing a job to
+that node does not fail — it parks in ASSIGNED until the deadline, then refunds.
+Every log line stays green while every job times out.
+
+So selection is two questions, asked in order:
+
+```
+1. isEligible(addr, tier)          the contract's answer: stake, tier, overdue
+2. liveness.isLive(addr)           is anything actually running there
+   -> pick the least-loaded live node
+   -> if nobody is live, do NOT assign; leave the job ESCROWED (cancellable)
+```
+
+`node-worker.js` announces itself on every sweep and withdraws the record on
+exit, so `--once` cleans up after itself. Records live in
+`.p1-jobs/workers.json` with a 90s TTL, refreshed every 20s; a killed process
+is therefore treated as dead within a minute and a half. Workers on other hosts
+cannot share that file — list them in `OMC_LIVE_NODES` (comma separated).
+
+`--assign-anyway` restores the old behaviour for demos, and logs a warning when
+it does. Jobs are always left cancellable rather than committed to a dead node.
+
+## Running
 ```bash
 cd omc-ai-tools
 
@@ -59,9 +85,13 @@ node p1-service/scheduler.js --status
 # one sweep, then exit
 node p1-service/scheduler.js --once
 
-# continuous
-node p1-service/scheduler.js
+# continuous — start the worker FIRST: the scheduler will not assign to a node
+# that has not announced itself
 node p1-service/node-worker.js
+node p1-service/scheduler.js
+
+# ignore liveness (demos only — it logs a warning)
+node p1-service/scheduler.js --assign-anyway
 
 # prove the wiring without spending gas
 node p1-service/offline-wiring-check.js
@@ -101,7 +131,7 @@ the failure is never silent.
 
 ## Verified on testnet
 
-`offline-wiring-check.js` — **29/29**, including:
+`offline-wiring-check.js` — **57/57**, including:
 
 - the **shipping page's** hand-written keccak256 matches `ethers` on all
   fixtures, including the 135- and 271-byte rate boundaries
@@ -109,6 +139,12 @@ the failure is never silent.
 - the settlement split matches the contract: 3% fee, 10% OMC discount,
   30% burn / 70% rewards
 - `assign` from a non-scheduler key is rejected
+- liveness: TTL expiry, case-insensitivity, `forget`, `OMC_LIVE_NODES` and the
+  4x-TTL prune all behave as the scheduler assumes
+- the picker **refuses** to assign with no live worker, prefers a live node over
+  a lighter offline one, and still exposes the per-node reason
 
-The on-chain rehearsal is gated on the node heartbeat key. See
-`../README.md` for the current status.
+Driven end to end on BSC testnet by `scheduler.js` + a long-running
+`node-worker.js` (not just the rehearsal harness): `jobCount 0 -> 2`,
+both `SETTLED`, `escrowedNow = 0`, `settledVolume = 10.0`, provider stake
+unslashed. See `../README.md` for the current status.

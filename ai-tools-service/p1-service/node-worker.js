@@ -2,11 +2,16 @@
 /**
  * OMC AI Tools · P1 · provider node
  *
- * The staked GPU side. It does two jobs and nothing else:
+ * The staked GPU side. It does three jobs and nothing else:
  *
  *   1. stay eligible  — ping staking.heartbeat() inside the 30m + 10m window,
  *      otherwise isOverdue() flips true and no job can be assigned to us.
- *   2. serve work      — watch the market for jobs assigned to our address,
+ *   2. announce life   — write a timestamped liveness record (liveness.js)
+ *      every sweep, and withdraw it on exit. The chain cannot distinguish an
+ *      idle-but-eligible node from a node whose operator went home; the
+ *      scheduler refuses to assign to the second kind, so this is what makes
+ *      us pickable rather than merely qualified.
+ *   3. serve work      — watch the market for jobs assigned to our address,
  *      run the real upscaler over the image bytes, and report the result hash
  *      back to the scheduler.
  *
@@ -35,6 +40,7 @@ const { ethers } = require("ethers");
 
 const C = require("./chain.js");
 const store = require("./store.js");
+const liveness = require("./liveness.js");
 
 const HERE = __dirname;
 const AI_TOOLS = path.resolve(HERE, "..");
@@ -48,6 +54,11 @@ const args = process.argv.slice(2);
 const ONCE = args.includes("--once");
 const NO_INFER = args.includes("--no-infer");
 
+/* Set by sweep() once we know which address we speak for, so the exit hook can
+   withdraw the liveness record. A one-shot run (--once) therefore cleans up
+   after itself: it served a job but it is not a live worker. */
+let ANNOUNCED = null;
+
 function log(...a) {
   const t = new Date().toISOString().slice(11, 19);
   console.log("[" + t + "] [node]", ...a);
@@ -56,11 +67,10 @@ function log(...a) {
 /* ---------------------------------------------------------------- key ---- */
 
 /**
- * The node address is the owner wallet (0xc35711aa…), a different key from the
- * scheduler. Its private key is NOT in the shared secrets file today, so the
- * heartbeat path is opt-in: pass OMC_NODE_PRIVATE_KEY in the environment, or
- * point OMC_NODE_KEY_FILE at a file holding it. Without a key we still serve
- * assigned jobs; we just cannot self-heal the heartbeat.
+ * The node address is whichever key this worker runs under: our own registered
+ * T1 node (0x1402a793…) when OMC_NODE_PRIVATE_KEY / ~/.workbuddy/omc-node-key.env
+ * is present, otherwise the first registered node found on chain. Without a key
+ * we still serve assigned jobs; we just cannot self-heal the heartbeat.
  */
 function nodeKey() {
   if (process.env.OMC_NODE_PRIVATE_KEY) return process.env.OMC_NODE_PRIVATE_KEY.trim();
@@ -159,6 +169,19 @@ async function sweep(ctx) {
     catch (e) { log("heartbeat failed: " + e.message); }
   }
 
+  /* Announce that a process is actually running behind this address. Refreshed
+     every sweep so the scheduler's TTL never lapses while we are up, and
+     withdrawn on exit so a stopped worker stops looking alive. */
+  ANNOUNCED = me;
+  let myTier = 0;
+  try { myTier = Number((await sk.node(me)).tier); } catch (e) { /* report 0 rather than fail */ }
+  liveness.announce(me, {
+    tier: myTier,
+    mode: NO_INFER ? "no-infer" : "infer",
+    role: "node-worker",
+  });
+  log("liveness announced (tier " + myTier + ", mode " + (NO_INFER ? "no-infer" : "infer") + ")");
+
   const eligible = await mkt.isEligible(me, 1);
   log("node " + me + " eligible(T1) = " + eligible);
 
@@ -175,9 +198,23 @@ async function sweep(ctx) {
     const outPath = store.resultPath(id);
     let inf;
     if (NO_INFER) {
-      inf = { ok: true, resultHash: ethers.keccak256(ethers.toUtf8Bytes("omc-stub-result:" + id)),
-              bytes: 0, ms: 0, stub: true };
-      log("  --no-infer: emitting a stub result hash (chain plumbing test only)");
+      /* Write the stub bytes to disk too, not just the hash. The scheduler
+         re-hashes the file the node parked and refuses to settle when the two
+         disagree, so a meta file with no artefact behind it is indistinguishable
+         from a lying transport — it would be rejected, and worse, the provider
+         would be slashed for it. A stub must be a real artefact, just a cheap
+         one. */
+      const stubBytes = Buffer.from("omc-stub-result:" + id, "utf8");
+      fs.mkdirSync(path.dirname(outPath), { recursive: true });
+      fs.writeFileSync(outPath, stubBytes);
+      inf = {
+        ok: true,
+        resultHash: ethers.keccak256(stubBytes),
+        bytes: stubBytes.length,
+        ms: 0,
+        stub: true,
+      };
+      log("  --no-infer: wrote a stub result artefact (chain plumbing test only)");
     } else {
       const inPath = store.specPath(id);
       if (!fs.existsSync(inPath)) {
@@ -229,6 +266,17 @@ async function main() {
   log("market " + d.market);
   log("nodeCount = " + (await sk.nodeCount()).toString() +
       " | jobCount = " + (await mkt.jobCount()).toString());
+
+  /* Withdraw our liveness record however we go down. A graceful stop should
+     stop looking alive immediately; the TTL is only a backstop for a kill. */
+  const withdraw = () => {
+    if (!ANNOUNCED) return;
+    try { liveness.forget(ANNOUNCED); log("liveness withdrawn for " + ANNOUNCED); }
+    catch (e) { /* exiting anyway */ }
+  };
+  process.once("exit", withdraw);
+  process.once("SIGINT", () => { withdraw(); process.exit(0); });
+  process.once("SIGTERM", () => { withdraw(); process.exit(0); });
 
   if (ONCE) { await sweep(ctx); return; }
 

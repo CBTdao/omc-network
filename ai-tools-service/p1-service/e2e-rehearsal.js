@@ -36,6 +36,7 @@ const { ethers } = require("ethers");
 
 const C = require("./chain.js");
 const store = require("./store.js");
+const P = require("./provider-select.js");
 
 const AI_TOOLS = path.resolve(__dirname, "..");
 const PY = path.join(AI_TOOLS, ".venv", "Scripts", "python.exe");
@@ -105,37 +106,37 @@ async function main() {
     log("requester tOMC now = " + ethers.formatEther(await tok.balanceOf(requester.address)));
   }
 
-  /* Pick the provider the way the scheduler does: walk the registry and ask
-     the contract who is eligible. Never hardcode node index 0 — whichever
-     wallet registered first is not necessarily the one that is up, and a node
-     drops out of eligibility the moment its heartbeat window lapses. */
-  const nodeCount = Number(await sk.nodeCount());
-  const candidates = [];
+  /* Pick the provider with the same code the scheduler uses, so the two can
+     never drift apart. That picker prefers a node with a live worker; this
+     harness starts its worker as a one-shot process later in the run, so it
+     passes allowOffline and reports when it had to fall back. */
+  const candidates = await P.survey(mkt, sk, TIER);
   let providerAddr = null;
-  for (let i = 0; i < nodeCount; i++) {
-    const addr = await sk.nodeAddresses(i);
-    const nd = await sk.node(addr);
-    const od = await sk.isOverdue(addr);
-    const el = await mkt.isEligible(addr, TIER);
-    candidates.push({ i, addr, tier: Number(nd.tier), od, el });
-  }
 
-  log("nodes on chain  = " + nodeCount);
+  log("nodes on chain  = " + candidates.length);
   for (const c of candidates) {
-    log("  [" + c.i + "] " + c.addr + "  tier=" + c.tier +
-        "  overdue=" + c.od + "  eligible(T" + TIER + ")=" + c.el);
+    log("  [" + c.index + "] " + c.addr + "  tier=" + c.tier +
+        "  overdue=" + c.overdue + "  eligible(T" + TIER + ")=" + c.eligible +
+        "  live=" + c.live);
   }
 
   if (PROVIDER_ARG) {
     const want = PROVIDER_ARG.toLowerCase();
     const hit = candidates.find((c) => c.addr.toLowerCase() === want);
     if (!hit) { console.log("\nFATAL: --provider " + PROVIDER_ARG + " is not a registered node."); process.exit(3); }
-    if (!hit.el) { console.log("\nFATAL: --provider " + PROVIDER_ARG + " is not eligible for tier " + TIER + "."); process.exit(3); }
+    if (!hit.eligible) { console.log("\nFATAL: --provider " + PROVIDER_ARG + " is not eligible for tier " + TIER + "."); process.exit(3); }
     providerAddr = hit.addr;
     log("provider        = " + providerAddr + "  (pinned by --provider)");
   } else {
-    for (const c of candidates) if (!providerAddr && c.el) providerAddr = c.addr;
-    if (providerAddr) log("provider        = " + providerAddr + "  (first eligible)");
+    const pick = await P.pickProvider(mkt, sk, TIER, { allowOffline: true });
+    if (pick.addr) {
+      providerAddr = pick.addr;
+      log("provider        = " + providerAddr + "  (" + pick.reason + ")");
+      if (!pick.picked.live) {
+        log("  note: no worker has announced liveness yet — this run starts one below,");
+        log("        which is why the rehearsal is allowed to assign offline.");
+      }
+    }
   }
 
   if (!providerAddr) {
