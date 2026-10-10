@@ -383,9 +383,8 @@
     return "0x" + out;
   }
 
-  function doFaucet() {
-    tx("claimFaucet", C.CFG.token, C.enc.claimFaucet(), 90000);
-  }
+  /* The faucet button is now a link to /airdrop (once a day, five per
+     address, 20 each) — same rules the mainnet airdrop will use. */
 
   /* ---------------- paint ---------------- */
 
@@ -520,8 +519,6 @@
     if (bc) bc.addEventListener("click", doCreateJob);
     var ba = $("cmpBtnApprove");
     if (ba) ba.addEventListener("click", doApprove);
-    var bf = $("cmpBtnFaucet");
-    if (bf) bf.addEventListener("click", doFaucet);
 
     /* wallet.js broadcasts "omc:wallet" on every connect / sign-out / chain
        change — subscribe the same way main.js and airdrop-stats.js do. */

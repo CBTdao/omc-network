@@ -27,7 +27,7 @@
     tierCount: 5,
     tier: 1,
     busy: false,
-    faucetReadyAt: 0,
+    faucetReadyAt: 0, /* unused since the faucet moved to the airdrop page */
     heartbeatInterval: 1800,
     heartbeatGrace: 600
   };
@@ -85,9 +85,9 @@
 
   /* ---------------- actions ---------------- */
 
-  function doFaucet() {
-    tx("claimFaucet", S.CFG.token, S.enc.claimFaucet(), 90000);
-  }
+  /* The faucet button is now a link to /airdrop — test tOMC is handed out by
+     the airdrop (once a day, five per address, 20 each), matching mainnet
+     rules. The old on-chain hourly faucet is retired from the UI. */
 
   function doApprove() {
     var amt = S.parseAmount($("stkAmount").value);
@@ -304,19 +304,6 @@
     }
   }
 
-  function paintFaucet() {
-    var now = Math.floor(Date.now() / 1000);
-    var e = $("stkFaucetNote");
-    if (!e) return;
-    if (!state.faucetReadyAt || state.faucetReadyAt <= now) {
-      e.textContent = T("stk.faucet_ready");
-      e.className = "note";
-    } else {
-      e.textContent = T("stk.faucet_cooldown") + " " + S.fmtDuration(state.faucetReadyAt - now);
-      e.className = "note";
-    }
-  }
-
   function paintAll() {
     paintWallet();
     paintTiers();
@@ -324,7 +311,6 @@
     paintNode();
     paintProto();
     paintActions();
-    paintFaucet();
   }
 
   /* ---------------- reading ---------------- */
@@ -353,14 +339,8 @@
       }).catch(function () {})
     ];
 
-    jobs.push(S.ethCall(S.CFG.token, S.enc.faucetReadyAt(addr)).then(function (h) {
-      state.faucetReadyAt = Number(S.decWord(h));
-    }));
     jobs.push(S.rpc("eth_getBalance", [addr, "latest"]).then(function (h) {
       set("stkTileGas", S.fmt(BigInt(h), 4) + " tBNB");
-    }).catch(function () {}));
-    jobs.push(S.ethCall(S.CFG.token, S.enc.faucetRemaining()).then(function (h) {
-      set("stkFaucetPool", S.fmt(S.decWord(h), 0) + " tOMC");
     }).catch(function () {}));
 
     return Promise.all(jobs).then(function () {
@@ -394,7 +374,6 @@
       }
     });
 
-    $("stkBtnFaucet").addEventListener("click", doFaucet);
     $("stkBtnApprove").addEventListener("click", doApprove);
     $("stkBtnStake").addEventListener("click", doStake);
     $("stkBtnRegister").addEventListener("click", doRegister);
@@ -465,7 +444,7 @@
 
     refresh();
     setInterval(function () { if (!state.busy) refresh(); }, 20000);
-    setInterval(function () { if (!state.busy) { paintNode(); paintFaucet(); } }, 1000);
+    setInterval(function () { if (!state.busy) { paintNode(); } }, 1000);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
