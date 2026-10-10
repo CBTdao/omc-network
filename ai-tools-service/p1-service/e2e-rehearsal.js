@@ -51,6 +51,10 @@ function argOf(name, dflt) {
 const IMAGE = argOf("--image", path.join(AI_TOOLS, "testdata", "sample.png"));
 const PRICE_OMC = argOf("--price", "5");                 // whole OMC, human units
 const TIER = Number(argOf("--tier", "1"));
+/* Pin the provider when several nodes are eligible. Without this the run takes
+   the first eligible node in registration order, which may not be the node
+   whose worker is actually running on this machine. */
+const PROVIDER_ARG = argOf("--provider", "");
 const NO_INFER = process.argv.includes("--no-infer");
 const STATUS_ONLY = process.argv.includes("--status");
 
@@ -101,23 +105,44 @@ async function main() {
     log("requester tOMC now = " + ethers.formatEther(await tok.balanceOf(requester.address)));
   }
 
+  /* Pick the provider the way the scheduler does: walk the registry and ask
+     the contract who is eligible. Never hardcode node index 0 — whichever
+     wallet registered first is not necessarily the one that is up, and a node
+     drops out of eligibility the moment its heartbeat window lapses. */
   const nodeCount = Number(await sk.nodeCount());
-  const providerAddr = nodeCount > 0 ? await sk.nodeAddresses(0) : null;
-  if (!providerAddr) { console.log("\nFATAL: no registered node — nothing can be assigned."); process.exit(2); }
+  const candidates = [];
+  let providerAddr = null;
+  for (let i = 0; i < nodeCount; i++) {
+    const addr = await sk.nodeAddresses(i);
+    const nd = await sk.node(addr);
+    const od = await sk.isOverdue(addr);
+    const el = await mkt.isEligible(addr, TIER);
+    candidates.push({ i, addr, tier: Number(nd.tier), od, el });
+  }
 
-  const overdue = await sk.isOverdue(providerAddr);
-  const eligible = await mkt.isEligible(providerAddr, TIER);
-  log("provider        = " + providerAddr);
-  log("provider overdue= " + overdue);
-  log("isEligible(T" + TIER + ") = " + eligible);
+  log("nodes on chain  = " + nodeCount);
+  for (const c of candidates) {
+    log("  [" + c.i + "] " + c.addr + "  tier=" + c.tier +
+        "  overdue=" + c.od + "  eligible(T" + TIER + ")=" + c.el);
+  }
 
-  if (!eligible) {
-    console.log("\nFATAL: the only provider is not eligible for tier " + TIER + ".");
-    if (overdue) {
-      console.log("  Cause: heartbeat overdue. The node wallet must call staking.heartbeat()");
-      console.log("  from " + providerAddr + " (a different key from the scheduler).");
-      console.log("  Until that happens assign() reverts with 'OMCM: provider not eligible'.");
-    }
+  if (PROVIDER_ARG) {
+    const want = PROVIDER_ARG.toLowerCase();
+    const hit = candidates.find((c) => c.addr.toLowerCase() === want);
+    if (!hit) { console.log("\nFATAL: --provider " + PROVIDER_ARG + " is not a registered node."); process.exit(3); }
+    if (!hit.el) { console.log("\nFATAL: --provider " + PROVIDER_ARG + " is not eligible for tier " + TIER + "."); process.exit(3); }
+    providerAddr = hit.addr;
+    log("provider        = " + providerAddr + "  (pinned by --provider)");
+  } else {
+    for (const c of candidates) if (!providerAddr && c.el) providerAddr = c.addr;
+    if (providerAddr) log("provider        = " + providerAddr + "  (first eligible)");
+  }
+
+  if (!providerAddr) {
+    console.log("\nFATAL: no eligible provider for tier " + TIER + ".");
+    console.log("  Every registered node is overdue or below its tier minimum.");
+    console.log("  A node heals itself with staking.heartbeat() from its OWN key:");
+    console.log("    node p1-service/node-worker.js --once --no-infer");
     process.exit(3);
   }
 

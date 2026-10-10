@@ -3,8 +3,10 @@
    Loaded on every page (after i18n.js, before main.js).
 
    What it does
-   - Detects an injected EIP-1193 provider (MetaMask / OKX / Binance /
-     Bitget / Rabby…), including the multi-provider array.
+   - Detects an injected EIP-1193 provider: window.binancew3w.ethereum
+     (the Web3 Wallet inside the Binance App), window.BinanceChain (the
+     legacy extension) and the standard window.ethereum (MetaMask / OKX
+     / Binance / Bitget / Rabby…), including the multi-provider array.
    - Connect → personal_sign challenge → local session
      (localStorage `omc_session_v1`). The signature proves address
      ownership; it costs no gas and grants no spending rights.
@@ -42,7 +44,14 @@
   function $(id) { return document.getElementById(id); }
 
   function provider() {
-    var eth = window.ethereum;
+    var eth = null;
+    /* Binance Web3 Wallet injects at window.binancew3w.ethereum inside the
+       Binance App browser; the legacy extension used window.BinanceChain.
+       Check those first, then fall back to the standard window.ethereum. */
+    try {
+      if (window.binancew3w && window.binancew3w.ethereum) eth = window.binancew3w.ethereum;
+    } catch (e) { eth = null; }
+    if (!eth) eth = window.ethereum || window.BinanceChain || null;
     if (!eth) return null;
     /* Multi-wallet browsers expose an array — prefer a real injected wallet */
     if (Array.isArray(eth.providers) && eth.providers.length) {
@@ -401,6 +410,7 @@
     chainId: function () { var s = readSession(); return s ? s.chainId : null; },
     isConnected: function () { return !!readSession(); },
     short: short,
+    provider: provider,
     connect: connect,
     open: openModal,
     signOut: signOut

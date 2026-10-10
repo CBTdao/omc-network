@@ -94,7 +94,14 @@
     return !!(C && C.ethCall && C.enc && C.CFG);
   }
   function hasWallet() {
-    return !!(window.ethereum && window.ethereum.request);
+    /* Same resolution order as wallet.js: the Binance App provider first,
+       then the standard injected provider. */
+    var p = null;
+    try {
+      if (window.binancew3w && window.binancew3w.ethereum) p = window.binancew3w.ethereum;
+    } catch (e) { p = null; }
+    if (!p) p = window.ethereum || window.BinanceChain || null;
+    return !!(p && p.request);
   }
 
   /* ---------------------------------------------------------------

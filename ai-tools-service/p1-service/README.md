@@ -20,7 +20,8 @@ forward is done here.
 | File | Role | Key it holds |
 |---|---|---|
 | `scheduler.js` | watches ESCROWED/ASSIGNED jobs, assigns and settles | **deployer key (scheduler)** |
-| `node-worker.js` | the staked GPU node: heartbeats, computes, reports result hash | node key (owner wallet) |
+| `node-worker.js` | the staked GPU node: heartbeats, computes, reports result hash | node key (`omc-node-key.env`) |
+| `bootstrap-node.js` | funds → stakes → `registerNode()` a node this machine holds the key for | node key + funder |
 | `chain.js` | shared addresses, ABIs, RPC, job decoding | — |
 | `store.js` | the out-of-band image channel | — |
 | `e2e-rehearsal.js` | runs one job all the way through, on testnet | both |
@@ -82,7 +83,7 @@ NODE_PATH="C:/Users/Administrator/.workbuddy/binaries/node/workspace/node_module
 | Key | Where | Purpose |
 |---|---|---|
 | scheduler (deployer) | `~/.workbuddy/omc-secrets.env` → `OMC_TESTNET_DEPLOYER_PRIVATE_KEY` | assign / confirmDelivery / settle |
-| node (owner `0xc35711aa…`) | **not present yet** → `OMC_NODE_PRIVATE_KEY` env or `~/.workbuddy/omc-node-key.env` | `staking.heartbeat()` |
+| node (`0x1402a793…f9e6`) | `~/.workbuddy/omc-node-key.env` → `OMC_NODE_PRIVATE_KEY` | `staking.heartbeat()` |
 
 The node and the scheduler are **different wallets**, and that is deliberate:
 the key that decides outcomes must not be the key that does the work.

@@ -147,7 +147,14 @@
   /* ---------------- wallet ---------------- */
 
   function provider() {
-    var eth = window.ethereum;
+    var eth = null;
+    /* Binance Web3 Wallet injects at window.binancew3w.ethereum inside the
+       Binance App browser; the legacy extension used window.BinanceChain.
+       Check those first, then fall back to the standard window.ethereum. */
+    try {
+      if (window.binancew3w && window.binancew3w.ethereum) eth = window.binancew3w.ethereum;
+    } catch (e) { eth = null; }
+    if (!eth) eth = window.ethereum || window.BinanceChain || null;
     if (!eth) return null;
     if (Array.isArray(eth.providers) && eth.providers.length) {
       var hit = null;
