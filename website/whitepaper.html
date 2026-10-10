@@ -264,6 +264,7 @@
           <tr><td>3</td><td>Data-center GPUs (80 GB VRAM and above)</td><td>4× (<strong>proposed</strong>)</td></tr>
           </tbody></table></div>
           <p>Base_Deposit_USD is $200 (<strong>proposed</strong>), set before mainnet and adjustable by governance.</p>
+          <p>The mechanism matters more than the numbers. Because the requirement is denominated in USD and converted at TWAP, the <em>economic</em> size of the deposit stays fixed while the OMC amount floats — a provider's exposure does not change just because the token moved. A hard-coded token amount cannot do this: it silently becomes a different economic requirement every time the price moves, which is why the <strong>testnet</strong> ladder (a fixed 20 / 100 / 500 / 1000 / 5000 tOMC) is explicitly a testnet convenience, adopted so that the staking, registration, heartbeat and slashing paths can be exercised with faucet tokens alone. It is not the mainnet rule and is not a template for it.</p>
           <p>Slashing triggers and <strong>proposed</strong> penalties (percent of stake):</p>
           <div class="table-wrap">
           <table>
