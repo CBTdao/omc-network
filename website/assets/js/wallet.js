@@ -7,6 +7,10 @@
      (the Web3 Wallet inside the Binance App), window.BinanceChain (the
      legacy extension) and the standard window.ethereum (MetaMask / OKX
      / Binance / Bitget / Rabby…), including the multi-provider array.
+   - Falls back to WalletConnect v2 (Reown) for mobile wallets that have
+     no injected provider — the QR / deep-link flow. The ~1 MB bundle is
+     loaded lazily, only when the visitor actually picks that option, so
+     the first paint is unaffected.
    - Connect → personal_sign challenge → local session
      (localStorage `omc_session_v1`). The signature proves address
      ownership; it costs no gas and grants no spending rights.
@@ -40,10 +44,101 @@
     blockExplorerUrls: [EXPLORER]
   };
 
+  /* ---------- WalletConnect (Reown) ----------
+     The project ID is a public value by design: it ships in every client
+     request. It is NOT a secret and grants no rights on its own — the
+     real guard is the domain allow-list on the Reown dashboard, which
+     must contain omc.network / www / top / forum. */
+  var WC_PROJECT_ID = "db6e62b942e52bed6bb5181899543773";
+  var WC_UMD = "https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.4/dist/index.umd.js";
+  var WC_META = {
+    name: "Omniverse Compute (OMC)",
+    description: "Decentralized compute marketplace on BNB Smart Chain.",
+    url: "https://omc.network",
+    icons: ["https://omc.network/assets/img/logo.png"]
+  };
+  var wcInstance = null;   /* the EthereumProvider, once initialised */
+  var wcActive = false;    /* true only while a WC session is in use   */
+  var wcLoading = null;    /* in-flight bundle promise (dedupes clicks) */
+
   function T(k, p) { return window.i18nT ? window.i18nT(k, p) : k; }
   function $(id) { return document.getElementById(id); }
 
+  /* ---------- WalletConnect plumbing ---------- */
+  function loadWC() {
+    if (wcLoading) return wcLoading;   /* dedupe rapid double-clicks */
+    wcLoading = new Promise(function (resolve, reject) {
+      var existing = window["@walletconnect/ethereum-provider"];
+      if (existing) return resolve(existing);
+      var s = document.createElement("script");
+      s.src = WC_UMD;
+      s.async = true;
+      s.onload = function () {
+        var mod = window["@walletconnect/ethereum-provider"];
+        if (mod && mod.EthereumProvider) resolve(mod);
+        else { wcLoading = null; reject(new Error("wc-global-missing")); }
+      };
+      s.onerror = function () { wcLoading = null; reject(new Error("wc-script-error")); };
+      document.head.appendChild(s);
+    });
+    return wcLoading;
+  }
+
+  function wcProvider() {
+    if (wcInstance) return Promise.resolve(wcInstance);
+    return loadWC().then(function (mod) {
+      return mod.EthereumProvider.init({
+        projectId: WC_PROJECT_ID,
+        chains: [CHAIN_ID],        /* required by WC; the testnet is home today */
+        optionalChains: [56],      /* mainnet stays available as an option     */
+        showQrModal: true,
+        rpcMap: { 97: CHAIN_PARAMS.rpcUrls[0] },
+        metadata: WC_META
+      });
+    }).then(function (p) {
+      wcInstance = p;
+      if (p.on) {
+        p.on("disconnect", function () {
+          wcInstance = null;
+          wcActive = false;
+          writeSession(null);
+          renderNav();
+          notify();
+        });
+      }
+      return p;
+    });
+  }
+
+  function connectWC() {
+    var btn = $("wlOptWC");
+    if (btn) btn.disabled = true;
+    busy(true);
+    wcProvider().then(function (p) {
+      /* WC v2 raises the QR / deep-link modal on connect(). Do it
+         explicitly instead of relying on eth_requestAccounts to
+         trigger it implicitly. */
+      if (p.session) return p;
+      if (typeof p.connect === "function") {
+        return p.connect().then(function () { return p; });
+      }
+      return p;
+    }).then(function (p) {
+      wcActive = true;                 /* set BEFORE watch(): provider() reads it */
+      if (btn) btn.disabled = false;
+      watch();     /* bind account / chain events to the WC provider  */
+      connect();   /* reuse the shared connect → sign → session path  */
+    }).catch(function () {
+      if (btn) btn.disabled = false;
+      busy(false);
+      toast(T("wl.err_wc"));
+    });
+  }
+
   function provider() {
+    /* A live WalletConnect session always wins: it is what the visitor
+       explicitly picked, and no injected provider may exist at all. */
+    if (wcActive && wcInstance) return wcInstance;
     var eth = null;
     /* Binance Web3 Wallet injects at window.binancew3w.ethereum inside the
        Binance App browser; the legacy extension used window.BinanceChain.
@@ -114,11 +209,11 @@
       '        <i data-i18n="wl.injected_d">MetaMask, OKX, Binance Wallet…</i></span>',
       '      <span class="go">→</span>',
       '    </button>',
-      '    <button class="wl-opt soon" disabled>',
+      '    <button class="wl-opt" id="wlOptWC">',
       '      <span class="ic">📱</span>',
       '      <span class="txt"><b data-i18n="wl.mobile">WalletConnect / mobile wallets</b>',
-      '        <i data-i18n="wl.mobile_d">Coming soon — use a browser wallet for now.</i></span>',
-      '      <span class="go">·</span>',
+      '        <i data-i18n="wl.mobile_d">Scan with a mobile wallet — no extension needed.</i></span>',
+      '      <span class="go">→</span>',
       '    </button>',
       '  </div>',
       '  <details class="wl-risk" id="wlRisk">',
@@ -141,6 +236,7 @@
       if (e.key === "Escape") closeModal();
     });
     $("wlOptInjected").addEventListener("click", connect);
+    $("wlOptWC").addEventListener("click", connectWC);
   }
 
   function openModal() {
@@ -153,6 +249,8 @@
     if ($("wlNone")) $("wlNone").hidden = ok;
     if ($("wlInstall")) $("wlInstall").hidden = ok;
     if ($("wlOptInjected")) $("wlOptInjected").disabled = !ok;
+    /* WalletConnect never depends on an injected provider — keep it live */
+    if ($("wlOptWC")) $("wlOptWC").disabled = false;
     if (window.i18nApply) window.i18nApply(window.i18nCurrent());
   }
 
@@ -360,9 +458,12 @@
   }
 
   /* ---------- provider events ---------- */
+  var watchedProvider = null;
   function watch() {
     var p = provider();
     if (!p || !p.on) return;
+    if (p === watchedProvider) return;   /* never double-bind the same provider */
+    watchedProvider = p;
     p.on("accountsChanged", function (accs) {
       var s = readSession();
       if (!s) return;
