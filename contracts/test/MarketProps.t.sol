@@ -381,4 +381,98 @@ contract MarketPropsTest is PropTest {
             }
         }
     }
+
+    /* ---------------- the penalty burn actually burns (F-12) -------------- */
+
+    /// @dev the node's bond, read out of the public mapping getter
+    function _providerBond() internal view returns (uint256 s) {
+        (, , , s, , , , , , , ) = staking.node(PROVIDER);
+    }
+
+    /// @dev the published penalty table, written out as literals on purpose:
+    ///      reading it back from the contract under test would let a build
+    ///      change the schedule and still pass.
+    function _penaltyBpsLiteral(uint256 reasonId) internal pure returns (uint256) {
+        if (reasonId == 0) return 200; // TIMEOUT    2%
+        if (reasonId == 1) return 500; // OFFLINE    5%
+        if (reasonId == 2) return 3_000; // BAD_OUTPUT 30%
+        return 10_000; // FRAUD 100%
+    }
+
+    /// @dev F-12. The 20% burn slice of a penalty has to destroy tokens.
+    ///
+    ///      `token.transfer(0x…dEaD, burned)` empties the sender's balance and
+    ///      leaves `totalSupply()` exactly where it was, so the published rule —
+    ///      that the slashing burn reduces supply — stops being enforced by the
+    ///      code. That is what the shipped revision used to do.
+    ///
+    ///      This holds the build to the published behaviour, and checks the dead
+    ///      address separately, so a build that burns *and* also parks tokens
+    ///      there cannot slip through. Run it against the `pre-f5-snapshot`
+    ///      build to reproduce the finding.
+    function testFuzz_penaltyBurnDestroysTokens(
+        uint96 rawStake,
+        uint8 rawReason,
+        uint96 rawPrice
+    ) public {
+        uint256 stakeAmt = bound(uint256(rawStake), 20e18, 500_000e18);
+        uint8 reasonId = uint8(bound(uint256(rawReason), 0, 3));
+        uint256 maxPrice = bound(uint256(rawPrice), 1e18, 10_000e18);
+
+        uint256 deadAtStart = token.balanceOf(SINK);
+
+        _registerProvider(stakeAmt);
+        uint256 jobId = _openJob(maxPrice, 1, false);
+        market.assign(jobId, PROVIDER);
+
+        uint256 bond = _providerBond();
+        uint256 supplyBefore = token.totalSupply();
+        uint256 deadBefore = token.balanceOf(SINK);
+
+        market.fail(jobId, OMCComputeMarket.FailReason(reasonId));
+
+        uint256 slashed = (bond * _penaltyBpsLiteral(reasonId)) / 10_000;
+        uint256 burned = slashed - (slashed * 5_000) / 10_000 - (slashed * 3_000) / 10_000;
+
+        assertEq(
+            supplyBefore - token.totalSupply(),
+            burned,
+            "totalSupply did not fall by exactly the burn slice"
+        );
+        assertEq(
+            token.balanceOf(SINK),
+            deadBefore,
+            "the burn slice was moved to the dead address instead of destroyed"
+        );
+        assertEq(
+            token.balanceOf(SINK),
+            deadAtStart,
+            "the dead address received tokens over the course of the run"
+        );
+    }
+
+    /// @dev the deterministic counterpart: one concrete penalty, exact numbers,
+    ///      so a regression reads as a hard diff rather than a fuzz interval
+    function test_badOutputPenalty_burnIsExactlyTwentyPercentOfTheSlash() public {
+        _registerProvider(1_000e18);
+        uint256 jobId = _openJob(100e18, 1, false);
+        market.assign(jobId, PROVIDER);
+
+        uint256 supplyBefore = token.totalSupply();
+        assertEq(token.balanceOf(SINK), 0, "dead address should start empty");
+
+        // BAD_OUTPUT = 30% of a 1_000e18 bond = 300e18 slashed
+        market.fail(jobId, OMCComputeMarket.FailReason.BAD_OUTPUT);
+
+        // of which 50% -> requester, 30% -> treasury, 20% -> burned
+        uint256 expectedBurn = (300e18 * 2_000) / 10_000;
+
+        assertEq(
+            supplyBefore - token.totalSupply(),
+            expectedBurn,
+            "supply did not fall by the 20% burn slice"
+        );
+        assertEq(token.balanceOf(SINK), 0, "burned tokens were parked at the dead address");
+        assertLe(_providerBond(), 700e18, "bond was not reduced by the whole slash");
+    }
 }
