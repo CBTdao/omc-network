@@ -1,0 +1,159 @@
+{
+  "capturedAt": "2026-10-11T08:51:28.844Z",
+  "chainId": 97,
+  "chain": "BNB Smart Chain Testnet",
+  "token": {
+    "address": "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
+    "faucet": "20 tOMC / day, 5 claims lifetime"
+  },
+  "staking": "0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6",
+  "market": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+  "scheduler": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+  "providerNode": "0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6",
+  "whitepaperRefs": [
+    "7.1 protocol fee 3% (2.7% when paid in OMC), split 30% burn / 70% reward pool",
+    "7.5 slashing split 50% requester / 30% treasury / 20% burn",
+    "7.6 a refund is the seller's debt, not a redistribution of someone else's deposit"
+  ],
+  "notes": [
+    "Both jobs were driven against the same live contracts by the same scheduler key.",
+    "The provider is a real staked node (tier 1, 20 tOMC bond) registered on chain.",
+    "Image bytes never touch the chain; only keccak256 digests do.",
+    "No worker process was alive during either run. The node was heartbeated once (node-worker.js --once) so it stays eligible, then left with nothing behind it. That is deliberate: the failure path needs a provider that never delivers, and a live worker would race the harness for the same job. The picker's allowOffline override is therefore in force and says so in both logs.",
+    "The provider side of both jobs is the harness's own stub, not a second process. The separate claim that a node process can live behind this address is evidenced by its heartbeat transactions, which are real on-chain writes.",
+    "Inference ran with --no-infer: the delivered artefact is a deterministic stub. The digest binding, the escrow, the fee and the slash are unaffected."
+  ],
+  "runs": [
+    {
+      "jobId": 1,
+      "finalState": "SETTLED",
+      "paid": "5.0",
+      "providerReceived": "4.865",
+      "verificationGuard": null,
+      "assignedWithOfflineOverride": true,
+      "txs": [
+        {
+          "step": "approve",
+          "hash": "0x0012cc699fa45ae0524423861662b84543d664a43ab4f1941b259cc5c0afefbe",
+          "found": true,
+          "status": "success",
+          "block": 136136911,
+          "gasUsed": "46242",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
+          "method": "0x095ea7b3",
+          "explorer": "https://testnet.bscscan.com/tx/0x0012cc699fa45ae0524423861662b84543d664a43ab4f1941b259cc5c0afefbe"
+        },
+        {
+          "step": "createJob",
+          "hash": "0xa47b5abdfb8ec051c9f118342affc27aca1cfeed6664405691fc64548367c1d5",
+          "found": true,
+          "status": "success",
+          "block": 136136927,
+          "gasUsed": "202144",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0x31c27fd5",
+          "explorer": "https://testnet.bscscan.com/tx/0xa47b5abdfb8ec051c9f118342affc27aca1cfeed6664405691fc64548367c1d5"
+        },
+        {
+          "step": "assign",
+          "hash": "0x5a0580d0b22a581264ea5ec3e1fbcd37a3563538015cc81fcbcffab3acd5466b",
+          "found": true,
+          "status": "success",
+          "block": 136136942,
+          "gasUsed": "110279",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0xe07d3b5a",
+          "explorer": "https://testnet.bscscan.com/tx/0x5a0580d0b22a581264ea5ec3e1fbcd37a3563538015cc81fcbcffab3acd5466b"
+        },
+        {
+          "step": "confirmDelivery",
+          "hash": "0x0b3eb82754630f300203b73510bea633c60d96573880b35dfc8fa5096f8ebc7e",
+          "found": true,
+          "status": "success",
+          "block": 136136955,
+          "gasUsed": "60723",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0x42e3578e",
+          "explorer": "https://testnet.bscscan.com/tx/0x0b3eb82754630f300203b73510bea633c60d96573880b35dfc8fa5096f8ebc7e"
+        },
+        {
+          "step": "settle",
+          "hash": "0x6ae1f4cfd6c41aa2df7da5d3a9c0b1377ce663a85c1face6318c3fa2e78394c2",
+          "found": true,
+          "status": "success",
+          "block": 136136969,
+          "gasUsed": "226909",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0x9a9c29f6",
+          "explorer": "https://testnet.bscscan.com/tx/0x6ae1f4cfd6c41aa2df7da5d3a9c0b1377ce663a85c1face6318c3fa2e78394c2"
+        }
+      ],
+      "label": "success path"
+    },
+    {
+      "jobId": 2,
+      "finalState": "REFUNDED",
+      "paid": null,
+      "providerReceived": null,
+      "verificationGuard": "REJECTED",
+      "assignedWithOfflineOverride": true,
+      "txs": [
+        {
+          "step": "createJob",
+          "hash": "0x4b8077ad4a0a8467b8ec0c46efde9ebf4e01d7195b28b3f310b7fb65a596f3e3",
+          "found": true,
+          "status": "success",
+          "block": 136136997,
+          "gasUsed": "202144",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0x31c27fd5",
+          "explorer": "https://testnet.bscscan.com/tx/0x4b8077ad4a0a8467b8ec0c46efde9ebf4e01d7195b28b3f310b7fb65a596f3e3"
+        },
+        {
+          "step": "assign",
+          "hash": "0x1815523cb12fcb592e78170c93214ea0d923fa2ded9cce360b0628062ea0920c",
+          "found": true,
+          "status": "success",
+          "block": 136137012,
+          "gasUsed": "110279",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0xe07d3b5a",
+          "explorer": "https://testnet.bscscan.com/tx/0x1815523cb12fcb592e78170c93214ea0d923fa2ded9cce360b0628062ea0920c"
+        },
+        {
+          "step": "confirmDelivery",
+          "hash": "0xff86c3a82ba5707b93e89afbb80805ec9769423477e81feb390302611e4d310d",
+          "found": true,
+          "status": "success",
+          "block": 136137027,
+          "gasUsed": "60723",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0x42e3578e",
+          "explorer": "https://testnet.bscscan.com/tx/0xff86c3a82ba5707b93e89afbb80805ec9769423477e81feb390302611e4d310d"
+        },
+        {
+          "step": "fail",
+          "hash": "0x5b6a5a0be0d25c92fa5396a85aae70e57b1875a9ab6fec12379f393d3aef5651",
+          "found": true,
+          "status": "success",
+          "block": 136137032,
+          "gasUsed": "344151",
+          "from": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+          "to": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+          "method": "0x7f44f581",
+          "explorer": "https://testnet.bscscan.com/tx/0x5b6a5a0be0d25c92fa5396a85aae70e57b1875a9ab6fec12379f393d3aef5651"
+        }
+      ],
+      "label": "failure path"
+    }
+  ],
+  "totalTxs": 9
+}

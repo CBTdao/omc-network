@@ -88,6 +88,13 @@ async function main() {
   const mkt = await C.market(p);
 
   const need = await sk.minStakeForTier(TIER);
+  const nd0 = await sk.node(node.address);
+  /* Top up to the tier minimum, not past it. Adding the full `need` on top of an
+     existing bond over-stakes every time: a node slashed down to 14 would come
+     back at 34, and each further pass would pile on another 20 — bond the
+     operator never chose to post and cannot reclaim without a full exit.
+     The shortfall is what `stake()` should be given. */
+  const shortfall = nd0.stake < need ? need - nd0.stake : 0n;
   const bal = await tokNode.balanceOf(node.address);
   const gas = await p.getBalance(node.address);
 
@@ -97,10 +104,10 @@ async function main() {
   log("node tOMC     =", ethers.formatEther(bal));
   log("node tBNB     =", ethers.formatEther(gas), "| nonce", await p.getTransactionCount(node.address));
   log("endpoint      =", JSON.stringify(ENDPOINT));
-
-  const nd0 = await sk.node(node.address);
   log("registered    =", nd0.registered, "| tier =", nd0.tier,
       "| stake =", ethers.formatEther(nd0.stake), "| earning =", nd0.earning);
+  log("shortfall     =", ethers.formatEther(shortfall), "tOMC",
+      shortfall === 0n ? "(nothing to top up)" : "");
   log("isEligible    =", await mkt.isEligible(node.address, TIER));
 
   if (STATUS) return;
@@ -116,9 +123,9 @@ async function main() {
     await tx.wait();
   }
 
-  /* 2. the stake itself, in tOMC */
-  if (bal < need) {
-    const top = need - bal;
+  /* 2. the stake itself, in tOMC — only the shortfall */
+  if (shortfall > 0n && bal < shortfall) {
+    const top = shortfall - bal;
     log("transfer", ethers.formatEther(top), "tOMC to node");
     const tx = await tokFunder.transfer(node.address, top);
     log("  tx", tx.hash);
@@ -126,18 +133,17 @@ async function main() {
   }
 
   /* 3. approve -> stake -> register, all signed by the node */
-  const al = await tokNode.allowance(node.address, dep.staking);
-  if (al < need) {
-    log("node approves", ethers.formatEther(need), "tOMC to staking");
-    const tx = await tokNode.approve(dep.staking, need);
-    log("  tx", tx.hash);
-    await tx.wait();
-  }
+  if (shortfall > 0n) {
+    const al = await tokNode.allowance(node.address, dep.staking);
+    if (al < shortfall) {
+      log("node approves", ethers.formatEther(shortfall), "tOMC to staking");
+      const tx = await tokNode.approve(dep.staking, shortfall);
+      log("  tx", tx.hash);
+      await tx.wait();
+    }
 
-  const nd1 = await sk.node(node.address);
-  if (nd1.stake < need) {
-    log("node stakes", ethers.formatEther(need), "tOMC at tier " + TIER);
-    const tx = await sk.stake(need, TIER);
+    log("node stakes", ethers.formatEther(shortfall), "tOMC at tier " + TIER);
+    const tx = await sk.stake(shortfall, TIER);
     log("  tx", tx.hash);
     await tx.wait();
   }

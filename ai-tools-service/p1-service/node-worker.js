@@ -29,6 +29,7 @@
  *   node p1-service/node-worker.js --once          # one sweep, then exit
  *   node p1-service/node-worker.js                 # loop
  *   node p1-service/node-worker.js --no-infer      # chain plumbing only
+ *   node p1-service/node-worker.js --once --force-heartbeat
  */
 "use strict";
 
@@ -53,6 +54,16 @@ const SWEEP_MS = 20 * 1000;
 const args = process.argv.slice(2);
 const ONCE = args.includes("--once");
 const NO_INFER = args.includes("--no-infer");
+
+/* Send the heartbeat even when the clock says there is time to spare.
+   Two callers need this. An operator who has just topped a bond up wants to
+   confirm the heartbeat path works now, not in 40 minutes. And evidence capture
+   needs the node's own on-chain write — the one transaction that proves this
+   process holds the node key — to be reproducible on demand rather than
+   whenever the clock happens to come due.
+   Explicit and off by default, deliberately: a heartbeat is a real transaction
+   and nothing should spend one by accident. */
+const FORCE_HEARTBEAT = args.includes("--force-heartbeat");
 
 /* Set by sweep() once we know which address we speak for, so the exit hook can
    withdraw the liveness record. A one-shot run (--once) therefore cleans up
@@ -99,12 +110,24 @@ async function tickHeartbeat(sk, signer) {
   const left = deadline - now;
   const overdue = await sk.isOverdue(me);
 
-  if (left > HEARTBEAT_SAFETY_S) {
+  /* The deadline is not the whole story. `OMCStaking.slashFor()` takes a node
+     out of the earning set (`n.earning = false`) the moment it loses a job, and
+     `isEligible()` folds that flag in — so a slashed node is unassignable even
+     though its heartbeat clock is perfectly fresh. Only a real `heartbeat()`
+     call puts it back (`if (!n.earning && n.stake > 0) n.earning = true`).
+     Checking the clock alone therefore prints "heartbeat ok" in green on every
+     sweep while `assign()` reverts behind it — the same silent-failure shape
+     this service was written to avoid, one layer up. A node that is not earning
+     must send, whatever the clock says. */
+  const earning = !!nd.earning;
+
+  if (left > HEARTBEAT_SAFETY_S && earning && !FORCE_HEARTBEAT) {
     log("heartbeat ok, " + Math.round(left / 60) + " min left");
     return;
   }
   log("heartbeat due (" + (overdue ? "OVERDUE by " + Math.round(-left / 60) + " min"
-    : Math.round(left / 60) + " min left") + ") — sending");
+    : Math.round(left / 60) + " min left")
+    + (earning ? "" : ", and the node is out of the earning set after a slash") + ") — sending");
   const tx = await sk.connect(signer).heartbeat();
   log("heartbeat tx " + tx.hash);
   const rc = await tx.wait();

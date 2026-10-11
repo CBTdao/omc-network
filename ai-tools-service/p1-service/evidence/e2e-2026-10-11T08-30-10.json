@@ -1,0 +1,49 @@
+{
+  "capturedAt": "2026-10-11T08:30:10.839Z",
+  "chainId": 97,
+  "chain": "BNB Smart Chain Testnet",
+  "token": {
+    "address": "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
+    "faucet": "20 tOMC / day, 5 claims lifetime"
+  },
+  "staking": "0x485735D0d132671667b671e010C504d1949eE56A",
+  "market": "0x64b25aCdfe20CD9D61f376953251cA20A9eA0d6F",
+  "scheduler": "0x6126b78a560D7edFC68179f064B26ba820Ee690e",
+  "providerNode": "0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6",
+  "whitepaperRefs": [
+    "7.1 protocol fee 3% (2.7% when paid in OMC), split 30% burn / 70% reward pool",
+    "7.5 slashing split 50% requester / 30% treasury / 20% burn",
+    "7.6 a refund is the seller's debt, not a redistribution of someone else's deposit"
+  ],
+  "notes": [
+    "Both jobs were driven against the same live contracts by the same scheduler key.",
+    "The provider is a real staked node (tier 1, 20 tOMC bond) registered on chain.",
+    "Image bytes never touch the chain; only keccak256 digests do.",
+    "No worker process was alive during either run. The node was heartbeated once (node-worker.js --once) so it stays eligible, then left with nothing behind it. That is deliberate: the failure path needs a provider that never delivers, and a live worker would race the harness for the same job. The picker's allowOffline override is therefore in force and says so in both logs.",
+    "The provider side of both jobs is the harness's own stub, not a second process. The separate claim that a node process can live behind this address is evidenced by its heartbeat transactions, which are real on-chain writes.",
+    "Inference ran with --no-infer: the delivered artefact is a deterministic stub. The digest binding, the escrow, the fee and the slash are unaffected."
+  ],
+  "runs": [
+    {
+      "jobId": 3,
+      "finalState": "SETTLED",
+      "paid": "5.0",
+      "providerReceived": "4.865",
+      "verificationGuard": null,
+      "assignedWithOfflineOverride": true,
+      "txs": [],
+      "label": "success path"
+    },
+    {
+      "jobId": 4,
+      "finalState": "REFUNDED",
+      "paid": null,
+      "providerReceived": null,
+      "verificationGuard": "REJECTED",
+      "assignedWithOfflineOverride": true,
+      "txs": [],
+      "label": "failure path"
+    }
+  ],
+  "totalTxs": 0
+}
