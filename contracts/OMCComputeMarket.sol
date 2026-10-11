@@ -6,6 +6,10 @@ interface IERC20Like {
     function transfer(address to, uint256 value) external returns (bool);
     function transferFrom(address from, address to, uint256 value) external returns (bool);
     function balanceOf(address who) external view returns (uint256);
+    /// @dev Burns from the caller's own balance and debits totalSupply().
+    ///      Required by 7.1: the fee burn must actually reduce supply, which a
+    ///      transfer to a dead address does not. Reverts on failure.
+    function burn(uint256 amount) external;
 }
 
 /**
@@ -63,8 +67,9 @@ interface IStakingLike {
  *
  * PUBLISHED RULES THIS CONTRACT IMPLEMENTS (whitepaper v3.0 section in brackets)
  * -----------------------------------------------------------------------------
- *   - Protocol fee 3%, split 30% buyback-and-burn / 70% reputation reward pool
- *     [7.1]. Hard-coded; the published split is never skimmed.
+ *   - Protocol fee 3%, split 30% burn / 70% reputation reward pool
+ *     [7.1]. Hard-coded; the published split is never skimmed. The burn is a
+ *     real `burn()`, so totalSupply() falls by that slice.
  *   - Slashing penalties 2% timeout / 5% offline / 30% bad output / 100% fraud
  *     [7.5], and the 50 / 30 / 20 requester-treasury-burn split [7.5].
  *   - Dispute window of 48 hours after delivery [5].
@@ -92,7 +97,8 @@ contract OMCComputeMarket {
     /// @dev protocol fee on every settled job, whitepaper 7.1
     uint256 public constant PROTOCOL_FEE_BPS = 300; // 3%
 
-    /// @dev of the fee: 30% buyback-and-burn, 70% reputation reward pool [7.1]
+    /// @dev of the fee: 30% burned (a real burn, totalSupply() falls), 70%
+    ///      reputation reward pool [7.1]
     uint256 public constant FEE_BURN_BPS = 3_000;
     uint256 public constant FEE_REWARD_BPS = 7_000;
 
@@ -506,8 +512,15 @@ contract OMCComputeMarket {
         settledJobs += 1;
         if (assignedJobCount > 0) assignedJobCount -= 1;
 
-        // burn (or send to the configured burn sink)
-        if (toBurn > 0) require(token.transfer(feeBurn, toBurn), "OMCM: burn failed");
+        // The burn slice is destroyed, not relocated. The default sink IS the
+        // dead address, and transferring there leaves totalSupply() untouched —
+        // so when nobody has overridden the sink we burn for real, which is what
+        // 7.1 promises. An owner-set sink is still honoured, which keeps the
+        // switch usable if a token without a burn entrypoint is ever used here.
+        if (toBurn > 0) {
+            if (feeBurn == BURN_ADDRESS) token.burn(toBurn);
+            else require(token.transfer(feeBurn, toBurn), "OMCM: burn failed");
+        }
         // reputation reward pool, held by the treasury-side pool address
         if (toRewards > 0) require(token.transfer(requesterPool, toRewards), "OMCM: pool failed");
         // provider

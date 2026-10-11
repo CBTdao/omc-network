@@ -1,0 +1,48 @@
+[08:53:03] [sched] market    0x7664f1e73c2CBCbaFE636a653C173378C369C40A
+[08:53:03] [sched] staking   0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6
+[08:53:05] [sched] scheduler 0x6126b78a560D7edFC68179f064B26ba820Ee690e  (tBNB 0.001256635458220337)
+[08:53:05] [sched] sweeping every 15s — Ctrl-C to stop
+[08:53:05] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[08:53:06] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[08:53:59] [sched] job #3 ESCROWED — assigning to 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 (escrow 5.0)
+[08:54:00] [sched]   assign tx 0x642c4c1ed4c7e3bd2c5d57024854efb9d960ae22e3fa0c8c514481c0ee42b3d3
+[08:54:00] [sched]   mined in block 136137472 (gas 110279)
+[08:54:18] [sched] job #3 no artefact yet — hash claimed but no bytes on disk (59 min to deadline)
+[08:54:18] [sched] job #3 ASSIGNED -> waiting
+[08:54:36] [sched] job #3 delivered, artefact verifies (17 bytes) — confirming
+[08:54:37] [sched]   confirmDelivery tx 0xe3007c486b79aa2190ec594a436e06f3e93eb97014196725b830f6b8dc429d74
+[08:54:38] [sched] job #3 ASSIGNED -> delivered
+[08:54:38] [sched]   settling #3 for 5.0
+[08:54:39] [sched]   settle tx 0x969a8c482f72eaceb59de70b057d6cb4bc7c9e2e09761aa4327a0ce25c83a73d
+[08:54:40] [sched] job #3 DELIVERED -> settled
+[08:55:31] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[08:55:32] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[08:57:49] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[08:57:50] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:00:09] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:00:11] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:02:32] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:02:33] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:04:52] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:04:52] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:07:11] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:07:12] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:09:47] [sched] sweep error: request timeout
+[09:12:04] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:12:05] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:14:27] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:14:29] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:16:59] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:17:01] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:19:20] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:19:20] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:21:38] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:21:39] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:23:59] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:24:00] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:26:21] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:26:22] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:28:40] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:28:41] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true
+[09:31:01] [sched] liveness registry: 1 live, 0 stale  (ttl 90s)
+[09:31:02] [sched] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 tier=1 stake=20.0 overdue=false eligible=true live=true

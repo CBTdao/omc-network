@@ -161,23 +161,32 @@ async function fund() {
   const token = new ethers.Contract(d.token, artifact("OMCTestToken").abi, wallet);
   const staking = new ethers.Contract(d.staking, artifact("OMCStaking").abi, wallet);
 
-  /* The token is already handed over to FINAL_OWNER, so the deployer can no
-     longer mint. It does still hold spare tOMC from the first deployment —
-     use that instead of minting. */
+  /* `fundRewards()` is one-way: there is no owner rescue on the staking
+     contract, so whatever goes into a pool stays in that pool for the life of
+     that deployment. A redeploy therefore strands the previous pool entirely.
+     On testnet that is free tokens and irrelevant; on mainnet it would mean a
+     staking redeploy burns the whole emission pool, which is the single
+     strongest reason to freeze OMCStaking before mainnet.
+     Pass --amount to fund something smaller than the round 4,999,000. */
+  const amtArg = process.argv.indexOf("--amount");
+  const desired = amtArg >= 0 && process.argv[amtArg + 1]
+    ? ethers.parseEther(process.argv[amtArg + 1])
+    : REWARD_FUNDING;
+
   const held = await token.balanceOf(wallet.address);
   console.log("deployer tOMC balance:", ethers.formatEther(held));
-  if (held < REWARD_FUNDING) {
+  if (held < desired) {
     throw new Error(
       "deployer holds " + ethers.formatEther(held) + " tOMC, needs " +
-      ethers.formatEther(REWARD_FUNDING) + " — top it up from the token owner wallet"
+      ethers.formatEther(desired) + " — top it up from the token owner wallet"
     );
   }
 
-  console.log("approving + funding", ethers.formatEther(REWARD_FUNDING), "tOMC into the new pool");
-  await (await token.approve(d.staking, REWARD_FUNDING)).wait();
-  const tx = await staking.fundRewards(REWARD_FUNDING);
+  console.log("approving + funding", ethers.formatEther(desired), "tOMC into the new pool");
+  await (await token.approve(d.staking, desired)).wait();
+  const tx = await staking.fundRewards(desired);
   await tx.wait();
-  d.rewardLiquidity = REWARD_FUNDING.toString();
+  d.rewardLiquidity = desired.toString();
   d.rewardFundingTx = tx.hash;
   save(d);
   const stats = await staking.protocolStats();

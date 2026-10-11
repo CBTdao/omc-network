@@ -29,6 +29,15 @@ Properties checked
       stakeAfter == stakeBefore - stakeBefore * penalty_bps / 10000, and the
       requester's net gain equals 50% of the slashed amount.
 
+  P4  escrow isolation between concurrent jobs
+      failing one job must leave another open job's escrow intact to the wei.
+
+  P5  the penalty burn destroys the tokens (F-12)
+      totalSupply() must fall by exactly the 20% burn slice, and the dead
+      address must not receive a single wei. A transfer to 0x…dEaD moves tokens
+      without reducing supply, which is what the deployed revision used to do.
+      Run this against `pre-f5-snapshot/` to reproduce F-12.
+
 Usage
 -----
     python fuzz_props.py [--iterations 120] [--port 8547] [--seed 20261011]
@@ -417,6 +426,84 @@ def property_escrow_isolation(chain: Chain, token, staking, market, iters: int, 
 
 
 # --------------------------------------------------------------------------- #
+# P5 -- the burn slice of a penalty must actually burn (F-12)                  #
+# --------------------------------------------------------------------------- #
+
+# OMCStaking.BURN_ADDRESS. Kept as a literal here on purpose: the property is
+# that this address must receive nothing, so reading it from the artifact under
+# test would let a build move the constant and still pass.
+DEAD_ADDRESS = "0x000000000000000000000000000000000000dEaD"
+
+
+def property_slash_burns(chain: Chain, token, staking, market, iters: int, rng) -> None:
+    """F-12: the 20% burn slice of a penalty has to destroy tokens.
+
+    `token.transfer(0x…dEaD, burned)` empties the sender's balance and leaves
+    `totalSupply()` exactly where it was, so the published rule -- that the
+    slashing burn reduces supply -- is not actually enforced by the code. This
+    property holds the build to the published behaviour, and checks the dead
+    address separately so that a build which burns *and* also parks tokens there
+    cannot slip through.
+    """
+    owner = chain.accounts[0]
+    requester, provider = chain.accounts[2], chain.accounts[3]
+
+    chain.send(token.functions.approve(staking.address, 2**256 - 1), provider)
+    chain.send(token.functions.approve(market.address, 2**256 - 1), provider)
+    chain.send(token.functions.approve(market.address, 2**256 - 1), requester)
+
+    dead_at_start = token.functions.balanceOf(DEAD_ADDRESS).call()
+
+    for i in range(iters):
+        stake_amt = rng.randint(20 * E18, 500_000 * E18)
+        reason = rng.randrange(4)
+        max_price = rng.randint(1 * E18, 10_000 * E18)
+        deadline = chain.w3.eth.get_block("latest").timestamp + 3600
+
+        chain.send(staking.functions.stake(stake_amt, 1), provider)
+        chain.send(staking.functions.registerNode(1, "http://node.local"), provider)
+        bond = staking.functions.node(provider).call()[3]
+
+        chain.send(
+            market.functions.createJob(b"\x66" * 32, 1, 0, 0, max_price, deadline, False),
+            requester,
+        )
+        job_id = market.functions.jobCount().call()
+        chain.send(market.functions.assign(job_id, provider), owner)
+
+        supply_before = token.functions.totalSupply().call()
+        dead_before = token.functions.balanceOf(DEAD_ADDRESS).call()
+
+        _, err = chain.try_send(market.functions.fail(job_id, reason), owner)
+        if err is not None:
+            check(False, f"P5#{i}: fail() is unusable -- {err}")
+            break
+
+        slashed = bond * PENALTY_BPS[reason] // BPS
+        burned = slashed - slashed * 5_000 // BPS - slashed * 3_000 // BPS
+
+        supply_after = token.functions.totalSupply().call()
+        dead_after = token.functions.balanceOf(DEAD_ADDRESS).call()
+
+        check(
+            supply_before - supply_after == burned,
+            f"P5#{i}: totalSupply fell by {supply_before - supply_after} wei, "
+            f"expected exactly the burn slice {burned} "
+            f"(reason={reason}, penalty {PENALTY_BPS[reason]} bps, slashed={slashed})",
+        )
+        check(
+            dead_after == dead_before,
+            f"P5#{i}: the burn slice was moved to the dead address instead of "
+            f"being destroyed (+{dead_after - dead_before} wei)",
+        )
+
+    check(
+        token.functions.balanceOf(DEAD_ADDRESS).call() == dead_at_start,
+        "P5: the dead address received tokens over the course of the run",
+    )
+
+
+# --------------------------------------------------------------------------- #
 
 
 def main() -> int:
@@ -427,8 +514,8 @@ def main() -> int:
     ap.add_argument("--port", type=int, default=8547)
     ap.add_argument("--seed", type=int, default=20261011)
     ap.add_argument("--anvil", default=None)
-    ap.add_argument("--only", default="p1,p2,p3,p4",
-                    help="comma-separated subset of p1,p2,p3,p4 to run")
+    ap.add_argument("--only", default="p1,p2,p3,p4,p5",
+                    help="comma-separated subset of p1,p2,p3,p4,p5 to run")
     ap.add_argument("--artifacts", default=None,
                     help="directory holding <Contract>.json (default: ../artifacts, "
                          "falling back to ./build-snapshot)")
@@ -485,6 +572,10 @@ def main() -> int:
         if "p4" in wanted:
             print("P4  escrow isolation between concurrent jobs")
             property_escrow_isolation(chain, token, staking, market, args.iterations, rng)
+
+        if "p5" in wanted:
+            print("P5  the penalty burn destroys the tokens")
+            property_slash_burns(chain, token, staking, market, args.iterations, rng)
     finally:
         proc.terminate()
         try:

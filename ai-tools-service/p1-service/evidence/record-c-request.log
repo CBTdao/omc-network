@@ -1,0 +1,21 @@
+OMC AI Tools · requester-only job creation
+  16:53:43
+  market     = 0x7664f1e73c2CBCbaFE636a653C173378C369C40A
+  requester  = 0x6126b78a560D7edFC68179f064B26ba820Ee690e
+  tOMC       = 515.695
+  imageHash  = 0xc3bec9ce004912ae235c761700f2de5969ffc127cc821a9d34dc6ef62b579c19
+  specHash   = 0xcf28056cb0a4dc99e365c2aa6b1d46cbf463f93c5f782969a2dbd127abb2a147
+  createJob  tx: 0x6ec3ae25881f556590614ce809f44e2393bd7f11050ba1beec786473e1c2b9a3
+  job #3 is ESCROWED with 5.0 tOMC
+  now nothing else happens from here: scheduler.js and node-worker.js have to carry it
+  watching (Ctrl-C to stop) …
+  16:53:54  job #3 -> ESCROWED
+  16:54:01  job #3 -> ASSIGNED  provider 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6
+  16:54:38  job #3 -> DELIVERED  provider 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6
+  16:54:40  job #3 -> SETTLED  provider 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6
+  16:54:40  final: SETTLED
+  paid        = 5.0
+  feePaid     = 0.135
+  settled     = 2  failed = 1  escrowedNow = 0.0
+  result meta = {"jobId":3,"requester":"0x6126b78a560D7edFC68179f064B26ba820Ee690e","specHash":"0xcf28056cb0a4dc99e365c2aa6b1d46cbf463f93c5f782969a2dbd127abb2a147","resultHash":"0x7eed67bb74635003271d0489508e06a1d938c508a53a8675b53966e00997efc3","bytes":17,"inferMs":0,"stub":true,"at":"2026-10-11T08:54:18.515Z"}
+  verifyResult = OK — the bytes on disk hash to the on-chain digest

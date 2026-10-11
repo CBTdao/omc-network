@@ -1,11 +1,12 @@
 # Security review — OMC testnet contracts
 
 **Scope:** `OMCTestToken.sol`, `OMCStaking.sol`, `OMCComputeMarket.sol` (1,573 lines as
-reviewed; 1,587 after the fixes) and the BSC testnet deployments listed below.
-**Date of review:** 2026-10-11
+reviewed; 1,619 after the fixes) and the BSC testnet deployments listed below.
+**Date of review:** 2026-10-11 (two passes the same day: F-1…F-11, then F-12…F-14)
 **Reviewer:** the OMC team (self-review), using free tooling only.
-**Status:** 1 High-severity defect found and fixed in source. **The fix is not yet
-deployed** — the addresses below still run the pre-fix code.
+**Status:** 1 High-severity defect and 2 further defects found and fixed. **Both passes
+are deployed** — the addresses below run the reviewed bytecode, verified against the
+chain by `contracts/security/verify_live_bytecode.py` (see §3).
 
 ---
 
@@ -35,11 +36,21 @@ value, no sale has taken place, and nothing here implies a return of any kind.
 | File | Lines (as reviewed → fixed) | Address (BSC testnet, chainId 97) |
 |---|---|---|
 | `contracts/OMCTestToken.sol` | 196 → 196 | `0xBEB21E40FB50A0F4ba9287C2058DC7851e450671` |
-| `contracts/OMCStaking.sol` | 743 → 750 | `0x3226dffED51e28CEf526F8c078B2EC9a092E36e6` |
-| `contracts/OMCComputeMarket.sol` | 634 → 641 | `0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1` |
+| `contracts/OMCStaking.sol` | 743 → 769 | `0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6` |
+| `contracts/OMCComputeMarket.sol` | 634 → 654 | `0x7664f1e73c2CBCbaFE636a653C173378C369C40A` |
 
 Build configuration under review: `solc 0.8.26`, `optimizer: enabled, runs: 200`,
 `viaIR: true`, `evmVersion: paris` (`contracts/tools/compile.js`).
+
+The staking and market addresses above are the **post-fix** deployments. The earlier
+deployments are kept in `contracts/deployments/bsc-testnet.json` under the `prev*` keys
+(`prevStaking`, `prevStaking4`, `prevMarket`, `prevMarket4`) so the bytecode of every
+revision that was ever live can still be located on chain. That record — not this
+table — is the source of truth; `verify_live_bytecode.py` reads it rather than holding
+its own copy of the addresses. An earlier revision of that script hard-coded them, and
+a redeploy turned its output into a comparison of the old chain code against the new
+build: a confidently wrong answer that read as "the fix is not deployed" when it was.
+The script now fails loudly on a stale deployment instead (`STALE DEPLOYMENT …`).
 
 ### Out of scope
 
@@ -55,7 +66,7 @@ the three Solidity contracts were.
 |---|---|---|
 | **solhint** (Solidity linter) | 6.2.5 | 0 errors, 502 warnings — all style / gas / natspec |
 | **Slither** (static analysis, Trail of Bits) | 0.11.6, 102 detectors | 0 Critical, 0 High, 26 Medium, 46 Low (72 total before the fix; 69 after) |
-| **Property-based tests**, `anvil` + `web3.py` | Foundry 1.8.5 / web3.py 7.x | 2,521 assertions over randomised inputs — see §5 |
+| **Property-based tests**, `anvil` + `web3.py` | Foundry 1.8.5 / web3.py 7.x | 5 properties, 2,762 assertions over randomised inputs against the current build; 241 violations against the previous one — see §5 |
 | **Property-based tests**, Foundry (`forge test`) | Foundry 1.8.5 | authored and compile-verified, **not executed** — see §3 |
 | **Manual review** | — | all 1,573 lines of the pre-fix revision read line by line |
 
@@ -84,25 +95,51 @@ Recorded so the gaps are visible rather than implied.
 ## 3. Reproducibility — does the reviewed source match the chain?
 
 `contracts/security/verify_live_bytecode.py` fetches the runtime bytecode from BSC
-testnet and compares it with two local builds: the sources as reviewed, and the
-sources as they stood at the commit that was deployed (`pre-fix-snapshot/`).
+testnet and compares it with the local builds. It answers three separate questions:
+does the reviewed build reproduce the deployed code; if not, does it reproduce it with
+the immutable slots masked out; and if neither, which *older* snapshot is on chain.
+The third question is the one that catches a fix that was committed but not deployed.
+The addresses come from `contracts/deployments/bsc-testnet.json`.
 
-Result at block 136,093,149 — see `contracts/security/bytecode-report.json`:
+Result at block 136,138,468 — see `contracts/security/bytecode-report.json`:
 
-| Contract | live | reviewed | pre-fix | verdict |
-|---|---|---|---|---|
-| `OMCTestToken` | 3,474 B | 3,474 B | 3,474 B | **byte-for-byte identical to both builds** |
-| `OMCStaking` | 13,035 B | 12,996 B | 13,035 B | deployed == pre-fix build (differs only at zero-filled immutable regions) |
-| `OMCComputeMarket` | 11,774 B | 11,329 B | 11,774 B | deployed == pre-fix build (differs only at zero-filled immutable regions) |
+| Contract | live | reviewed | verdict |
+|---|---|---|---|
+| `OMCTestToken` | 3,474 B | 3,474 B | **byte-for-byte identical** |
+| `OMCStaking` | 13,092 B | 13,092 B | reviewed build, differing only at 66 zero-filled immutable regions |
+| `OMCComputeMarket` | 11,853 B | 11,853 B | reviewed build, differing only at 85 zero-filled immutable regions |
 
 `tOMC` has no immutables, so its build must reproduce the deployed runtime exactly —
-it does. That is the control which shows the toolchain is faithful. `OMCStaking` and
-`OMCComputeMarket` both declare immutables (`token`, and `staking` respectively),
-which are patched into the runtime code at construction; masking those regions, the
-pre-fix build matches the chain exactly. **The code analysed below is therefore the
-code that is running.**
+it does, and it matches all three snapshots identically (the contract was never
+touched by either pass). That is the control which shows the toolchain
+(solc 0.8.26, optimizer 200, viaIR, evmVersion paris) is faithful.
+`OMCStaking` and `OMCComputeMarket` declare immutables (`token`; `token` and
+`staking`), which are patched into the runtime code at construction time and read as
+zeroes in a compiled artifact. Masking those regions, the reviewed build matches the
+chain exactly. **The code analysed in this document is therefore the code that is
+running.**
 
-`OMCTestToken` is untouched by this review's fixes; the two other files are not.
+Three snapshots are kept, one per source revision that has been deployed:
+
+| Snapshot | Source state | Live address it matches |
+|---|---|---|
+| `pre-fix-snapshot/` | as deployed, before F-1 was fixed | none — superseded |
+| `pre-f5-snapshot/` | F-1 fixed, before F-12 was fixed | none — superseded |
+| `build-snapshot/` | the current tree | the addresses in §1 |
+
+The middle one exists because this exact trap was sprung once: after F-1 was fixed in
+source, the check still reported `deployed code == pre-fix build`. It was right, and
+that was the point — a green-looking repository with a stale chain. The snapshots make
+the difference between "the fix is written" and "the fix is live" mechanically
+checkable instead of a matter of memory.
+
+Byte sizes per revision, for cross-checking against `bytecode-report.json`:
+
+| Contract | pre-fix | pre-F-12 | live (current) |
+|---|---|---|---|
+| `OMCTestToken` | 3,474 B | 3,474 B | 3,474 B |
+| `OMCStaking` | 13,035 B | 12,996 B | 13,092 B |
+| `OMCComputeMarket` | 11,774 B | 11,329 B | 11,853 B |
 
 ---
 
@@ -110,17 +147,27 @@ code that is running.**
 
 | # | Severity | Contract | Title | State |
 |---|---|---|---|---|
-| F-1 | **High** | `OMCComputeMarket` | `fail()` double-applies the slashing split and always reverts | **Fixed in source**; not deployed |
-| F-2 | Low | `OMCStaking` | `heartbeat()` / `slashOverdue()` update state after an external call | Fixed in source |
-| F-3 | Low | `OMCStaking` | Dead-code `require` in `unstake()` | Fixed in source |
-| F-4 | Informational | `OMCStaking` | Local `bps` relied on implicit zero-initialisation | Fixed in source |
+| F-1 | **High** | `OMCComputeMarket` | `fail()` double-applies the slashing split and always reverts | **Fixed and deployed** |
+| F-2 | Low | `OMCStaking` | `heartbeat()` / `slashOverdue()` update state after an external call | Fixed and deployed |
+| F-3 | Low | `OMCStaking` | Dead-code `require` in `unstake()` | Fixed and deployed |
+| F-4 | Informational | `OMCStaking` | Local `bps` relied on implicit zero-initialisation | Fixed and deployed |
 | F-5 | Low | `OMCStaking` | `setMarket()` accepts `address(0)` | Accepted, documented |
 | F-6 | Informational | both | Integer division before multiplication in the fee / slash splits | Accepted by design |
 | F-7 | Informational | both | `incorrect-equality` flags on zero sentinels | False positive |
 | F-8 | Informational | both | State writes and events after token transfers | Accepted (token has no hooks) |
 | F-9 | Informational | `OMCComputeMarket` | `unused-return` on the `nodeSummary` tuple | False positive; tuple verified |
 | F-10 | Informational | `OMCStaking` | `nodeSummary`'s `stake` return shadows `stake()` | Accepted, cosmetic |
-| F-11 | — | — | The live testnet still runs the pre-fix bytecode | **Open** |
+| F-11 | — | — | The live testnet still runs the pre-fix bytecode | **Resolved** — see §3 |
+| F-12 | Low | `OMCStaking`, `OMCComputeMarket` | Slashing / fee "burns" only moved tokens to a dead address, so `totalSupply()` never fell | **Fixed and deployed** |
+| F-13 | Informational | docs | The whitepaper promised a market buy-back the contracts never performed | Docs corrected |
+| F-14 | Low | off-chain | The node worker's heartbeat check ignored the `earning` flag, so a slashed node went permanently silent while logging green | Fixed in the worker |
+
+**A note on the numbering.** F-12 and F-13 are the second pass. An interim report
+circulated on the same day used "F-5" and "F-6" for these two — the burn semantics and
+the buy-back wording — which collide with the F-5 and F-6 already used above for
+`setMarket()` and division ordering. Those interim labels are retired; this table is
+the only numbering. If a pasted "F-5" mentions `burn()` or the whitepaper, it means
+F-12 or F-13.
 
 ---
 
@@ -173,22 +220,27 @@ meaningful balance on testnet. The defect is in the protocol logic, not in custo
 **Evidence.**
 
 1. Arithmetic above.
-2. Property-based test, run against the **pre-fix build that matches the deployed
-   bytecode** (`security/fuzz_props.py --artifacts pre-fix-snapshot --only p3`):
+2. **The deployed failure path, exercised end to end on chain.** With the fix live,
+   job #2 of the rehearsal ran `createJob → assign → confirmDelivery → fail` and ended
+   `REFUNDED`, with the requester made whole out of the bond and the provider slashed
+   6.0 tOMC. Transaction hashes are in `p1-service/evidence/`. This is the same defect
+   P3 and P4 pin in a controlled environment, confirmed on the real chain.
+3. Property-based test, run against the **pre-fix build**
+   (`security/fuzz_props.py --artifacts pre-fix-snapshot --only p3`):
 
    ```
    P3#0: fail() is unusable -- reverted: tOMC: balance
          (reason=2, penalty 3000 bps, bond=299675 OMC, escrow=739.882 OMC)
    ```
 
-3. Escrow-isolation property (P4), pre-fix build — the market is holding two
+4. Escrow-isolation property (P4), pre-fix build — the market is holding two
    escrows and neither call can even be made:
 
    ```
    P4#0: fail() is unusable -- reverted: tOMC: balance
    ```
 
-4. Deterministic reproduction at bond 1,000 OMC / escrow 1,000 OMC: for each
+5. Deterministic reproduction at bond 1,000 OMC / escrow 1,000 OMC: for each
    reason the market is short by exactly half the slash —
 
    | reason | penalty | slashed | requester | treasury | burn | market short by |
@@ -208,6 +260,10 @@ calls, which closes the checks-effects-interactions gap in the same function.
 
 Note for callers: `OMCComputeMarket.treasury` and `.feeBurn` are no longer used by
 `fail()`; they remain in use by `settle()` for the protocol fee split.
+
+The `token.transfer(BURN_ADDRESS, burned)` line quoted above from the pre-fix source
+was itself replaced in the second pass: the burn slice is now destroyed outright
+rather than parked at a dead address. See F-12.
 
 **After the fix**, the same property passes — see §5.
 
@@ -349,26 +405,142 @@ Cosmetic; renaming it would change nothing but would touch every caller of the
 
 ---
 
-### F-11 — Open: the deployed testnet code still contains F-1
+### F-11 — Resolved: the deployed testnet code was stale
 
-The fixes in this review are in the repository, not on chain. The three BSC testnet
-addresses in §1 continue to run the pre-fix bytecode, recorded in
-`contracts/security/bytecode-report.json`.
+The fixes from the first pass sat in the repository for several hours before they were
+on chain. The addresses originally listed in §1 ran the pre-fix bytecode, and the check
+at the time said so, in as many words: *deployed code == pre-fix build*. A green
+repository over a stale chain is exactly the state that reads as "done".
 
-Remediation requires redeploying `OMCStaking` and `OMCComputeMarket`, updating the
-addresses across the site and the deployment record, and re-registering the testnet
-node. Because `OMCComputeMarket` stores `staking` as an immutable, a change to
-`OMCStaking` always cascades to the market, so both must be redeployed together.
+**Closed on 2026-10-11.** `OMCStaking` and `OMCComputeMarket` were redeployed — the
+market has to be redeployed with it, because its `staking` reference is immutable — the
+node was re-registered, the addresses were updated across the site, the whitepaper and
+the deployment record, and §3 now verifies the live runtime against the reviewed build
+at block 136,138,468.
 
-Two ways to close this out:
+Two things worth keeping from it:
 
-- **Redeploy on testnet** (~2 transactions, a fraction of a tBNB of gas, plus the
-  address updates in `contracts/deployments/bsc-testnet.json`, `website/` and the
-  node config). Recommended if the live demo is going to be exercised by anyone
-  reviewing the project.
-- **Carry the fix into mainnet preparation** and leave the testnet as an annotated
-  known-issue deployment. Acceptable only if nobody will exercise the failure path
-  on testnet, and it must be stated on the site rather than left implicit.
+- **A source fix is not a fix.** Until the chain changes, the defect is live. The check
+  now compares three snapshots and reports `STALE DEPLOYMENT` when the live code
+  matches an older one, so a fixed-but-undeployed contract can no longer produce a
+  report that agrees everything is well.
+- **Redeploying staking strands its reward pool.** `fundRewards()` is one-way: the pool
+  lives inside whichever staking contract received it and there is no owner rescue.
+  Replacing staking therefore abandons whatever was funded into it — 200 tOMC on this
+  testnet redeploy, unrecoverable. On testnet that is a rounding error; on mainnet it
+  is the strongest argument for freezing `OMCStaking` before the public launch. The
+  redeploy tool (`contracts/tools/redeploy-staking.js`) now takes an explicit
+  `--amount` so the size of the new pool is a decision rather than a default.
+
+---
+
+### F-12 — Low: the "burn" halves of both splits never reduced the supply
+
+**Where:** `OMCStaking.slashFor()` (`:513`) and `slashOverdue()` (`:760`) — the 20%
+slice of every penalty; and `OMCComputeMarket.settle()` — the 30% slice of the protocol
+fee.
+
+**What happened.** Both splits routed their burn share with
+
+```solidity
+require(token.transfer(BURN_ADDRESS, burned), "OMCS: transfer");
+```
+
+`BURN_ADDRESS` is `0x…dEaD`. That is a transfer, not a burn. The tokens leave the
+contract and land at an address nobody controls; `totalSupply()` never moves. The
+published rule — that the slashing burn and the fee burn reduce the supply — was
+therefore not true of the deployed code. Both the whitepaper and `/tokenomics` state it
+plainly, and the site's own supply display would have contradicted the contract the
+moment anyone checked.
+
+The second-order effect runs the other way and is the reason this was a real decision
+rather than a one-line tidy-up. A true burn lowers `totalSupply()`, which means the
+destroyed amount becomes mintable again later: `OMCTestToken._mint()` only enforces
+`totalSupply + amount <= MAX_SUPPLY`. Burning to a dead address is irreversible by
+construction — those tokens can never re-enter circulation, and the supply ceiling
+stays permanently consumed. Neither is unconditionally better; the question is which
+one the published economics describe. They describe a burn, so the code now burns.
+
+**Fix applied.** `IERC20Like` gained `burn(uint256)` in both contracts; the two staking
+call sites and the market's fee path now call `token.burn(amount)`.
+`OMCComputeMarket` keeps the configurable `feeBurn` sink: when it is the dead address
+the fee is burned, otherwise it is transferred to the configured address, so a future
+decision to route the slice elsewhere does not need a code change.
+
+**Evidence — live, on chain.** The failure path was exercised end to end against the
+current deployment, on job #2 of the rehearsal, which incidentally re-proves F-1:
+
+```
+job #2 final state = REFUNDED
+provider stake 20.0 -> 14.0   slashed 6.0 tOMC
+token totalSupply 10000019.9595 -> 10000018.7595   burned 1.2 tOMC
+slash split on 6.0 tOMC slashed: requester 3.0 / treasury 1.8 / burned 1.2
+```
+
+1.2 is exactly 20% of 6.0. The fee path burned a further 0.0405 (30% of the 0.135 fee
+on the settlement that followed). `p1-service/audit-supply.js` checks the invariant
+directly: `totalSupply()` fell by the amount burned, and `balanceOf(0x…dEaD)` did
+**not** grow. The 3.4425 tOMC sitting at the dead address is the historical residue of
+the pre-fix deployments and will never move again — now a permanent, visible artefact
+of the defect rather than the live mechanism.
+
+**Evidence — regression property.** P5 in `security/fuzz_props.py` states the rule as
+an executable claim. Against `pre-f5-snapshot/` it fails every single time — 241
+assertions, 241 violations — and against the current build it passes:
+
+```bash
+python fuzz_props.py --artifacts pre-f5-snapshot --only p5   # 241/241 violate
+python fuzz_props.py --only p5                               # PASS
+```
+
+---
+
+### F-13 — Informational: the whitepaper promised a buy-back the code never performed
+
+The whitepaper said a share of every fee "is used to buy back OMC on the market and
+burn it automatically through smart contracts". No contract has ever contained a market
+purchase. Jobs are escrowed and settled in OMC, so the fee is already denominated in
+the token; settlement destroys its share directly. The sentence described a mechanism
+that did not exist and, given that the fee arrives in OMC, was never needed.
+
+**Docs corrected.** The affected passages now say the share is burned at settlement and
+state explicitly that no market purchase is involved: four places in
+`wp-v3/OMC-Whitepaper-v3.0-EN.md`, one deck table row in `wp-v3/build_deck.py`, and
+seven strings across the site including both `en` and `zh` tokenomics copy. The PDF and
+the deck were rebuilt and re-verified (whitepaper 20 pages, deck 13 pages, zero
+remaining occurrences of the buy-back wording).
+
+Worth recording for its shape rather than its size: the code was reviewed and the
+documents were not, and the documents were the thing making the promise. A sentence can
+be the defect.
+
+---
+
+### F-14 — Low (off-chain): a slashed node went silent while the log stayed green
+
+**Where:** the node worker's heartbeat decision —
+`ai-tools-service/p1-service/node-worker.js`.
+
+`OMCStaking.isEligible()` folds five conditions into one boolean: registered, earning,
+not overdue, stake at or above the tier minimum, tier at least 1. The worker decided
+whether to heartbeat by looking at the deadline alone. After `slashFor()` sets
+`n.earning = false`, only a real `heartbeat()` restores it
+(`if (!n.earning && n.stake > 0) n.earning = true`). A node that had been slashed
+therefore dropped out of the dispatch set permanently — every assignment would revert —
+while its operator watched a log line reading `heartbeat ok, N min left`.
+
+One 30% BAD_OUTPUT penalty is enough to trigger it: a 20 tOMC bond falls to 14, below
+the T1 minimum of 20, and the node can no longer be assigned any work at all.
+
+**Fixed in the worker.** The heartbeat decision now reads `earning` as well and logs the
+reason when it is false. `bootstrap-node.js` tops a node up by the **shortfall** rather
+than a fixed amount, so recovery does not overshoot the tier. The contract is unchanged
+and was always correct — `isEligible()` gave the right answer to the question asked; the
+caller was reading one field of a five-field answer.
+
+Filed here rather than with the contract findings because it is an integration defect.
+The contracts never promised anything about the worker's log output, which is precisely
+why nobody was watching for it.
 
 ---
 
@@ -393,20 +565,29 @@ Notable properties pinned there:
 - the penalty applied to a bond matches the §7.5 table exactly;
 - a registered node cannot unstake below its tier minimum.
 
+P5 — the burn slice actually destroys tokens — is **not** in this suite. It was written
+after the suite was frozen, in the second pass. Porting it to `MarketProps.t.sol` is the
+obvious next step; until then `forge test` does not cover F-12.
+
 ### 5.2 `anvil` + `web3.py` — `contracts/security/fuzz_props.py` (executed)
 
-Because `forge test` cannot run on this machine, the four highest-value properties
+Because `forge test` cannot run on this machine, the five highest-value properties
 were re-implemented against a real EVM (a local `anvil` node) and actually executed.
-The harness reads committed build snapshots, so it needs no compiler.
+The harness reads committed build snapshots, so it needs no compiler. Every snapshot
+is exercised, not just the current one: a property that only ever passes is not
+evidence of anything.
 
 | Run | Build under test | Properties | Result |
 |---|---|---|---|
-| A | `pre-fix-snapshot/` — **matches the deployed bytecode** | P1 APR ceiling, P2 escrow conservation | PASS (1,201 assertions) |
+| A | `pre-fix-snapshot/` — the revision first deployed | P1 APR ceiling, P2 escrow conservation | PASS (1,201 assertions) |
 | A | `pre-fix-snapshot/` | P3 penalty table + bond-funded refund | **FAIL — `fail()` reverts** |
 | A | `pre-fix-snapshot/` | P4 escrow isolation | **FAIL — `fail()` reverts** |
-| B | `build-snapshot/` — the reviewed, fixed source | P1, P2, P3, P4 | **PASS — 2,521 assertions, 0 violations** |
+| B | `pre-f5-snapshot/` — F-1 fixed, F-12 not yet | P1, P2 | PASS (1,201 assertions) |
+| B | `pre-f5-snapshot/` | P3, P4 | PASS (1,320 assertions) |
+| B | `pre-f5-snapshot/` | P5 the penalty burn destroys the tokens | **FAIL — 241 assertions, 241 violations** |
+| C | `build-snapshot/` — the current tree, which is what §3 finds live | P1, P2, P3, P4, P5 | **PASS — 2,762 assertions, 0 violations** |
 
-Run B detail (`--iterations 120`, seed 20261011):
+Run C detail (`--iterations 120`, seed 20261011):
 
 ```
 P1  published APR ceiling
@@ -414,12 +595,25 @@ P1  published APR ceiling
 P2  escrow conservation on settlement
 P3  section 7.5 penalty table, paid from the bond
 P4  escrow isolation between concurrent jobs
+P5  the penalty burn destroys the tokens
 
-2521 assertions checked over generated cases
+2762 assertions checked over generated cases
 PASS -- no property violations found
 ```
 
-The four properties:
+Run B's failure, in full — every iteration fails, on both counts:
+
+```
+P5#0: totalSupply fell by 0 wei, expected exactly the burn slice 17980518276834975460824
+      (reason=2, penalty 3000 bps, slashed=89902591384174877304115)
+P5#0: the burn slice was moved to the dead address instead of being destroyed
+      (+17980518276834975460824 wei)
+...
+241 assertions checked over generated cases
+FAILED: 241 property violation(s)
+```
+
+The five properties:
 
 - **P1** — over random stake sizes (20 to 5,000,000 OMC) and every dial setting from
   1 to 10,000 bps: `effectiveEmissionPerSecond() * SECONDS_PER_YEAR * BPS / totalStake
@@ -436,9 +630,16 @@ The four properties:
   to the wei, must leave `totalEscrowed()` reporting exactly that escrow, and must leave
   the second job refundable. This is the "the refund comes from the bond, not from other
   people's escrow" promise stated as an executable property.
+- **P5** — over random bonds and all four failure reasons: `totalSupply()` falls by
+  exactly the burn slice (`slashed - 50% - 30%`) and the dead address receives nothing.
+  The dead address is named as a literal in the harness rather than read from the
+  artifact, so a build cannot move the constant and still pass.
 
-P3 and P4 both fail against the pre-fix build and both pass against the fixed one; they
-are the regression tests for F-1.
+P3 and P4 fail against the pre-fix build and pass against the fixed one; they are the
+regression tests for F-1. P5 fails against the pre-F-12 build and passes against the
+current one; it is the regression test for F-12. In both cases the property was written
+from the published rule, not from the code — which is why it was able to disagree with
+the code.
 
 ---
 
@@ -465,6 +666,16 @@ are the regression tests for F-1.
   dark cannot unstake until it heartbeats; `slashOverdue()` is permissionless so
   anyone can settle the debt, but the node still has to heartbeat to resume earning.
   Documented on the `/compute` page and asserted in the test suite.
+- **Burning reduces supply, which reopens mint headroom.** `OMCTestToken._mint()`
+  enforces `totalSupply + amount <= MAX_SUPPLY` (1,000,000,000 tOMC), so a burned token
+  can later be minted again — the ceiling applies to the supply in existence, not to
+  cumulative issuance. That is a property of the token rather than of the burn, and it
+  is worth stating explicitly because "burn reduces supply" is easy to read as "the burn
+  is permanent". It is not. Circulation today is 10,000,000 tOMC, 1% of the cap.
+- **A redeploy of `OMCStaking` strands its reward pool.** `fundRewards()` is one-way
+  and there is no owner rescue, so the pool is lost with the contract. On mainnet this
+  means `OMCStaking` must be frozen before public launch, or the funding must be
+  re-added. Testnet redeploys on 2026-10-11 abandoned 200 tOMC this way.
 
 ---
 
@@ -473,12 +684,15 @@ are the regression tests for F-1.
 ```bash
 # artifact + evidence snapshots are committed; no compiler needed for the harness
 cd contracts/security
-python fuzz_props.py                 # P1+P2+P3 against the reviewed build
+python fuzz_props.py                 # P1-P5 against the reviewed build
 python fuzz_props.py --artifacts pre-fix-snapshot --only p3   # reproduces F-1
-python verify_live_bytecode.py       # compares the chain against both builds
+python fuzz_props.py --artifacts pre-f5-snapshot --only p5    # reproduces F-12
+python verify_live_bytecode.py       # chain vs the reviewed build, and vs every
+                                     # snapshot; STALE DEPLOYMENT if the chain lags
 
 # rebuild artifacts from source
 cd .. && NODE_PATH=<node_modules> node tools/compile.js
+cp artifacts/{OMCTestToken,OMCStaking,OMCComputeMarket}.json security/build-snapshot/
 
 # the primary suite (needs Foundry and, on Windows, a machine where forge can spawn solc)
 cd .. && forge test -vv

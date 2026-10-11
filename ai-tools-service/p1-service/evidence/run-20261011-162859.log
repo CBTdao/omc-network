@@ -1,0 +1,147 @@
+########## node-worker.js --once (heal heartbeat) ##########
+[08:29:00] [node] node key loaded, address 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6
+[08:29:00] [node] market 0x64b25aCdfe20CD9D61f376953251cA20A9eA0d6F
+[08:29:03] [node] nodeCount = 1 | jobCount = 2
+[08:29:04] [node] heartbeat ok, 40 min left
+[08:29:05] [node] liveness announced (tier 1, mode no-infer)
+[08:29:05] [node] node 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6 eligible(T1) = true
+[08:29:06] [node] nothing assigned to us right now
+[08:29:06] [node] liveness withdrawn for 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6
+
+########## e2e-rehearsal.js (success path) ##########
+OMC AI Tools · end-to-end rehearsal
+  market     0x64b25aCdfe20CD9D61f376953251cA20A9eA0d6F
+  staking    0x485735D0d132671667b671e010C504d1949eE56A
+  scheduler  0x6126b78a560D7edFC68179f064B26ba820Ee690e
+  requester  0x6126b78a560D7edFC68179f064B26ba820Ee690e
+
+========================================================================
+STEP 0  preconditions — funding and provider availability
+========================================================================
+  requester tBNB  = 0.002259893458220337
+  requester tOMC  = 722.595  (need 5)
+  nodes on chain  = 1
+    [0] 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6  tier=1  overdue=false  eligible(T1)=true  live=false
+  provider        = 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6  (no live worker — assigning anyway because allowOffline is set)
+    note: no worker has announced liveness yet — this run starts one below,
+          which is why the rehearsal is allowed to assign offline.
+
+========================================================================
+STEP 1  requester escrows a job (approve + createJob)
+========================================================================
+  allowance already 115792089237316195423570985008687907853269984665640564039457.584007913129639935
+  image          = C:\Users\Administrator\WorkBuddy\2026-10-01-14-20-05\omc-ai-tools\testdata\sample.png
+  imageHash      = 0xc3bec9ce004912ae235c761700f2de5969ffc127cc821a9d34dc6ef62b579c19
+  specHash       = 0xcf28056cb0a4dc99e365c2aa6b1d46cbf463f93c5f782969a2dbd127abb2a147
+  createJob tx: 0x3126a7e7583147b7d53da9eb925d19756c7b462c0eebf091102112e5afa39f02
+  mined in block 136134169 (gas 202136)
+  jobCount is now 3 — new job id #3
+  input parked at C:\Users\Administrator\WorkBuddy\2026-10-01-14-20-05\omc-ai-tools\.p1-jobs\3\spec.bin
+  state = ESCROWED  escrow = 5.0
+
+========================================================================
+STEP 2  scheduler assigns the job to the eligible provider
+========================================================================
+  assign tx: 0x3181744a790a2558461847e88334eb184fb22c34c06a25538c12010799f01ff4
+  state = ASSIGNED  provider = 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6
+
+========================================================================
+STEP 3  node runs the model and commits to the result hash
+========================================================================
+  --no-infer: stub result hash (chain plumbing only, no GPU used)
+  resultHash = 0x7eed67bb74635003271d0489508e06a1d938c508a53a8675b53966e00997efc3
+
+========================================================================
+STEP 4  scheduler confirms delivery and settles
+========================================================================
+  confirmDelivery tx: 0x60e1e78389f97e5fc1685d573fd7fab4a3898fc8697075a98017a5e0ad71b858
+  state = DELIVERED  resultHash on chain = 0x7eed67bb74635003271d0489508e06a1d938c508a53a8675b53966e00997efc3
+  matches local result: true
+  settle tx: 0x7fc702ad1d31700c7ac772d6cdd052a3318970780acf2d2aa537b371b75859cf
+
+========================================================================
+STEP 5  verify the outcome
+========================================================================
+  job #3 final state = SETTLED
+  paid           = 5.0
+  feePaid        = 0.135
+  provider got   = 4.865
+  resultHash     = 0x7eed67bb74635003271d0489508e06a1d938c508a53a8675b53966e00997efc3
+  
+  market totals: jobsTotal=3 settled=2 escrowedNow=0 settledVolume=10.0
+  provider tOMC balance = 4.865
+
+========================================================================
+DONE — job #3 is SETTLED on BNB Smart Chain Testnet (0x64b25aCdfe20CD9D61f376953251cA20A9eA0d6F)
+========================================================================
+
+########## e2e-failure.js (failure path) ##########
+OMC AI Tools · failure-path rehearsal (BAD_OUTPUT -> bond refund)
+  16:29:31
+  chain        = 97 (BNB Smart Chain Testnet)
+  market       = 0x64b25aCdfe20CD9D61f376953251cA20A9eA0d6F
+  staking      = 0x485735D0d132671667b671e010C504d1949eE56A
+  token        = 0xBEB21E40FB50A0F4ba9287C2058DC7851e450671
+  scheduler    = 0x6126b78a560D7edFC68179f064B26ba820Ee690e  (also the requester)
+  provider     = 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6  (no live worker — assigning anyway because allowOffline is set)
+  provider bond before = 34.0  (worst case for BAD_OUTPUT = 10.2)
+
+========================================================================
+STEP 1  requester escrows a job it is about to lose
+========================================================================
+  image          = C:\Users\Administrator\WorkBuddy\2026-10-01-14-20-05\omc-ai-tools\testdata\sample.png
+  imageHash      = 0xc3bec9ce004912ae235c761700f2de5969ffc127cc821a9d34dc6ef62b579c19
+  specHash       = 0xcf28056cb0a4dc99e365c2aa6b1d46cbf463f93c5f782969a2dbd127abb2a147
+  requester tOMC before = 717.595
+  createJob        tx: 0x1a6f47124cf40dc07e4cf745f9ec50b77507c7e52616b6e6f814cccac3e28b6d
+  mined in block 136134224 (gas 202124)
+  jobCount is now 4 — new job id #4
+  state = ESCROWED  escrow = 5.0
+
+========================================================================
+STEP 2  scheduler assigns the job to the staked node
+========================================================================
+  assign           tx: 0x39c473fefd22c57c4e6fc83fa69f7f10524416036c4f62c6bb6945eb438c35c8
+  state = ASSIGNED  provider = 0x1402a793Af809Ee7D3B63317A6Fae6fB4016f9e6
+
+========================================================================
+STEP 3  the node delivers output that does not match what it commits to
+========================================================================
+  delivered bytes  = 20  keccak256 = 0x13d98eda4dcbdf619b172ea72d2b8aa029462e784c37d695d0dea626d31982a9
+  committed hash   = 0x1a124b593c68855baca51c28231f843af1c866d28cffe84c42a053db8d64828e
+  verifyResult()   = REJECTED — undefined
+  confirmDelivery  tx: 0xa77c13518aca158ab3d1d170cbc76fab9de83567440c974d2dbdefeffc57a6a8
+  state = DELIVERED  resultHash on chain = 0x1a124b593c68855baca51c28231f843af1c866d28cffe84c42a053db8d64828e
+
+========================================================================
+STEP 4  scheduler fails the job: BAD_OUTPUT charges the provider's bond
+========================================================================
+  provider stake before fail = 34.0
+  fail             tx: 0x2d7bb770dab40ce8a838556f39806d9f67bf8df530ca53891fea6ba3a97e0f13
+  mined in block 136134268 (gas 172244)
+
+========================================================================
+STEP 5  verify the outcome
+========================================================================
+  job #4 final state = REFUNDED
+  
+  provider stake  34.0 -> 23.8   slashed 10.2 tOMC
+  requester tOMC  717.595 -> 722.695
+    net cost of this job to the requester = -5.1 tOMC
+    (escrow 5.0 came back, plus its share of the bond)
+  
+  token totalSupply 10000020.0 -> 10000020.0   burned 0.0 tOMC
+  
+  market totals: jobsTotal=4 settled=2 failed=2 escrowedNow=0.0 settledVolume=10.0
+  
+  slash split on 10.2 tOMC slashed:
+    requester (50%) = 5.1
+    treasury  (30%) = 3.06
+    burned    (20%) = 2.04
+
+------------------------------------------------------------------------
+
+PASS — job #4 is REFUNDED; the buyer was refunded 5.1 tOMC out of the seller's bond.
+This is the path the pre-fix OMCComputeMarket could not take: fail() reverted on any
+non-zero penalty, so no buyer could ever be refunded from a bond.
+

@@ -6,6 +6,10 @@ interface IERC20Like {
     function transfer(address to, uint256 value) external returns (bool);
     function transferFrom(address from, address to, uint256 value) external returns (bool);
     function balanceOf(address who) external view returns (uint256);
+    /// @dev Burns from the caller's own balance and debits totalSupply().
+    ///      Required by 7.2: the slashing burn must actually reduce supply,
+    ///      which a transfer to a dead address does not. Reverts on failure.
+    function burn(uint256 amount) external;
 }
 
 /**
@@ -91,6 +95,10 @@ contract OMCStaking {
     uint256 public constant SLASH_JOB_BAD_OUTPUT_BPS = 3_000; // 30%
     uint256 public constant SLASH_JOB_FRAUD_BPS = 10_000; // 100%
 
+    /// @dev Kept in the ABI and still emitted in events for continuity, but no
+    ///      longer receives tokens: the burn slice is destroyed with `burn()` so
+    ///      that totalSupply() falls, which is what 7.2 promises. A transfer to
+    ///      this address would only move the tokens out of circulation.
     address public constant BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
 
     /* -------------------------------- state ----------------------------- */
@@ -501,8 +509,9 @@ contract OMCStaking {
     ///           3 = fraud        100%
     ///         This function applies the ENTIRE published 50 / 30 / 20 split:
     ///         the requester slice is sent to the market (which forwards it to
-    ///         the harmed requester), the treasury slice to `treasury` and the
-    ///         burn slice to BURN_ADDRESS. Callers must not re-pay those slices.
+    ///         the harmed requester), the treasury slice to `treasury`, and the
+    ///         burn slice is destroyed with `token.burn()` so that totalSupply()
+    ///         actually falls. Callers must not re-pay those slices.
     /// @return slashed the amount taken off the bond
     function slashFor(address who, uint8 reason) external onlyMarket notPaused returns (uint256 slashed) {
         Node storage n = node[who];
@@ -539,7 +548,12 @@ contract OMCStaking {
         // forwards it to the requester whose job failed
         if (toRequesters > 0) require(token.transfer(market, toRequesters), "OMCS: transfer");
         if (toTreasury > 0) require(token.transfer(treasury, toTreasury), "OMCS: transfer");
-        if (burned > 0) require(token.transfer(BURN_ADDRESS, burned), "OMCS: transfer");
+        // A real burn. `n.stake -= slashed` only moves the ledger; the tokens are
+        // still sitting in this contract, so burning from our own balance is the
+        // right account. Transferring to a dead address instead would leave
+        // totalSupply() untouched, which contradicts the published rule that the
+        // slashing burn reduces supply. burn() reverts on failure.
+        if (burned > 0) token.burn(burned);
 
         emit Slashed(who, slashed, toRequesters, toTreasury, burned, 0, msg.sender);
         emit JobSlashed(who, slashed, reason);
@@ -743,7 +757,12 @@ contract OMCStaking {
 
         if (toRequesters > 0) require(token.transfer(requesterPool, toRequesters), "OMCS: transfer");
         if (toTreasury > 0) require(token.transfer(treasury, toTreasury), "OMCS: transfer");
-        if (burned > 0) require(token.transfer(BURN_ADDRESS, burned), "OMCS: transfer");
+        // A real burn. `n.stake -= slashed` only moves the ledger; the tokens are
+        // still sitting in this contract, so burning from our own balance is the
+        // right account. Transferring to a dead address instead would leave
+        // totalSupply() untouched, which contradicts the published rule that the
+        // slashing burn reduces supply. burn() reverts on failure.
+        if (burned > 0) token.burn(burned);
 
         emit Slashed(who, amount, toRequesters, toTreasury, burned, intervals, msg.sender);
     }

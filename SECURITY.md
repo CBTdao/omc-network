@@ -33,10 +33,13 @@ Summary of the 2026-10-11 self-review of `OMCTestToken.sol`, `OMCStaking.sol` an
 |---|---|
 | solhint 6.2.5 | 0 errors, 502 warnings — all style / gas / natspec |
 | Slither 0.11.6 (102 detectors) | **0 Critical, 0 High**, 26 Medium, 46 Low (72 findings before the fixes, 69 after) |
-| Property-based tests, `anvil` + `web3.py` | 2,521 assertions over randomised inputs — pass |
+| Property-based tests, `anvil` + `web3.py` | 5 properties, 2,762 assertions over randomised inputs — pass |
 | Manual review | all 1,573 lines |
 
-**One High-severity defect was found and fixed in source:**
+**Three defects were found and fixed. All three are live on testnet now — the
+addresses in §Deployments run the fixed bytecode, verified against the chain.**
+
+The High-severity one:
 
 > `OMCComputeMarket.fail()` applied the published 50/30/20 slashing split twice — once
 > in `OMCStaking.slashFor()`, then again out of the market's own balance. It was short
@@ -44,10 +47,21 @@ Summary of the 2026-10-11 self-review of `OMCTestToken.sol`, `OMCStaking.sol` an
 > the failure/refund path, the mechanism that makes a requester whole out of a
 > provider's bond, could not execute at all.
 
-The fix is in the repository. **It is not yet deployed** — the three testnet
-addresses below still run the pre-fix bytecode, and
+And two lower-severity ones, both about a promise the code did not keep:
+
+> The "burn" halves of the slashing split and the protocol fee were paid with
+> `transfer(0x…dEaD, amount)` rather than a real burn, so `totalSupply()` never fell —
+> the published rule that those burns reduce supply was not enforced by the code.
+>
+> The whitepaper described a market buy-back ("buy back OMC on the market and burn
+> it") that no contract has ever performed. Jobs are escrowed and settled in OMC, so
+> the fee is already denominated in the token; the sentence has been corrected rather
+> than implemented, because there is nothing to implement.
+
 [`contracts/security/bytecode-report.json`](contracts/security/bytecode-report.json)
-records the hashes that prove it.
+records the hashes proving the deployed code is the reviewed build, and
+[`docs/security-review.md`](docs/security-review.md) §4 carries the full findings list
+and the two defects this second pass *also* turned up off-chain.
 
 ## Deployments under review
 
@@ -57,8 +71,12 @@ here refers to a mainnet asset.
 | Contract | Address |
 |---|---|
 | `OMCTestToken` (tOMC) | `0xBEB21E40FB50A0F4ba9287C2058DC7851e450671` |
-| `OMCStaking` | `0x3226dffED51e28CEf526F8c078B2EC9a092E36e6` |
-| `OMCComputeMarket` | `0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1` |
+| `OMCStaking` | `0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6` |
+| `OMCComputeMarket` | `0x7664f1e73c2CBCbaFE636a653C173378C369C40A` |
+
+These are the post-fix deployments. Earlier addresses are kept in
+`contracts/deployments/bsc-testnet.json` under the `prev*` keys, so every revision that
+was ever live can still be located on chain.
 
 ## Trusted roles
 
@@ -71,23 +89,33 @@ Stated plainly rather than buried, because they are the largest remaining risk:
   verdict state machine around it.
 - `verifier` — attests verified work on `OMCStaking`.
 
-On the current testnet deployment owner, scheduler and verifier are all the deployer
-address, which is **not** a multisig. That is acceptable for a testnet and will
-change before mainnet.
+On the current testnet deployment those roles sit on **two** addresses, and neither is
+a multisig:
+
+- `owner` on both staking and market, plus `scheduler` — the deployer address,
+  `0x6126b78a560D7edFC68179f064B26ba820Ee690e`
+- `verifier`, `treasury`, `requesterPool`, and the token's `owner` —
+  `0xc35711aa6128B8208FA534dbf94d3aF24BA22B4B`
+
+Read directly from the chain rather than from the deployment record, which names a
+different address in its `owner` key. Acceptable for a testnet, and it has to change
+before mainnet — a single key that can retune emission and reassign the scheduler is
+the largest remaining risk in this system, larger than anything the automated tooling
+can see.
 
 ## Reproducing the review
 
 ```bash
 cd contracts/security
 
-# property-based tests against the reviewed build (no compiler required)
+# property-based tests against the current build (no compiler required)
 python fuzz_props.py
 
-# reproduces the High-severity defect against the code that is deployed today
-python fuzz_props.py --artifacts pre-fix-snapshot --only p3
-python fuzz_props.py --artifacts pre-fix-snapshot --only p4
+# reproduces the defects that were found, against the revisions that had them
+python fuzz_props.py --artifacts pre-fix-snapshot --only p3   # F-1: fail() reverts
+python fuzz_props.py --artifacts pre-f5-snapshot  --only p5   # F-12: the burn does not burn
 
-# compares the chain against both local builds
+# compares the chain against the reviewed build and every historical snapshot
 python verify_live_bytecode.py
 ```
 
