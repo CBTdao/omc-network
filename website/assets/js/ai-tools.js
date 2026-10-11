@@ -230,6 +230,17 @@
       }
       state.file = file;
       state.img = img;
+      /* visible confirmation next to the drop zone — the log alone was easy
+         to miss and read as "the upload did not work" */
+      if (el.thumb) { el.thumb.src = url; el.thumb.hidden = false; }
+      el.drop.classList.add("has");
+      if (el.picked) {
+        el.picked.textContent = T("ai.picked1", "Selected") + " " + file.name +
+          " (" + img.naturalWidth + "×" + img.naturalHeight + "). " +
+          (state.session ? T("ai.picked_go", "Press Upscale to start.")
+                         : T("ai.picked_model", "Press “Prepare model” first — the 64 MB model is fetched once, then cached by the browser."));
+        el.picked.hidden = false;
+      }
       setStat(el.in, img.naturalWidth + " × " + img.naturalHeight);
       setStat(el.out, Math.round(img.naturalWidth * SCALE) + " × " + Math.round(img.naturalHeight * SCALE));
       el.reset.disabled = false;
@@ -239,6 +250,9 @@
     };
     img.onerror = function () {
       log(T("ai.log_decode", "Could not decode that image."));
+      if (el.thumb) { el.thumb.removeAttribute("src"); el.thumb.hidden = true; }
+      el.drop.classList.remove("has");
+      if (el.picked) el.picked.hidden = true;
       URL.revokeObjectURL(url);
     };
     img.src = url;
@@ -483,6 +497,9 @@
     state.img = null;
     state.outCanvas = null;
     if (el.file) el.file.value = "";
+    if (el.thumb) { el.thumb.removeAttribute("src"); el.thumb.hidden = true; }
+    el.drop.classList.remove("has");
+    if (el.picked) el.picked.hidden = true;
     if (el.cmp) el.cmp.classList.remove("on");
     setStat(el.in, "—");
     setStat(el.out, "—");
@@ -499,6 +516,7 @@
   function init() {
     el = {
       drop: $("aiDrop"), file: $("aiFile"), tile: $("aiTile"),
+      thumb: $("aiThumb"), picked: $("aiPicked"),
       prep: $("aiPrep"), go: $("aiGo"), dl: $("aiDl"), reset: $("aiReset"),
       prog: $("aiProg"), progBar: $("aiProgBar"),
       ep: $("aiEp"), model: $("aiModel"), in: $("aiIn"), out: $("aiOut"), time: $("aiTime"),

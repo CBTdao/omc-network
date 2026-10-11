@@ -57,11 +57,11 @@ BLOCK = """      <!-- omc:contracts-block — network + deployed contracts, publ
           </div>
           <div class="fc-row">
             <span class="fc-k" data-i18n="footer.chain_staking">Staking (OMCStaking)</span>
-            <a class="fc-v" href="https://testnet.bscscan.com/address/0x3226dffED51e28CEf526F8c078B2EC9a092E36e6" target="_blank" rel="noopener"><code>0x3226dffED51e28CEf526F8c078B2EC9a092E36e6</code></a>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
           </div>
           <div class="fc-row">
             <span class="fc-k" data-i18n="footer.chain_market">Compute Market (OMCComputeMarket)</span>
-            <a class="fc-v" href="https://testnet.bscscan.com/address/0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1" target="_blank" rel="noopener"><code>0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1</code></a>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
           </div>
           <div class="fc-row">
             <span class="fc-k" data-i18n="footer.chain_sec">Security</span>

@@ -391,15 +391,38 @@
   function connectWallet() {
     if (!window.OMCWallet) return;
     if (window.OMCWallet.isConnected && window.OMCWallet.isConnected()) {
-      refreshNext();
+      /* Once connected, the button itself shows the short address, so a click
+         means "manage the session": sign out (with its own toast) instead of
+         silently doing nothing, which read as a dead button. */
+      window.OMCWallet.signOut();
+      updateConnectBtn();
+      refreshAvailability();
       return;
     }
     window.OMCWallet.open();
   }
 
+  /* The connect button doubles as the connection indicator. Nothing else on
+     this page tells the user they are connected (the nav has no account slot),
+     so while a session exists the button displays the short address. */
+  function updateConnectBtn() {
+    if (!el || !el.connect) return;
+    var a = walletAddress();
+    if (a) {
+      el.connect.textContent = window.OMCWallet.short ? window.OMCWallet.short(a) : a;
+      el.connect.title = T("aij.btn_hint", "Connected — click to disconnect");
+      el.connect.classList.add("on");
+    } else {
+      el.connect.textContent = T("aij.btn_connect", "Connect wallet");
+      el.connect.title = "";
+      el.connect.classList.remove("on");
+    }
+  }
+
   function refreshNext() {
+    updateConnectBtn();
     if (!hasChain() || !hasWallet()) { refreshAvailability(); return; }
-    if (!walletAddress()) { refreshAvailability(); return; }
+    if (!walletAddress()) { setStat(el.jbal, "—"); refreshAvailability(); return; }
     readToken().then(function (t) {
       setStat(el.jbal, C.fmt(t.balance, 2) + " OMC", t.balance > 0n ? "ok" : "warn");
     }).catch(function () {
@@ -506,6 +529,8 @@
     if (el.connect) el.connect.addEventListener("click", connectWallet);
 
     document.addEventListener("omc:wallet", function () { refreshNext(); });
+    document.addEventListener("i18n:changed", updateConnectBtn);
+    updateConnectBtn();
     refreshNext();
   }
 

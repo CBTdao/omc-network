@@ -103,5 +103,23 @@ window.OMC_NEWS = [
     d: "nw11.d",
     href: "https://forum.omc.network/posts/real-cost-of-training-a-model-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n12",
+    date: "2026-10-11",
+    kind: "dev",
+    pin: true,
+    t: "nw12.t",
+    d: "nw12.d",
+    href: "/testnet"
+  },
+  {
+    id: "n13",
+    date: "2026-10-11",
+    kind: "dev",
+    t: "nw13.t",
+    d: "nw13.d",
+    href: "https://github.com/CBTdao/omc-network/blob/main/SECURITY.md",
+    external: true
   }
 ];

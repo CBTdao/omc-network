@@ -179,21 +179,21 @@
       '<div class="wl-menu">',
       '  <div class="wl-menu-head">',
       '    <span class="mono" id="wlMenuAddr">' + s.address + '</span>',
-      '    <button class="wl-mini" id="wlCopy" data-i18n="wl.copy">Copy</button>',
+      '    <button class="wl-mini" id="wlCopy" data-i18n="wl.copy">' + T("wl.copy") + '</button>',
       '  </div>',
       '  <div class="wl-net ' + (onNet ? "ok" : "bad") + '" id="wlNet">',
       '    <span class="dot"></span>',
       '    <span>' + (onNet ? T("wl.net_ok") : T("wl.net_wrong")) + '</span>',
       '  </div>',
       '  <div class="wl-menu-stats">',
-      '    <div><span data-i18n="wl.k_entries">Participations</span><b>' + st.total + '</b></div>',
-      '    <div><span data-i18n="wl.k_accum">Accumulated</span><b>' + st.accum.toLocaleString("en-US") + '</b></div>',
-      '    <div><span data-i18n="wl.k_today">Today</span><b>' + st.today + '</b></div>',
+      '    <div><span data-i18n="wl.k_entries">' + T("wl.k_entries") + '</span><b>' + st.total + '</b></div>',
+      '    <div><span data-i18n="wl.k_accum">' + T("wl.k_accum") + '</span><b>' + st.accum.toLocaleString("en-US") + '</b></div>',
+      '    <div><span data-i18n="wl.k_today">' + T("wl.k_today") + '</span><b>' + st.today + '</b></div>',
       '  </div>',
-      onNet ? "" : '  <button class="wl-menu-item" id="wlSwitch" data-i18n="wl.switch_net">Switch to BSC Testnet</button>',
-      '  <a class="wl-menu-item" href="' + EXPLORER + '/address/' + s.address + '" target="_blank" rel="noopener" data-i18n="wl.explorer">View on BscScan ↗</a>',
-      '  <a class="wl-menu-item" href="/airdrop" data-i18n="wl.open_airdrop">Open airdrop page →</a>',
-      '  <button class="wl-menu-item danger" id="wlOut" data-i18n="wl.signout">Sign out</button>',
+      onNet ? "" : '  <button class="wl-menu-item" id="wlSwitch" data-i18n="wl.switch_net">' + T("wl.switch_net") + '</button>',
+      '  <a class="wl-menu-item" href="' + EXPLORER + '/address/' + s.address + '" target="_blank" rel="noopener" data-i18n="wl.explorer">' + T("wl.explorer") + '</a>',
+      '  <a class="wl-menu-item" href="/airdrop" data-i18n="wl.open_airdrop">' + T("wl.open_airdrop") + '</a>',
+      '  <button class="wl-menu-item danger" id="wlOut" data-i18n="wl.signout">' + T("wl.signout") + '</button>',
       '</div>'
     ].join("");
   }
@@ -203,7 +203,7 @@
     if (!slot) return;
     var s = readSession();
     if (!s) {
-      slot.innerHTML = '<button class="wl-nav-btn" id="wlNavBtn">👛 <span data-i18n="nav.signin">Sign in</span></button>';
+      slot.innerHTML = '<button class="wl-nav-btn" id="wlNavBtn">👛 <span data-i18n="nav.signin">' + T("nav.signin") + '</span></button>';
     } else {
       slot.innerHTML =
         '<div class="wl-account">' +
@@ -222,7 +222,15 @@
       });
     }
     bindMenu();
-    if (window.i18nApply) window.i18nApply(window.i18nCurrent());
+    /* Deliberately NOT calling window.i18nApply() here. renderNav is itself a
+       listener of `i18n:changed`, and apply() dispatches that event, so calling
+       it from inside renderNav makes the two re-enter each other. Any other
+       caller of i18nApply() on the page (compute.js does it during init) then
+       turns that into an infinite loop: 656 nested calls and a
+       "Maximum call stack size exceeded" RangeError on /compute before this was
+       fixed. The injected text is translated directly with T(), which is all
+       renderNav needs; the global pass still covers these nodes because the
+       data-i18n attributes are kept. */
   }
 
   var bound = false;

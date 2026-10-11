@@ -203,6 +203,12 @@
   border: 1px solid var(--border-strong);
   color: var(--text);
 }
+/* connected state (ai-tools job block): the button shows the short address */
+.stk-btn.on {
+  border-color: rgba(126, 230, 171, 0.55);
+  color: #7ee6ab;
+  font-variant-numeric: tabular-nums;
+}
 
 /* node status list */
 .kv { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.07); font-size: 14px; }

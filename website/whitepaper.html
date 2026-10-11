@@ -59,6 +59,7 @@
         <a href="/stake" data-i18n="nav.stake">Stake</a>
         <a href="/airdrop" data-i18n="nav.airdrop">Airdrop</a>
         <a href="/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <div class="nav-wallet" id="walletNav"></div>
         <select class="lang-select" id="langSelect" aria-label="Language">
           <option value="en">EN</option>
           <option value="zh">中文</option>
@@ -115,7 +116,7 @@
           <h2 id="sec1">1 · Executive Summary</h2>
           <p>Omniverse Compute (OMC) is a decentralized physical infrastructure network (DePIN) that connects owners of idle GPU capacity with people who need compute: AI developers, Web3 and decentralized-AI projects, and rendering studios. Providers earn OMC and fees by running verified jobs. Requesters get access to GPU capacity without cloud quotas, long-term contracts or vendor lock-in.</p>
           <p>OMC is built on three ideas:</p>
-          <ol><li><strong>Honest scope.</strong> OMC targets workloads that distribute well across independent machines: inference, fine-tuning on a single node, batch rendering and other embarrassingly parallel jobs. It does not claim to replace tightly coupled data-center clusters for frontier-scale model training.</li><li><strong>Verification you can price.</strong> Every job is covered by a verification policy chosen by job type, combining spot-check re-execution, optional full redundancy, hardware-based confidential computing where available, and economic penalties through staking and slashing.</li><li><strong>Token demand tied to usage.</strong> Fees are paid per job, a share of every fee is used to buy back and burn OMC, and reward emissions are paid only against verified work.</li></ol>
+          <ol><li><strong>Honest scope.</strong> OMC targets workloads that distribute well across independent machines: inference, fine-tuning on a single node, batch rendering and other embarrassingly parallel jobs. It does not claim to replace tightly coupled data-center clusters for frontier-scale model training.</li><li><strong>Verification you can price.</strong> Every job is covered by a verification policy chosen by job type, combining spot-check re-execution, optional full redundancy, hardware-based confidential computing where available, and economic penalties through staking and slashing.</li><li><strong>Token demand tied to usage.</strong> Fees are paid per job, a share of every fee is burned, and reward emissions are paid only against verified work.</li></ol>
           <p>Settlement and governance run on BNB Chain. High-frequency scheduling, heartbeats and micropayments run on a dedicated Layer 2 rollup built on the OP Stack (opBNB). Jobs execute off-chain in sandboxed containers on provider hardware.</p>
           <h2 id="sec2">2 · Problem and Opportunity</h2>
           <p><strong>Demand.</strong> Generative AI has made GPU compute a scarce, expensive input. Small teams and independent developers face high hourly prices, regional quota limits and dependence on a few cloud vendors. Rendering studios face sharp, short-lived peaks in demand.</p>
@@ -208,11 +209,11 @@
           <p>Parameters marked <strong>proposed</strong> in this section are design targets: they will be validated on testnet and may change through governance before mainnet.</p>
           <h3>7.1 Payments and Fee Flows</h3>
           <p>Requesters pay per job in OMC or in supported stablecoins (USDT and USDC on BNB Chain). Paying in OMC receives a 10% fee discount (<strong>proposed</strong>). A protocol fee of 3% is applied at each job settlement and is split as follows:</p>
-          <ul><li>30% of the fee is used to buy back OMC on the market and burn it automatically through smart contracts.</li><li>70% goes to the Reputation Reward Pool, held by the Treasury contract and distributed to nodes in proportion to their reputation-weighted verified work.</li></ul>
-          <p>The burn equals <strong>0.9% of settled job volume</strong> (3% × 30%). As an illustration only, not a forecast: if monthly settled volume were $10 million, the monthly buyback and burn would be about $90,000. Actual volume, and therefore burn, depends entirely on network usage. The protocol publishes settled volume, fees, burns and emissions on a public dashboard.</p>
+          <ul><li>30% of the fee is destroyed by the smart contract at settlement. No market purchase is involved: jobs are escrowed and settled in OMC, so the fee is already denominated in the token, and burning it reduces total supply directly rather than routing it through an exchange.</li><li>70% goes to the Reputation Reward Pool, held by the Treasury contract and distributed to nodes in proportion to their reputation-weighted verified work.</li></ul>
+          <p>The burn equals <strong>0.9% of settled job volume</strong> (3% × 30%). As an illustration only, not a forecast: if monthly settled volume were $10 million, the monthly fee burn would be about $90,000. Actual volume, and therefore burn, depends entirely on network usage. The protocol publishes settled volume, fees, burns and emissions on a public dashboard.</p>
           <h3>7.2 Token Utility</h3>
           <ul><li><strong>Payment</strong> for compute jobs, with a fee discount for settling in OMC (§7.6).</li><li><strong>Staking</strong> by node operators as security for honest behavior — the stake is simultaneously the right to accept work, the source of a buyer's refund and the discount qualification (§7.5, §7.6).</li><li><strong>Governance</strong> voting on protocol parameters, treasury use and upgrades.</li><li><strong>Rewards</strong> to providers for verified work.</li></ul>
-          <p>OMC has a fixed maximum supply of 1,000,000,000 tokens on BNB Chain (BEP-20). The only mechanisms that reduce supply are the fee buyback-and-burn and the slashing burn.</p>
+          <p>OMC has a fixed maximum supply of 1,000,000,000 tokens on BNB Chain (BEP-20). The only mechanisms that reduce supply are the fee burn and the slashing burn. Both destroy tokens outright, so <code>totalSupply()</code> falls by the amount burned.</p>
           <h3>7.3 Token Distribution</h3>
           <div class="table-wrap">
           <table>
@@ -330,7 +331,7 @@
           <th>Deliverables</th>
           <th>Status and evidence</th>
           </tr></thead><tbody>
-          <tr><td>1</td><td>2026 Q4</td><td>L2 contract deployment, open-source node client, testnet, community airdrop</td><td><strong>In progress.</strong> Testnet live on BNB Chain testnet (Chapel); token <code>tOMC</code> at <code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code>; staking contract <code>OMCStaking</code> at <code>0x3226dffED51e28CEf526F8c078B2EC9a092E36e6</code>; compute market <code>OMCComputeMarket</code> at <code>0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1</code>; explorer <code>testnet.bscscan.com</code>; repository <code>github.com/CBTdao/omc-network</code>; testnet tokens carry no monetary value; 2% community airdrop (20,000,000 OMC) opens January 1, 2027 and runs to April 1, 2027, together with mainnet and staking</td></tr>
+          <tr><td>1</td><td>2026 Q4</td><td>L2 contract deployment, open-source node client, testnet, community airdrop</td><td><strong>In progress.</strong> Testnet live on BNB Chain testnet (Chapel); token <code>tOMC</code> at <code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code>; staking contract <code>OMCStaking</code> at <code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code>; compute market <code>OMCComputeMarket</code> at <code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code>; explorer <code>testnet.bscscan.com</code>; repository <code>github.com/CBTdao/omc-network</code>; testnet tokens carry no monetary value; 2% community airdrop (20,000,000 OMC) opens January 1, 2027 and runs to April 1, 2027, together with mainnet and staking</td></tr>
           <tr><td>2</td><td>2027 Q1</td><td>Mainnet launch, reward emission start, airdrop claim window, staking opens, Hugging Face and Blender integrations, completed audits</td><td><strong>Planned.</strong> Mainnet opens on 2027 Q1 (January 1). The community airdrop claim window and staking open at the same moment, so the OMC a wallet accumulated during the campaign becomes claimable and stakeable together. Reward emissions, the Hugging Face and Blender integrations and the first completed audits follow within this phase. Audit reports are published here as they are completed</td></tr>
           <tr><td>3</td><td>2027 Q2 and later</td><td>TEE tier, zero-knowledge verification research results, DAO transition, cross-chain settlement</td><td>Planned</td></tr>
           </tbody></table></div>
@@ -429,11 +430,11 @@
           </div>
           <div class="fc-row">
             <span class="fc-k" data-i18n="footer.chain_staking">Staking (OMCStaking)</span>
-            <a class="fc-v" href="https://testnet.bscscan.com/address/0x3226dffED51e28CEf526F8c078B2EC9a092E36e6" target="_blank" rel="noopener"><code>0x3226dffED51e28CEf526F8c078B2EC9a092E36e6</code></a>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
           </div>
           <div class="fc-row">
             <span class="fc-k" data-i18n="footer.chain_market">Compute Market (OMCComputeMarket)</span>
-            <a class="fc-v" href="https://testnet.bscscan.com/address/0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1" target="_blank" rel="noopener"><code>0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1</code></a>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
           </div>
           <div class="fc-row">
             <span class="fc-k" data-i18n="footer.chain_sec">Security</span>
@@ -455,5 +456,7 @@
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/i18n-meta.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/binance-w3w.js"></script>
+  <script src="assets/js/wallet.js"></script>
 </body>
 </html>

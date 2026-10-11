@@ -28,7 +28,7 @@
     ],
     explorer: "https://testnet.bscscan.com",
     token: "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
-    staking: "0x3226dffED51e28CEf526F8c078B2EC9a092E36e6",
+    staking: "0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6",
     deployBlock: 135890000,
     /* Legacy points-only contract — no transfer/stake support. Kept read-only. */
     legacy: "0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5"
