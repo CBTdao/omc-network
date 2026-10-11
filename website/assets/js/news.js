@@ -9,7 +9,7 @@
   var list = document.getElementById("newsList");
   if (!list) return;
 
-  var LANGS = { en: "en-US", zh: "zh-CN", ja: "ja-JP", es: "es-ES", ko: "ko-KR", pt: "pt-BR", fr: "fr-FR" };
+  var LANGS = { en: "en-US", zh: "zh-CN" };
   var KIND_KEY = { dev: "nw.dev", airdrop: "nw.airdrop", eco: "nw.eco", gov: "nw.gov", vo: "nw.vo" };
   var active = "all";
 

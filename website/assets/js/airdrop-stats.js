@@ -45,7 +45,7 @@ window.OMC_STATS = {
   function nf(n) { return Number(n || 0).toLocaleString(window.i18nCurrent ? langTag() : "en-US"); }
   function langTag() {
     var l = window.i18nCurrent ? window.i18nCurrent() : "en";
-    return { en: "en-US", zh: "zh-CN", ja: "ja-JP", es: "es-ES", ko: "ko-KR", pt: "pt-BR", fr: "fr-FR" }[l] || "en-US";
+    return { en: "en-US", zh: "zh-CN" }[l] || "en-US";
   }
 
   /* ---------- deterministic pseudo-random helpers ---------- */

@@ -1,6 +1,6 @@
 /* ============================================================
    Omniverse Compute (OMC) — i18n engine
-   Dictionaries: assets/js/lang/{en,zh,ja,es,ko,pt,fr}.js
+   Dictionaries: assets/js/lang/{en,zh}.js
 
    Language policy
    ---------------
@@ -12,7 +12,7 @@
    ============================================================ */
 
 (function () {
-  var SUPPORTED = ["en", "zh", "ja", "es", "ko", "pt", "fr"];
+  var SUPPORTED = ["en", "zh"];
   var LS_KEY = "omc_lang";
   var LS_RESET_KEY = "omc_lang_reset";
 

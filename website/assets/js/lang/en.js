@@ -527,7 +527,7 @@ window.I18N.en = {
   "stk.hint_min": "Tier minimum:",
   "stk.hint_after": "Stake after this deposit:",
   "stk.hint_ok": "Above the tier minimum — good to stake.",
-  "stk.faucet_ready": "Faucet ready — 100 tOMC per claim, one claim per hour.",
+  "stk.faucet_ready": "Faucet ready — 20 tOMC per claim, one claim per day.",
   "stk.faucet_cooldown": "Faucet cooling down, next claim in",
 
   "stk.err_nowallet": "Connect a wallet first.",

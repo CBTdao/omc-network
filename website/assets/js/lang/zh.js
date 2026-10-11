@@ -513,7 +513,7 @@ window.I18N.zh = {
   "stk.hint_min": "档位最低值：",
   "stk.hint_after": "本次存入后的质押：",
   "stk.hint_ok": "已达到档位最低值 — 可以质押。",
-  "stk.faucet_ready": "水龙头可用 — 每次 100 tOMC，每小时一次。",
+  "stk.faucet_ready": "水龙头可用 — 每次 20 tOMC，每天 1 次。",
   "stk.faucet_cooldown": "水龙头冷却中，下次可领：",
   "stk.err_nowallet": "请先连接钱包。",
   "stk.err_amount": "请输入有效数量。",

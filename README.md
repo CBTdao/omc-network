@@ -8,9 +8,10 @@
 
 Turn idle GPUs worldwide into a high-throughput, low-cost, censorship-resistant compute grid.
 
-[![Token](https://img.shields.io/badge/Token-OMC%20%C2%B7%20BEP--20-2b6bf3?style=flat-square)](https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5)
+[![Token](https://img.shields.io/badge/tOMC%20test%20token-BEP--20-2b6bf3?style=flat-square)](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671)
 [![Chain](https://img.shields.io/badge/Chain-BNB%20Smart%20Chain-f0b90b?style=flat-square)](https://www.bnbchain.org/)
-[![Testnet](https://img.shields.io/badge/Testnet-Live-22c55e?style=flat-square)](https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5)
+[![Testnet](https://img.shields.io/badge/Testnet-Live-22c55e?style=flat-square)](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671)
+[![Mainnet](https://img.shields.io/badge/Mainnet-TGE%202027--01--01-6b7280?style=flat-square)](#mainnet)
 [![Supply](https://img.shields.io/badge/Supply-1%2C000%2C000%2C000%20OMC-8b5cf6?style=flat-square)](#tokenomics)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
@@ -112,10 +113,17 @@ OMC runs on **BNB Smart Chain Testnet**.
 | RPC URL | `https://data-seed-prebsc-1-s1.binance.org:8545/` |
 | Chain ID | `97` |
 | Native Symbol | `tBNB` |
-| Faucet | https://testnet.bnbchain.org/faucet-smart |
-| **tOMC (test token)** | [`0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6`](https://testnet.bscscan.com/token/0x8b6a8a46cb2779688212f033e6a4fc8e604363f6) — transferable ERC-20, faucet pays 100 tOMC / hour |
-| **OMCStaking** | [`0xB721083b54Ec6BDdD3228D078f74Af0f06DfB33B`](https://testnet.bscscan.com/address/0xb721083b54ec6bdde3228d078f74af0f06dfb33b) — tier staking, heartbeat liveness, real 5%/interval slashing (50% requesters / 30% treasury / 20% burn) |
+| Gas faucet (tBNB) | https://testnet.bnbchain.org/faucet-smart |
+| **tOMC (test token)** | [`0xBEB21E40FB50A0F4ba9287C2058DC7851e450671`](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671) — transferable ERC-20. **The faucet pays 20 tOMC per claim, once per day, five claims per address maximum** (enforced on-chain by the token contract). Five claims = 100 tOMC, exactly the tier-2 staking minimum. |
+| **OMCStaking** | [`0x3226dffED51e28CEf526F8c078B2EC9a092E36e6`](https://testnet.bscscan.com/address/0x3226dffed51e28cef526f8c078b2ec9a092e36e6) — tier staking, node heartbeat liveness, per-tier minimums (20 / 100 / 500 / 1 000 / 5 000 tOMC), slashing split 50% requesters / 30% treasury / 20% burn. Emission is clamped by a published ceiling: `min(emissionPerSecond, totalStake × maxAprBps ÷ 10 000 ÷ 365 days)`. |
+| **OMCComputeMarket** | [`0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1`](https://testnet.bscscan.com/address/0x3b81e6edfba775b4e53694f531c3b0236d77fef1) — job escrow, assignment, settlement and dispute resolution. 3% protocol fee (2.7% when paid in OMC), 48-hour dispute window. |
 | Legacy points contract | `0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5` — points only, **cannot transfer or stake**; kept for reference |
+| Retired addresses | `0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6` (earlier test token), `0xD4b1bB57637eFb62016a81B584fa8BE66Fb482d6` / `0xA49537fA46172693c553E9A1824CdF7CA810AAFc` (earlier staking), `0xBd1575bE1b0b9349468482eA2B1D4611fcD13CaE` / `0x5795393f33F6E27797499b1C61422ACeF0555709` (earlier markets) — **do not use** |
+
+> **Mainnet status.** All addresses above are BNB Smart Chain **testnet** deployments. The
+> mainnet deployment and TGE are scheduled for **2027-01-01**, alongside the opening of the
+> community airdrop, in line with the roadmap in the whitepaper. Nothing on this page refers
+> to a mainnet asset today.
 
 ### Run a Node in 4 Steps
 
@@ -158,18 +166,19 @@ docker compose up     # any CUDA / ROCm machine
 
 ## 🗺 Roadmap
 
-**Phase 1 · Q4 2026 – Q1 2027 — Infrastructure & Testnet**
-- [x] L2 smart contract deployment
+**Phase 1 · Q4 2026 — Infrastructure & Testnet**
+- [x] Smart contract deployment (BNB Smart Chain Testnet)
 - [x] Open-source node client release
 - [x] Public testnet launch
 - [ ] 2% community airdrop campaign
 
-**Phase 2 · Q2–Q3 2027 — Mainnet & Mining**
-- [ ] Mainnet launch
+**Phase 2 · Q1 2027 — Mainnet, TGE & Staking**
+- [ ] Mainnet launch and TGE — **2027-01-01**
+- [ ] Airdrop participation and claims open — **2027-01-01**
 - [ ] Compute mining activation
 - [ ] HuggingFace & Blender plugin integration
 
-**Phase 3 · Q4 2027 — ZK-ML & Full DAO**
+**Phase 3 · Q2 2027 onwards — ZK-ML & Full DAO**
 - [ ] On-chain ZK-ML framework launch
 - [ ] Full DAO governance transition
 - [ ] Cross-chain compute settlement expansion
@@ -204,7 +213,7 @@ omc-network/
 │       │   └── lang/         ← en · zh · ja · es · ko · pt · fr
 │       └── docs/             ← Whitepaper PDFs
 ├── contracts/                ← Testnet contracts + deploy tooling
-│   ├── OMCTestToken.sol      ← tOMC: transferable ERC-20 + faucet (100/h)
+│   ├── OMCTestToken.sol      ← tOMC: transferable ERC-20 + faucet (20/day, 5 lifetime)
 │   ├── OMCStaking.sol        ← tier stake · heartbeat · real slashing
 │   ├── tools/compile.js      ← solc build (viaIR, paris evm)
 │   ├── tools/deploy.js       ← deploy / verify / handover
@@ -268,7 +277,9 @@ We welcome contributions. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before 
 | Compute research forum (DCF) | [forum.omc.network](https://forum.omc.network) |
 | X / Twitter | [@Omniverse_Depin](https://x.com/Omniverse_Depin) |
 | Telegram | [t.me/OmniverseCompute](https://t.me/OmniverseCompute) |
-| Test Contract | [`0x3C7EDae9...dE7Cc5`](https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5) |
+| tOMC test token | [`0xBEB21E40...50G71`](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671) |
+| OMCStaking | [`0x3226dffE...E36e6`](https://testnet.bscscan.com/address/0x3226dffed51e28cef526f8c078b2ec9a092e36e6) |
+| OMCComputeMarket | [`0x3B81E6ed...7FEF1`](https://testnet.bscscan.com/address/0x3b81e6edfba775b4e53694f531c3b0236d77fef1) |
 
 ---
 
