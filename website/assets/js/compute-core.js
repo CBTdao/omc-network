@@ -178,6 +178,18 @@
   /* ---------------- wallet ---------------- */
 
   function provider() {
+    /* Ask wallet.js first. It owns the one resolver that also knows about a
+       live WalletConnect session, so a mobile visitor who signed in by QR
+       code can actually *send* the transaction — not just appear logged in.
+       Keeping a private copy of the probe here is what caused the split:
+       login worked over WalletConnect while every write path still answered
+       NO_WALLET. The copy below survives only as a fallback for the case
+       where wallet.js has not loaded yet. */
+    if (window.OMCWallet && typeof window.OMCWallet.provider === "function") {
+      var unified = null;
+      try { unified = window.OMCWallet.provider(); } catch (e) { unified = null; }
+      if (unified) return unified;
+    }
     var eth = null;
     /* Binance Web3 Wallet injects at window.binancew3w.ethereum inside the
        Binance App browser; the legacy extension used window.BinanceChain.

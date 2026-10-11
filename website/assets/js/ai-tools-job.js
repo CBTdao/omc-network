@@ -94,8 +94,16 @@
     return !!(C && C.ethCall && C.enc && C.CFG);
   }
   function hasWallet() {
-    /* Same resolution order as wallet.js: the Binance App provider first,
-       then the standard injected provider. */
+    /* Ask wallet.js first: it owns the one resolver that also knows about a
+       live WalletConnect session. Probing the injected globals directly is
+       what used to tell a connected mobile visitor they had no wallet at
+       all. The probes below are only the fallback for the case where
+       wallet.js has not loaded yet. */
+    if (window.OMCWallet && typeof window.OMCWallet.provider === "function") {
+      var unified = null;
+      try { unified = window.OMCWallet.provider(); } catch (e) { unified = null; }
+      if (unified && unified.request) return true;
+    }
     var p = null;
     try {
       if (window.binancew3w && window.binancew3w.ethereum) p = window.binancew3w.ethereum;
