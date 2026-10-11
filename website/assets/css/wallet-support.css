@@ -1,0 +1,105 @@
+/* ============================================================
+   OMC — wallet support band
+   Loaded by the three pages that connect a wallet: /stake, /compute, /ai-tools.
+
+   Its job is the Binance Web3 Wallet dApp Zone self-test case
+   "Binance Logo Exposure — Success (Web & App)": the wallet entry, and the
+   Binance mark, have to be visible on the page a reviewer opens inside the
+   Binance App browser.
+
+   Own file rather than an append to style.css — vercel.json serves
+   /assets/(.*) with `max-age=31536000, immutable`, so an append would not
+   reach returning visitors. Injected by tools/add-wallet-support.py.
+   ============================================================ */
+
+.wlt-band {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(6, 11, 26, 0.5);
+  margin-top: 40px;
+}
+
+.wlt-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.wlt-head { max-width: 720px; margin-bottom: 22px; }
+
+.wlt-head h2 { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+
+.wlt-head p { color: var(--muted); font-size: 14.5px; line-height: 1.7; }
+
+.wlt-head code {
+  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12.5px;
+  color: var(--accent-2);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+
+.wlt-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.wlt-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  padding: 14px 16px;
+}
+
+/* the wallet the Binance App injects: this is the entry the reviewer looks for */
+.wlt-item.wlt-primary { border-color: rgba(240, 185, 11, 0.4); background: rgba(240, 185, 11, 0.06); }
+
+.wlt-logo { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 11px; display: block; }
+
+.wlt-glyph {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 11px;
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+}
+
+.wlt-name { display: block; color: var(--text); font-weight: 800; font-size: 14.5px; line-height: 1.35; }
+
+.wlt-tag { display: block; color: var(--muted-2); font-size: 12.5px; line-height: 1.5; margin-top: 3px; }
+
+/* Deep-link entry. Ships `hidden` and is revealed only when the page is NOT
+   already inside the Binance App — see assets/js/binance-w3w.js.
+   The explicit [hidden] rule matters: without it any `display` set on
+   .wlt-open would out-rank the user-agent default and the control would show
+   to visitors who have no App to open. */
+.wlt-open { margin-top: 18px; }
+
+.wlt-open[hidden] { display: none; }
+
+.wlt-open-note {
+  display: block;
+  color: var(--muted-2);
+  font-size: 12.5px;
+  line-height: 1.6;
+  margin-top: 9px;
+  max-width: 640px;
+}
+
+@media (max-width: 900px) {
+  .wlt-list { grid-template-columns: 1fr; }
+  .wlt-inner { padding: 32px 24px; }
+}

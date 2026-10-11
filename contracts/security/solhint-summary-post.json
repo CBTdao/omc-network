@@ -1,0 +1,3529 @@
+{
+  "label": "reviewed (fixed) source",
+  "total": 502,
+  "counts": {
+    "Warning/const-name-snakecase": 3,
+    "Warning/gas-increment-by-one": 8,
+    "Warning/gas-indexed-events": 47,
+    "Warning/gas-strict-inequalities": 37,
+    "Warning/immutable-vars-naming": 3,
+    "Warning/max-states-count": 2,
+    "Warning/use-natspec": 402
+  },
+  "findings": [
+    {
+      "file": "OMCTestToken.sol",
+      "line": 32,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @author tag in contract 'OMCTestToken'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 35,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'name'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 35,
+      "severity": "Warning",
+      "rule": "const-name-snakecase",
+      "message": "Constant name must be in capitalized SNAKE_CASE"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 36,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'symbol'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 36,
+      "severity": "Warning",
+      "rule": "const-name-snakecase",
+      "message": "Constant name must be in capitalized SNAKE_CASE"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 37,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'decimals'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 37,
+      "severity": "Warning",
+      "rule": "const-name-snakecase",
+      "message": "Constant name must be in capitalized SNAKE_CASE"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 40,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'MAX_SUPPLY'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 43,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'FAUCET_AMOUNT'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 46,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'FAUCET_COOLDOWN'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 49,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'MAX_FAUCET_CLAIMS'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 52,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'FAUCET_CAP'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 55,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'INITIAL_SUPPLY'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 59,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'owner'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 61,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalSupply'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 62,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'faucetMinted'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 64,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'balanceOf'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 65,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'allowance'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 68,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'lastFaucetAt'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 70,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'faucetClaims'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 74,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Transfer'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 74,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Transfer'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 74,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Transfer'. Expected: [from, to, value], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 74,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [value] on Event [Transfer] could be Indexed"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 75,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Approval'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 75,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Approval'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 75,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Approval'. Expected: [owner, spender, value], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 75,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [value] on Event [Approval] could be Indexed"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 76,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Faucet'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 76,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Faucet'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 76,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Faucet'. Expected: [to, amount, claimIndex], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 76,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [Faucet] could be Indexed"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 76,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [claimIndex] on Event [Faucet] could be Indexed"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 77,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'OwnershipTransferred'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 77,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'OwnershipTransferred'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 77,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'OwnershipTransferred'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 78,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Burn'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 78,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Burn'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 78,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Burn'. Expected: [from, amount], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 78,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [Burn] could be Indexed"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 90,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function '<anonymous>'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 99,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transfer'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 99,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transfer'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 99,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transfer'. Expected: [to, value], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 104,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'approve'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 104,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'approve'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 104,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'approve'. Expected: [spender, value], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 111,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transferFrom'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 111,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transferFrom'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 111,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transferFrom'. Expected: [from, to, value], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 114,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 121,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'burn'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 121,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'burn'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 121,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'burn'. Expected: [amount], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 128,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'claimFaucet'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 128,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'claimFaucet'. Expected: [amount], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 130,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 134,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 137,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ faucetClaims ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 146,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'faucetReadyAt'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 146,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'faucetReadyAt'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 151,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'faucetRemaining'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 158,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'mint'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 158,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'mint'. Expected: [to, amount], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 163,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transferOwnership'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 163,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transferOwnership'"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 163,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transferOwnership'. Expected: [newOwner], Found: []"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 174,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 182,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCTestToken.sol",
+      "line": 190,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 5,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @title tag in contract 'IERC20Like'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 5,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @author tag in contract 'IERC20Like'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 5,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in contract 'IERC20Like'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 6,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transfer'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 6,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transfer'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 6,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transfer'. Expected: [to, value], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 7,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transferFrom'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 7,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transferFrom'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 7,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transferFrom'. Expected: [from, to, value], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 8,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'balanceOf'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 8,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'balanceOf'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 8,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'balanceOf'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 63,
+      "severity": "Warning",
+      "rule": "max-states-count",
+      "message": "Contract has 23 states declarations but allowed no more than 15"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 63,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @author tag in contract 'OMCStaking'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 66,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 69,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'TIER_COUNT'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 74,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'heartbeatInterval'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 75,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'heartbeatGrace'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 78,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_BPS_PER_INTERVAL'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 81,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_REQUESTERS_BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 82,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_TREASURY_BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 83,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_BURN_BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 89,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_JOB_TIMEOUT_BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 90,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_JOB_OFFLINE_BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 91,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_JOB_BAD_OUTPUT_BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 92,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_JOB_FRAUD_BPS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 94,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'BURN_ADDRESS'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 98,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'token'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 98,
+      "severity": "Warning",
+      "rule": "immutable-vars-naming",
+      "message": "Immutable variables name are set to be in capitalized SNAKE_CASE"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 100,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'owner'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 101,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'verifier'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 102,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'treasury'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 103,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'requesterPool'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 107,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'market'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 109,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'paused'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 116,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'tierMinStake'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 126,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'tierBaseDeposit'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 129,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'emissionPerSecond'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 135,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'maxAprBps'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 138,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SECONDS_PER_YEAR'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 141,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'workUnitReward'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 143,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'accRewardPerShare'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 144,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'lastAccrual'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 145,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalStake'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 146,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'rewardLiquidity'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 147,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'accruedNotPaid'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 148,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalSlashed'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 149,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalWorkUnits'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 165,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'node'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 166,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'endpoint'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 167,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'nodeAddresses'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 171,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Staked'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 171,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Staked'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 171,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Staked'. Expected: [who, amount, tier, totalStakeOfNode], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 171,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [Staked] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 171,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [tier] on Event [Staked] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 171,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [totalStakeOfNode] on Event [Staked] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 172,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Unstaked'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 172,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Unstaked'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 172,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Unstaked'. Expected: [who, amount, totalStakeOfNode], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 172,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [Unstaked] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 172,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [totalStakeOfNode] on Event [Unstaked] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 173,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'NodeRegistered'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 173,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'NodeRegistered'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 173,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'NodeRegistered'. Expected: [who, tier, minStake, endpoint], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 173,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [tier] on Event [NodeRegistered] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 173,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [minStake] on Event [NodeRegistered] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 174,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'NodeDeregistered'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 174,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'NodeDeregistered'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 174,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'NodeDeregistered'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 175,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Heartbeat'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 175,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Heartbeat'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 175,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Heartbeat'. Expected: [who, missedIntervals], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 175,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [missedIntervals] on Event [Heartbeat] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'Slashed'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'Slashed'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'Slashed'. Expected: [who, amount, toRequesters, toTreasury, burned, missedIntervals, triggeredBy], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [Slashed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [toRequesters] on Event [Slashed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [toTreasury] on Event [Slashed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [burned] on Event [Slashed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [missedIntervals] on Event [Slashed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 185,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'RewardsClaimed'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 185,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'RewardsClaimed'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 185,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'RewardsClaimed'. Expected: [who, amount, remainingPending], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 185,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [RewardsClaimed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 185,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [remainingPending] on Event [RewardsClaimed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 186,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'WorkReported'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 186,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'WorkReported'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 186,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'WorkReported'. Expected: [who, units, reward, verifier], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 186,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [units] on Event [WorkReported] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 186,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [reward] on Event [WorkReported] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 187,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'RewardsFunded'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 187,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'RewardsFunded'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 187,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'RewardsFunded'. Expected: [from, amount, liquidity], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 187,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [RewardsFunded] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 187,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [liquidity] on Event [RewardsFunded] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 188,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'VerifierChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 188,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'VerifierChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 188,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'VerifierChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 189,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'TreasuryChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 189,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'TreasuryChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 189,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'TreasuryChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 190,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'RequesterPoolChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 190,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'RequesterPoolChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 190,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'RequesterPoolChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 191,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'MarketChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 191,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'MarketChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 191,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'MarketChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 192,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobSlashed'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 192,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobSlashed'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 192,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobSlashed'. Expected: [who, amount, reason], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 192,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [JobSlashed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 192,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [reason] on Event [JobSlashed] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 193,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'EmissionChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 193,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'EmissionChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 193,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'EmissionChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 193,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [from] on Event [EmissionChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 193,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [to] on Event [EmissionChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 194,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'MaxAprChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 194,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'MaxAprChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 194,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'MaxAprChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 194,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [from] on Event [MaxAprChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 194,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [to] on Event [MaxAprChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 195,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'HeartbeatParamsChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 195,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'HeartbeatParamsChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 195,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'HeartbeatParamsChanged'. Expected: [interval, grace], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 195,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [interval] on Event [HeartbeatParamsChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 195,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [grace] on Event [HeartbeatParamsChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 196,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'WorkUnitRewardChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 196,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'WorkUnitRewardChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 196,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'WorkUnitRewardChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 196,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [from] on Event [WorkUnitRewardChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 196,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [to] on Event [WorkUnitRewardChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 197,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'TierBaseDepositChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 197,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'TierBaseDepositChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 197,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'TierBaseDepositChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 197,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [from] on Event [TierBaseDepositChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 197,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [to] on Event [TierBaseDepositChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 198,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'TierMinStakeChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 198,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'TierMinStakeChanged'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 198,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'TierMinStakeChanged'. Expected: [tier, from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 198,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [from] on Event [TierMinStakeChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 198,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [to] on Event [TierMinStakeChanged] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 199,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'PausedSet'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 199,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'PausedSet'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 199,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'PausedSet'. Expected: [paused], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 199,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [paused] on Event [PausedSet] could be Indexed"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 200,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'OwnershipTransferred'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 200,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'OwnershipTransferred'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 200,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'OwnershipTransferred'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 244,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'minStakeForTier'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 244,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'minStakeForTier'. Expected: [tier], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 245,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 245,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 249,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'nodeCount'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 254,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'heartbeatDeadline'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 254,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'heartbeatDeadline'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 260,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'isOverdue'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 260,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'isOverdue'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 260,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'isOverdue'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 300,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'pendingOf'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 300,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'pendingOf'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 300,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'pendingOf'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 300,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'pendingOf'. Expected: [pending, accruing], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 304,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 310,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'nodeSummary'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 310,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'nodeSummary'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 310,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'nodeSummary'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 310,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'nodeSummary'. Expected: [tier, registered, earning, overdue, stake, pending, minStake, lastHeartbeat, deadline, missedHeartbeats, slashedTotal, workUnits, registeredAt], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 331,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 331,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 349,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'protocolStats'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 349,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'protocolStats'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 349,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'protocolStats'. Expected: [totalStake_, emissionPerSecond_, rewardLiquidity_, accruedNotPaid_, nodes_, totalSlashed_, totalWorkUnits_, tierBaseDeposit_], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 375,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'getNodeAddresses'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 375,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'getNodeAddresses'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 375,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'getNodeAddresses'. Expected: [offset, limit], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 375,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'getNodeAddresses'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 375,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'getNodeAddresses'. Expected: [out], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 377,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 381,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ i ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 390,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'stake'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 390,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'stake'. Expected: [amount, tier], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 392,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 392,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 397,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 410,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'unstake'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 410,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'unstake'. Expected: [amount], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 413,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 419,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 435,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'registerNode'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 435,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'registerNode'. Expected: [tier, ep], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 436,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 436,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 440,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 483,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'slashOverdue'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 483,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'slashOverdue'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 483,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'slashOverdue'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 483,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'slashOverdue'. Expected: [slashed], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 507,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'slashFor'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 507,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'slashFor'. Expected: [who, reason], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 564,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'claim'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 564,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'claim'. Expected: [paid], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 584,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'reportWork'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 584,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'reportWork'. Expected: [who, units], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 592,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 602,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'fundRewards'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 602,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'fundRewards'. Expected: [amount], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 611,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setVerifier'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 611,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setVerifier'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 611,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setVerifier'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 617,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setTreasury'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 617,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setTreasury'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 617,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setTreasury'. Expected: [t], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 623,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setRequesterPool'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 623,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setRequesterPool'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 623,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setRequesterPool'. Expected: [r], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 630,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setMarket'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 630,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setMarket'. Expected: [m], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 635,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setEmissionPerSecond'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 635,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setEmissionPerSecond'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 635,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setEmissionPerSecond'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 644,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setMaxAprBps'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 644,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setMaxAprBps'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 645,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 652,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setHeartbeatParams'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 652,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setHeartbeatParams'. Expected: [interval, grace], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 653,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 654,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 660,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setWorkUnitReward'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 660,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setWorkUnitReward'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 660,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setWorkUnitReward'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 665,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setTierBaseDeposit'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 665,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setTierBaseDeposit'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 665,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setTierBaseDeposit'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 672,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setTierMinStake'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 672,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setTierMinStake'. Expected: [tier, v], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 673,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 673,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 679,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setPaused'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 679,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setPaused'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 679,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setPaused'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 684,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transferOwnership'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 684,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transferOwnership'"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 684,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transferOwnership'. Expected: [newOwner], Found: []"
+    },
+    {
+      "file": "OMCStaking.sol",
+      "line": 697,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 5,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @title tag in contract 'IERC20Like'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 5,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @author tag in contract 'IERC20Like'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 5,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in contract 'IERC20Like'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 6,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transfer'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 6,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transfer'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 6,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transfer'. Expected: [to, value], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 7,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transferFrom'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 7,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transferFrom'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 7,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transferFrom'. Expected: [from, to, value], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 8,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'balanceOf'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 8,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'balanceOf'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 8,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'balanceOf'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 17,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @title tag in contract 'IStakingLike'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 17,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @author tag in contract 'IStakingLike'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 17,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in contract 'IStakingLike'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 18,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'minStakeForTier'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 18,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'minStakeForTier'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 18,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'minStakeForTier'. Expected: [tier], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 20,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'nodeSummary'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 20,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'nodeSummary'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 20,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'nodeSummary'. Expected: [who], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 20,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'nodeSummary'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 20,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'nodeSummary'. Expected: [tier, registered, earning, overdue, stake, pending, minStake, lastHeartbeat, deadline, missedHeartbeats, slashedTotal, workUnits, registeredAt], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 39,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'slashFor'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 39,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'slashFor'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 39,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'slashFor'. Expected: [who, reason], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 39,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'slashFor'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 39,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'slashFor'. Expected: [slashed], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 87,
+      "severity": "Warning",
+      "rule": "max-states-count",
+      "message": "Contract has 19 states declarations but allowed no more than 15"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 87,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @author tag in contract 'OMCComputeMarket'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 90,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 93,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'PROTOCOL_FEE_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 96,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'FEE_BURN_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 97,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'FEE_REWARD_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 100,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_REQUESTER_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 101,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_TREASURY_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 102,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'SLASH_BURN_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 105,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'PENALTY_TIMEOUT_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 106,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'PENALTY_OFFLINE_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 107,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'PENALTY_BAD_OUTPUT_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 108,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'PENALTY_FRAUD_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 110,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'TIER_COUNT'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 113,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'DISPUTE_WINDOW'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 116,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'OMC_FEE_DISCOUNT_BPS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 118,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'BURN_ADDRESS'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 175,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'owner'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 176,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'scheduler'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 177,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'treasury'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 178,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'requesterPool'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 179,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'feeBurn'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 180,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'paused'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 182,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'token'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 182,
+      "severity": "Warning",
+      "rule": "immutable-vars-naming",
+      "message": "Immutable variables name are set to be in capitalized SNAKE_CASE"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 183,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'staking'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 183,
+      "severity": "Warning",
+      "rule": "immutable-vars-naming",
+      "message": "Immutable variables name are set to be in capitalized SNAKE_CASE"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 185,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'nextJobId'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 186,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'job'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 188,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalEscrowed'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 189,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalSettledVolume'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 190,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalFees'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 191,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalFeesBurned'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 192,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalFeesToRewards'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 193,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalSlashToRequesters'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 194,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalSlashToTreasury'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 195,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'totalSlashedFromBonds'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 196,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'settledJobs'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 197,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'failedJobs'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 199,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in variable 'assignedJobCount'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 203,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobCreated'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 203,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobCreated'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 203,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobCreated'. Expected: [jobId, requester, hardwareTier, verifyPolicy, protection, maxPrice, paidInOMC, specHash, deadline], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 214,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobAssigned'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 214,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobAssigned'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 214,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobAssigned'. Expected: [jobId, provider, requiredStake], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 214,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [requiredStake] on Event [JobAssigned] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 215,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobDelivered'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 215,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobDelivered'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 215,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobDelivered'. Expected: [jobId, provider, resultHash], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 216,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobDisputed'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 216,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobDisputed'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 216,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobDisputed'. Expected: [jobId, requester], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 217,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobSettled'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 217,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobSettled'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 217,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobSettled'. Expected: [jobId, provider, paid, fee, toBurn, toRewards], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 217,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [paid] on Event [JobSettled] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 217,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [fee] on Event [JobSettled] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 217,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [toBurn] on Event [JobSettled] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 217,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [toRewards] on Event [JobSettled] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 225,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobFailed'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 225,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobFailed'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 225,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobFailed'. Expected: [jobId, provider, reason, slashed, toRequester, toTreasury, burned], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 234,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobRefunded'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 234,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobRefunded'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 234,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobRefunded'. Expected: [jobId, requester, amount], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 234,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [JobRefunded] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 235,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'JobCancelled'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 235,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'JobCancelled'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 235,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'JobCancelled'. Expected: [jobId, requester, amount], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 235,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [amount] on Event [JobCancelled] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 237,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'SchedulerChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 237,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'SchedulerChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 237,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'SchedulerChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 238,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'TreasuryChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 238,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'TreasuryChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 238,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'TreasuryChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 239,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'RequesterPoolChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 239,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'RequesterPoolChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 239,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'RequesterPoolChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 240,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'FeeBurnChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 240,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'FeeBurnChanged'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 240,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'FeeBurnChanged'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 241,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'PausedSet'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 241,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'PausedSet'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 241,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'PausedSet'. Expected: [paused], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 241,
+      "severity": "Warning",
+      "rule": "gas-indexed-events",
+      "message": "GC: [paused] on Event [PausedSet] could be Indexed"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 242,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in event 'OwnershipTransferred'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 242,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in event 'OwnershipTransferred'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 242,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for event 'OwnershipTransferred'. Expected: [from, to], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 291,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'minStakeForTier'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 291,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'minStakeForTier'. Expected: [tier], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 299,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'isEligible'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 299,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'isEligible'. Expected: [provider, tier], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 318,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 318,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 323,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'providerStanding'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 323,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'providerStanding'. Expected: [provider, tier, reason], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 323,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'providerStanding'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 323,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'providerStanding'. Expected: [eligible, stake, requiredStake, worstCasePenalty], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 334,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 334,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 336,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 336,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 341,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'getJob'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 341,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'getJob'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 341,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'getJob'. Expected: [jobId], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 345,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'jobCount'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 349,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'protocolStats'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 349,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'protocolStats'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 349,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'protocolStats'. Expected: [jobsTotal, jobsSettled, jobsFailed, escrowedNow, settledVolume, feesCollected, feesBurned, slashPaidToRequesters, assignedNow], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 381,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'createJob'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 381,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'createJob'. Expected: [specHash, hardwareTier, verifyPolicy, protection, maxPrice, deadline, paidInOMC], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 381,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @return tag in function 'createJob'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 381,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @return names for function 'createJob'. Expected: [jobId], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 390,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 390,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 394,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ nextJobId ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 424,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'cancelJob'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 424,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'cancelJob'. Expected: [jobId], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 436,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'dispute'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 436,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'dispute'. Expected: [jobId], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 440,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 450,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'assign'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 450,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'assign'. Expected: [jobId, provider], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 458,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ assignedJobCount ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 463,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'confirmDelivery'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 463,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'confirmDelivery'. Expected: [jobId, resultHash], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 478,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'settle'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 478,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'settle'. Expected: [jobId, amount], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 484,
+      "severity": "Warning",
+      "rule": "gas-strict-inequalities",
+      "message": "GC: Non strict inequality found. Try converting to a strict one"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 506,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ settledJobs ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 507,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ assignedJobCount ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 526,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'fail'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 526,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'fail'. Expected: [jobId, reason], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 538,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ failedJobs ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 539,
+      "severity": "Warning",
+      "rule": "gas-increment-by-one",
+      "message": "GC: For [ assignedJobCount ] variable, increment/decrement by 1 using: [ ++variable ] to save gas"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 579,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'resolveDispute'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 579,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'resolveDispute'. Expected: [jobId, inFavourOfProvider], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 598,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setScheduler'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 598,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setScheduler'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 598,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setScheduler'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 604,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setTreasury'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 604,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setTreasury'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 604,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setTreasury'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 610,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setRequesterPool'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 610,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setRequesterPool'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 610,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setRequesterPool'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 616,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setFeeBurn'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 616,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setFeeBurn'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 616,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setFeeBurn'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 622,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'setPaused'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 622,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'setPaused'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 622,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'setPaused'. Expected: [v], Found: []"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 627,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @notice tag in function 'transferOwnership'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 627,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Missing @param tag in function 'transferOwnership'"
+    },
+    {
+      "file": "OMCComputeMarket.sol",
+      "line": 627,
+      "severity": "Warning",
+      "rule": "use-natspec",
+      "message": "Mismatch in @param names for function 'transferOwnership'. Expected: [newOwner], Found: []"
+    }
+  ]
+}

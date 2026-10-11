@@ -417,8 +417,6 @@ contract OMCStaking {
         uint256 remaining = n.stake - amount;
         if (n.registered) {
             require(remaining >= minStakeForTier(n.tier), "OMCS: below tier minimum");
-        } else {
-            require(remaining == 0 || remaining > 0, "OMCS: amount");
         }
         if (n.earning) totalStake -= amount;
         n.stake = remaining;
@@ -464,11 +462,14 @@ contract OMCStaking {
         _settle(msg.sender);
 
         uint256 missed = _overdueIntervals(msg.sender);
+        // clear the overdue counter before slashing: the slash itself moves
+        // tokens out, so the node's clock has to be updated first or a re-entrant
+        // caller could charge the same intervals twice
+        n.lastHeartbeat = block.timestamp;
         if (missed > 0) {
             _applySlash(msg.sender, missed);
         }
 
-        n.lastHeartbeat = block.timestamp;
         n.missedHeartbeats += missed;
         if (!n.earning && n.stake > 0) {
             n.earning = true;
@@ -485,8 +486,10 @@ contract OMCStaking {
         _settle(who);
         uint256 missed = _overdueIntervals(who);
         require(missed > 0, "OMCS: not overdue");
+        // as in heartbeat(): stop the clock before the slash moves tokens.
+        // the node must heartbeat again to resume earning.
+        n.lastHeartbeat = block.timestamp;
         slashed = _applySlash(who, missed);
-        n.lastHeartbeat = block.timestamp; // must heartbeat again to resume earning
     }
 
     /// @notice a completed job failed verification; charge the provider's bond.
@@ -496,13 +499,17 @@ contract OMCStaking {
     ///           1 = offline      5%
     ///           2 = bad output   30%
     ///           3 = fraud        100%
+    ///         This function applies the ENTIRE published 50 / 30 / 20 split:
+    ///         the requester slice is sent to the market (which forwards it to
+    ///         the harmed requester), the treasury slice to `treasury` and the
+    ///         burn slice to BURN_ADDRESS. Callers must not re-pay those slices.
     /// @return slashed the amount taken off the bond
     function slashFor(address who, uint8 reason) external onlyMarket notPaused returns (uint256 slashed) {
         Node storage n = node[who];
         require(n.registered, "OMCS: not registered");
         require(n.stake > 0, "OMCS: nothing staked");
 
-        uint256 bps;
+        uint256 bps = 0;
         if (reason == 0) bps = SLASH_JOB_TIMEOUT_BPS;
         else if (reason == 1) bps = SLASH_JOB_OFFLINE_BPS;
         else if (reason == 2) bps = SLASH_JOB_BAD_OUTPUT_BPS;

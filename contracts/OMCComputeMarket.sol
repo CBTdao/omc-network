@@ -543,6 +543,10 @@ contract OMCComputeMarket {
         uint256 toTreasury = 0;
         uint256 burned = 0;
 
+        // The refund has to come out of the bond, so the job is marked terminal
+        // before any external call is made (checks -> effects -> interactions).
+        j.state = JobState.REFUNDED;
+
         if (provider != address(0)) {
             slashed = staking.slashFor(provider, uint8(reason));
             if (slashed > 0) {
@@ -552,14 +556,17 @@ contract OMCComputeMarket {
                 totalSlashedFromBonds += slashed;
                 totalSlashToRequesters += toRequester;
                 totalSlashToTreasury += toTreasury;
+                // `OMCStaking.slashFor()` already applies the whole published
+                // 50 / 30 / 20 split: it pays the treasury slice and burns the
+                // burn slice itself, and forwards the requester slice here.
+                // Forwarding that slice is therefore the only thing left to do —
+                // paying treasury and burn again out of this contract's balance
+                // would double-charge them against other requesters' escrow.
                 if (toRequester > 0)
                     require(token.transfer(j.requester, toRequester), "OMCM: comp failed");
-                if (toTreasury > 0) require(token.transfer(treasury, toTreasury), "OMCM: treas failed");
-                if (burned > 0) require(token.transfer(feeBurn, burned), "OMCM: burn failed");
             }
         }
 
-        j.state = JobState.REFUNDED;
         require(token.transfer(j.requester, escrow), "OMCM: refund failed");
 
         emit JobFailed(jobId, provider, reason, slashed, toRequester, toTreasury, burned);

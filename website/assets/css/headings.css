@@ -1,0 +1,31 @@
+/* ============================================================
+   Omniverse Compute (OMC) — heading-level corrections
+
+   Every page now has exactly one <h1>. Where that <h1 replaced an element
+   that used to be an <h2> or a plain <div>, the typography it used to
+   inherit has to be re-asserted at a specificity that beats `.hero h1`,
+   otherwise the heading silently changes size for every visitor.
+
+   This is a separate file because /assets/* is served with
+   `Cache-Control: immutable` for a year: appending to style.css would never
+   reach a returning visitor.
+   ============================================================ */
+
+/* whitepaper + aup: the page title used to be .section-head h2 */
+.section-head h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+/* airdrop: the hero figure used to be a plain .airdrop-hero-num div, so the
+   more specific .hero h1 would have shrunk it to clamp(38px, 6.4vw, 68px) */
+.hero h1.airdrop-hero-num {
+  font-size: clamp(44px, 7vw, 76px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  max-width: none;
+  margin: 0;
+}

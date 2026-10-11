@@ -6,7 +6,7 @@
   <title data-i18n="meta.title_wp">Whitepaper — Omniverse Compute (OMC)</title>
   <link rel="canonical" href="https://omc.network/whitepaper">
   <script type="application/ld+json">
-{"@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"],"@context":"https://schema.org"}
+{"@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"],"@context":"https://schema.org"}
 </script>
   <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Whitepaper","url":"https://omc.network/whitepaper","description":"The OMC v3.0 whitepaper: architecture, tokenomics, roadmap and compute-market design.","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}}
@@ -16,17 +16,24 @@
 </script>
   <meta property="og:site_name" content="Omniverse Compute">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Whitepaper — Omniverse Compute (OMC)">
-  <meta property="og:description" content="OMC Whitepaper v3.0 — the full official text: architecture, verification, staking &amp; slashing, tokenomics, governance and roadmap.">
+  <meta property="og:title" data-i18n-content="meta.title_wp" content="Whitepaper — Omniverse Compute (OMC)">
+  <meta property="og:description" data-i18n-content="meta.desc_wp" content="OMC Whitepaper v3.0 in full: architecture, verification, staking and slashing, tokenomics, governance, roadmap and risks.">
   <meta property="og:url" content="https://omc.network/whitepaper">
   <meta property="og:image" content="https://omc.network/og-image.png">
-  <meta property="og:locale" content="en_US">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+  <meta property="og:locale" data-i18n-content="meta.og_locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Whitepaper — Omniverse Compute (OMC)">
-  <meta name="twitter:description" content="OMC Whitepaper v3.0 — the full official text: architecture, verification, staking &amp; slashing, tokenomics, governance and roadmap.">
+  <meta name="twitter:site" content="@Omniverse_Depin">
+  <meta name="twitter:title" data-i18n-content="meta.title_wp" content="Whitepaper — Omniverse Compute (OMC)">
+  <meta name="twitter:description" data-i18n-content="meta.desc_wp" content="OMC Whitepaper v3.0 in full: architecture, verification, staking and slashing, tokenomics, governance, roadmap and risks.">
   <meta name="twitter:image" content="https://omc.network/og-image.png">
-  <meta name="description" content="OMC Whitepaper v3.0 — the full text of the official Omniverse Compute whitepaper: architecture, verification, staking & slashing, tokenomics, governance, roadmap and risks." />
+  <meta name="twitter:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+  <meta name="description" data-i18n-content="meta.desc_wp" content="OMC Whitepaper v3.0 in full: architecture, verification, staking and slashing, tokenomics, governance, roadmap and risks.">
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/headings.css" />
+  <link rel="stylesheet" href="assets/css/footer-chain.css" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" href="/assets/img/logo.png" />
@@ -65,7 +72,7 @@
     <div class="container">
       <div class="section-head reveal">
         <div class="eyebrow" data-i18n="wp.eyebrow">Whitepaper · v3.0</div>
-        <h2 data-i18n="wp.title">Omniverse Compute (OMC)</h2>
+        <h1 data-i18n="wp.title">Omniverse Compute (OMC)</h1>
         <p data-i18n="wp.sub">Decentralized GPU Computing Network — BNB Chain Ecosystem &amp; Layer 2 Rollup Dedicated Scaling Network. Native Token: OMC (BEP-20).</p>
       </div>
 
@@ -73,7 +80,7 @@
       <div class="dl-cards reveal" style="max-width: 860px; margin: 0 auto 50px;">
         <a class="dl-card" href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank">
           <span class="ic">📄</span>
-          <span><b data-i18n="wp.dl_en_b">Whitepaper v3.0 (English)</b><span data-i18n="wp.dl_en_s">Full document · PDF · 19 pages</span></span>
+          <span><b data-i18n="wp.dl_en_b">Whitepaper v3.0 (English)</b><span data-i18n="wp.dl_en_s">Full document · PDF · 20 pages</span></span>
         </a>
         <a class="dl-card" href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank">
           <span class="ic">📊</span>
@@ -204,7 +211,7 @@
           <ul><li>30% of the fee is used to buy back OMC on the market and burn it automatically through smart contracts.</li><li>70% goes to the Reputation Reward Pool, held by the Treasury contract and distributed to nodes in proportion to their reputation-weighted verified work.</li></ul>
           <p>The burn equals <strong>0.9% of settled job volume</strong> (3% × 30%). As an illustration only, not a forecast: if monthly settled volume were $10 million, the monthly buyback and burn would be about $90,000. Actual volume, and therefore burn, depends entirely on network usage. The protocol publishes settled volume, fees, burns and emissions on a public dashboard.</p>
           <h3>7.2 Token Utility</h3>
-          <ul><li><strong>Payment</strong> for compute jobs, with a fee discount for settling in OMC (Section 7.6).</li><li><strong>Staking</strong> by node operators as security for honest behavior — the stake is simultaneously the right to accept work, the source of a buyer's refund and the discount qualification (Sections 7.5, 7.6).</li><li><strong>Governance</strong> voting on protocol parameters, treasury use and upgrades.</li><li><strong>Rewards</strong> to providers for verified work.</li></ul>
+          <ul><li><strong>Payment</strong> for compute jobs, with a fee discount for settling in OMC (§7.6).</li><li><strong>Staking</strong> by node operators as security for honest behavior — the stake is simultaneously the right to accept work, the source of a buyer's refund and the discount qualification (§7.5, §7.6).</li><li><strong>Governance</strong> voting on protocol parameters, treasury use and upgrades.</li><li><strong>Rewards</strong> to providers for verified work.</li></ul>
           <p>OMC has a fixed maximum supply of 1,000,000,000 tokens on BNB Chain (BEP-20). The only mechanisms that reduce supply are the fee buyback-and-burn and the slashing burn.</p>
           <h3>7.3 Token Distribution</h3>
           <div class="table-wrap">
@@ -224,7 +231,8 @@
           <tr><td>Treasury and liquidity</td><td>5%</td><td>50,000,000</td><td>50% at TGE for initial liquidity; the remainder managed by the DAO Treasury</td></tr>
           </tbody></table></div>
           <p>The airdrop is listed separately from investor allocations. Circulating supply at TGE is about 65.5 million OMC (6.55% of maximum supply): 20M airdrop, 5M institutional, 8M private, 7.5M ecosystem and 25M treasury liquidity. A public vesting dashboard shows locked and unlocked balances for every category.</p>
-          <p><strong>TGE, mainnet launch, staking and the airdrop claim window open on the same date (2027 Q1, January 1).</strong> This is deliberate, because the OMC a participant needs in order to stake is the OMC they accumulate during the airdrop campaign: the campaign opens on 2027-01-01, the same day as mainnet and staking, and entries are claimable immediately, so the OMC a participant earns is stakeable from day one. A wallet that has maxed out the airdrop holds 100 OMC — exactly the tier-2 staking minimum — so a participant can go from zero to a registered, staked node without buying tokens first.</p>
+          <p><strong>Airdrop mechanics.</strong> The 20,000,000 OMC airdrop pool is fixed and is paid out as <strong>1,000,000 entries of 20 OMC each</strong>. A participant can register up to <strong>5 entries (100 OMC)</strong> through the campaign itself, plus up to <strong>5 additional entries</strong> earned by inviting new participants — at most <strong>10 entries (200 OMC)</strong> per wallet. Referral entries are drawn from that same fixed pool: the referral program changes how entries are distributed, never how many exist. A referral credit is granted only once the invited address completes its own first entry, and only for <strong>direct invites</strong> — the program is strictly single-layer, with no recursion, no downlines and no team commissions. Participation is free throughout: no payment, purchase or deposit is required at any point.</p>
+          <p><strong>TGE, mainnet launch, staking and the airdrop claim window open on the same date (2027 Q1, January 1).</strong> This is deliberate, because the OMC a participant needs in order to stake is the OMC they accumulate during the airdrop campaign: the campaign opens on 2027-01-01, the same day as mainnet and staking, and entries are claimable immediately, so the OMC a participant earns is stakeable from day one. A wallet that completes the campaign itself holds 100 OMC — exactly the tier-2 staking minimum — so a participant can go from zero to a registered, staked node without buying tokens first; a participant who also invites others can accumulate up to 200 OMC.</p>
           <h3>7.4 Emission Schedule for Node Rewards</h3>
           <p>The 500,000,000 OMC reward pool is released in <strong>equal annual instalments over 10 years</strong>. The ceiling is the same in every year, and within a year release is linear by day. There is no halving step and no epoch structure: a provider that joins in year 7 is mining against the same annual ceiling as one that joined in year 1.</p>
           <div class="table-wrap">
@@ -246,7 +254,7 @@
           <tr><td>10</td><td>50.00M</td><td>10.0%</td></tr>
           </tbody></table></div>
           <p>The schedule is deliberately flat. A halving curve front-loads roughly three quarters of the pool into the first four years and then leaves late-joining providers with a fraction of the early rate; a flat curve keeps the reward rate for a given unit of verified work legible for the whole decade, which is what a provider buying hardware to run for several years actually needs to underwrite. The supply that is not released in the early years is not removed from the pool — it is simply released later, so the total is unchanged at 500,000,000 OMC over 10 years.</p>
-          <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. Because the annual ceiling is flat, an under-utilized network accumulates a smaller reserve per year than an exponentially decaying schedule would, and that reserve can only re-enter circulation by DAO vote. This ties new supply to real usage rather than to the calendar. Independently of utilization, the rate paid to stakers is clamped by the published ceiling in Section 7.5, so whenever stake is small that ceiling — not this schedule — is the binding constraint.</p>
+          <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. Because the annual ceiling is flat, an under-utilized network accumulates a smaller reserve per year than an exponentially decaying schedule would, and that reserve can only re-enter circulation by DAO vote. This ties new supply to real usage rather than to the calendar. Independently of utilization, the rate paid to stakers is clamped by the published ceiling in §7.5, so whenever stake is small that ceiling — not this schedule — is the binding constraint.</p>
           <h3>7.5 Staking and Slashing</h3>
           <p>Nodes must stake OMC before receiving jobs. The required stake is a published ladder: five hardware tiers, each with its own fixed minimum. The same ladder is used on the testnet and on mainnet, so a node that registers on the testnet is already positioned for the tier it will hold at launch.</p>
           <div class="table-wrap">
@@ -262,7 +270,7 @@
           <tr><td>4</td><td>Multi-GPU data-center node (2–8 accelerators)</td><td>1,000 (<strong>proposed</strong>)</td></tr>
           <tr><td>5</td><td>Cluster-scale deployment (multi-node)</td><td>5,000 (<strong>proposed</strong>)</td></tr>
           </tbody></table></div>
-          <p>The steps are deliberately non-linear. Tier 1 is priced at one airdrop entry (20 OMC) and tier 2 at one full airdrop (5 × 20 = 100 OMC), so a wallet that maxes out the community airdrop can reach tier 2 without buying anything. Tiers 3–5 escalate hard, because a node at those levels is underwriting data-center and cluster-scale capacity and a proportionally larger slashing exposure — the tiers separate provider classes rather than pricing a small step up in hardware.</p>
+          <p>The steps are deliberately non-linear. Tier 1 is priced at one airdrop entry (20 OMC) and tier 2 at the campaign's own allocation (5 × 20 = 100 OMC), so a wallet that completes the community airdrop can reach tier 2 without buying anything. Tiers 3–5 escalate hard, because a node at those levels is underwriting data-center and cluster-scale capacity and a proportionally larger slashing exposure — the tiers separate provider classes rather than pricing a small step up in hardware.</p>
           <p>Amounts are <strong>proposed</strong> and adjustable by governance before mainnet. The USD value of a given tier therefore moves with the token price; the ladder fixes the OMC amount, not the dollar amount, and governance is expected to revisit the rungs if the token's price range changes materially.</p>
           <p>Slashing triggers and <strong>proposed</strong> penalties (percent of stake):</p>
           <div class="table-wrap">
@@ -277,17 +285,17 @@
           <tr><td>Proven fraud or fake heartbeat</td><td>100%</td></tr>
           </tbody></table></div>
           <p>Slashed tokens are allocated 50% to compensate affected requesters, 30% to the DAO Treasury and 20% burned (Burn = Slashed × 20%). Penalty sizes will be calibrated on testnet and published before mainnet.</p>
-          <p><strong>Staking rewards carry a published ceiling.</strong> Reward emission is a rate per second (Section 7.4), and a fixed rate pays the same absolute amount however little is staked. A nearly empty pool would therefore imply a meaningless annualised return. The contract clamps what it actually pays:</p>
-          <p><code>rate in force = min( emissionPerSecond , total staked × maxAprBps ÷ 10,000 ÷ 365 days )</code></p>
-          <p><code>maxAprBps</code> is a contract parameter, <strong>proposed</strong> at 2,000 basis points — a maximum of 20% per year — and is set the same way on the testnet and at mainnet. Three properties matter. First, the ceiling is enforced by the contract, not by policy: both the ceiling and the rate in force are readable from it at any time. Second, it needs no price oracle, because rewards and stake are denominated in the same token, so the bound is arithmetic and cannot be dodged by moving the price. Third, it is a maximum, not a promise — it bounds what a staker can be paid per unit of stake and never raises it. While stake is small the ceiling binds and the flat schedule is irrelevant; as stake grows the ceiling stops binding on its own and the schedule in Section 7.4 takes over. With the proposed parameter the crossover sits at roughly 1.58 million OMC staked across the network.</p>
+          <p><strong>Staking rewards carry a published ceiling.</strong> Reward emission is a rate per second (§7.4), and a fixed rate pays the same absolute amount however little is staked. A nearly empty pool would therefore imply a meaningless annualised return. The contract clamps what it actually pays:</p>
+          <p>&gt; rate in force = min( emissionPerSecond , total staked × maxAprBps ÷ 10,000 ÷ 365 days )</p>
+          <p><code>maxAprBps</code> is a contract parameter, <strong>proposed</strong> at 2,000 basis points — a maximum of 20% per year — and is set the same way on the testnet and at mainnet. Three properties matter. First, the ceiling is enforced by the contract, not by policy: both the ceiling and the rate in force are readable from it at any time. Second, it needs no price oracle, because rewards and stake are denominated in the same token, so the bound is arithmetic and cannot be dodged by moving the price. Third, it is a maximum, not a promise — it bounds what a staker can be paid per unit of stake and never raises it. While stake is small the ceiling binds and the flat schedule is irrelevant; as stake grows the ceiling stops binding on its own and the schedule in §7.4 takes over. With the proposed parameter the crossover sits at roughly 1.58 million OMC staked across the network.</p>
           <h3>7.6 The Compute Market: What the Stake Is Actually For</h3>
           <p>Staking only has meaning if the stake is doing work. In OMC it performs three concrete jobs, all of them enforced by a contract rather than by policy. The mechanism is the <strong>Compute Market</strong> — the buyer-facing half of the network. Suppliers register GPUs and stake; buyers post jobs and escrow payment. The market contract sits between them.</p>
-          <p><strong>1. The stake is the right to accept work.</strong> A provider cannot be assigned a job unless its staked balance clears the hardware tier that job requires. The check reads the same ladder defined in Section 7.5 — the market contract does not keep its own copy. There is no separate reputation score gating assignment: eligibility is stake, and it is verified on chain at the moment of assignment. Below the tier minimum, the assignment reverts.</p>
+          <p><strong>1. The stake is the right to accept work.</strong> A provider cannot be assigned a job unless its staked balance clears the hardware tier that job requires. The check reads the same ladder defined in §7.5 — the market contract does not keep its own copy. There is no separate reputation score gating assignment: eligibility is stake, and it is verified on chain at the moment of assignment. Below the tier minimum, the assignment reverts.</p>
           <p><strong>2. The stake is the source of the buyer's refund.</strong> When a job is created the payment is escrowed, not transferred. Settlement releases it only against an accepted result, and the contract settles at or below the buyer's stated ceiling, returning the difference. If a provider fails — missing the deadline, dropping offline mid-job, delivering output that fails verification — the penalty is taken from <em>that provider's</em> stake, never from another user's escrow, and the majority share is paid directly to the buyer. <strong>A refund is the seller's debt, not a redistribution of someone else's deposit.</strong> This is the property that makes the escrow trustworthy: the money that can pay the buyer back is locked before the job starts.</p>
-          <p><strong>3. The stake earns a settlement discount.</strong> A buyer paying in OMC rather than a stablecoin receives a reduction on the protocol fee described in Section 7.1. The discount is a governance parameter, not a return: it changes what a buyer pays, not what a staker earns. It is deliberately modest, because an aggressive discount would convert a security deposit into a yield product and attract capital with no intention of running hardware.</p>
-          <p><strong>Job lifecycle.</strong> A job moves through a fixed state machine: escrowed → assigned → delivered → settled, with <code>disputed</code>, <code>refunded</code> and <code>cancelled</code> as terminal branches. The buyer may cancel an unassigned job and recover the escrow in full. Once a result is delivered, the buyer has a <strong>48-hour dispute window</strong> (Section 5) to contest it; uncontested results release automatically, so payment cannot be stalled indefinitely by buyer inaction.</p>
+          <p><strong>3. The stake earns a settlement discount.</strong> A buyer paying in OMC rather than a stablecoin receives a reduction on the protocol fee described in §7.1. The discount is a governance parameter, not a return: it changes what a buyer pays, not what a staker earns. It is deliberately modest, because an aggressive discount would convert a security deposit into a yield product and attract capital with no intention of running hardware.</p>
+          <p><strong>Job lifecycle.</strong> A job moves through a fixed state machine: escrowed → assigned → delivered → settled, with <code>disputed</code>, <code>refunded</code> and <code>cancelled</code> as terminal branches. The buyer may cancel an unassigned job and recover the escrow in full. Once a result is delivered, the buyer has a <strong>48-hour dispute window</strong> (§5) to contest it; uncontested results release automatically, so payment cannot be stalled indefinitely by buyer inaction.</p>
           <p><strong>Verification policy is chosen per job.</strong> Buyers pick the assurance level their workload justifies — spot-check re-execution of a sample, full redundant execution across independent nodes, or hardware attestation (TEE) — and the cost scales with it. This keeps cheap, low-risk jobs cheap rather than forcing every buyer to pay for redundant execution they do not need.</p>
-          <p><strong>Scope at launch.</strong> The market is a testnet tool. It does not sell production compute and publishes no price list or rate; buyers quote their own ceiling and the arithmetic is shown, not an offer. Mainnet deployment follows the same schedule as staking (Section 10).</p>
+          <p><strong>Scope at launch.</strong> The market is a testnet tool. It does not sell production compute and publishes no price list or rate; buyers quote their own ceiling and the arithmetic is shown, not an offer. Mainnet deployment follows the same schedule as staking (§10).</p>
           <h2 id="sec8">8 · Governance</h2>
           <p>Governance moves from team-led to community-led in stages.</p>
           <p><strong>Launch stage.</strong> Protocol upgrades are controlled by a 4-of-7 multisignature wallet held by core contributors, with a 3-day timelock (<strong>proposed</strong>). All changes are announced publicly before execution. Individual signers are not disclosed at this stage; the signing policy, key-management practice and any signer rotation will be published before mainnet.</p>
@@ -322,7 +330,7 @@
           <th>Deliverables</th>
           <th>Status and evidence</th>
           </tr></thead><tbody>
-          <tr><td>1</td><td>2026 Q4</td><td>L2 contract deployment, open-source node client, testnet, community airdrop</td><td><strong>In progress.</strong> Testnet live on BNB Chain testnet (Chapel); token contract <code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code>; staking contract <code>0x3226dffED51e28CEf526F8c078B2EC9a092E36e6</code>; explorer <code>testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code>; repository <code>github.com/CBTdao/omc-network</code>; 2% community airdrop (20,000,000 OMC) opens January 1, 2027 and runs to April 1, 2027, together with mainnet and staking</td></tr>
+          <tr><td>1</td><td>2026 Q4</td><td>L2 contract deployment, open-source node client, testnet, community airdrop</td><td><strong>In progress.</strong> Testnet live on BNB Chain testnet (Chapel); token <code>tOMC</code> at <code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code>; staking contract <code>OMCStaking</code> at <code>0x3226dffED51e28CEf526F8c078B2EC9a092E36e6</code>; compute market <code>OMCComputeMarket</code> at <code>0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1</code>; explorer <code>testnet.bscscan.com</code>; repository <code>github.com/CBTdao/omc-network</code>; testnet tokens carry no monetary value; 2% community airdrop (20,000,000 OMC) opens January 1, 2027 and runs to April 1, 2027, together with mainnet and staking</td></tr>
           <tr><td>2</td><td>2027 Q1</td><td>Mainnet launch, reward emission start, airdrop claim window, staking opens, Hugging Face and Blender integrations, completed audits</td><td><strong>Planned.</strong> Mainnet opens on 2027 Q1 (January 1). The community airdrop claim window and staking open at the same moment, so the OMC a wallet accumulated during the campaign becomes claimable and stakeable together. Reward emissions, the Hugging Face and Blender integrations and the first completed audits follow within this phase. Audit reports are published here as they are completed</td></tr>
           <tr><td>3</td><td>2027 Q2 and later</td><td>TEE tier, zero-knowledge verification research results, DAO transition, cross-chain settlement</td><td>Planned</td></tr>
           </tbody></table></div>
@@ -351,7 +359,7 @@
           <p>Benchmark methodology for OMC's own delivered-cost claims (Section 2) is published with the DCF forum "GPU Pricing Watch" series: <a href="https://forum.omc.network" target="_blank" rel="noopener">https://forum.omc.network</a></p>
           <p>All third-party figures were verified against the sources above at the time of writing. GPU prices change quickly; readers should confirm current rates before relying on them.</p>
 
-          <div class="wp-note" style="margin-top: 34px;" data-i18n="wp.note"><b>Note.</b> This page reproduces the official OMC Whitepaper v3.0 (English) as a web document. The PDF versions remain the authoritative reference — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>English whitepaper (PDF, 19 pages)</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>presentation deck</a>.</div>
+          <div class="wp-note" style="margin-top: 34px;" data-i18n="wp.note"><b>Note.</b> This page reproduces the official OMC Whitepaper v3.0 (English) as a web document. The PDF versions remain the authoritative reference — <a href='assets/docs/OMC-Whitepaper-EN.pdf' target='_blank'>English whitepaper (PDF, 20 pages)</a> · <a href='assets/docs/OMC-Whitepaper-Deck.pdf' target='_blank'>presentation deck</a>.</div>
         </article>
       </div>
     </div>
@@ -377,7 +385,7 @@
           <a href="/whitepaper" data-i18n="f.wp">Whitepaper</a>
           <a href="/testnet" data-i18n="f.testnet">Testnet</a>
           <a href="/whitepaper#about" data-i18n="f.arch">Architecture</a>
-          <a href="/whitepaper#sec7" data-i18n="f.tokenomics">Tokenomics</a>
+          <a href="/tokenomics" data-i18n="f.tokenomics">Tokenomics</a>
         </div>
         <div class="f-col">
           <h5 data-i18n="footer.h_community">Community</h5>
@@ -404,6 +412,37 @@
           <a href="/aup" data-i18n="f.aup">Acceptable Use</a>
         </div>
       </div>
+      <!-- omc:contracts-block — network + deployed contracts, published for verification -->
+      <div class="footer-chain">
+        <div class="fc-head">
+          <span class="fc-title" data-i18n="footer.chain_t">On-chain contracts</span>
+          <span class="fc-badge" data-i18n="footer.chain_verified">BscScan verified</span>
+        </div>
+        <div class="fc-rows">
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_net">Network</span>
+            <span class="fc-v fc-plain" data-i18n="footer.chain_netv">BNB Smart Chain &middot; Testnet (chainId 97)</span>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_token">OMC token (tOMC)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671" target="_blank" rel="noopener"><code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_staking">Staking (OMCStaking)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x3226dffED51e28CEf526F8c078B2EC9a092E36e6" target="_blank" rel="noopener"><code>0x3226dffED51e28CEf526F8c078B2EC9a092E36e6</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_market">Compute Market (OMCComputeMarket)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1" target="_blank" rel="noopener"><code>0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_sec">Security</span>
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">Automated security testing &mdash; not an audit &rarr;</a>
+          </div>
+        </div>
+        <p class="fc-note" data-i18n="footer.chain_note">Testnet contracts, published for verification. Testnet tokens have no monetary value and are not sold or listed anywhere.</p>
+      </div>
+
       <div class="footer-bottom">
         <div class="disc" data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</div>
         <div>© 2026 Omniverse Compute · omc.network</div>
@@ -414,6 +453,7 @@
   <script src="assets/js/lang/en.js"></script>
   <script src="assets/js/lang/zh.js"></script>
   <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/i18n-meta.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

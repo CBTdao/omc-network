@@ -1,0 +1,84 @@
+/* ============================================================
+   OMC — footer on-chain contract block
+   Loaded by every page, after style.css.
+
+   Kept in its own file on purpose: vercel.json serves /assets/(.*) with
+   `max-age=31536000, immutable`, so appending these rules to style.css would
+   leave returning visitors on the old sheet — and this block unstyled — for
+   up to a year. A new file has no cache entry to invalidate.
+
+   Injected by tools/add-footer-contracts.py.
+   ============================================================ */
+
+.footer-chain {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  padding: 18px 20px 16px;
+  margin-bottom: 26px;
+}
+
+.fc-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.fc-title {
+  font-size: 12px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.fc-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--green);
+  border: 1px solid rgba(47, 191, 113, 0.35);
+  background: rgba(47, 191, 113, 0.1);
+  border-radius: 999px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+.fc-rows { display: grid; gap: 8px; }
+
+.fc-row {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.fc-k { color: var(--muted-2); font-size: 12.5px; }
+
+.fc-v {
+  color: var(--muted);
+  font-size: 12.5px;
+  word-break: break-all;
+  text-decoration: none;
+}
+
+a.fc-v:hover code { color: var(--accent-2); }
+
+.fc-v code {
+  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.fc-note {
+  color: var(--muted-2);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+@media (max-width: 720px) {
+  .fc-row { grid-template-columns: 1fr; gap: 2px; }
+  .footer-chain { padding: 16px; }
+}

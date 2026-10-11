@@ -15,7 +15,7 @@ Turn idle GPUs worldwide into a high-throughput, low-cost, censorship-resistant 
 [![Supply](https://img.shields.io/badge/Supply-1%2C000%2C000%2C000%20OMC-8b5cf6?style=flat-square)](#tokenomics)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
-[Website](#-website) · [Whitepaper](docs/OMC-Whitepaper-EN.pdf) · [Testnet](#-testnet) · [Airdrop](#-airdrop) · [X / Twitter](https://x.com/Omniverse_Depin) · [Telegram](https://t.me/OmniverseCompute)
+[Website](#-website) · [Whitepaper](docs/OMC-Whitepaper-EN.pdf) · [Testnet](#-testnet) · [Airdrop](#-airdrop) · [Security](SECURITY.md) · [X / Twitter](https://x.com/Omniverse_Depin) · [Telegram](https://t.me/OmniverseCompute)
 
 </div>
 
@@ -125,6 +125,23 @@ OMC runs on **BNB Smart Chain Testnet**.
 > community airdrop, in line with the roadmap in the whitepaper. Nothing on this page refers
 > to a mainnet asset today.
 
+### Security
+
+**Not audited.** The contracts have not been reviewed by a third-party firm. The team runs
+its own static analysis and property-based tests and publishes the results — see
+[`SECURITY.md`](SECURITY.md) and [`docs/security-review.md`](docs/security-review.md).
+
+One **High-severity defect** was found in that self-review and is fixed in this repository:
+`OMCComputeMarket.fail()` applied the published slashing split twice and therefore reverted
+for every non-zero penalty, making the failure/refund path unusable. **The fix is not yet
+deployed** — the testnet addresses above still run the pre-fix bytecode, and
+[`contracts/security/bytecode-report.json`](contracts/security/bytecode-report.json) records
+the hashes that prove it.
+
+- [ ] Redeploy `OMCStaking` + `OMCComputeMarket` to testnet with the fix
+- [ ] Third-party audit before mainnet
+- [ ] Move owner / scheduler / verifier off a single EOA
+
 ### Run a Node in 4 Steps
 
 ```bash
@@ -193,7 +210,7 @@ omc-network/
 ├── LICENSE
 ├── CONTRIBUTING.md
 ├── .gitignore
-├── website/                  ← Official website (static, 7 languages)
+├── website/                  ← Official website (static, en + zh)
 │   ├── index.html            ← Home (incl. live airdrop progress ticker)
 │   ├── whitepaper.html       ← Whitepaper (web rendering)
 │   ├── testnet.html          ← Testnet & node onboarding
@@ -210,15 +227,19 @@ omc-network/
 │       │   ├── main.js
 │       │   ├── airdrop-stats.js ← Home-page progress ticker
 │       │   ├── news.js       ← News feed renderer
-│       │   └── lang/         ← en · zh · ja · es · ko · pt · fr
+│       │   └── lang/         ← en · zh
 │       └── docs/             ← Whitepaper PDFs
 ├── contracts/                ← Testnet contracts + deploy tooling
 │   ├── OMCTestToken.sol      ← tOMC: transferable ERC-20 + faucet (20/day, 5 lifetime)
 │   ├── OMCStaking.sol        ← tier stake · heartbeat · real slashing
+│   ├── OMCComputeMarket.sol  ← job escrow · assignment · settlement · disputes
+│   ├── test/                 ← property-based suite (forge test)
+│   ├── security/             ← self-review harness, snapshots, tool output
 │   ├── tools/compile.js      ← solc build (viaIR, paris evm)
 │   ├── tools/deploy.js       ← deploy / verify / handover
 │   └── deployments/bsc-testnet.json ← live addresses (git-tracked)
-└── docs/                     ← Protocol documentation
+├── SECURITY.md               ← security posture, disclosures, known issues
+└── docs/                     ← Whitepaper PDFs + security-review.md
 ```
 
 ---
@@ -227,7 +248,7 @@ omc-network/
 
 **Live:** https://omc.network/
 
-The official site is a dependency-free static build with **7-language support** (English · 中文 · 日本語 · Español · 한국어 · Português · Français).
+The official site is a dependency-free static build with **English and Chinese** support (`en` · `zh`). Other locales were retired on 2026-10-11.
 
 | Page | URL |
 |---|---|
@@ -277,7 +298,8 @@ We welcome contributions. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before 
 | Compute research forum (DCF) | [forum.omc.network](https://forum.omc.network) |
 | X / Twitter | [@Omniverse_Depin](https://x.com/Omniverse_Depin) |
 | Telegram | [t.me/OmniverseCompute](https://t.me/OmniverseCompute) |
-| tOMC test token | [`0xBEB21E40...50G71`](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671) |
+| tOMC test token | [`0xBEB21E40...450671`](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671) |
+| Tokenomics (supply, vesting, emission) | [omc.network/tokenomics](https://omc.network/tokenomics) |
 | OMCStaking | [`0x3226dffE...E36e6`](https://testnet.bscscan.com/address/0x3226dffed51e28cef526f8c078b2ec9a092e36e6) |
 | OMCComputeMarket | [`0x3B81E6ed...7FEF1`](https://testnet.bscscan.com/address/0x3b81e6edfba775b4e53694f531c3b0236d77fef1) |
 

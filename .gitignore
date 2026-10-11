@@ -45,6 +45,11 @@ typechain-types/
 .coverage
 coverage.json
 
+# ---- Foundry (contracts/foundry.toml) ----
+contracts/out/
+contracts/cache/
+__pycache__/
+
 # ---- Misc ----
 tmp/
 temp/

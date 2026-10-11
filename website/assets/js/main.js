@@ -86,8 +86,12 @@ function showToast(msg) {
    AIRDROP — participate & accumulate (frontend demo)
    Rules:
    - Pool: 20,000,000 OMC = 1,000,000 entries × 20 OMC
-   - Per wallet: max 5 entries (lifetime) = 100 OMC, which is exactly the
+   - Per wallet: base 5 entries (lifetime) = 100 OMC, which is exactly the
      tier-2 staking minimum, so a maxed-out airdrop reaches tier 2
+   - Referral bonus: each friend who joins through your link adds +1 entry,
+     up to +5, so the cap can reach 10 entries = 200 OMC. The bonus is
+     read from window.OMCReferral (assets/js/referral.js); the pool itself
+     is unchanged — referral entries only redistribute slots inside it.
    - Daily cap: 1 entry / calendar day (resets 00:00 UTC+8)
    - During the campaign: page only DISPLAYS accumulated OMC
    - Claim window OPENS AT TGE (mainnet launch), which the white paper
@@ -96,7 +100,7 @@ function showToast(msg) {
    ============================================================ */
 const AIRDROP_KEY = "omc_airdrop_v1";
 const PER_ENTRY = 20;                                   // OMC per entry
-const MAX_TOTAL = 5;                                    // per wallet, lifetime
+const MAX_TOTAL = 5;                                    // base per wallet, lifetime
 const MAX_DAILY = 1;                                    // per UTC+8 calendar day
 /* ============================================================
    AIRDROP COST — PUBLIC: free to participate; the UI never quotes
@@ -144,6 +148,23 @@ function todayCount(entries) {
   return n;
 }
 function shortAddr(a) { return a.slice(0, 6) + "…" + a.slice(-4); }
+
+/* Per-wallet entry cap = base 5 + referral bonus (0…5), read from
+   assets/js/referral.js. Falls back to the base cap when that script is
+   absent, so main.js stays usable on its own. */
+function maxTotal() {
+  var r = window.OMCReferral;
+  if (r && typeof r.totalCap === "function") {
+    var v = Number(r.totalCap());
+    if (v >= MAX_TOTAL) return v;
+  }
+  return MAX_TOTAL;
+}
+function maxTotalDisplay() {
+  var r = window.OMCReferral;
+  var top = r && r.bonusMax ? MAX_TOTAL + Number(r.bonusMax) : MAX_TOTAL;
+  return maxTotal() + " / " + top;
+}
 
 /* Set emoji + span text of a labeled button ("🦊 <span>…</span>") */
 function setLabeledBtn(btn, emoji, text) {
@@ -199,7 +220,7 @@ function renderAirdrop() {
   /* Stats */
   const ct = document.getElementById("claimsTotal");
   const cd = document.getElementById("claimsToday");
-  if (ct) ct.textContent = total + " / " + MAX_TOTAL;
+  if (ct) ct.textContent = total + " / " + maxTotal();
   if (cd) cd.textContent = today + " / " + MAX_DAILY;
 
   /* Participate button + hint */
@@ -207,14 +228,14 @@ function renderAirdrop() {
   const hint = document.getElementById("claimHint");
   const ready =
     !notStarted && !ended && connected &&
-    doneCount === TASK_IDS.length && total < MAX_TOTAL && today < MAX_DAILY;
+    doneCount === TASK_IDS.length && total < maxTotal() && today < MAX_DAILY;
   if (p) p.disabled = !ready;
   if (hint) {
     if (notStarted) hint.textContent = i18n("js.hint_not_started");
     else if (ended) hint.textContent = i18n("js.hint_ended");
     else if (!connected) hint.textContent = i18n("js.hint_step1");
     else if (doneCount < TASK_IDS.length) hint.textContent = i18n("js.hint_step2");
-    else if (total >= MAX_TOTAL) hint.textContent = i18n("js.hint_limit_total");
+    else if (total >= maxTotal()) hint.textContent = i18n("js.hint_limit_total", { n: maxTotal() });
     else if (today >= MAX_DAILY) hint.textContent = i18n("js.hint_limit_daily");
     else hint.textContent = i18n("js.hint_ready");
   }
@@ -269,15 +290,21 @@ if (participateBtn) {
     if (Date.now() < AIRDROP_START) { showToast(i18n("js.toast_not_started")); return; }
     if (Date.now() > AIRDROP_END) { showToast(i18n("js.hint_ended")); return; }
     if (!walletAddress()) { showToast(i18n("js.hint_step1")); return; }
-    if (entries.length >= MAX_TOTAL) { showToast(i18n("js.hint_limit_total")); return; }
+    if (entries.length >= maxTotal()) { showToast(i18n("js.hint_limit_total", { n: maxTotal() })); return; }
     if (todayCount(entries) >= MAX_DAILY) { showToast(i18n("js.hint_limit_daily")); return; }
+    const first = entries.length === 0;
     entries.push(Date.now());
     state.entries = entries;
     saveState(state);
+    /* referral.js listens for this and credits the inviter on the first entry */
+    document.dispatchEvent(new CustomEvent("omc:participated", {
+      detail: { total: state.entries.length, first: first }
+    }));
     renderAirdrop();
     showToast(
       i18n("js.toast_participated", {
         t: state.entries.length,
+        c: maxTotal(),
         d: todayCount(state.entries)
       })
     );

@@ -1,0 +1,46 @@
+{
+  "chainId": 97,
+  "block": 136093149,
+  "rpc": "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+  "contracts": {
+    "OMCTestToken": {
+      "address": "0xBEB21E40FB50A0F4ba9287C2058DC7851e450671",
+      "liveBytes": 3474,
+      "liveKeccak256": "58db3baba9754a5d31b6ecda26efef662d93bc39c6818cd85603a4a64d5e7854",
+      "reviewedBytes": 3474,
+      "reviewedKeccak256": "58db3baba9754a5d31b6ecda26efef662d93bc39c6818cd85603a4a64d5e7854",
+      "headBytes": 3474,
+      "headKeccak256": "58db3baba9754a5d31b6ecda26efef662d93bc39c6818cd85603a4a64d5e7854",
+      "reviewedMatchesLive": true,
+      "headMatchesLiveModuloImmutables": true,
+      "differingRegions": 0,
+      "verdict": "reviewed build reproduces the deployed code exactly"
+    },
+    "OMCStaking": {
+      "address": "0x3226dffED51e28CEF526F8c078B2EC9a092E36e6",
+      "liveBytes": 13035,
+      "liveKeccak256": "bc0c56c9c05696f2616565f7f4fab162bfb6a1ac237e58a69218908d9269e421",
+      "reviewedBytes": 12996,
+      "reviewedKeccak256": "be2cf0cca7f10bc1cef6bf2ef61ffe26ddc38d208e9f8996826196dc7f630f45",
+      "headBytes": 13035,
+      "headKeccak256": "ea04777fb94322be10e5056249adb9f4df72b693da1c8c7d79a6a69c2d88e76e",
+      "reviewedMatchesLive": false,
+      "headMatchesLiveModuloImmutables": true,
+      "differingRegions": 66,
+      "verdict": "deployed code == pre-fix build, differing only at 66 zero-filled region(s) (reviewed build differs)"
+    },
+    "OMCComputeMarket": {
+      "address": "0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1",
+      "liveBytes": 11774,
+      "liveKeccak256": "ba66b170233aac13950af3fdbb423050fadd53510967d6503e62b79b98cb4d22",
+      "reviewedBytes": 11329,
+      "reviewedKeccak256": "7c664e9d6f8153d49c66d3b0d4a68df5c50fabf45738aaebaf84bfa98f988b1f",
+      "headBytes": 11774,
+      "headKeccak256": "f0531f167e1bf7c197c3e40cb9dac41bf5c0cfeab09f1a568c15c3e27cf17ad5",
+      "reviewedMatchesLive": false,
+      "headMatchesLiveModuloImmutables": true,
+      "differingRegions": 81,
+      "verdict": "deployed code == pre-fix build, differing only at 81 zero-filled region(s) (reviewed build differs)"
+    }
+  }
+}
