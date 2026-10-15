@@ -12,7 +12,11 @@ set -u
 
 cd "$(dirname "$0")/../.." || exit 1
 
-NODE="C:/Users/Administrator/.workbuddy/binaries/node/versions/22.22.2-6/node.exe"
+# Resolve node at runtime. Hardcoding a version directory silently breaks the
+# moment the platform swaps the managed build underneath us (it has happened:
+# 22.22.2-3 -> 22.22.2-6), and the failure mode is "no output", not an error.
+NODE="$(ls -d "C:/Users/Administrator/.workbuddy/binaries/node/versions/"*/node.exe 2>/dev/null | sort -V | tail -1)"
+if [ -z "$NODE" ]; then echo "no managed node.exe found" >&2; exit 1; fi
 export NODE_PATH="C:/Users/Administrator/.workbuddy/binaries/node/workspace/node_modules"
 
 PRICE="${1:-5}"

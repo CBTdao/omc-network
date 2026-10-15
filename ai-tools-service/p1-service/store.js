@@ -59,9 +59,24 @@ function specHashFor(imageHash, tier, verifyPolicy, protection) {
   return ethers.keccak256(ethers.toUtf8Bytes(pre));
 }
 
-/** Requester side: park the input bytes and the commitment next to each other. */
+/**
+ * Requester side: park the input bytes and the commitment next to each other.
+ *
+ * A job id is only unique per chain, not per machine: the next job this market
+ * ever creates reuses id 4, 5, 6… and the directories from earlier runs are
+ * still sitting there. Parking a new spec therefore has to wipe any previous
+ * result for that id, otherwise the scheduler reads the previous run's
+ * result.meta.json + result.png, decides the bytes do not match the claimed
+ * digest, and calls fail(BAD_OUTPUT) — which slashes 30% of the provider's
+ * stake for a delivery that never happened. That is not a hypothetical: the
+ * 2026-10-11 failure-path rehearsal left a deliberately mismatched pair in
+ * .p1-jobs/4/, and the first real-inference run on 10-15 lost 6 tOMC to it.
+ */
 function putSpec(jobId, bytes, meta) {
   ensure(jobDir(jobId));
+  for (const p of [resultPath(jobId), resultMetaPath(jobId)]) {
+    if (fs.existsSync(p)) fs.rmSync(p, { force: true });
+  }
   fs.writeFileSync(specPath(jobId), bytes);
   const imageHash = hashBytes(bytes);
   const full = Object.assign({

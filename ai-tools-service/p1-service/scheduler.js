@@ -236,6 +236,12 @@ async function reportAvailability(mkt, sk) {
   log("liveness registry: " + snap.live.length + " live, " + snap.stale.length + " stale" +
       (snap.allowlist.length ? ", " + snap.allowlist.length + " from OMC_LIVE_NODES" : "") +
       "  (ttl " + Math.round(snap.ttlMs / 1000) + "s)");
+  /* The warning below must be derived from the same reads that produce the
+     per-node lines, not from the snapshot taken at the top of this function.
+     A worker that announces between the two reads used to make the detail say
+     live=true while the summary said "no live worker" — a log that contradicts
+     itself, which is exactly how a real dispatch problem gets waved through. */
+  let anyLive = false;
   for (let i = 0; i < n; i++) {
     const addr = await sk.nodeAddresses(i);
     let s;
@@ -243,12 +249,13 @@ async function reportAvailability(mkt, sk) {
     catch (e) { s = { tier: (await sk.node(addr)).tier, stake: (await sk.node(addr)).stake, overdue: await sk.isOverdue(addr) }; }
     const el = await mkt.isEligible(addr, Number(s.tier));
     const live = liveness.isLive(addr);
+    if (live) anyLive = true;
     log("node " + addr + " tier=" + s.tier + " stake=" + ethers.formatEther(s.stake) +
         " overdue=" + s.overdue + " eligible=" + el + " live=" + live +
         (s.overdue ? "  <-- HEARTBEAT OVERDUE, page is dark" : "") +
         (!live ? "  <-- no worker running" : ""));
   }
-  if (!snap.live.length && !ASSIGN_ANYWAY) {
+  if (!anyLive && !ASSIGN_ANYWAY) {
     log("WARNING: no live worker — new jobs will stay ESCROWED until one announces");
   }
 }
