@@ -2,7 +2,7 @@
 
 **These contracts are testnet-only.** They are deployed to BNB Smart Chain testnet
 (chainId 97), hold no value, and nothing here promises or implies a return. The
-mainnet deployment and TGE are scheduled for **2027-01-01**, alongside the opening
+mainnet deployment and TGE are scheduled for **2027 Q2–Q3**, alongside the opening
 of the community airdrop.
 
 ## Not audited

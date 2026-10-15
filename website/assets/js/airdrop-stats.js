@@ -24,8 +24,13 @@ window.OMC_STATS = {
   pool: 20000000,                                // OMC reserved for the airdrop
   perEntry: 20,                                  // OMC per entry
   totalEntries: 1000000,                         // pool ÷ perEntry
-  startAt: "2027-01-01T00:00:00+08:00",
-  endAt: "2027-04-01T23:59:59+08:00",
+  /* Participation opens together with mainnet. The public commitment is a
+     window (2027 Q2–Q3), not a day, so these two instants are the EARLIEST
+     bound of that window — the phase machine needs concrete times and the
+     pre-open state must not flip early. Re-pin both the moment the exact
+     TGE date is announced; the window runs three months from opening. */
+  startAt: "2027-04-01T00:00:00+08:00",
+  endAt: "2027-07-01T23:59:59+08:00",
   refreshMs: 6000,                               // poll / advance cadence
   maxRows: 10
 };

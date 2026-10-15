@@ -11,7 +11,7 @@ Turn idle GPUs worldwide into a high-throughput, low-cost, censorship-resistant 
 [![Token](https://img.shields.io/badge/tOMC%20test%20token-BEP--20-2b6bf3?style=flat-square)](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671)
 [![Chain](https://img.shields.io/badge/Chain-BNB%20Smart%20Chain-f0b90b?style=flat-square)](https://www.bnbchain.org/)
 [![Testnet](https://img.shields.io/badge/Testnet-Live-22c55e?style=flat-square)](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671)
-[![Mainnet](https://img.shields.io/badge/Mainnet-TGE%202027--01--01-6b7280?style=flat-square)](#mainnet)
+[![Mainnet](https://img.shields.io/badge/Mainnet-TGE%202027%20Q2--Q3-6b7280?style=flat-square)](#mainnet)
 [![Supply](https://img.shields.io/badge/Supply-1%2C000%2C000%2C000%20OMC-8b5cf6?style=flat-square)](#tokenomics)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
@@ -121,7 +121,7 @@ OMC runs on **BNB Smart Chain Testnet**.
 | Retired addresses | `0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6` (earlier test token), `0xD4b1bB57637eFb62016a81B584fa8BE66Fb482d6` / `0xA49537fA46172693c553E9A1824CdF7CA810AAFc` (earlier staking), `0xBd1575bE1b0b9349468482eA2B1D4611fcD13CaE` / `0x5795393f33F6E27797499b1C61422ACeF0555709` (earlier markets), `0x3226dffED51e28CEf526F8c078B2EC9a092E36e6` / `0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1` (pre-fix staking / market — superseded 2026-10-11) — **do not use** |
 
 > **Mainnet status.** All addresses above are BNB Smart Chain **testnet** deployments. The
-> mainnet deployment and TGE are scheduled for **2027-01-01**, alongside the opening of the
+> mainnet deployment and TGE are scheduled for **2027 Q2–Q3**, alongside the opening of the
 > community airdrop, in line with the roadmap in the whitepaper. Nothing on this page refers
 > to a mainnet asset today.
 
@@ -195,9 +195,9 @@ Step-by-step walkthrough: [Run a GPU node on the testnet](https://forum.omc.netw
 - [x] Public testnet launch
 - [ ] 2% community airdrop campaign
 
-**Phase 2 · Q1 2027 — Mainnet, TGE & Staking**
-- [ ] Mainnet launch and TGE — **2027-01-01**
-- [ ] Airdrop participation and claims open — **2027-01-01**
+**Phase 2 · 2027 Q2–Q3 — Mainnet, TGE & Staking**
+- [ ] Mainnet launch and TGE — **2027 Q2–Q3**
+- [ ] Airdrop participation and claims open — **2027 Q2–Q3**
 - [ ] Compute mining activation
 - [ ] HuggingFace & Blender plugin integration
 
