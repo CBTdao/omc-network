@@ -622,7 +622,10 @@
       });
     }
 
-    if (window.i18nApply) window.i18nApply();
+    /* Re-apply translations for any dynamic content added after i18n.js ran,
+       but respect the CURRENT language — the old no-arg call defaulted to en
+       and silently reset a Chinese visitor back to English. */
+    if (window.i18nApply) window.i18nApply(window.i18nCurrent ? window.i18nCurrent() : "en");
 
     refreshAll().catch(function (e) {
       log("read failed — " + ((e && e.message) || "rpc"), "e");
