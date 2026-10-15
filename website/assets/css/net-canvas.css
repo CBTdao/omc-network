@@ -1,0 +1,23 @@
+/* ============================================================
+   OMC — Compute mesh background (decorative)
+   Brand: deep navy + BNB blue (#2b6bf3 / #5ea2ff) + violet (#7c3aed)
+   Pure Canvas 2D, no external libs, no network calls.
+   ============================================================ */
+
+.net-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;            /* sits above body ambient glow, below hero text */
+  pointer-events: none;  /* never blocks clicks/scroll */
+  opacity: 0.6;
+}
+
+/* keep hero copy above the canvas */
+.hero .container { position: relative; z-index: 2; }
+
+/* Respect users who ask for less motion: drop the canvas entirely */
+@media (prefers-reduced-motion: reduce) {
+  .net-canvas { display: none; }
+}

@@ -32,6 +32,7 @@
   <meta name="twitter:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
   <meta name="description" data-i18n-content="meta.desc_compute" content="Configure and escrow a GPU compute job on the OMC network. Pick a hardware tier, choose a verification policy, and pay only for work that passes verification.">
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/net-canvas.css" />
   <link rel="stylesheet" href="assets/css/wallet-support.css" />
   <link rel="stylesheet" href="assets/css/footer-chain.css" />
   <link rel="stylesheet" href="assets/css/stake.css" />
@@ -73,6 +74,7 @@
 
   <!-- ===== HERO ===== -->
   <header class="hero" style="padding-bottom: 44px;">
+    <canvas class="net-canvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="hero-badge"><span class="dot"></span><span data-i18n="cst.badge">Phase 1 — Requester side on testnet</span></div>
       <h1><span data-i18n="cst.t1">Buy Compute.</span><br /><span class="grad" data-i18n="cst.t2">Pay for Work That Verifies.</span></h1>
@@ -449,5 +451,6 @@
   <script src="assets/js/compute-core.js"></script>
   <script src="assets/js/compute.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/net-canvas.js" defer></script>
 </body>
 </html>
