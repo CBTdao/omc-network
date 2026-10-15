@@ -115,10 +115,10 @@ OMC runs on **BNB Smart Chain Testnet**.
 | Native Symbol | `tBNB` |
 | Gas faucet (tBNB) | https://testnet.bnbchain.org/faucet-smart |
 | **tOMC (test token)** | [`0xBEB21E40FB50A0F4ba9287C2058DC7851e450671`](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671) — transferable ERC-20. **The faucet pays 20 tOMC per claim, once per day, five claims per address maximum** (enforced on-chain by the token contract). Five claims = 100 tOMC, exactly the tier-2 staking minimum. |
-| **OMCStaking** | [`0x3226dffED51e28CEf526F8c078B2EC9a092E36e6`](https://testnet.bscscan.com/address/0x3226dffed51e28cef526f8c078b2ec9a092e36e6) — tier staking, node heartbeat liveness, per-tier minimums (20 / 100 / 500 / 1 000 / 5 000 tOMC), slashing split 50% requesters / 30% treasury / 20% burn. Emission is clamped by a published ceiling: `min(emissionPerSecond, totalStake × maxAprBps ÷ 10 000 ÷ 365 days)`. |
-| **OMCComputeMarket** | [`0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1`](https://testnet.bscscan.com/address/0x3b81e6edfba775b4e53694f531c3b0236d77fef1) — job escrow, assignment, settlement and dispute resolution. 3% protocol fee (2.7% when paid in OMC), 48-hour dispute window. |
+| **OMCStaking** | [`0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6`](https://testnet.bscscan.com/address/0xa70b8506a1a614fd83d0c70d73da1e21fdcf1fb6) — tier staking, node heartbeat liveness (24 h window + 6 h grace), per-tier minimums (20 / 100 / 500 / 1 000 / 5 000 tOMC), slashing split 50% requesters / 30% treasury / 20% burn. Emission is clamped by a published ceiling: `min(emissionPerSecond, totalStake × maxAprBps ÷ 10 000 ÷ 365 days)`. |
+| **OMCComputeMarket** | [`0x7664f1e73c2CBCbaFE636a653C173378C369C40A`](https://testnet.bscscan.com/address/0x7664f1e73c2cbcbaafe636a653c173378c369c40a) — job escrow, assignment, settlement and dispute resolution. 3% protocol fee (2.7% when paid in OMC), 48-hour dispute window. |
 | Legacy points contract | `0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5` — points only, **cannot transfer or stake**; kept for reference |
-| Retired addresses | `0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6` (earlier test token), `0xD4b1bB57637eFb62016a81B584fa8BE66Fb482d6` / `0xA49537fA46172693c553E9A1824CdF7CA810AAFc` (earlier staking), `0xBd1575bE1b0b9349468482eA2B1D4611fcD13CaE` / `0x5795393f33F6E27797499b1C61422ACeF0555709` (earlier markets) — **do not use** |
+| Retired addresses | `0x8B6a8A46cB2779688212f033e6a4Fc8e604363f6` (earlier test token), `0xD4b1bB57637eFb62016a81B584fa8BE66Fb482d6` / `0xA49537fA46172693c553E9A1824CdF7CA810AAFc` (earlier staking), `0xBd1575bE1b0b9349468482eA2B1D4611fcD13CaE` / `0x5795393f33F6E27797499b1C61422ACeF0555709` (earlier markets), `0x3226dffED51e28CEf526F8c078B2EC9a092E36e6` / `0x3B81E6edfbA775B4E53694F531C3b0236D77FEF1` (pre-fix staking / market — superseded 2026-10-11) — **do not use** |
 
 > **Mainnet status.** All addresses above are BNB Smart Chain **testnet** deployments. The
 > mainnet deployment and TGE are scheduled for **2027-01-01**, alongside the opening of the
@@ -133,29 +133,35 @@ its own static analysis and property-based tests and publishes the results — s
 
 One **High-severity defect** was found in that self-review and is fixed in this repository:
 `OMCComputeMarket.fail()` applied the published slashing split twice and therefore reverted
-for every non-zero penalty, making the failure/refund path unusable. **The fix is not yet
-deployed** — the testnet addresses above still run the pre-fix bytecode, and
-[`contracts/security/bytecode-report.json`](contracts/security/bytecode-report.json) records
-the hashes that prove it.
+for every non-zero penalty, making the failure/refund path unusable. **The fix is deployed** —
+the live testnet addresses above carry the reviewed build:
+[`contracts/security/bytecode-report.json`](contracts/security/bytecode-report.json) verifies
+the deployed bytecode of `OMCStaking` and `OMCComputeMarket` against the reviewed build
+(identical except at the expected immutable regions).
 
-- [ ] Redeploy `OMCStaking` + `OMCComputeMarket` to testnet with the fix
+- [x] Redeploy `OMCStaking` + `OMCComputeMarket` to testnet with the fix — done 2026-10-11, verified on-chain
 - [ ] Third-party audit before mainnet
 - [ ] Move owner / scheduler / verifier off a single EOA
 
-### Run a Node in 4 Steps
+### Run a Node
 
 ```bash
 # 1. Get test BNB (tBNB) from the faucet for gas
 #    https://testnet.bnbchain.org/faucet-smart
 
-# 2. Pull the open-source node client
-git clone https://github.com/CBTdao/omc-network.git
-cd omc-network/node
-docker compose up     # any CUDA / ROCm machine
+# 2. Claim tOMC from the token faucet (20 per claim, once a day, five claims max)
+#    — five claims is exactly the 100 tOMC tier-2 minimum
 
-# 3. Stake tOMC proportional to your hardware tier and register your node heartbeat
-# 4. Receive matched tasks, execute in sandbox, pass dual verification, collect rewards
+# 3. Clone the repo and bootstrap a node: it stakes and registers on-chain
+git clone https://github.com/CBTdao/omc-network.git
+cd omc-network/ai-tools-service/p1-service
+node bootstrap-node.js          # needs Node.js + ethers; see this folder's README
+
+# 4. Keep the worker running — it heartbeats (24 h + 6 h grace) and picks up jobs
+node node-worker.js
 ```
+
+Step-by-step walkthrough: [Run a GPU node on the testnet](https://forum.omc.network/guides/run-a-gpu-node-on-the-testnet).
 
 ---
 
@@ -300,8 +306,8 @@ We welcome contributions. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before 
 | Telegram | [t.me/OmniverseCompute](https://t.me/OmniverseCompute) |
 | tOMC test token | [`0xBEB21E40...450671`](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671) |
 | Tokenomics (supply, vesting, emission) | [omc.network/tokenomics](https://omc.network/tokenomics) |
-| OMCStaking | [`0x3226dffE...E36e6`](https://testnet.bscscan.com/address/0x3226dffed51e28cef526f8c078b2ec9a092e36e6) |
-| OMCComputeMarket | [`0x3B81E6ed...7FEF1`](https://testnet.bscscan.com/address/0x3b81e6edfba775b4e53694f531c3b0236d77fef1) |
+| OMCStaking | [`0xa70B8506...fcf1fB6`](https://testnet.bscscan.com/address/0xa70b8506a1a614fd83d0c70d73da1e21fdcf1fb6) |
+| OMCComputeMarket | [`0x7664f1e7...369C40A`](https://testnet.bscscan.com/address/0x7664f1e73c2cbcbaafe636a653c173378c369c40a) |
 
 ---
 
