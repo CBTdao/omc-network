@@ -598,6 +598,18 @@
       paintAll();
     });
 
+    /* Re-render language-dependent dynamic content when the visitor switches
+       language. Without this, i18n.js only repaints the static [data-i18n]
+       elements; the tier buttons, quote breakdown, ladder table and counters
+       would stay in whatever language was active at first paint — so the
+       compute station (the page's main content) never became Chinese. */
+    document.addEventListener("i18n:changed", function () {
+      renderTiers();
+      renderLadderTable();
+      renderNetwork();
+      renderQuote();
+    });
+
     var conn = $("cmpConnect");
     if (conn) {
       conn.addEventListener("click", function () {
