@@ -41,6 +41,8 @@ window.I18N.zh = {
   "footer.h_ecosystem": "生态",
   "f.aitop": "AITop — AI 工具对比",
   "f.dcf": "DCF — 算力论坛",
+  "f.barbarian": "蛮荒时代",
+  "meta.title_barbarian": "蛮荒时代 — Omniverse Compute (OMC) 社区",
   "f.wp": "白皮书",
   "f.testnet": "测试网",
   "f.stake": "质押",

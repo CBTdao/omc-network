@@ -44,6 +44,8 @@ window.I18N.en = {
   "footer.h_ecosystem": "Ecosystem",
   "f.aitop": "AITop — AI Tool Comparisons",
   "f.dcf": "DCF — Compute Forum",
+  "f.barbarian": "Barbarian Age",
+  "meta.title_barbarian": "Barbarian Age — Omniverse Compute (OMC) Community",
   "f.wp": "Whitepaper",
   "f.testnet": "Testnet",
   "f.stake": "Staking",
