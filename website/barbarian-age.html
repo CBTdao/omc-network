@@ -38,52 +38,77 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
   <style>
-    .game-wrap{max-width:580px;margin:0 auto}
-    .game-badge{display:inline-block;background:rgba(217,138,61,.16);border:1px solid var(--border);color:var(--accent2);
-      font-size:11px;padding:3px 10px;border-radius:999px;margin-bottom:12px}
-    .map{width:100%;height:120px;background:#0a0805;border:1px solid var(--border);border-radius:12px;margin-bottom:12px;display:block}
-    .res{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:10px}
-    .r{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:9px 3px;text-align:center}
-    .r .ic{font-size:17px}.r .v{font-size:14px;font-weight:800;margin-top:2px}.r .l{font-size:10px;color:var(--muted)}
-    .r.know .v{color:var(--know,#7aa7e0)}.r.wealth .v{color:#e9c46a}
-    .goal{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:12.5px;line-height:1.7}
-    .goal b{color:var(--accent2)}
-    .bar{height:8px;background:rgba(255,255,255,.08);border-radius:999px;margin-top:7px;overflow:hidden}
-    .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
-    .acts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
-    .btn{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:10px 6px;color:var(--text);
-      font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:.15s;font-family:inherit}
-    .btn:hover{background:rgba(217,138,61,.12);border-color:var(--accent)}
-    .btn:active{transform:translateY(1px)}
-    .btn small{display:block;font-weight:500;color:var(--muted);font-size:10px;margin-top:2px}
-    .btn:disabled{opacity:.4;cursor:not-allowed}
-    .btn.war{border-color:rgba(229,112,95,.45);background:rgba(229,112,95,.08)}
-    .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:10px;display:none}
-    .panel.show{display:block}
-    .panel h3{font-size:13px;color:var(--accent2);margin-bottom:8px;cursor:pointer;user-select:none}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-    .tile{background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:10px;padding:8px;font-size:11.5px;cursor:pointer;text-align:left;color:var(--text);font-family:inherit;width:100%}
-    .tile:hover{border-color:var(--accent)}
+    :root{
+      --g-bg:#15110a; --g-panel:#1f1810; --g-panel2:#241c12; --g-border:#4a3a22; --g-border2:#6b5226;
+      --g-text:#f1e6cf; --g-muted:#b9a880; --g-bronze:#d9983d; --g-bronze2:#e8b85a; --g-stone:#cdbf9f;
+      --g-red:#cf5b46; --g-green:#9bbf5a; --g-blue:#7aa7e0; --g-shadow:rgba(0,0,0,.45);
+    }
+    .game-badge{display:inline-block;background:rgba(217,138,61,.16);border:1px solid var(--g-border2);color:var(--g-bronze2);
+      font-size:11px;padding:3px 10px;border-radius:999px;margin-top:8px}
+    .ron{max-width:760px;margin:0 auto;background:var(--g-bg);border:1px solid var(--g-border2);
+      border-radius:14px;overflow:hidden;box-shadow:0 10px 40px var(--g-shadow)}
+    .ron-head{padding:10px 14px;border-bottom:1px solid var(--g-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;
+      background:linear-gradient(180deg,#2a2113,#1b140c)}
+    .ron-head .ttl{font-family:Georgia,"Times New Roman",serif;font-size:18px;color:var(--g-bronze2);font-weight:700;letter-spacing:.5px}
+    .ron-head .ttl small{display:block;font-size:10px;color:var(--g-muted);font-family:-apple-system,sans-serif;letter-spacing:0;font-weight:400;margin-top:2px}
+    .ron-head .meta{font-size:11px;color:var(--g-muted);text-align:right;line-height:1.5}
+    .ron-head .meta b{color:var(--g-text)}
+    .resbar{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--g-border);border-bottom:1px solid var(--g-border2)}
+    .rc{background:var(--g-panel2);padding:7px 2px;text-align:center;position:relative}
+    .rc .ic{font-size:16px;line-height:1}
+    .rc .v{font-size:14px;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums}
+    .rc .lb{font-size:9px;color:var(--g-muted);margin-top:1px;white-space:nowrap}
+    .rc.locked{opacity:.42}
+    .rc.locked .v{color:var(--g-muted)}
+    .rc .v.hot{color:var(--g-bronze2)}
+    .viewport{position:relative;background:#211a0f;border-bottom:1px solid var(--g-border)}
+    #map{display:block;width:100%;height:210px}
+    .minimap{position:absolute;right:8px;bottom:8px;width:120px;height:80px;border:1px solid var(--g-border2);
+      background:rgba(10,8,4,.85);border-radius:6px}
+    .vp-tag{position:absolute;left:8px;top:8px;font-size:10px;color:var(--g-muted);background:rgba(10,8,4,.6);
+      padding:3px 8px;border-radius:5px;border:1px solid var(--g-border)}
+    .cmd{background:var(--g-panel);border-bottom:1px solid var(--g-border)}
+    .tabs{display:flex;border-bottom:1px solid var(--g-border)}
+    .tab{flex:1;background:none;border:none;border-right:1px solid var(--g-border);color:var(--g-muted);
+      font-family:inherit;font-size:12px;font-weight:700;padding:10px 4px;cursor:pointer}
+    .tab:last-child{border-right:none}
+    .tab.on{background:var(--g-panel2);color:var(--g-bronze2)}
+    .cc{display:none;padding:10px}
+    .cc.show{display:block}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+    .btn{background:var(--g-panel2);border:1px solid var(--g-border2);border-radius:9px;padding:9px 4px;color:var(--g-text);
+      font-size:12.5px;font-weight:700;cursor:pointer;text-align:center;font-family:inherit;transition:.12s}
+    .btn:hover:not(:disabled){border-color:var(--g-bronze);background:#2c2113}
+    .btn:active:not(:disabled){transform:translateY(1px)}
+    .btn small{display:block;font-weight:500;color:var(--g-muted);font-size:9.5px;margin-top:2px}
+    .btn:disabled{opacity:.38;cursor:not-allowed}
+    .btn.war{border-color:rgba(207,91,70,.5);background:rgba(207,91,70,.1)}
+    .tile{background:#2a2013;border:1px solid var(--g-border);border-radius:9px;padding:8px;font-size:11.5px;cursor:pointer;
+      text-align:left;color:var(--g-text);font-family:inherit;width:100%}
+    .tile:hover:not(:disabled){border-color:var(--g-bronze)}
     .tile:disabled{opacity:.4;cursor:not-allowed}
-    .tile .nm{font-weight:700;font-size:12px}
-    .tile .ct{color:var(--muted);font-size:10px;margin-top:2px}
-    .tile .own{color:var(--green,#7bbf5a);font-size:10px}
-    .toggle{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px}
-    .tbtn{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:11px;color:var(--text);font-size:13px;font-weight:700;cursor:pointer;text-align:center;font-family:inherit}
-    .tbtn:hover{border-color:var(--accent)}
-    .army{font-size:11.5px;color:var(--muted);margin-bottom:10px}
-    .army b{color:var(--text)}
-    .log{background:#0a0805;border:1px solid var(--border);border-radius:12px;padding:10px 12px;height:130px;overflow:auto;font-size:12px;color:var(--muted)}
-    .log p{margin:2px 0;line-height:1.4}
-    .log .g{color:var(--green,#7bbf5a)}.log .r2{color:var(--red,#e5705f)}.log .y{color:var(--accent2)}.log .k{color:var(--know,#7aa7e0)}.log .w{color:#e9c46a}
-    .foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--muted)}
-    .reset{background:none;border:1px solid var(--border);color:var(--muted);border-radius:9px;padding:7px 12px;cursor:pointer;font-family:inherit}
-    .note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6}
-    .ov{position:fixed;inset:0;background:rgba(8,6,4,.93);display:none;align-items:center;justify-content:center;z-index:50}
-    .ov .c{text-align:center;max-width:330px;padding:28px}
-    .ov h2{font-size:25px;color:var(--accent2);margin-bottom:10px}
-    .ov p{color:var(--muted);margin-bottom:18px;font-size:13px}
-    .ov button{background:var(--accent);color:#1a120a;border:none;border-radius:10px;padding:11px 22px;font-weight:800;cursor:pointer;font-family:inherit}
+    .tile .nm{font-weight:700;font-size:12px;color:var(--g-bronze2)}
+    .tile .ct{color:var(--g-muted);font-size:10px;margin-top:2px}
+    .tile .own{color:var(--g-green);font-size:10px}
+    .tab-h{font-size:11px;color:var(--g-muted);margin:0 0 8px}
+    .goal{padding:9px 12px;border-bottom:1px solid var(--g-border);background:var(--g-panel2);font-size:11.5px;line-height:1.7}
+    .goal b{color:var(--g-bronze2)}
+    .gbar{height:7px;background:rgba(0,0,0,.4);border-radius:99px;margin-top:6px;overflow:hidden}
+    .gbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--g-bronze),var(--g-bronze2));width:0%}
+    .army{padding:8px 12px;border-bottom:1px solid var(--g-border);font-size:11.5px;color:var(--g-muted)}
+    .army b{color:var(--g-text)}
+    .log{height:120px;overflow:auto;padding:8px 12px;font-size:11.5px;color:var(--g-muted);background:#120d07}
+    .log p{margin:1px 0;line-height:1.4}
+    .log .g{color:var(--g-green)}.log .r2{color:var(--g-red)}.log .y{color:var(--g-bronze2)}.log .k{color:var(--g-blue)}.log .w{color:#e8b85a}
+    .foot{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;font-size:11px;color:var(--g-muted)}
+    .reset{background:none;border:1px solid var(--g-border);color:var(--g-muted);border-radius:8px;padding:6px 11px;cursor:pointer;font-family:inherit}
+    .note{font-size:10px;color:var(--g-muted);line-height:1.6}
+    .ov{position:fixed;inset:0;background:rgba(8,6,3,.94);display:none;align-items:center;justify-content:center;z-index:50}
+    .ov .c{text-align:center;max-width:340px;padding:30px}
+    .ov h2{font-family:Georgia,"Times New Roman",serif;font-size:26px;color:var(--g-bronze2);margin-bottom:10px}
+    .ov p{color:var(--g-muted);margin-bottom:18px;font-size:13px;line-height:1.6}
+    .ov button{background:var(--g-bronze);color:#1a120a;border:none;border-radius:10px;padding:11px 22px;font-weight:800;cursor:pointer;font-family:inherit}
   </style>
 </head>
 <body>
@@ -121,34 +146,88 @@
     <div class="container">
       <div class="hero-badge"><span class="dot"></span><span data-gt="badge_tag">Community</span></div>
       <h1 data-gt="h1">🏛️ 蛮荒时代</h1>
-      <p class="sub" data-gt="sub">借鉴《国家的崛起》远古时代（Ancient Age）· 验证版 · 后续再迭代</p>
+      <p class="sub" data-gt="sub">致敬《国家的崛起》远古时代（Ancient Age）· 验证版 · 后续再迭代</p>
       <div class="game-badge" data-gt="badge">DEMO · 致敬远古时代机制，未接任何生态</div>
     </div>
   </header>
 
-  <!-- ===== BODY ===== -->
+  <!-- ===== GAME ===== -->
   <section class="section" style="padding-top: 12px;">
     <div class="container">
-      <div class="game-wrap">
+      <div class="ron">
+        <div class="ron-head">
+          <div class="ttl">🏛️ <span data-gt="h1b">蛮荒时代</span>
+            <small data-gt="subb">致敬《国家的崛起》远古时代 · 验证版</small></div>
+          <div class="meta">
+            <div><span data-gt="age_lb">时代</span> <b>Ancient Age</b> · <span data-gt="nation_lb">文明</span> <b id="nationName">部落</b></div>
+            <div><span data-gt="score_lb">得分</span> <b id="vScore">0</b> · <span id="tick" data-gt="turn">回合 0</span></div>
+          </div>
+        </div>
 
-        <canvas class="map" id="map" aria-label="领土示意图"></canvas>
+        <div class="resbar">
+          <div class="rc"><span class="ic">🍞</span><span class="v" id="vFood">0</span><span class="lb" data-gt="food">食物</span></div>
+          <div class="rc"><span class="ic">🪵</span><span class="v" id="vWood">0</span><span class="lb" data-gt="wood">木材</span></div>
+          <div class="rc"><span class="ic">🪨</span><span class="v" id="vStone">0</span><span class="lb" data-gt="stone">石材</span></div>
+          <div class="rc"><span class="ic">⚙️</span><span class="v" id="vMetal">0</span><span class="lb" data-gt="metal">金属</span></div>
+          <div class="rc"><span class="ic">📜</span><span class="v" id="vKnow">0</span><span class="lb" data-gt="know">知识</span></div>
+          <div class="rc"><span class="ic">🪙</span><span class="v hot" id="vGold">0</span><span class="lb" data-gt="gold">黄金</span></div>
+          <div class="rc locked"><span class="ic">🔒</span><span class="v">—</span><span class="lb" data-gt="oil">石油</span></div>
+        </div>
 
-        <div class="res">
-          <div class="r"><div class="ic">🍞</div><div class="v" id="vFood">0</div><div class="l" data-gt="food">食物</div></div>
-          <div class="r"><div class="ic">🪵</div><div class="v" id="vWood">0</div><div class="l" data-gt="wood">木材</div></div>
-          <div class="r"><div class="ic">⚙️</div><div class="v" id="vMetal">0</div><div class="l" data-gt="metal">金属</div></div>
-          <div class="r wealth"><div class="ic">🪙</div><div class="v" id="vWealth">0</div><div class="l" data-gt="wealth">财富</div></div>
-          <div class="r know"><div class="ic">📜</div><div class="v" id="vKnow">0</div><div class="l" data-gt="know">知识</div></div>
-          <div class="r"><div class="ic">👥</div><div class="v" id="vPop">0/0</div><div class="l" data-gt="pop">人口</div></div>
+        <div class="viewport">
+          <canvas id="map"></canvas>
+          <canvas id="minimap" class="minimap"></canvas>
+          <div class="vp-tag" id="vpTag">领地 Lv1 · 敌族 5</div>
+        </div>
+
+        <div class="cmd">
+          <div class="tabs">
+            <button class="tab on" data-tab="gather" data-gt="ph_gather">采集</button>
+            <button class="tab" data-tab="mil" data-gt="ph_mil">军事</button>
+            <button class="tab" data-tab="city" data-gt="ph_city">城市</button>
+            <button class="tab" data-tab="tech" data-gt="ph_tech">科技</button>
+            <button class="tab" data-tab="wonder" data-gt="ph_wonder">奇观</button>
+          </div>
+          <div class="cmdbody">
+            <div class="cc show" id="c_gather">
+              <p class="tab-h" data-gt="act_hint">采集与研习 · 推进资源</p>
+              <div class="grid3">
+                <button class="btn" id="bFood"><span data-gt="act_food">🍞 采粮</span><small data-gt="act_food_s">+食物</small></button>
+                <button class="btn" id="bWood"><span data-gt="act_wood">🪓 伐木</span><small data-gt="act_wood_s">+木材</small></button>
+                <button class="btn" id="bStone"><span data-gt="act_stone">🪨 采石</span><small data-gt="act_stone_s">+石材</small></button>
+                <button class="btn" id="bMetal"><span data-gt="act_metal">⛏️ 采矿</span><small data-gt="act_metal_s">+金属</small></button>
+                <button class="btn" id="bStudy"><span data-gt="act_study">📜 研习</span><small data-gt="act_study_s">+知识</small></button>
+                <button class="btn" id="bTrade"><span data-gt="act_trade">🪙 经商</span><small data-gt="act_trade_s">+黄金</small></button>
+              </div>
+            </div>
+            <div class="cc" id="c_mil">
+              <p class="tab-h" data-gt="mil_hint">训练军队 · 出征灭敌族</p>
+              <button class="btn war" id="bCampaign" style="width:100%;margin-bottom:8px"><span data-gt="act_camp">🚩 出征</span><small data-gt="act_camp_s">带军灭敌族</small></button>
+              <div class="grid2" id="milList"></div>
+            </div>
+            <div class="cc" id="c_city">
+              <p class="tab-h" data-gt="city_hint">建造城市与建筑 · 扩张领地</p>
+              <div class="grid2" id="cityList"></div>
+            </div>
+            <div class="cc" id="c_tech">
+              <p class="tab-h" data-gt="tech_hint">研习远古科技 · 长效增益</p>
+              <div class="grid2" id="techList"></div>
+            </div>
+            <div class="cc" id="c_wonder">
+              <p class="tab-h" data-gt="wonder_hint">建造远古奇观 · 奇观胜利</p>
+              <div class="grid2" id="wonderList"></div>
+            </div>
+          </div>
         </div>
 
         <div class="goal">
           <span id="goalText" data-gt="goal_h">两条胜利路线（均取自《国家的崛起》）：</span><br>
-          <span>① <b data-gt="goal1b">奇观胜利</b>：建成 <b data-gt="stonehenge">巨石阵</b>（需 木30·金属25·知识25）。</span><br>
+          <span>① <b data-gt="goal1b">奇观胜利</b>：建成 <b data-gt="stonehenge">巨石阵</b>。</span><br>
           <span>② <b data-gt="goal2b">征服胜利</b>：出征把敌族兵力打到 0。</span><br>
-          <span style="color:var(--red)" data-gt="goal_lose">失败：人口归零 = 部落覆灭。</span>
-          <div class="bar"><i id="goalBar"></i></div>
-          <div style="margin-top:5px;color:var(--muted)">
+          <span style="color:var(--g-red)" data-gt="goal_lose">失败：人口归零 = 部落覆灭。</span>
+          <div class="gbar"><i id="goalBar"></i></div>
+          <div style="margin-top:5px;color:var(--g-muted)">
+            <span data-gt="pop">人口</span> <b id="vPop">3/6</b> ·
             <span data-gt="city">城市</span> <b id="vCity">1</b> · <span data-gt="terr">领土</span> Lv<b id="vTerr">1</b> ·
             <span data-gt="wall">围墙</span> <b id="vWall">0</b> · <span data-gt="tower">塔楼</span> <b id="vTower">0</b> ·
             <span data-gt="enemy">敌族兵力</span> <b id="vEnemy">5</b>
@@ -157,34 +236,12 @@
 
         <div class="army" data-gt="army_line">军队：投石兵 <b id="vSlinger">0</b> · 重装步兵 <b id="vHoplite">0</b> · 骑兵 <b id="vHorse">0</b> · 战力 <b id="vPower">0</b></div>
 
-        <div class="acts">
-          <button class="btn" id="bFood"><span data-gt="act_food">🍞 采粮</span><small data-gt="act_food_s">境内+食物</small></button>
-          <button class="btn" id="bWood"><span data-gt="act_wood">🪓 伐木</span><small data-gt="act_wood_s">+木材</small></button>
-          <button class="btn" id="bMetal"><span data-gt="act_metal">⛏️ 采矿</span><small data-gt="act_metal_s">+金属</small></button>
-          <button class="btn" id="bTrade"><span data-gt="act_trade">🪙 经商</span><small data-gt="act_trade_s">+财富</small></button>
-          <button class="btn" id="bStudy"><span data-gt="act_study">📜 研习</span><small data-gt="act_study_s">+知识</small></button>
-          <button class="btn war" id="bCampaign"><span data-gt="act_camp">🚩 出征</span><small data-gt="act_camp_s">带军灭敌族</small></button>
-        </div>
-
-        <div class="toggle">
-          <div class="tbtn" data-panel="city" data-gt="ph_city">🏛️ 城市与建筑</div>
-          <div class="tbtn" data-panel="mil" data-gt="ph_mil">⚔️ 军事</div>
-          <div class="tbtn" data-panel="tech" data-gt="ph_tech">🔬 科技</div>
-          <div class="tbtn" data-panel="wonder" data-gt="ph_wonder">🗿 奇观</div>
-        </div>
-
-        <div class="panel" id="p_city"><h3 data-gt="ph_city">城市与建筑</h3><div class="grid2" id="cityList"></div></div>
-        <div class="panel" id="p_mil"><h3 data-gt="ph_mil">军事</h3><div class="grid2" id="milList"></div></div>
-        <div class="panel" id="p_tech"><h3 data-gt="ph_tech">远古科技</h3><div class="grid2" id="techList"></div></div>
-        <div class="panel" id="p_wonder"><h3 data-gt="ph_wonder">远古奇观</h3><div class="grid2" id="wonderList"></div></div>
-
         <div class="log" id="log"></div>
 
         <div class="foot">
-          <span id="tick" data-gt="turn">回合 0</span>
+          <span class="note" id="noteLine" data-gt="note"></span>
           <button class="reset" id="reset" data-gt="reset">重置存档</button>
         </div>
-        <p class="note" id="noteLine" data-gt="note"></p>
       </div>
     </div>
   </section>
@@ -276,21 +333,16 @@
     </div>
   </footer>
 
-  <div class="ov" id="win">
-    <div class="c">
-      <h2 id="winH" data-gt="win_wonder_h">🗿 奇观胜利！</h2>
-      <p id="winP" data-gt="win_wonder_p"></p>
-      <button id="winClose" data-gt="again">再来一局</button>
-    </div>
-  </div>
-
-  <div class="ov" id="lose">
-    <div class="c">
-      <h2 style="color:var(--red,#e5705f)" data-gt="lose_h">💀 部落覆灭</h2>
-      <p data-gt="lose_p"></p>
-      <button id="loseClose" style="background:var(--red,#e5705f);color:#1a120a" data-gt="again">再来一局</button>
-    </div>
-  </div>
+  <div class="ov" id="win"><div class="c">
+    <h2 id="winH" data-gt="win_wonder_h">🗿 奇观胜利！</h2>
+    <p id="winP" data-gt="win_wonder_p"></p>
+    <button id="winClose" data-gt="again">再来一局</button>
+  </div></div>
+  <div class="ov" id="lose"><div class="c">
+    <h2 style="color:var(--g-red)" data-gt="lose_h">💀 部落覆灭</h2>
+    <p data-gt="lose_p"></p>
+    <button id="loseClose" style="background:var(--g-red);color:#1a120a" data-gt="again">再来一局</button>
+  </div></div>
 
   <script src="assets/js/lang/en.js"></script>
   <script src="assets/js/lang/zh.js"></script>
@@ -301,13 +353,13 @@
   <script src="assets/js/wallet.js"></script>
   <script>
   (function(){
-    var KEY="barbarian_age_save_v4";
-    var S={food:20,wood:15,metal:5,wealth:0,know:0,pop:3,city:1,house:0,enemy:5,turn:0,wonder:0,
+    var KEY="barbarian_age_save_v5";
+    var S={food:20,wood:15,stone:5,metal:5,wealth:0,know:0,pop:3,city:1,house:0,enemy:5,turn:0,wonder:0,
            b:{},u:{slinger:0,hoplite:0,horse:0,merchant:0,supply:0},tech:{},wonderBuilt:{}};
     var ENEMY_CAP=22;
-    var BLD={farm:{cost:{wood:8}},lumber:{cost:{wood:5}},mine:{cost:{wood:8}},temple:{cost:{wood:10,metal:5}},
+    var BLD={farm:{cost:{wood:8}},lumber:{cost:{wood:5}},quarry:{cost:{wood:5}},mine:{cost:{wood:8}},temple:{cost:{wood:10,stone:5}},
       market:{cost:{wood:10}},library:{cost:{wood:12,metal:4}},granary:{cost:{wood:8}},barracks:{cost:{wood:14,metal:6}},
-      stable:{cost:{wood:16,metal:8},req:["horse"]},tower:{cost:{wood:10,metal:6}},wall:{cost:{wood:12,metal:4}},dock:{cost:{wood:12,metal:4}}};
+      stable:{cost:{wood:16,metal:8},req:["horse"]},tower:{cost:{wood:6,stone:8}},wall:{cost:{wood:8,stone:6}},dock:{cost:{wood:12,metal:4}}};
     var UNIT={slinger:{cost:{food:6,wood:2},power:1,req:["barracks"]},hoplite:{cost:{food:10,metal:4},power:2,req:["barracks"]},
       horse:{cost:{food:12,metal:6},power:3,req:["stable","horse"]},merchant:{cost:{food:5}},supply:{cost:{food:8,wood:4}}};
     var TECH={writing:{cost:10},math:{cost:12},bronze:{cost:15},horse:{cost:15},masonry:{cost:12},geometry:{cost:12},mysticism:{cost:12},monarchy:{cost:18}};
@@ -315,40 +367,47 @@
       gardens:{cost:{wood:40,food:30}},greatwall:{cost:{wood:50,metal:40}},oracle:{cost:{know:25,wealth:15}},stonehenge:{cost:{wood:30,metal:25,know:25},victory:true}};
     var GS={
       en:{
-        badge_tag:"Community", h1:"🏛️ Barbarian Age", sub:"Homage to Rise of Nations — Ancient Age · validation build · iterate later",
+        badge_tag:"Community", h1:"🏛️ Barbarian Age", h1b:"Barbarian Age", subb:"Homage to Rise of Nations — Ancient Age · validation build",
+        sub:"Homage to Rise of Nations — Ancient Age · validation build · iterate later",
         badge:"DEMO · homage to the Ancient Age, not tied to any ecosystem",
-        food:"Food",wood:"Wood",metal:"Metal",wealth:"Wealth",know:"Knowledge",pop:"Pop",city:"Cities",terr:"Territory",wall:"Wall",tower:"Tower",enemy:"Rival forces",
+        age_lb:"Age", nation_lb:"Nation", score_lb:"Score",
+        food:"Food",wood:"Wood",stone:"Stone",metal:"Metal",know:"Knowledge",gold:"Gold",oil:"Oil",pop:"Pop",city:"Cities",terr:"Territory",wall:"Wall",tower:"Tower",enemy:"Rival forces",
+        ph_gather:"Gather",ph_mil:"Military",ph_city:"City",ph_tech:"Tech",ph_wonder:"Wonders",
+        act_hint:"Gather & research — advance your resources",mil_hint:"Train armies — campaign to crush the rival",city_hint:"Build cities & structures — expand territory",tech_hint:"Research ancient tech — permanent bonuses",wonder_hint:"Raise ancient wonders — wonder victory",
         goal_h:"Two victory paths (from Rise of Nations):", goal1b:"① Wonder Victory", goal2b:"② Conquest Victory", goal_lose:"Defeat: population hits 0.",
         stonehenge:"Stonehenge",
-        act_food:"🍞 Harvest",act_food_s:"in-territory +food", act_wood:"🪓 Chop",act_wood_s:"+wood", act_metal:"⛏️ Mine",act_metal_s:"+metal",
-        act_trade:"🪙 Trade",act_trade_s:"+wealth", act_study:"📜 Research",act_study_s:"+knowledge", act_camp:"🚩 Campaign",act_camp_s:"lead army vs rival",
-        ph_city:"City & Buildings",ph_mil:"Military",ph_tech:"Ancient Tech",ph_wonder:"Ancient Wonders",
-        army_line:"Army: Slinger ", b_city:"Found City (Settler)",b_house:"House", b_farm:"Farm",b_lumber:"Lumber Camp",b_mine:"Mine",b_temple:"Temple",b_market:"Market",b_library:"Library",
+        act_food:"🍞 Harvest",act_food_s:"+food", act_wood:"🪓 Chop",act_wood_s:"+wood", act_stone:"🪨 Quarry",act_stone_s:"+stone",
+        act_metal:"⛏️ Mine",act_metal_s:"+metal", act_trade:"🪙 Trade",act_trade_s:"+gold", act_study:"📜 Research",act_study_s:"+knowledge", act_camp:"🚩 Campaign",act_camp_s:"lead army vs rival",
+        b_city:"Found City (Settler)",b_house:"House", b_farm:"Farm",b_lumber:"Lumber Camp",b_quarry:"Quarry",b_mine:"Mine",b_temple:"Temple",b_market:"Market",b_library:"Library",
         b_granary:"Granary",b_barracks:"Barracks",b_stable:"Stable",b_tower:"Tower",b_wall:"Wall",b_dock:"Dock",
         b_city_desc:"+1 city · +territory · +3 pop cap", b_house_desc:"+2 pop cap",
         u_slinger:"Slinger",u_hoplite:"Hoplite",u_horse:"Horseman",u_merchant:"Merchant Caravan",u_supply:"Supply Wagon",
         t_writing:"Writing",t_math:"Mathematics",t_bronze:"Bronze Working",t_horse:"Horse Riding",t_masonry:"Masonry",t_geometry:"Geometry",t_mysticism:"Mysticism",t_monarchy:"Monarchy",
         w_pyramids:"The Pyramids",w_greatlib:"Great Library",w_colossus:"The Colossus",w_gardens:"Hanging Gardens",w_greatwall:"Great Wall",w_oracle:"The Oracle",w_stonehenge:"Stonehenge",
-        req:"requires",owned:"built",done:"researched",cost:"cost",yes:"Yes",no:"No",turn:"Turn",reset:"Reset save",again:"Play again",note:"Inspired by Rise of Nations — Ancient Age. An original homage to its resources, units, buildings, techs and wonders. Not affiliated with the game.",
+        req:"requires",owned:"built",done:"researched",cost:"cost",yes:"Yes",no:"No",turn:"Turn",reset:"Reset save",again:"Play again",
+        note:"An original homage to Rise of Nations — Ancient Age (resources, units, buildings, techs, wonders). Not affiliated with the game.",
         win_wonder_h:"🗿 Wonder Victory!",win_wonder_p:"Your tribe raised Stonehenge — a Rise-of-Nations-style wonder victory.",
         win_conq_h:"🚩 Conquest Victory!",win_conq_p:"Your campaign broke the rival tribe — a Rise-of-Nations-style conquest victory.",
         lose_h:"💀 Tribe Fallen",lose_p:"Population hit zero and your settlement was swallowed by the wilderness. War and famine show no mercy — regroup and start a new game.",
         open:"You arrive in the ancient wilderness. Build cities, research, train armies, raise wonders — the first age of Rise of Nations.",
-        lg_food:"🍞 Harvested food",lg_wood:"🪓 Felled wood",lg_metal:"⛏️ Mined metal",lg_trade:"🪙 Trade earned wealth",lg_study:"📜 Studied, knowledge +",lg_build:"🏛️ Built: ",lg_train:"⚔️ Trained: ",lg_tech:"🔬 Researched: ",lg_wonder:"🗿 Wonder raised: ",lg_wonder_b:"🗿 Wonder built: ",
+        lg_food:"🍞 Harvested food",lg_wood:"🪓 Felled wood",lg_stone:"🪨 Quarried stone",lg_metal:"⛏️ Mined metal",lg_trade:"🪙 Trade earned gold",lg_study:"📜 Studied, knowledge +",lg_build:"🏛️ Built: ",lg_train:"⚔️ Trained: ",lg_tech:"🔬 Researched: ",lg_wonder:"🗿 Wonder raised: ",lg_wonder_b:"🗿 Wonder built: ",
         lg_starve:"🥀 Food ran out, a kin scattered",lg_birth:"👶 A new kin born",lg_birth2:"👶👶 New kin born (boom)",
         lg_beast:"🐺 Beast repelled by wall",lg_beast_b:"🩸 Beast breached, lost food",lg_beast_bp:"🩸 Beast breached, lost food, kin -1",
         lg_raid_win:"🛡️ Repelled rival raid, rival weakened",lg_raid_lose:"⚔️ Rival raid! lost kin/food",lg_camp_win:"🚩 Campaign triumph! rival now ",lg_camp_lose:"☠️ Campaign setback, lost ",lg_conq:"🚩 Rival annihilated — Conquest Victory!",lg_wonder_win:"🗿 Stonehenge raised — Wonder Victory!",lg_lose:"💀 Tribe fallen"
       },
       zh:{
-        badge_tag:"社区", h1:"🏛️ 蛮荒时代", sub:"借鉴《国家的崛起》远古时代 · 验证版 · 后续再迭代",
+        badge_tag:"社区", h1:"🏛️ 蛮荒时代", h1b:"蛮荒时代", subb:"致敬《国家的崛起》远古时代 · 验证版",
+        sub:"致敬《国家的崛起》远古时代（Ancient Age）· 验证版 · 后续再迭代",
         badge:"DEMO · 致敬远古时代机制，未接任何生态",
-        food:"食物",wood:"木材",metal:"金属",wealth:"财富",know:"知识",pop:"人口",city:"城市",terr:"领土",wall:"围墙",tower:"塔楼",enemy:"敌族兵力",
+        age_lb:"时代", nation_lb:"文明", score_lb:"得分",
+        food:"食物",wood:"木材",stone:"石材",metal:"金属",know:"知识",gold:"黄金",oil:"石油",pop:"人口",city:"城市",terr:"领土",wall:"围墙",tower:"塔楼",enemy:"敌族兵力",
+        ph_gather:"采集",ph_mil:"军事",ph_city:"城市",ph_tech:"科技",ph_wonder:"奇观",
+        act_hint:"采集与研习 · 推进资源",mil_hint:"训练军队 · 出征灭敌族",city_hint:"建造城市与建筑 · 扩张领地",tech_hint:"研习远古科技 · 长效增益",wonder_hint:"建造远古奇观 · 奇观胜利",
         goal_h:"两条胜利路线（均取自《国家的崛起》）：", goal1b:"① 奇观胜利", goal2b:"② 征服胜利", goal_lose:"失败：人口归零 = 部落覆灭。",
         stonehenge:"巨石阵",
-        act_food:"🍞 采粮",act_food_s:"境内+食物", act_wood:"🪓 伐木",act_wood_s:"+木材", act_metal:"⛏️ 采矿",act_metal_s:"+金属",
-        act_trade:"🪙 经商",act_trade_s:"+财富", act_study:"📜 研习",act_study_s:"+知识", act_camp:"🚩 出征",act_camp_s:"带军灭敌族",
-        ph_city:"城市与建筑",ph_mil:"军事",ph_tech:"远古科技",ph_wonder:"远古奇观",
-        army_line:"军队：投石兵 ", b_city:"建立城市 (移民)",b_house:"民居", b_farm:"农场",b_lumber:"伐木场",b_mine:"矿场",b_temple:"神庙",b_market:"集市",b_library:"图书馆",
+        act_food:"🍞 采粮",act_food_s:"+食物", act_wood:"🪓 伐木",act_wood_s:"+木材", act_stone:"🪨 采石",act_stone_s:"+石材",
+        act_metal:"⛏️ 采矿",act_metal_s:"+金属", act_trade:"🪙 经商",act_trade_s:"+黄金", act_study:"📜 研习",act_study_s:"+知识", act_camp:"🚩 出征",act_camp_s:"带军灭敌族",
+        b_city:"建立城市 (移民)",b_house:"民居", b_farm:"农场",b_lumber:"伐木场",b_quarry:"采石场",b_mine:"矿场",b_temple:"神庙",b_market:"集市",b_library:"图书馆",
         b_granary:"粮仓",b_barracks:"兵营",b_stable:"马厩",b_tower:"塔楼 (防御)",b_wall:"围墙 (防御)",b_dock:"船坞",
         b_city_desc:"+1 城市 · +领土 · +3 人口上限", b_house_desc:"+2 人口上限",
         u_slinger:"投石兵",u_hoplite:"重装步兵",u_horse:"骑兵",u_merchant:"商队",u_supply:"补给车",
@@ -360,14 +419,14 @@
         win_conq_h:"🚩 征服胜利！",win_conq_p:"你的出征打灭了敌族——这致敬了《国家的崛起》式的征服胜利，荒野尽归你手。",
         lose_h:"💀 部落覆灭",lose_p:"人口归零，聚落被蛮荒吞没。战争与饥馑从不留情——重整旗鼓，再开一局。",
         open:"你来到远古蛮荒。建城、研习、练兵、立奇观——这是《国家的崛起》的第一个时代。",
-        lg_food:"🍞 采集到食物",lg_wood:"🪓 伐到木材",lg_metal:"⛏️ 采到金属",lg_trade:"🪙 经商获得财富",lg_study:"📜 研习，智慧+",lg_build:"🏛️ 建成：",lg_train:"⚔️ 训练：",lg_tech:"🔬 研发：",lg_wonder:"🗿 奇观落成：",lg_wonder_b:"🗿 奇观建成：",
+        lg_food:"🍞 采集到食物",lg_wood:"🪓 伐到木材",lg_stone:"🪨 采到石材",lg_metal:"⛏️ 采到金属",lg_trade:"🪙 经商获得黄金",lg_study:"📜 研习，智慧+",lg_build:"🏛️ 建成：",lg_train:"⚔️ 训练：",lg_tech:"🔬 研发：",lg_wonder:"🗿 奇观落成：",lg_wonder_b:"🗿 奇观建成：",
         lg_starve:"🥀 食物耗尽，一名族人饿散",lg_birth:"👶 新族人降生",lg_birth2:"👶👶 人口繁荣（新增）",
         lg_beast:"🐺 野兽来犯，围墙挡下",lg_beast_b:"🩸 野兽破墙，损失食物",lg_beast_bp:"🩸 野兽破墙，损失食物、族人-1",
         lg_raid_win:"🛡️ 击退敌族来犯，敌势微",lg_raid_lose:"⚔️ 敌族破袭！损族/食",lg_camp_win:"🚩 出征大捷！敌兵现 ",lg_camp_lose:"☠️ 出征受挫，损失 ",lg_conq:"🚩 敌族覆灭——征服胜利！",lg_wonder_win:"🗿 巨石阵落成——奇观胜利！",lg_lose:"💀 部落覆灭"
       }
     };
     function $(id){return document.getElementById(id);}
-    function curLang(){return (window.i18nCurrent && window.i18nCurrent()) || (document.documentElement.lang==="zh"?"zh":"en");}
+    function curLang(){return (window.i18nCurrent && window.i18nCurrent()) || (/zh/i.test(document.documentElement.lang||"")?"zh":"en");}
     function GT(k){var d=GS[curLang()]||GS.en;var v=d[k];return v!==undefined?v:(GS.en[k]!==undefined?GS.en[k]:k);}
     function gtLog(k){var a=Array.prototype.slice.call(arguments,1);var s=GT(k);return s.replace(/%s/g,function(){return a.shift();});}
     function log(msg,cls){var l=$("log");if(!l)return;var p=document.createElement("p");if(cls)p.className=cls;p.textContent=msg;l.insertBefore(p,l.firstChild);while(l.children.length>60)l.removeChild(l.lastChild);}
@@ -378,21 +437,23 @@
     function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
     function clamp(v){return Math.max(0,Math.floor(v));}
     function armyPower(){var b=S.tech.bronze?1:0;return S.u.slinger*1 + S.u.hoplite*(2+b) + S.u.horse*3;}
+    function score(){var bc=0;for(var k in S.b)bc+=S.b[k];return S.pop*10+S.city*50+armyPower()*5+S.know*2+Object.keys(S.wonderBuilt).length*100+bc*5;}
     function canAfford(c){for(var k in c){if((S[k]||0)<c[k])return false;}return true;}
     function pay(c){for(var k in c){S[k]-=c[k];}}
     function scale(c,m){var o={};for(var k in c)o[k]=Math.ceil(c[k]*m);return o;}
     function effCost(base){var m=1;if(base.hasOwnProperty("wood")&&S.tech.geometry)m*=0.8;return scale(base,m);}
-    function fmtCost(c){var ic={food:"🍞",wood:"🪵",metal:"⚙️",wealth:"🪙",know:"📜"};var s=[];for(var k in c)s.push(ic[k]+c[k]);return s.join(" ");}
+    function fmtCost(c){var ic={food:"🍞",wood:"🪵",stone:"🪨",metal:"⚙️",wealth:"🪙",know:"📜"};var s=[];for(var k in c)s.push(ic[k]+c[k]);return s.join(" ");}
 
     function produce(){
       var boost=S.tech.math?1.25:1;
-      S.food += (S.b.farm||0)*2*boost; S.wood += (S.b.lumber||0)*2*boost; S.metal += (S.b.mine||0)*2*boost;
+      S.food += (S.b.farm||0)*2*boost; S.wood += (S.b.lumber||0)*2*boost; S.stone += (S.b.quarry||0)*2*boost; S.metal += (S.b.mine||0)*2*boost;
       S.wealth += (S.b.temple||0)*1 + (S.b.market||0)*2 + S.u.merchant*1;
       S.know += (S.b.library||0)*1 + (S.b.temple||0)*0.5*(S.tech.mysticism?1.5:1) + (S.wonderBuilt.greatlib?2:0);
       if(S.wonderBuilt.colossus)S.metal+=2; if(S.wonderBuilt.gardens)S.food+=3;
     }
     function gFood(){S.food+=(3+(S.b.farm||0)*2)*(S.tech.math?1.25:1);S.turn++;after(gtLog("lg_food"));}
     function gWood(){S.wood+=(2+(S.b.lumber||0)*2)*(S.tech.math?1.25:1);S.turn++;after(gtLog("lg_wood"));}
+    function gStone(){S.stone+=(2+(S.b.quarry||0)*2)*(S.tech.math?1.25:1);S.turn++;after(gtLog("lg_stone"));}
     function gMetal(){S.metal+=(1+(S.b.mine||0)*2)*(S.tech.math?1.25:1);S.turn++;after(gtLog("lg_metal"));}
     function gTrade(){S.wealth+=2+(S.b.market||0)*2+S.u.merchant*1;S.turn++;after(gtLog("lg_trade"),"w");}
     function gStudy(){S.know+=1+(S.b.library||0)*1;S.turn++;after(gtLog("lg_study"),"k");}
@@ -422,7 +483,7 @@
       var p=armyPower(); if(p<1||S.enemy<=0)return;
       if(p>=S.enemy){var nE=Math.max(0,S.enemy-Math.ceil(p*0.6)),loss=Math.ceil(p*0.2);
         S.enemy=nE;
-        S.u.slinger=Math.max(0,S.u.slinger-Math.ceil(loss*0.4));S.u.hopling=0;S.u.hoplite=Math.max(0,S.u.hoplite-Math.ceil(loss*0.3));S.u.horse=Math.max(0,S.u.horse-Math.ceil(loss*0.3));
+        S.u.slinger=Math.max(0,S.u.slinger-Math.ceil(loss*0.4));S.u.hoplite=Math.max(0,S.u.hoplite-Math.ceil(loss*0.3));S.u.horse=Math.max(0,S.u.horse-Math.ceil(loss*0.3));
         var lf=p*2,lw=p,lw2=p; S.food+=lf;S.wood+=lw;S.metal+=lw2; S.turn++;
         if(S.enemy<=0){save();render();log(gtLog("lg_conq"),"g");win("conq");return;}
         after(gtLog("lg_camp_win")+S.enemy+"，掠得 食"+lf+"/木"+lw+"/金属"+lw2+"（折损"+loss+"）","g");
@@ -439,7 +500,7 @@
       if(S.turn%4===0){S.know+=1;}
       if(S.turn%6===0 && S.enemy<ENEMY_CAP){S.enemy++;}
       if(S.turn%6===0){var atk=rnd(1,3);
-        if((S.b.wall||0)>=atk){log(gtLog("lg_beast",(S.b.wall||0),atk),"y");}
+        if((S.b.wall||0)>=atk){log(gtLog("lg_beast"),"y");}
         else{var loss=atk*4;S.food=Math.max(0,S.food-loss);if(S.pop>0&&Math.random()<0.5){S.pop--;log(gtLog("lg_beast_bp",loss),"r2");}else{log(gtLog("lg_beast_b",loss),"r2");}}}
       if(S.turn%7===0 && S.enemy>0){
         var atkE=S.enemy, def=(S.b.wall||0) + (S.b.tower||0)*2*(S.tech.masonry?1.5:1) + (S.wonderBuilt.greatwall?6:0) + armyPower();
@@ -461,13 +522,15 @@
     function checkLose(){if(S.pop<=0 && !S.wonder){$("lose").style.display="flex";log(gtLog("lg_lose"),"r2");}}
 
     function render(){
-      $("vFood").textContent=clamp(S.food);$("vWood").textContent=clamp(S.wood);$("vMetal").textContent=clamp(S.metal);
-      $("vWealth").textContent=clamp(S.wealth);$("vKnow").textContent=clamp(S.know);
+      $("vFood").textContent=clamp(S.food);$("vWood").textContent=clamp(S.wood);$("vStone").textContent=clamp(S.stone);
+      $("vMetal").textContent=clamp(S.metal);$("vKnow").textContent=clamp(S.know);$("vGold").textContent=clamp(S.wealth);
       $("vPop").textContent=S.pop+"/"+popCap();
       $("vCity").textContent=S.city;$("vTerr").textContent=terr();$("vWall").textContent=(S.b.wall||0);
       $("vTower").textContent=(S.b.tower||0);$("vEnemy").textContent=S.enemy;
       $("vSlinger").textContent=S.u.slinger;$("vHoplite").textContent=S.u.hoplite;$("vHorse").textContent=S.u.horse;$("vPower").textContent=armyPower();
-      var prog=(Math.min(S.pop,10)/10)*0.4 + Math.min(S.wood,30)/30*0.15 + Math.min(S.metal,25)/25*0.15 + Math.min(S.know,25)/25*0.15 + (S.wonderBuilt.stonehenge?0.15:0);
+      $("vScore").textContent=score();
+      $("vpTag").textContent=GT("terr")+" Lv"+terr()+" · "+GT("enemy")+" "+S.enemy;
+      var prog=(Math.min(S.pop,10)/10)*0.4 + Math.min(S.wood,30)/30*0.15 + Math.min(S.stone,25)/25*0.1 + Math.min(S.metal,25)/25*0.15 + Math.min(S.know,25)/25*0.1 + (S.wonderBuilt.stonehenge?0.1:0);
       $("goalBar").style.width=Math.min(100,prog*100)+"%";
       $("tick").textContent=GT("turn")+" "+S.turn;
       $("bCampaign").disabled=armyPower()<1||S.enemy<=0;
@@ -475,23 +538,36 @@
       $("noteLine").textContent=GT("note");
       drawMap(); renderLists();
     }
+    function hut(ctx,x,y,s,col){ctx.fillStyle=col;ctx.fillRect(x-s/2,y-s/2,s,s*0.7);ctx.fillStyle="#3a2a16";ctx.beginPath();ctx.moveTo(x-s/2-1,y-s/2);ctx.lineTo(x,y-s/2-s*0.5);ctx.lineTo(x+s/2+1,y-s/2);ctx.closePath();ctx.fill();}
+    function soldier(ctx,x,y,col){ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x,y-4);ctx.lineTo(x-3,y+3);ctx.lineTo(x+3,y+3);ctx.closePath();ctx.fill();}
     function drawMap(){
       var cv=$("map");if(!cv)return;var ctx=cv.getContext&&cv.getContext("2d");if(!ctx)return;
-      var w=cv.width=cv.clientWidth||560,h=cv.height=120;ctx.clearRect(0,0,w,h);
-      var cx=w*0.45,cy=h*0.6,R=Math.min(w*0.4,h*0.9)*(0.4+terr()*0.08);
+      var w=cv.width=cv.clientWidth||720,h=cv.height=210;
+      var g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,"#2c2414");g.addColorStop(1,"#1a140b");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+      var cx=w*0.42,cy=h*0.56,R=Math.min(w*0.34,h*0.82)*(0.42+terr()*0.07);
       ctx.fillStyle="rgba(217,138,61,0.10)";ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.fill();
-      ctx.strokeStyle="rgba(217,138,61,0.55)";ctx.lineWidth=1.5;ctx.stroke();
-      ctx.fillStyle="#e9b96b";ctx.beginPath();ctx.arc(cx,cy,6,0,7);ctx.fill();
-      for(var i=0;i<S.city;i++){var a=i/Math.max(1,S.city)*6.28,rr=R*0.6,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*0.6;ctx.fillStyle="#d98a3d";ctx.fillRect(x-4,y-4,8,8);}
-      ctx.fillStyle="rgba(243,233,216,.55)";ctx.font="11px sans-serif";ctx.textAlign="left";
-      ctx.fillText(GT("city")+" "+S.city+" · "+GT("terr")+" Lv"+terr(),w*0.04,16);
-      var ex=w*0.88,ey=h*0.28,er=Math.max(4,Math.min(18,S.enemy*0.7));
-      ctx.fillStyle="rgba(229,112,95,0.18)";ctx.beginPath();ctx.arc(ex,ey,er+8,0,7);ctx.fill();
-      ctx.fillStyle="#e5705f";ctx.beginPath();ctx.arc(ex,ey,er,0,7);ctx.fill();
-      ctx.fillStyle="rgba(229,112,95,.85)";ctx.textAlign="right";ctx.fillText(GT("enemy")+" "+S.enemy,w-8,16);
-      ctx.fillStyle="#e9b96b";var total=S.u.slinger+S.u.hoplite+S.u.horse;
-      for(var j=0;j<total;j++){var aa=j/Math.max(1,total)*6.28+0.4,rr2=R+12,x2=cx+Math.cos(aa)*rr2,y2=cy+Math.sin(aa)*rr2*0.6;
-        ctx.beginPath();ctx.moveTo(x2,y2-3);ctx.lineTo(x2-3,y2+3);ctx.lineTo(x2+3,y2+3);ctx.closePath();ctx.fill();}
+      ctx.strokeStyle="rgba(217,138,61,0.6)";ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);
+      if((S.b.wall||0)>0){ctx.strokeStyle="rgba(205,191,159,0.8)";ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,R+4,0,7);ctx.stroke();}
+      hut(ctx,cx,cy,18,"#d9983d");
+      var ring=["farm","lumber","quarry","mine","temple","market","library","granary","barracks","stable","dock"];
+      for(var i=0;i<ring.length;i++){if(S.b[ring[i]]>0){var a=i/ring.length*6.28;var x=cx+Math.cos(a)*R*0.62,y=cy+Math.sin(a)*R*0.62;hut(ctx,x,y,12,"#b5823a");}}
+      for(var t=0;t<(S.b.tower||0);t++){var ta=t/3*6.28+0.3;var tx=cx+Math.cos(ta)*(R+2),ty=cy+Math.sin(ta)*(R+2);ctx.fillStyle="#cdbf9f";ctx.fillRect(tx-2,ty-6,4,10);}
+      var total=S.u.slinger+S.u.hoplite+S.u.horse;
+      for(var j=0;j<total;j++){var aa=j/Math.max(1,total)*6.28+0.5,rr=R*0.82;var x2=cx+Math.cos(aa)*rr,y2=cy+Math.sin(aa)*rr;soldier(ctx,x2,y2,"#e8b85a");}
+      var ex=w*0.85,ey=h*0.3,er=Math.max(5,Math.min(22,S.enemy*0.8));
+      ctx.fillStyle="rgba(207,91,70,0.16)";ctx.beginPath();ctx.arc(ex,ey,er+10,0,7);ctx.fill();
+      ctx.fillStyle="#cf5b46";for(var e=0;e<Math.min(6,Math.ceil(S.enemy/4));e++){var ea=e/6*6.28;hut(ctx,ex+Math.cos(ea)*er*0.5,ey+Math.sin(ea)*er*0.5,10,"#cf5b46");}
+      ctx.fillStyle="#cf5b46";ctx.beginPath();ctx.arc(ex,ey,er*0.4,0,7);ctx.fill();
+      drawMini();
+    }
+    function drawMini(){
+      var mm=$("minimap");if(!mm)return;var m=mm.getContext&&mm.getContext("2d");if(!m)return;
+      var mw=mm.width=mm.clientWidth||120,mh=mm.height=mm.clientHeight||80;m.clearRect(0,0,mw,mh);
+      m.fillStyle="rgba(20,14,7,.9)";m.fillRect(0,0,mw,mh);
+      m.strokeStyle="rgba(217,138,61,0.6)";m.lineWidth=1;m.beginPath();m.arc(mw*0.42,mh*0.56,14,0,7);m.stroke();
+      m.fillStyle="#e8b85a";m.beginPath();m.arc(mw*0.42,mh*0.56,5,0,7);m.fill();
+      m.fillStyle="#cf5b46";m.beginPath();m.arc(mw*0.85,mh*0.3,4,0,7);m.fill();
+      m.fillStyle="rgba(185,168,128,.8)";m.font="8px sans-serif";m.textAlign="left";m.fillText("MAP",4,10);
     }
     function tileHTML(kind,key){
       var name,desc,cost,disabled=false,ownlabel="";
@@ -525,15 +601,18 @@
     function applyLang(){document.querySelectorAll("[data-gt]").forEach(function(el){el.textContent=GT(el.getAttribute("data-gt"));});render();}
 
     function bind(){
-      $("bFood").onclick=gFood;$("bWood").onclick=gWood;$("bMetal").onclick=gMetal;$("bTrade").onclick=gTrade;$("bStudy").onclick=gStudy;$("bCampaign").onclick=campaign;
-      document.querySelectorAll(".tbtn").forEach(function(b){b.onclick=function(){var p=$("p_"+b.getAttribute("data-panel"));p.classList.toggle("show");};});
+      $("bFood").onclick=gFood;$("bWood").onclick=gWood;$("bStone").onclick=gStone;$("bMetal").onclick=gMetal;$("bStudy").onclick=gStudy;$("bTrade").onclick=gTrade;$("bCampaign").onclick=campaign;
+      document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){
+        document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("on");});
+        document.querySelectorAll(".cc").forEach(function(x){x.classList.remove("show");});
+        b.classList.add("on");$("c_"+b.getAttribute("data-tab")).classList.add("show");};});
       function delegate(id,fn){var el=$(id);el.addEventListener("click",function(e){var t=e.target.closest("[data-key]");if(!t||t.disabled)return;fn(t.getAttribute("data-kind"),t.getAttribute("data-key"));});}
       delegate("cityList",function(k,key){build(key);});
       delegate("milList",function(k,key){train(key);});
       delegate("techList",function(k,key){research(key);});
       delegate("wonderList",function(k,key){wonderBuild(key);});
       $("reset").onclick=function(){if(confirm(curLang()==="zh"?"确定清空存档？":"Clear save?")){localStorage.removeItem(KEY);
-        S={food:20,wood:15,metal:5,wealth:0,know:0,pop:3,city:1,house:0,enemy:5,turn:0,wonder:0,b:{},u:{slinger:0,hoplite:0,horse:0,merchant:0,supply:0},tech:{},wonderBuilt:{}};
+        S={food:20,wood:15,stone:5,metal:5,wealth:0,know:0,pop:3,city:1,house:0,enemy:5,turn:0,wonder:0,b:{},u:{slinger:0,hoplite:0,horse:0,merchant:0,supply:0},tech:{},wonderBuilt:{}};
         $("win").style.display="none";$("lose").style.display="none";$("log").innerHTML="";log(GT("open"),"y");applyLang();render();};};
       $("winClose").onclick=function(){$("reset").onclick();};
       $("loseClose").onclick=function(){$("reset").onclick();};
