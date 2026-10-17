@@ -6,7 +6,8 @@ import re
 import sys
 
 PAGES = ["index", "news", "whitepaper", "tokenomics", "calculator", "compute",
-         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy"]
+         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy",
+         "barbarian-age"]
 # default: the website/ directory this tools/ folder lives in
 ROOT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

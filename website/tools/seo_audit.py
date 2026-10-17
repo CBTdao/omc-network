@@ -20,7 +20,8 @@ import re
 import sys
 
 PAGES = ["index", "news", "whitepaper", "tokenomics", "calculator", "compute",
-         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy"]
+         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy",
+         "barbarian-age"]
 
 # default: the website/ directory this tools/ folder lives in
 ROOT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -182,5 +183,5 @@ print("\n" + "=" * 100)
 if diverged:
     print("DIVERGENCES NEEDING A FIX: %s" % ", ".join(diverged))
 else:
-    print("No divergence outside the page-specific set: every site-wide convention holds on all 13 pages.")
+    print("No divergence outside the page-specific set: every site-wide convention holds on all %d pages." % len(PAGES))
 print("=" * 100)

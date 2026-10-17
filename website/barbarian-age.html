@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="meta.title_barbarian">Barbarian Age — Omniverse Compute (OMC) Community</title>
   <link rel="canonical" href="https://omc.network/barbarian-age" />
   <script type="application/ld+json">
 {"@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"],"@context":"https://schema.org"}
 </script>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Barbarian Age","url":"https://omc.network/barbarian-age","description":"A browser mini-game from the OMC community — an original homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). Pure frontend, no token, no wallet.","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Barbarian Age","url":"https://omc.network/barbarian-age","description":"A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}}
 </script>
   <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"Barbarian Age","item":"https://omc.network/barbarian-age"}]}
@@ -17,7 +17,7 @@
   <meta property="og:site_name" content="Omniverse Compute">
   <meta property="og:type" content="website">
   <meta property="og:title" data-i18n-content="meta.title_barbarian" content="Barbarian Age — Omniverse Compute (OMC) Community">
-  <meta property="og:description" content="A browser mini-game from the OMC community — an original homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). Pure frontend, no token, no wallet.">
+  <meta property="og:description" content="A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.">
   <meta property="og:url" content="https://omc.network/barbarian-age">
   <meta property="og:image" content="https://omc.network/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -27,9 +27,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@Omniverse_Depin">
   <meta name="twitter:title" data-i18n-content="meta.title_barbarian" content="Barbarian Age — Omniverse Compute (OMC) Community">
-  <meta name="twitter:description" content="A browser mini-game from the OMC community — an original homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). Pure frontend, no token, no wallet.">
+  <meta name="twitter:description" content="A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.">
   <meta name="twitter:image" content="https://omc.network/og-image.png">
-  <meta name="description" content="A browser mini-game from the OMC community — an original homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). Pure frontend, no token, no wallet.">
+  <meta name="description" content="A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.">
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/footer-chain.css" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -77,7 +77,7 @@
 #stage .acts{margin-top:5px;display:flex;flex-wrap:wrap;gap:2px}
 #stage .over{position:absolute;inset:0;background:rgba(8,6,3,.78);display:none;align-items:center;justify-content:center;z-index:20;pointer-events:auto}
 #stage .over .box{text-align:center;background:var(--g-panel);border:1px solid var(--g-border2);border-radius:14px;padding:26px 40px}
-#stage .over .box h1{font-family:Georgia,serif;font-size:34px;margin:0 0 12px}
+#stage .over .box h1, #stage .over .box h2{font-family:Georgia,serif;font-size:34px;margin:0 0 12px}
 #stage .over .box .sub{color:var(--g-muted);margin-bottom:16px;font-size:13px}
 .nav,.hero,footer,.footer-chain{display:none!important}
 body{overflow:hidden}
@@ -158,8 +158,8 @@ body{overflow:hidden}
 <canvas class="minimap" id="mini" width="150" height="108"></canvas>
 <div class="toast" id="toast"></div>
 <div class="hint" id="hint"></div>
-<div class="over" id="over"><div class="box"><h1 id="overT">胜利</h1><div class="sub" id="overS"></div><button class="btn" id="overBtn" style="font-size:15px;padding:9px 22px">再来一局</button></div></div>
-<div class="over" id="savePrompt" style="display:none"><div class="box"><h1 id="spT">继续上局？</h1><div class="sub" id="spS"></div><button class="btn" id="spCont" style="font-size:15px;padding:9px 22px;margin:4px">继续上局</button> <button class="btn" id="spNew" style="font-size:15px;padding:9px 22px;margin:4px">新游戏</button></div></div>
+<div class="over" id="over"><div class="box"><h2 id="overT">胜利</h2><div class="sub" id="overS"></div><button class="btn" id="overBtn" style="font-size:15px;padding:9px 22px">再来一局</button></div></div>
+<div class="over" id="savePrompt" style="display:none"><div class="box"><h2 id="spT">继续上局？</h2><div class="sub" id="spS"></div><button class="btn" id="spCont" style="font-size:15px;padding:9px 22px;margin:4px">继续上局</button> <button class="btn" id="spNew" style="font-size:15px;padding:9px 22px;margin:4px">新游戏</button></div></div>
 </div>
     </div>
   </section>
@@ -267,7 +267,7 @@ body{overflow:hidden}
   <script src="assets/js/main.js"></script>
   <script src="assets/js/binance-w3w.js"></script>
   <script src="assets/js/wallet.js"></script>
-                    <script>
+                        <script>
 
 "use strict";
 /* =========================================================================
@@ -846,6 +846,8 @@ el("spNew").onclick=()=>{clearSave();el("savePrompt").style.display="none";newGa
 /* ---------- 启动 ---------- */
 if(hasSave())showSavePrompt();else newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
   </script>
+
+
 
 
 
