@@ -264,7 +264,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/binance-w3w.js"></script>
   <script src="assets/js/wallet.js"></script>
-                <script>
+                  <script>
 
 "use strict";
 /* =========================================================================
@@ -617,7 +617,7 @@ function isoBox(o,w,h,H,colTop,colL,colR){const bA={x:o.x,y:o.y},bB={x:o.x+w,y:o
 function isoRoof(c,apex,colTop,colL,colR){const cx=(c.tA.x+c.tB.x+c.tC.x+c.tD.x)/4,cy=(c.tA.y+c.tB.y+c.tC.y+c.tD.y)/4-apex;
   ctx.fillStyle=colL;ctx.beginPath();ctx.moveTo(c.tD.x,c.tD.y);ctx.lineTo(c.tA.x,c.tA.y);ctx.lineTo(cx,cy);ctx.closePath();ctx.fill();
   ctx.fillStyle=colR;ctx.beginPath();ctx.moveTo(c.tB.x,c.tB.y);ctx.lineTo(c.tC.x,c.tC.y);ctx.lineTo(cx,cy);ctx.closePath();ctx.fill();
-  ctx.fillStyle=colTop;ctx.beginPath();ctx.moveTo(c.tA.x,c.tA.y);ctx.lineTo(c.tB.x,tB.y);ctx.lineTo(cx,cy);ctx.closePath();ctx.fill();
+  ctx.fillStyle=colTop;ctx.beginPath();ctx.moveTo(c.tA.x,c.tA.y);ctx.lineTo(c.tB.x,c.tB.y);ctx.lineTo(cx,cy);ctx.closePath();ctx.fill();
   ctx.strokeStyle="rgba(18,11,5,.5)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(c.tD.x,c.tD.y);ctx.lineTo(c.tA.x,c.tA.y);ctx.lineTo(cx,cy);ctx.lineTo(c.tB.x,c.tB.y);ctx.lineTo(c.tC.x,c.tC.y);ctx.closePath();ctx.stroke();}
 function drawBld(b){const z=G.cam.zoom,d=BLD[b.type],o=w2s(b.x,b.y),w=b.w*TW/2*z,h=b.d*TH/2*z;
   const team=TEAM[b.owner];
@@ -843,6 +843,7 @@ el("spNew").onclick=()=>{clearSave();el("savePrompt").style.display="none";newGa
 /* ---------- 启动 ---------- */
 if(hasSave())showSavePrompt();else newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
   </script>
+
 
 
 
