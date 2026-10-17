@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title data-i18n="meta.title_barbarian">Barbarian Age — Omniverse Compute (OMC) Community</title>
   <link rel="canonical" href="https://omc.network/barbarian-age" />
   <script type="application/ld+json">
@@ -79,8 +79,11 @@
 #stage .over .box{text-align:center;background:var(--g-panel);border:1px solid var(--g-border2);border-radius:14px;padding:26px 40px}
 #stage .over .box h1{font-family:Georgia,serif;font-size:34px;margin:0 0 12px}
 #stage .over .box .sub{color:var(--g-muted);margin-bottom:16px;font-size:13px}
-#stage{position:relative;width:100%;height:min(680px,78vh);background:#0d0a06;overflow:hidden}
-#stage{position:relative;width:100%;height:min(680px,78vh);background:#0d0a06;overflow:hidden}
+.nav,.hero,footer,.footer-chain{display:none!important}
+body{overflow:hidden}
+#stage{position:fixed;inset:0;width:100%;height:100%;z-index:9998;background:#0d0a06;overflow:hidden}
+#stage .topbar{top:52px}
+.game-back{position:fixed;top:10px;left:10px;z-index:10000;display:inline-flex;align-items:center;gap:6px;background:rgba(10,8,4,.85);border:1px solid var(--g-border2);color:var(--g-bronze2);padding:7px 12px;border-radius:8px;font:700 13px/1 inherit;text-decoration:none;pointer-events:auto}
   </style>
 </head>
 <body>
@@ -126,7 +129,7 @@
   <!-- ===== GAME ===== -->
   <section class="section" style="padding-top: 12px;">
     <div class="container">
-<div id="stage">
+<div id="stage"><a class="game-back" href="/">← 返回 OMC</a>
 <canvas id="map"></canvas>
 
 <div class="hud topbar">
@@ -264,7 +267,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/binance-w3w.js"></script>
   <script src="assets/js/wallet.js"></script>
-                  <script>
+                    <script>
 
 "use strict";
 /* =========================================================================
@@ -843,6 +846,7 @@ el("spNew").onclick=()=>{clearSave();el("savePrompt").style.display="none";newGa
 /* ---------- 启动 ---------- */
 if(hasSave())showSavePrompt();else newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
   </script>
+
 
 
 
