@@ -264,7 +264,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/binance-w3w.js"></script>
   <script src="assets/js/wallet.js"></script>
-              <script>
+                <script>
 
 "use strict";
 /* =========================================================================
@@ -622,6 +622,7 @@ function isoRoof(c,apex,colTop,colL,colR){const cx=(c.tA.x+c.tB.x+c.tC.x+c.tD.x)
 function drawBld(b){const z=G.cam.zoom,d=BLD[b.type],o=w2s(b.x,b.y),w=b.w*TW/2*z,h=b.d*TH/2*z;
   const team=TEAM[b.owner];
   ctx.fillStyle="rgba(0,0,0,.26)";ctx.beginPath();ctx.ellipse(o.x,o.y+h*0.5,w*0.96,h*0.56,0,0,7);ctx.fill();
+  ctx.strokeStyle=shade(team,0.72);ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(o.x,o.y+h*0.5,w*0.92,h*0.52,0,0,7);ctx.stroke();   // 地基轮廓
   const wallTop=shade("#c2a974",1),wallL=shade(team,0.52),wallR=shade(team,0.36);
   let c,H,doorY=o.y-3*z;
   if(b.type==="wall"){H=7*z;c=isoBox(o,w,h,H,wallTop,wallL,wallR);}
@@ -643,7 +644,8 @@ function drawBld(b){const z=G.cam.zoom,d=BLD[b.type],o=w2s(b.x,b.y),w=b.w*TW/2*z
     if(b.type==="barracks"||b.type==="range"||b.type==="stable"){ctx.strokeStyle="#3a2a16";ctx.lineWidth=1.4*z;ctx.beginPath();ctx.moveTo(o.x,o.y-H-2*z);ctx.lineTo(o.x,o.y-H-15*z);ctx.stroke();
       ctx.fillStyle=team;ctx.beginPath();ctx.moveTo(o.x,o.y-H-15*z);ctx.lineTo(o.x+10*z,o.y-H-12*z);ctx.lineTo(o.x,o.y-H-9*z);ctx.closePath();ctx.fill();}}
   if(b.type!=="wall"&&b.type!=="tower"&&b.type!=="wonder"){ctx.fillStyle="#2a1d12";ctx.fillRect(o.x-3*z,doorY,6*z,5*z);}
-  ctx.fillStyle="#f1e6cf";ctx.font=(11*z)+"px serif";ctx.textAlign="center";ctx.fillText(d.name,o.x,o.y+(b.type==="town"?22*z:-H-6*z));
+  ctx.font=(11*z)+"px serif";ctx.textAlign="center";const _lab=d.name,_ly=o.y+(b.type==="town"?22*z:-H-6*z),_lw=ctx.measureText(_lab).width;
+  ctx.fillStyle="rgba(0,0,0,.5)";ctx.fillRect(o.x-_lw/2-3,_ly-9*z,_lw+6,12*z);ctx.fillStyle="#f1e6cf";ctx.fillText(_lab,o.x,_ly);
   if(b.queue.length){ctx.fillStyle="#e8b85a";ctx.fillText("⏳",o.x,o.y-H-4*z);}
   if(b.hp<b.maxhp)bar(o.x,o.y-H-9*z,w*2,3*z,b.hp/b.maxhp,b.owner===PLAYER?"#9bbf5a":"#cf5b46");
   if(b.flash>0){ctx.globalAlpha=Math.min(0.6,b.flash*4.5);ctx.fillStyle="#fff";ctx.beginPath();ctx.moveTo(o.x-w,o.y);ctx.lineTo(o.x,o.y-H);ctx.lineTo(o.x+w,o.y);ctx.lineTo(o.x,o.y+h);ctx.closePath();ctx.fill();ctx.globalAlpha=1;}}
@@ -668,6 +670,7 @@ function drawUnit(u){const s=w2s(u.x,u.y),z=G.cam.zoom,f=u.face>=0?1:-1,col=TEAM
   const moving=(u.state==="move"||u.state==="toGather"||u.state==="toDrop");
   const ph=T*9+(u.id%7),bob=Math.sin(ph)*(moving?1.5:0.5)*z;
   ctx.save();ctx.translate(0,bob);ctx.lineCap="round";ctx.strokeStyle="rgba(18,11,5,.7)";ctx.lineWidth=1;
+  if(u.state==="attack"&&u.target){const tg=findEntity(u.target);if(tg){const dx=tg.x-u.x,dy=tg.y-u.y,d=Math.hypot(dx,dy);if(d<2.6&&d>0.01){const L=Math.sin(T*16)*2.4*z;ctx.translate(dx/d*L,dy/d*L*0.5);}}}   // 近战戳刺前冲
   if(u.type==="cav"){
     ctx.fillStyle=shade("#6b4a28",1);ctx.beginPath();ctx.ellipse(s.x,s.y-5*z,9*z,5*z,0,0,7);ctx.fill();
     ctx.fillStyle=shade("#5a3d20",1);ctx.fillRect(s.x-2*z*f,s.y-9*z,3.5*z,6*z);
@@ -840,6 +843,7 @@ el("spNew").onclick=()=>{clearSave();el("savePrompt").style.display="none";newGa
 /* ---------- 启动 ---------- */
 if(hasSave())showSavePrompt();else newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
   </script>
+
 
 
 
