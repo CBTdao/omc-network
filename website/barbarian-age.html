@@ -156,11 +156,11 @@
 <div class="toast" id="toast"></div>
 <div class="hint" id="hint"></div>
 <div class="over" id="over"><div class="box"><h1 id="overT">胜利</h1><div class="sub" id="overS"></div><button class="btn" id="overBtn" style="font-size:15px;padding:9px 22px">再来一局</button></div></div>
+<div class="over" id="savePrompt" style="display:none"><div class="box"><h1 id="spT">继续上局？</h1><div class="sub" id="spS"></div><button class="btn" id="spCont" style="font-size:15px;padding:9px 22px;margin:4px">继续上局</button> <button class="btn" id="spNew" style="font-size:15px;padding:9px 22px;margin:4px">新游戏</button></div></div>
 </div>
     </div>
   </section>
 
-    <div class="footer-inner">
       <div class="footer-grid">
         <div>
           <a class="brand" href="/">
@@ -263,7 +263,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/binance-w3w.js"></script>
   <script src="assets/js/wallet.js"></script>
-    <script>
+      <script>
 
 "use strict";
 /* =========================================================================
@@ -279,6 +279,7 @@ const CARRY=12, GATHER_S=1.4, FOOD_S=1.1;
 const AGGRO=4.5;            // 军事单位自动接敌半径
 const WONDER_T=150;         // 奇观胜利倒计时（秒）
 const TEAM={[PLAYER]:"#d9983d",[ENEMY]:"#cf5b46"};
+const SAVE_KEY="barbarian_age_save_v9", SAVE_VER=9;   // 存档键（v9 = 新版 RTS 格式；与旧 v8 不兼容，旧档自动忽略）
 
 /* 建筑 */
 const BLD={
@@ -536,9 +537,36 @@ function checkOver(){if(G.over)return;
   if(!pT){G.over="lose";}
   else if(!eT){G.over="win";}
   else if(G.wonderT!==null&&G.wonderT<=0){G.over="win";}
-  if(G.over){showOver(G.over==="win"?"胜利":"失败",G.over==="win"?"你摧毁了敌方中心 / 奇观落成。":"你的中心被摧毁了。");}
+  if(G.over){clearSave();showOver(G.over==="win"?"胜利":"失败",G.over==="win"?"你摧毁了敌方中心 / 奇观落成。":"你的中心被摧毁了。");}
 }
 function showOver(t,s){el("overT").textContent=t;el("overT").style.color=t==="胜利"?"#9bbf5a":"#cf5b46";el("overS").textContent=s;el("over").style.display="flex";}
+
+/* ---------- 存档（localStorage 持久化） ---------- */
+function serialize(){
+  return {ver:SAVE_VER,
+    res:Object.assign({},G.res), eres:Object.assign({},G.eres), pop:Object.assign({},G.pop), age:G.age,
+    nodes:G.nodes.map(n=>({id:n.id,type:n.type,x:n.x,y:n.y,amount:n.amount,r:n.r})),
+    E:G.E.map(e=>{const o={id:e.id,kind:e.kind,owner:e.owner,x:e.x,y:e.y,hp:e.hp,maxhp:e.maxhp};
+      if(e.kind==="bld"){o.type=e.type;o.w=e.w;o.d=e.d;o.queue=(e.queue||[]).map(q=>({kind:q.kind,t:q.t,ut:q.ut}));}
+      else if(e.kind==="vil"){o.state=e.state;o.target=e.target;o.carry=e.carry;o.carryType=e.carryType;o.work=e.work;o.face=e.face;}
+      else{o.type=e.type;o.state=e.state;o.target=e.target;o.cd=e.cd;o.face=e.face;o.lastShot=e.lastShot?{x:e.lastShot.x,y:e.lastShot.y,life:e.lastShot.life}:null;}
+      return o;}),
+    uid:G.uid, ageUp:G.ageUp||0, wonderT:(G.wonderT===undefined?null:G.wonderT),
+    mods:Object.assign({},G.mods), tech:Object.assign({},G.tech),
+    ai:Object.assign({},G.ai), cam:Object.assign({},G.cam), sel:G.sel.slice(), speed:G.speed||1};
+}
+function store(){ try{ return (typeof localStorage!=="undefined"&&localStorage)?localStorage:null; }catch(e){ return null; } }
+function peekSave(){ const s=store(); if(!s)return null; try{ const raw=s.getItem(SAVE_KEY); if(!raw)return null; const o=JSON.parse(raw); if(!o||o.ver!==SAVE_VER)return null; return o; }catch(e){ return null; } }
+function saveGame(){ const s=store(); if(!s||G.over)return; try{ s.setItem(SAVE_KEY, JSON.stringify(serialize())); }catch(e){} }
+function hasSave(){ return peekSave()!==null; }
+function clearSave(){ const s=store(); if(!s)return; try{ s.removeItem(SAVE_KEY); }catch(e){} }
+function loadGame(){ const o=peekSave(); if(!o)return false;
+  G.res=o.res;G.eres=o.eres;G.pop=o.pop;G.age=o.age;G.nodes=o.nodes;G.E=o.E;
+  G.mods=o.mods;G.tech=o.tech;G.ai=o.ai;G.cam=o.cam;G.sel=o.sel||[];G.speed=o.speed||1;
+  G.ageUp=o.ageUp||0;G.wonderT=(o.wonderT===undefined?null:o.wonderT);
+  let mx=0; for(const e of G.E)if(e.id>mx)mx=e.id; for(const n of G.nodes)if(n.id>mx)mx=n.id; G.uid=mx+1;
+  G.build=null;G.paused=false;G.drag=null;G.hover=null;G.over=null;
+  recomputePop(); el("over").style.display="none"; return true; }
 
 /* ---------- 渲染 ---------- */
 const cv=document.getElementById("map"),ctx=cv.getContext("2d");
@@ -633,6 +661,8 @@ addEventListener("keydown",e=>{const sp=1.2/G.cam.zoom;
   if(e.key==="w"||e.key==="ArrowUp")G.cam.y-=sp;if(e.key==="s"||e.key==="ArrowDown")G.cam.y+=sp;
   if(e.key==="a"||e.key==="ArrowLeft")G.cam.x-=sp;if(e.key==="d"||e.key==="ArrowRight")G.cam.x+=sp;
   if(e.key==="Escape"){G.build=null;updateBuildAfford();}if(e.key===" ")G.paused=!G.paused;});
+addEventListener("pagehide",saveGame);
+addEventListener("visibilitychange",()=>{ if(typeof document!=="undefined"&&document.hidden)saveGame(); });
 
 /* ---------- UI ---------- */
 const el=id=>document.getElementById(id);
@@ -677,12 +707,20 @@ function refreshHUD(){for(const k of ["food","wood","stone","ore","know"])el("r-
 let last=performance.now(),acc=0;
 function frame(now){let dt=now-last;last=now;if(dt>120)dt=120;
   if(!G.paused&&!G.over){acc+=dt*G.speed;let guard=0;while(acc>=STEP&&guard++<8){tick(STEP/1000);acc-=STEP;}}
-  render();refreshHUD();requestAnimationFrame(frame);}
+  render();refreshHUD();
+  G._sacc=(G._sacc||0)+dt; if(G._sacc>=5000){G._sacc=0; saveGame();}   // 每 5 秒自动快照
+  requestAnimationFrame(frame);}
 el("overBtn").onclick=()=>{newGame();initBuildUI();refreshSel();};
+function showSavePrompt(){const s=peekSave();if(!s){newGame();return;}
+  el("spS").textContent="上次进度：时代 "+ageName(s.age)+" · 人口 "+s.pop.cur+"/"+s.pop.cap+(s.wonderT!==null?" · 奇观建造中":"")+" — 继续或重开？";
+  el("savePrompt").style.display="flex";}
+el("spCont").onclick=()=>{if(loadGame()){el("savePrompt").style.display="none";initBuildUI();refreshSel();}};
+el("spNew").onclick=()=>{clearSave();el("savePrompt").style.display="none";newGame();initBuildUI();refreshSel();};
 
 /* ---------- 启动 ---------- */
-newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
+if(hasSave())showSavePrompt();else newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
   </script>
+
 
 </body>
 </html>
