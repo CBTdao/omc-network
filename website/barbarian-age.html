@@ -160,7 +160,8 @@
 </div>
     </div>
   </section>
-
+  <footer>
+    <div class="footer-inner">
       <div class="footer-grid">
         <div>
           <a class="brand" href="/">
@@ -263,7 +264,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/binance-w3w.js"></script>
   <script src="assets/js/wallet.js"></script>
-      <script>
+        <script>
 
 "use strict";
 /* =========================================================================
@@ -321,7 +322,7 @@ const G={
   eres:{food:220,wood:160,stone:120,ore:60,know:0},
   pop:{cur:0,cap:8,eCur:0,eCap:0}, age:1,
   cam:{x:GW/2,y:GH/2,zoom:1},
-  sel:[], E:[], nodes:[], terrain:[], uid:1,
+  sel:[], E:[], nodes:[], terrain:[], dead:[], uid:1,
   build:null, paused:false, speed:1, drag:null, hover:null, over:null,
   ageUp:0, wonderT:null,
   mods:{atk:0,def:0,gather:1},
@@ -391,7 +392,7 @@ function s2w(sx,sy){const z=G.cam.zoom,cx=innerWidth/2,cy=innerHeight/2;
 /* ---------- 对局初始化 ---------- */
 function newGame(){
   seedTerrain();spawnNodes();
-  G.E=[];G.uid=1;G.sel=[];G.build=null;G.over=null;G.ageUp=0;G.wonderT=null;
+  G.E=[];G.uid=1;G.sel=[];G.build=null;G.over=null;G.ageUp=0;G.wonderT=null;G.dead=[];
   G.res={food:220,wood:160,stone:120,ore:60,know:0};G.eres={food:220,wood:160,stone:120,ore:60,know:0};G.age=1;
   G.mods={atk:0,def:0,gather:1};G.tech={wep:false,arm:false,log:false};
   G.ai={phase:"arm",acc:0,t:0,age:1,ageUp:0};
@@ -481,8 +482,10 @@ function tick(dt){
     if(!w){G.wonderT=null;}else{G.wonderT-=dt;}}
   // AI
   G.ai.acc+=dt;if(G.ai.acc>=1){G.ai.acc-=1;aiTick();}
-  // 清理阵亡实体
-  for(let i=G.E.length-1;i>=0;i--){if(G.E[i].hp<=0)G.E.splice(i,1);}
+  // 清理阵亡实体 → 转入死亡特效列表（淡出），而非瞬间消失
+  for(let i=G.E.length-1;i>=0;i--){if(G.E[i].hp<=0){const e=G.E[i];G.dead.push({kind:e.kind,type:e.type,owner:e.owner,x:e.x,y:e.y,t:0.35,max:0.35});G.E.splice(i,1);}}
+  for(const e of G.E)if(e.flash>0)e.flash-=dt;
+  for(let i=G.dead.length-1;i>=0;i--){G.dead[i].t-=dt;if(G.dead[i].t<=0)G.dead.splice(i,1);}
   recomputePop();checkOver();
 }
 function nearestEnemy(x,y,rad,owner){let best=null,bd=rad;
@@ -490,8 +493,9 @@ function nearestEnemy(x,y,rad,owner){let best=null,bd=rad;
 function dealDamage(u,t){const d=UNIT[u.type];
   const bonus=(d.bonusVs&&t.type&&d.bonusVs[t.type])?1.6:1;
   const atk=(d.atk+(u.owner===PLAYER?G.mods.atk:0))*bonus;
-  const def=(t.kind==="bld"?(BLD[t.type].def||0):((UNIT[t.type].def||0)+(t.owner===PLAYER?G.mods.def:0)));
+  const def=t.kind==="bld"?(BLD[t.type].def||0):t.kind==="unit"?((UNIT[t.type].def||0)+(t.owner===PLAYER?G.mods.def:0)):0;
   t.hp-=Math.max(1,Math.round(atk-def));
+  t.flash=0.14;   // 命中闪白特效
 }
 
 /* ---------- 敌方 AI ---------- */
@@ -570,6 +574,7 @@ function loadGame(){ const o=peekSave(); if(!o)return false;
 
 /* ---------- 渲染 ---------- */
 const cv=document.getElementById("map"),ctx=cv.getContext("2d");
+const tcanvas=document.createElement("canvas"),tctx=tcanvas.getContext("2d");let tkey="";
 function resize(){const b=cv.getBoundingClientRect();const w=b.width?Math.round(b.width):(cv.clientWidth||innerWidth);const h=b.height?Math.round(b.height):(cv.clientHeight||innerHeight);cv.width=Math.max(1,w);cv.height=Math.max(1,h);}addEventListener("resize",resize);addEventListener("load",resize);requestAnimationFrame(resize);resize();
 function shade(hex,f){const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
   r=Math.max(0,Math.min(255,r*f|0));g=Math.max(0,Math.min(255,g*f|0));b=Math.max(0,Math.min(255,b*f|0));return "rgb("+r+","+g+","+b+")";}
@@ -590,16 +595,19 @@ function isoBox(o,w,h,H,colTop,colL,colR){const bA={x:o.x,y:o.y},bB={x:o.x+w,y:o
   ctx.fillStyle=colTop;ctx.beginPath();ctx.moveTo(tA.x,tA.y);ctx.lineTo(tB.x,tB.y);ctx.lineTo(tC.x,tC.y);ctx.lineTo(tD.x,tD.y);ctx.closePath();ctx.fill();}
 function drawBld(b){const z=G.cam.zoom,d=BLD[b.type],o=w2s(b.x,b.y),w=b.w*TW/2*z,h=b.d*TH/2*z;
   const H=(b.type==="town"?30:b.type==="wonder"?40:b.type==="tower"?30:18)*z;
+  ctx.fillStyle="rgba(0,0,0,.26)";ctx.beginPath();ctx.ellipse(o.x,o.y+h*0.5,w*0.95,h*0.55,0,0,7);ctx.fill();   // 地面投影
   const team=TEAM[b.owner];isoBox(o,w,h,H,shade("#8a6a3a",1),shade(team,0.55),shade(team,0.38));
   ctx.fillStyle="#f1e6cf";ctx.font=(11*z)+"px serif";ctx.textAlign="center";ctx.fillText(d.name,o.x,o.y+(b.type==="town"?18*z:8*z));
   if(b.queue.length){ctx.fillStyle="#e8b85a";ctx.fillText("⏳",o.x,o.y-H-4*z);}
   if(b.type==="town"){ctx.fillStyle="#d9983d";ctx.beginPath();ctx.arc(o.x,o.y-2*z,3*z,0,7);ctx.fill();}
-  if(b.hp<b.maxhp)bar(o.x,o.y-H-7*z,w*2,3*z,b.hp/b.maxhp,b.owner===PLAYER?"#9bbf5a":"#cf5b46");}
+  if(b.hp<b.maxhp)bar(o.x,o.y-H-7*z,w*2,3*z,b.hp/b.maxhp,b.owner===PLAYER?"#9bbf5a":"#cf5b46");
+  if(b.flash>0){ctx.globalAlpha=Math.min(0.6,b.flash*4.5);ctx.fillStyle="#fff";ctx.beginPath();ctx.moveTo(o.x-w,o.y);ctx.lineTo(o.x,o.y-H);ctx.lineTo(o.x+w,o.y);ctx.lineTo(o.x,o.y+h);ctx.closePath();ctx.fill();ctx.globalAlpha=1;}}
 function drawVil(v){const s=w2s(v.x,v.y),z=G.cam.zoom;
   ctx.fillStyle="rgba(0,0,0,.3)";ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,6*z,3*z,0,0,7);ctx.fill();
   ctx.fillStyle=TEAM[v.owner];ctx.fillRect(s.x-3*z,s.y-14*z,6*z,11*z);ctx.fillStyle="#e8c9a0";ctx.beginPath();ctx.arc(s.x,s.y-17*z,3.5*z,0,7);ctx.fill();
   if(v.carry>0){ctx.fillStyle=v.carryType==="wood"?"#7a5a32":v.carryType==="stone"?"#9a9488":v.carryType==="ore"?"#caa84a":"#cf4b6a";ctx.fillRect(s.x-2*z,s.y-22*z,4*z,4*z);}
-  if(v.hp<v.maxhp)bar(s.x,s.y-24*z,12*z,2.5*z,v.hp/v.maxhp,"#cf5b46");}
+  if(v.hp<v.maxhp)bar(s.x,s.y-24*z,12*z,2.5*z,v.hp/v.maxhp,"#cf5b46");
+  if(v.flash>0){ctx.globalAlpha=Math.min(0.7,v.flash*5);ctx.fillStyle="#fff";ctx.beginPath();ctx.ellipse(s.x,s.y-8*z,7*z,12*z,0,0,7);ctx.fill();ctx.globalAlpha=1;}}
 function drawUnit(u){const s=w2s(u.x,u.y),z=G.cam.zoom,col=TEAM[u.owner];
   ctx.fillStyle="rgba(0,0,0,.3)";ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,7*z,3.5*z,0,0,7);ctx.fill();
   if(u.type==="cav"){ctx.fillStyle=shade("#5b3b1e",1);ctx.beginPath();ctx.ellipse(s.x,s.y-6*z,9*z,5*z,0,0,7);ctx.fill();
@@ -610,19 +618,40 @@ function drawUnit(u){const s=w2s(u.x,u.y),z=G.cam.zoom,col=TEAM[u.owner];
     else if(u.type==="sword"){ctx.beginPath();ctx.moveTo(s.x+5*z,s.y-14*z);ctx.lineTo(s.x+8*z,s.y-23*z);ctx.stroke();}
     else if(u.type==="slinger"){ctx.fillStyle="#cfd2d6";ctx.beginPath();ctx.arc(s.x+6*z,s.y-16*z,2*z,0,7);ctx.fill();}}
   if(u.lastShot&&u.lastShot.life>0){const t=w2s(u.lastShot.x,u.lastShot.y);ctx.strokeStyle="rgba(230,220,140,"+(u.lastShot.life/0.15)+")";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(s.x,s.y-14*z);ctx.lineTo(t.x,t.y-10*z);ctx.stroke();}
-  if(u.hp<u.maxhp)bar(s.x,s.y-(u.type==="cav"?30:27)*z,14*z,2.5*z,u.hp/u.maxhp,u.owner===PLAYER?"#9bbf5a":"#cf5b46");}
+  if(u.hp<u.maxhp)bar(s.x,s.y-(u.type==="cav"?30:27)*z,14*z,2.5*z,u.hp/u.maxhp,u.owner===PLAYER?"#9bbf5a":"#cf5b46");
+  if(u.flash>0){ctx.globalAlpha=Math.min(0.7,u.flash*5);ctx.fillStyle="#fff";ctx.beginPath();ctx.ellipse(s.x,s.y-10*z,8*z,13*z,0,0,7);ctx.fill();ctx.globalAlpha=1;}}
 function bar(x,y,w,h,p,col){ctx.fillStyle="rgba(0,0,0,.5)";ctx.fillRect(x-w/2,y,w,h);ctx.fillStyle=col;ctx.fillRect(x-w/2,y,w*Math.max(0,p),h);}
-function drawSel(e){const z=G.cam.zoom;
-  if(e.kind==="vil"||e.kind==="unit"){const s=w2s(e.x,e.y);ctx.strokeStyle="#e8b85a";ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,8*z,4*z,0,0,7);ctx.stroke();}
+function drawDead(d){const s=w2s(d.x,d.y),z=G.cam.zoom,a=Math.max(0,d.t/d.max);
+  ctx.globalAlpha=a*0.6;ctx.fillStyle="#2a1d12";ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,9*z*a,5*z*a,0,0,7);ctx.fill();ctx.globalAlpha=1;}
+function drawSel(e){const z=G.cam.zoom,pulse=0.5+0.5*Math.sin(T*5);
+  if(e.kind==="vil"||e.kind==="unit"){const s=w2s(e.x,e.y);ctx.strokeStyle="rgba(232,184,90,"+(0.55+0.45*pulse)+")";ctx.lineWidth=1.5+pulse;ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,(8+pulse*1.5)*z,(4+pulse*0.8)*z,0,0,7);ctx.stroke();}
   else{const o=w2s(e.x,e.y),w=e.w*TW/2*z,h=e.d*TH/2*z,H=(e.type==="town"?30:e.type==="wonder"?40:e.type==="tower"?30:18)*z;
-    ctx.strokeStyle="#e8b85a";ctx.lineWidth=2;ctx.strokeRect(o.x-w,o.y-h*0.5-H,w*2,h+H);}}
-function render(){ctx.clearRect(0,0,cv.width,cv.height);
-  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const s=w2s(x,y);if(s.x<-TW||s.x>cv.width+TW||s.y<-TH||s.y>cv.height+TH)continue;drawTile(x,y);}
+    ctx.strokeStyle="rgba(232,184,90,"+(0.55+0.45*pulse)+")";ctx.lineWidth=2+pulse;ctx.strokeRect(o.x-w,o.y-h*0.5-H,w*2,h+H);}}
+function buildTerrainCache(){   // 地形离屏缓存：每帧只 blit，省去 660 块瓦片重绘
+  tcanvas.width=cv.width;tcanvas.height=cv.height;
+  tctx.clearRect(0,0,cv.width,cv.height);
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const s=w2s(x,y),z=G.cam.zoom,hw=TW/2*z,hh=TH/2*z,t=G.terrain[y][x];
+    if(s.x<-TW||s.x>cv.width+TW||s.y<-TH||s.y>cv.height+TH)continue;
+    const base=tileColor(t.t,t.water);
+    const lit=1.10-0.24*((x+y)/(GW+GH));   // 方向光：左上偏亮、右下偏暗，读作 3D 表面
+    tctx.beginPath();tctx.moveTo(s.x,s.y-hh);tctx.lineTo(s.x+hw,s.y);tctx.lineTo(s.x,s.y+hh);tctx.lineTo(s.x-hw,s.y);tctx.closePath();
+    tctx.fillStyle=shade(base,lit);tctx.fill();
+    tctx.strokeStyle=shade(base,0.8);tctx.lineWidth=1;tctx.stroke();
+    if(!t.water&&hash2(x*3,y*3)>0.93){tctx.fillStyle=shade(base,1.18);tctx.fillRect(s.x-1,s.y-1,2,2);}
+  }
+}
+function render(){
+  const key=G.cam.x.toFixed(2)+","+G.cam.y.toFixed(2)+","+G.cam.zoom.toFixed(3)+","+cv.width+"x"+cv.height;
+  if(key!==tkey||!tcanvas.width){buildTerrainCache();tkey=key;}
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.drawImage(tcanvas,0,0);
   for(const n of G.nodes){const s=w2s(n.x,n.y);if(s.x<-20||s.x>cv.width+20||s.y<-20||s.y>cv.height+20)continue;drawNode(n);}
   const list=G.E.slice().sort((a,b)=>(a.x+a.y)-(b.x+b.y));
   for(const e of list)if(e.kind==="bld")drawBld(e);
   for(const e of list)if(e.kind==="unit")drawUnit(e);
   for(const e of list)if(e.kind==="vil")drawVil(e);
+  for(const d of G.dead)drawDead(d);
   for(const id of G.sel){const e=G.E.find(x=>x.id===id);if(e)drawSel(e);}
   if(G.drag){const a=G.drag;ctx.strokeStyle="#e8b85a";ctx.fillStyle="rgba(232,184,90,.12)";ctx.lineWidth=1.5;
     const x=Math.min(a.x0,a.x1),y=Math.min(a.y0,a.y1),w=Math.abs(a.x1-a.x0),h=Math.abs(a.y1-a.y0);ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);}
@@ -704,8 +733,8 @@ function refreshHUD(){for(const k of ["food","wood","stone","ore","know"])el("r-
   updateBuildAfford();}
 
 /* ---------- 主循环 ---------- */
-let last=performance.now(),acc=0;
-function frame(now){let dt=now-last;last=now;if(dt>120)dt=120;
+let last=performance.now(),acc=0,T=0;
+function frame(now){let dt=now-last;last=now;T+=dt/1000;if(dt>120)dt=120;
   if(!G.paused&&!G.over){acc+=dt*G.speed;let guard=0;while(acc>=STEP&&guard++<8){tick(STEP/1000);acc-=STEP;}}
   render();refreshHUD();
   G._sacc=(G._sacc||0)+dt; if(G._sacc>=5000){G._sacc=0; saveGame();}   // 每 5 秒自动快照
@@ -720,6 +749,7 @@ el("spNew").onclick=()=>{clearSave();el("savePrompt").style.display="none";newGa
 /* ---------- 启动 ---------- */
 if(hasSave())showSavePrompt();else newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
   </script>
+
 
 
 </body>
