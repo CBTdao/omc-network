@@ -22,6 +22,11 @@ import sys
 PAGES = ["index", "news", "whitepaper", "tokenomics", "calculator", "compute",
          "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy",
          "barbarian-age"]
+# /barbarian-age-play is deliberately not audited here: it is the standalone
+# playable game build (own chrome, no i18n engine, lang="zh-CN"), so it falls
+# outside this tool's "site-wide convention" comparison. It is still covered by
+# verify-site.js, whose head/JSON-LD assertions walk every HTML file, and it is
+# listed in sitemap.xml + llms.txt so the desktop build can be discovered.
 
 # default: the website/ directory this tools/ folder lives in
 ROOT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

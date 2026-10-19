@@ -20,3 +20,4 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://omc.network/tokenomics](https://omc.network/tokenomics): Tokenomics — OMC Supply, Distribution and Emission | Omniverse Compute (OMC)
 - [https://omc.network/whitepaper](https://omc.network/whitepaper): Whitepaper — Omniverse Compute (OMC)
 - [https://omc.network/barbarian-age](https://omc.network/barbarian-age): Barbarian Age — a single-era tribal strategy browser game from the OMC community
+- [https://omc.network/barbarian-age-play](https://omc.network/barbarian-age-play): Barbarian Age — play the full build in your browser (desktop: keyboard shortcuts + fullscreen)
