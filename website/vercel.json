@@ -1,18 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "trailingSlash": false,
-  "redirects": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "game.omc.network"
-        }
-      ],
-      "destination": "/barbarian-age-play",
-      "permanent": true
-    }
-  ]
+  "trailingSlash": false
 }
