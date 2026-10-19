@@ -34,6 +34,7 @@ window.I18N.en = {
   "nav.testnet": "Testnet",
   "nav.stake": "Stake",
   "nav.airdrop": "Airdrop",
+  "nav.eco": "Ecosystem",
   "nav.claim": "🎁 Claim Airdrop",
 
   /* footer (shared) */
@@ -927,7 +928,8 @@ window.I18N.en = {
   "ba.h1": "🏛️ 蛮荒时代 Barbarian Age",
   "ba.sub": "A browser build of the community RTS — homage to the Ancient Age of Rise of Nations.",
   "ba.badge": "v2.31 full build · 4 modes · free, no wallet",
-  "ba.note": "The game runs entirely in your browser — no install, no account, no wallet. Portrait layout, best on a phone; mouse works on desktop.",
+  "ba.open": "⛶ Open the full desktop version (keyboard shortcuts + side guide)",
+  "ba.note": "The game runs entirely in your browser — no install, no account, no wallet. This embed is the portrait phone layout; open the full desktop version for a bigger screen, keyboard shortcuts and a side guide.",
   "ba.intro_h": "About this build",
   "ba.intro_p": "Barbarian Age is a small real-time strategy game from the OMC community: dual-faction economy with self-driving villagers, free-placement city building, and an AI that runs its own base and pushes in waves. This web build is the full v2.31 release — including the Altar of the tribe totems with its five divine punishments, and the interactive-movie Epic mode.",
   "ba.modes_h": "Four modes",

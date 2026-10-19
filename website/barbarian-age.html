@@ -50,6 +50,9 @@
 #stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .stage-note{max-width:min(100%,calc(84vh * 0.5625));margin:10px auto 0;font-size:12px;color:var(--g-muted);text-align:center;line-height:1.7}
 .stage-note b{color:var(--g-bronze2)}
+.stage-open{max-width:min(100%,calc(84vh * 0.5625));margin:12px auto 0;text-align:center}
+.stage-open a{display:inline-block;background:linear-gradient(135deg,var(--g-bronze),var(--g-bronze2));color:#1a1208;font-weight:800;font-size:13px;text-decoration:none;padding:10px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(217,152,61,.28)}
+.stage-open a:hover{filter:brightness(1.1)}
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
 .shots figure{margin:0}
 .shots img{width:100%;height:auto;border:1px solid var(--g-border);border-radius:10px;display:block;background:#0d0a06}
@@ -80,6 +83,15 @@
         <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
         <a href="/stake" data-i18n="nav.stake">Stake</a>
         <a href="/airdrop" data-i18n="nav.airdrop">Airdrop</a>
+        <div class="nav-drop" id="navEco">
+          <button class="nav-drop-btn" type="button" data-i18n="nav.eco" aria-haspopup="true" aria-expanded="false">Ecosystem ▾</button>
+          <div class="nav-drop-menu">
+            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
+            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
+            <a href="/barbarian-age" data-i18n="f.barbarian">Barbarian Age</a>
+          </div>
+        </div>
+
         <a href="/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
         <div class="nav-wallet" id="walletNav"></div>
         <select class="lang-select" id="langSelect" aria-label="Language">
@@ -107,7 +119,8 @@
 <div id="stage">
   <iframe src="/barbarian-age-play.html" title="蛮荒时代 Barbarian Age — playable browser build v2.31" loading="lazy" allow="autoplay; fullscreen"></iframe>
 </div>
-<p class="stage-note" data-i18n="ba.note">The game runs entirely in your browser — no install, no account, no wallet. Portrait layout, best on a phone; mouse works on desktop.</p>
+<p class="stage-note" data-i18n="ba.note">游戏完全在浏览器中运行——无需安装、无需账号、无需钱包。此嵌入为竖屏手机布局；想要更大画面、键盘快捷键和侧栏说明，请打开桌面完整版。</p>
+<p class="stage-open"><a href="/barbarian-age-play" target="_blank" rel="noopener" data-i18n="ba.open">⛶ 打开桌面完整版（键盘快捷键 + 侧栏说明）</a></p>
     </div>
   </section>
 

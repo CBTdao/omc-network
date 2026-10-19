@@ -39,15 +39,85 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <style>
   * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; background: #1a1208; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+  html, body { margin: 0; height: 100%; background: #120d07; overflow: hidden;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif; color: #e9dfc9; }
+  #app { height: 100%; display: flex; align-items: center; justify-content: center; gap: 26px; padding: 14px; }
+  #stage { height: 100%; min-width: 0; display: flex; align-items: center; justify-content: center; }
+  #stage:fullscreen, #stage:-webkit-full-screen { width: 100vw; height: 100vh; padding: 0; }
   #wrap { position: relative; height: 100%; aspect-ratio: 360 / 640; max-width: 100vw; }
-  canvas { background: #1a1208; width: 100%; height: 100%; display: block; }
+  canvas { background: #1a1208; width: 100%; height: 100%; display: block; border-radius: 10px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55); }
+  /* desktop side rail — hidden on narrow screens, the game fills the viewport there */
+  #rail { display: none; width: 330px; flex-shrink: 0; max-height: 100%; overflow: auto; }
+  @media (min-width: 1120px) { #rail { display: block; } }
+  #rail::-webkit-scrollbar { width: 8px; }
+  #rail::-webkit-scrollbar-thumb { background: #3a2f1d; border-radius: 4px; }
+  .rail-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .rail-back { color: #c9b489; text-decoration: none; font-size: 13px; font-weight: 700; }
+  .rail-back:hover { color: #ffd479; }
+  #fsBtn { background: rgba(255, 212, 121, 0.12); border: 1px solid rgba(255, 212, 121, 0.45); color: #ffd479;
+    font: 700 12.5px/1 "Microsoft YaHei", "PingFang SC", sans-serif; padding: 8px 13px; border-radius: 8px; cursor: pointer; }
+  #fsBtn:hover { background: rgba(255, 212, 121, 0.22); }
+  .rail-title { margin: 0 0 4px; font-size: 26px; color: #f5e9cf; letter-spacing: 0.02em; }
+  .rail-title span { color: #ffd479; }
+  .rail-sub { margin: 0 0 16px; font-size: 12.5px; color: #a5947a; line-height: 1.6; }
+  .rail-card { background: rgba(38, 30, 17, 0.55); border: 1px solid rgba(255, 212, 121, 0.16); border-radius: 12px;
+    padding: 13px 15px; margin-bottom: 12px; }
+  .rail-card h2 { margin: 0 0 8px; font-size: 13px; color: #ffd479; letter-spacing: 0.06em; }
+  .rail-card p { margin: 0 0 6px; font-size: 12.5px; line-height: 1.65; color: #d8cbb0; }
+  .rail-card p.dim { color: #97876c; font-size: 11.5px; margin: 0; }
+  .rail-keys { width: 100%; border-collapse: collapse; }
+  .rail-keys td { padding: 3.5px 0; font-size: 12px; color: #d8cbb0; vertical-align: top; }
+  .rail-keys td:first-child { width: 76px; white-space: nowrap; padding-right: 8px; }
+  kbd { display: inline-block; background: #2b2113; border: 1px solid #4a3a20; border-bottom-width: 2px; border-radius: 5px;
+    padding: 1px 6px; font: 700 11px/1.5 Consolas, monospace; color: #ffd479; }
+  .rail-eco a { display: block; color: #c9b489; text-decoration: none; font-size: 12.5px; font-weight: 600;
+    padding: 6px 0; border-bottom: 1px dashed rgba(255, 212, 121, 0.14); }
+  .rail-eco a:last-child { border-bottom: 0; }
+  .rail-eco a:hover { color: #ffd479; }
 </style>
 </head>
 <body>
-  <div id="wrap"><canvas id="cv" width="720" height="1280"></canvas></div>
+  <div id="app">
+    <div id="stage"><div id="wrap"><canvas id="cv" width="720" height="1280"></canvas></div></div>
+    <aside id="rail">
+      <div class="rail-top">
+        <a class="rail-back" href="https://omc.network/barbarian-age">← OMC · 蛮荒时代</a>
+        <button id="fsBtn" type="button">⛶ 全屏游戏</button>
+      </div>
+      <h1 class="rail-title">蛮荒时代 <span>网页版</span></h1>
+      <p class="rail-sub">《国家的崛起》致敬作 · 浏览器直接玩，无需安装。Free to play — no wallet, no token.</p>
+      <div class="rail-card">
+        <h2>怎么玩 · HOW TO PLAY</h2>
+        <p>鼠标 = 手指：点击底部按钮建造建筑、训练部队；点战场选中部队，再点地面移动、点敌人攻击。</p>
+        <p class="dim">Mouse works like touch: click the panels to build and train, click the field to command.</p>
+      </div>
+      <div class="rail-card">
+        <h2>键盘快捷键 · KEYBOARD</h2>
+        <table class="rail-keys">
+          <tr><td><kbd>1</kbd>–<kbd>6</kbd></td><td>训练：步兵 / 弓手 / 勇士 / 村民 / 骑兵 / 投石</td></tr>
+          <tr><td><kbd>Space</kbd></td><td>暂停 / 继续</td></tr>
+          <tr><td><kbd>A</kbd></td><td>晋升时代</td></tr>
+          <tr><td><kbd>T</kbd></td><td>科技树开关</td></tr>
+          <tr><td><kbd>E</kbd></td><td>全军框选 / 取消选择</td></tr>
+          <tr><td><kbd>H</kbd></td><td>冲锋号角（全军加速·攻击）</td></tr>
+          <tr><td><kbd>F</kbd></td><td>切换阵型（方阵/横排/楔形/圆环）</td></tr>
+          <tr><td><kbd>G</kbd></td><td>切换姿态（进攻 / 驻守）</td></tr>
+          <tr><td><kbd>R</kbd></td><td>主公战吼（击退敌军）</td></tr>
+          <tr><td><kbd>Q</kbd></td><td>神罚 · 超级武器（需祭坛）</td></tr>
+          <tr><td><kbd>M</kbd></td><td>声音开关</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>取消放置 / 取消瞄准</td></tr>
+        </table>
+        <p class="dim">Keys 1–6 train infantry / archer / heavy / villager / cavalry / siege.</p>
+      </div>
+      <div class="rail-card rail-eco">
+        <h2>生态 · ECOSYSTEM</h2>
+        <a href="https://top.omc.network" target="_blank" rel="noopener">AITop — AI 工具站</a>
+        <a href="https://forum.omc.network" target="_blank" rel="noopener">DCF — 算力论坛</a>
+        <a href="https://omc.network/barbarian-age">蛮荒时代 · 游戏介绍页</a>
+      </div>
+    </aside>
+  </div>
 <script>
 // 蛮荒时代 · RTS 微信小游戏宿主（wx）
 // 复刻《国家的崛起》：双阵营经济（村民自主种地/伐木/采石）、自由选址建造、AI 自主运营+压境
@@ -3170,9 +3240,59 @@
 .back-chip:hover{opacity:1;border-color:#ffd479}
 </style>
 <script>
-(function(){var b=document.getElementById('backOMC'),cv=document.getElementById('cv');
-function pl(){if(!cv)return;var r=cv.getBoundingClientRect();if(window.innerWidth-r.width>90){b.style.display='inline-flex';b.style.left=Math.max(10,(window.innerWidth-r.width)/2-84)+'px';b.style.top='14px';}else b.style.display='none';}
-window.addEventListener('resize',pl);pl();})();
+/* desktop layer: synthetic mouse taps for keyboard play + fullscreen + back-chip placement.
+   The game kernel is untouched — we only dispatch MouseEvents its own listeners already
+   handle (mousedown/mouseup on #cv), with client coords derived from the canvas rect. */
+(function(){
+  var cv=document.getElementById('cv'), stage=document.getElementById('stage'), b=document.getElementById('backOMC');
+  function tap(lx,ly){
+    var r=cv.getBoundingClientRect();
+    var x=r.left+lx*r.width/360, y=r.top+ly*r.height/640;
+    var o={clientX:x,clientY:y,bubbles:true,cancelable:true};
+    cv.dispatchEvent(new MouseEvent('mousedown',o));
+    cv.dispatchEvent(new MouseEvent('mouseup',o));
+  }
+  /* logical coords of on-screen controls (360x640 space) */
+  var TRAIN_X=[27,78.5,130,181.5,233,284.5];      /* train row slots 1-6, y=598 */
+  var KEYS={};
+  for(var i=0;i<TRAIN_X.length;i++) KEYS['Digit'+(i+1)]=[TRAIN_X[i],598];
+  KEYS.KeyA=[41,56];      /* 晋升时代 */
+  KEYS.KeyT=[327,19];     /* 科技树 */
+  KEYS.KeyE=[41,137];     /* 全军框选/取消 */
+  KEYS.Space=[310,49];    /* 暂停 */
+  KEYS.KeyH=[310,111];    /* 冲锋号角 */
+  KEYS.KeyF=[310,137];    /* 阵型 */
+  KEYS.KeyG=[310,163];    /* 姿态 */
+  KEYS.KeyR=[41,163];     /* 主公战吼 */
+  KEYS.KeyQ=[310,189];    /* 神罚 */
+  KEYS.KeyM=[41,83];      /* 声音 */
+  document.addEventListener('keydown',function(e){
+    if(e.repeat||e.metaKey||e.ctrlKey||e.altKey)return;
+    if(e.code==='Escape'){ tap(336,598); return; }   /* 空训练格：战斗无副作用；放置/瞄准态=取消 */
+    var p=KEYS[e.code]; if(!p)return;
+    e.preventDefault(); tap(p[0],p[1]);
+  });
+  /* fullscreen */
+  var fsBtn=document.getElementById('fsBtn');
+  if(fsBtn&&stage){
+    fsBtn.addEventListener('click',function(){
+      if(document.fullscreenElement||document.webkitFullscreenElement){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+      else if(stage.requestFullscreen){ stage.requestFullscreen(); }
+      else if(stage.webkitRequestFullscreen){ stage.webkitRequestFullscreen(); }
+    });
+    function fsLabel(){ fsBtn.textContent=(document.fullscreenElement||document.webkitFullscreenElement)?'⛶ 退出全屏':'⛶ 全屏游戏'; }
+    document.addEventListener('fullscreenchange',fsLabel);
+    document.addEventListener('webkitfullscreenchange',fsLabel);
+  }
+  /* back chip sits in the stage gutter (desktop); hidden when the game fills the viewport */
+  function pl(){
+    if(!cv||!stage||!b)return;
+    var r=cv.getBoundingClientRect();
+    if(window.innerWidth-r.width>90){ var st=stage.getBoundingClientRect(); b.style.display='inline-flex'; b.style.left=Math.max(10,st.left+12)+'px'; b.style.top='18px'; }
+    else b.style.display='none';
+  }
+  window.addEventListener('resize',pl); pl();
+})();
 </script>
 </body>
 </html>
