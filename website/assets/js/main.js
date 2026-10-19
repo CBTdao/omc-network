@@ -13,29 +13,6 @@ if (burger && navLinks) {
   );
 }
 
-/* ---------- Ecosystem dropdown (AITop / DCF / Barbarian Age) ----------
-   desktop opens on hover via CSS; this adds the click/tap toggle so
-   touch devices and keyboard users can open it too */
-const ecoDrop = document.getElementById("navEco");
-const ecoBtn = ecoDrop && ecoDrop.querySelector(".nav-drop-btn");
-if (ecoBtn) {
-  ecoBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const open = ecoDrop.classList.toggle("open");
-    ecoBtn.setAttribute("aria-expanded", open ? "true" : "false");
-  });
-  document.addEventListener("click", (e) => {
-    if (!ecoDrop.classList.contains("open") || ecoDrop.contains(e.target)) return;
-    ecoDrop.classList.remove("open");
-    ecoBtn.setAttribute("aria-expanded", "false");
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape" || !ecoDrop.classList.contains("open")) return;
-    ecoDrop.classList.remove("open");
-    ecoBtn.setAttribute("aria-expanded", "false");
-  });
-}
-
 /* ---------- Active nav link ---------- */
 (function markActive() {
   const page = location.pathname.split("/").pop() || "index.html";

@@ -42,6 +42,64 @@
   <link rel="icon" type="image/png" href="/assets/img/logo.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the OMC AI Compute Station?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is the requester side of the OMC network, live on BNB Smart Chain Testnet (chainId 97). You configure a GPU job — hardware tier, verification policy, protection level and a price ceiling — then escrow the fee on chain. The GPU itself runs off chain; the contract holds the escrow, the assignment record and the verdict."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is a compute job verified?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The requester chooses a per-job verification policy: spot-check (a random share of the work is re-run on another node), full redundancy (the job runs on 2–3 independent nodes and results are compared), or TEE (the job runs inside hardware-isolated trusted execution). Verification is a dial, not a single flag — you pay more for stronger checks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if a job fails or returns bad output?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Provider misbehavior is slashed from its stake: a timeout is 2%, going offline 5%, bad output 30%, and proven fraud 100%. Half of the slashed amount compensates the requester whose job failed, 30% goes to the protocol treasury, and 20% is burned. A failed job is refunded out of the provider's bond, not out of the requester's escrow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the job price built?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Price equals GPU-hours × your reference rate × the verification multiplier, plus a 3% protocol fee, minus a 10% fee discount when you pay in OMC. You set the ceiling; the contract refuses to settle above it. No published rate card exists yet — the benchmark against hyperscalers and other networks is published after mainnet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this mainnet, and can I lose real money?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The station runs on BNB Smart Chain Testnet with the test token tOMC. tOMC and tBNB have no monetary value and are sold nowhere. Never send real funds to any address on this page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which wallets can I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any EIP-1193 wallet works, including MetaMask and Trust Wallet. Inside the Binance App, the dApp connects through the Binance Web3 Wallet that Binance injects at window.binancew3w.ethereum rather than window.ethereum."
+      }
+    }
+  ]
+}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
 </head>
 <body>
 
@@ -61,13 +119,6 @@
         <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
         <a href="/stake" data-i18n="nav.stake">Stake</a>
         <a href="/airdrop" data-i18n="nav.airdrop">Airdrop</a>
-        <div class="nav-drop" id="navEco">
-          <button class="nav-drop-btn" type="button" data-i18n="nav.eco" aria-haspopup="true" aria-expanded="false">Ecosystem ▾</button>
-          <div class="nav-drop-menu">
-            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
-            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
-            <a href="/barbarian-age" data-i18n="f.barbarian">Barbarian Age</a>
-          </div>
         </div>
 
         <a href="/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>

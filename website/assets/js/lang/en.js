@@ -34,7 +34,6 @@ window.I18N.en = {
   "nav.testnet": "Testnet",
   "nav.stake": "Stake",
   "nav.airdrop": "Airdrop",
-  "nav.eco": "Ecosystem",
   "nav.claim": "🎁 Claim Airdrop",
 
   /* footer (shared) */

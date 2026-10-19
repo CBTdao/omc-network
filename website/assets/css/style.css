@@ -138,23 +138,6 @@ img { max-width: 100%; display: block; }
 
 .nav-links a.active { color: #fff; background: var(--accent-soft); }
 
-/* ecosystem dropdown: AITop / DCF forum / Barbarian Age */
-.nav-drop { position: relative; }
-.nav-drop-btn {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: none; border: 0; cursor: pointer;
-  color: var(--muted); font-family: inherit; font-size: 14.5px; font-weight: 600;
-  padding: 8px 14px; border-radius: 10px; transition: all 0.2s;
-}
-.nav-drop-btn:hover, .nav-drop.open .nav-drop-btn { color: var(--text); background: var(--panel); }
-.nav-drop-menu {
-  display: none; position: absolute; top: calc(100% + 6px); right: 0; min-width: 236px;
-  background: rgba(10, 16, 34, 0.98); border: 1px solid var(--border); border-radius: 12px;
-  padding: 6px; z-index: 60; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
-}
-.nav-drop-menu a { display: block; padding: 9px 12px; font-size: 13.5px; border-radius: 8px; }
-.nav-drop:hover .nav-drop-menu, .nav-drop.open .nav-drop-menu { display: block; }
-
 .nav-cta {
   display: inline-flex;
   align-items: center;
@@ -1119,13 +1102,6 @@ footer {
   }
   .nav-links.open { display: flex; }
   .nav-burger { display: block; }
-  .nav-drop { position: static; }
-  .nav-drop-btn { width: 100%; justify-content: space-between; padding: 10px 12px; font-size: 15px; }
-  .nav-drop-menu {
-    position: static; display: none; min-width: 0; margin: 4px 0 6px;
-    box-shadow: none; background: rgba(6, 11, 26, 0.6); padding: 4px;
-  }
-  .nav-drop.open .nav-drop-menu { display: block; }
   .grid-2, .grid-3, .reward-grid, .dl-cards { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 64px 0; }
@@ -1481,8 +1457,6 @@ footer {
 
 @media (max-width: 1100px) {
   .nav-links a { font-size: 13.5px; padding: 7px 10px; }
-  .nav-links .nav-drop-btn { font-size: 13.5px; padding: 7px 10px; }
-  .nav-drop-menu { min-width: 210px; }
   .nav-links { gap: 2px; }
   .brand small { display: none; }
 }
