@@ -9,7 +9,7 @@
 {"@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"],"@context":"https://schema.org"}
 </script>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Barbarian Age","url":"https://omc.network/barbarian-age","description":"A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Barbarian Age","url":"https://omc.network/barbarian-age","description":"Play 蛮荒时代 (Barbarian Age) in your browser — full v2.31: five tribes, the Altar with five divine punishments, and the Epic mode. Free, no wallet, no token.","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}}
 </script>
   <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"Barbarian Age","item":"https://omc.network/barbarian-age"}]}
@@ -17,7 +17,7 @@
   <meta property="og:site_name" content="Omniverse Compute">
   <meta property="og:type" content="website">
   <meta property="og:title" data-i18n-content="meta.title_barbarian" content="Barbarian Age — Omniverse Compute (OMC) Community">
-  <meta property="og:description" content="A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.">
+  <meta property="og:description" content="Play 蛮荒时代 (Barbarian Age) in your browser — full v2.31: five tribes, the Altar with five divine punishments, and the Epic mode. Free, no wallet, no token.">
   <meta property="og:url" content="https://omc.network/barbarian-age">
   <meta property="og:image" content="https://omc.network/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -27,9 +27,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@Omniverse_Depin">
   <meta name="twitter:title" data-i18n-content="meta.title_barbarian" content="Barbarian Age — Omniverse Compute (OMC) Community">
-  <meta name="twitter:description" content="A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.">
+  <meta name="twitter:description" content="Play 蛮荒时代 (Barbarian Age) in your browser — full v2.31: five tribes, the Altar with five divine punishments, and the Epic mode. Free, no wallet, no token.">
   <meta name="twitter:image" content="https://omc.network/og-image.png">
-  <meta name="description" content="A browser mini-game from the OMC community — an homage to Rise of Nations' Ancient Age (resources, units, buildings, techs, wonders). No token, no wallet.">
+  <meta name="description" content="Play 蛮荒时代 (Barbarian Age) in your browser — full v2.31: five tribes, the Altar with five divine punishments, and the Epic mode. Free, no wallet, no token.">
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/footer-chain.css" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -43,47 +43,22 @@
   --g-text:#f1e6cf; --g-muted:#b9a880; --g-bronze:#d9983d; --g-bronze2:#e8b85a;
   --g-red:#cf5b46; --g-green:#9bbf5a; --g-shadow:rgba(0,0,0,.45);
 }
-#stage #map{position:absolute;inset:0;display:block;width:100%;height:100%;cursor:crosshair;background:#0d0a06}
-#stage .hud{position:absolute;pointer-events:none}
-#stage .topbar{left:8px;top:8px;right:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-#stage .res{background:rgba(10,8,4,.72);border:1px solid var(--g-border);border-radius:7px;padding:4px 9px;
-  font-size:12.5px;display:flex;gap:6px;align-items:center;pointer-events:auto}
-#stage .res .ic{font-size:15px}
-#stage .res .v{font-weight:800;font-variant-numeric:tabular-nums}
-#stage .res .r{font-size:10px;color:var(--g-muted)}
-#stage .sep{flex:1}
-#stage .agechip{background:rgba(10,8,4,.72);border:1px solid var(--g-border2);border-radius:7px;padding:4px 10px;
-  font-size:12px;color:var(--g-bronze2);font-weight:800;font-family:Georgia,serif;pointer-events:auto}
-#stage .dock{left:8px;right:8px;bottom:8px;display:flex;gap:8px;align-items:flex-end}
-#stage .panel{background:rgba(10,8,4,.82);border:1px solid var(--g-border);border-radius:9px;padding:8px;pointer-events:auto;max-width:48%}
-#stage .panel .ttl{font-size:11px;color:var(--g-muted);margin-bottom:5px;letter-spacing:.4px}
-#stage .btn{background:var(--g-panel2);border:1px solid var(--g-border);color:var(--g-text);border-radius:6px;
-  padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;margin:2px;font-family:inherit}
-#stage .btn:hover{border-color:var(--g-border2)}
-#stage .btn:disabled{opacity:.4;cursor:not-allowed}
-#stage .btn .cost{display:block;font-size:9.5px;color:var(--g-muted);font-weight:400;margin-top:1px}
-#stage .btn.sel{border-color:var(--g-bronze);color:var(--g-bronze2);box-shadow:0 0 0 1px var(--g-bronze) inset}
-#stage .buildgrid{display:grid;grid-template-columns:repeat(3,auto);gap:2px}
-#stage .minimap{position:absolute;right:8px;bottom:8px;width:150px;height:108px;border:1px solid var(--g-border2);
-  background:rgba(10,8,4,.85);border-radius:7px;pointer-events:auto;z-index:3}
-#stage .toast{position:absolute;left:50%;top:14%;transform:translateX(-50%);background:rgba(10,8,4,.9);
-  border:1px solid var(--g-border2);padding:6px 14px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;z-index:9}
-#stage .toast.on{opacity:1}
-#stage .hint{position:absolute;left:50%;top:54px;transform:translateX(-50%);max-width:84%;text-align:center;
-  background:rgba(10,8,4,.86);border:1px solid var(--g-bronze);color:var(--g-bronze2);padding:7px 14px;
-  border-radius:9px;font-size:12.5px;z-index:8;pointer-events:none;line-height:1.5}
-#stage .selinfo{font-size:12px;line-height:1.5}
-#stage .selinfo b{color:var(--g-bronze2)}
-#stage .acts{margin-top:5px;display:flex;flex-wrap:wrap;gap:2px}
-#stage .over{position:absolute;inset:0;background:rgba(8,6,3,.78);display:none;align-items:center;justify-content:center;z-index:20;pointer-events:auto}
-#stage .over .box{text-align:center;background:var(--g-panel);border:1px solid var(--g-border2);border-radius:14px;padding:26px 40px}
-#stage .over .box h1, #stage .over .box h2{font-family:Georgia,serif;font-size:34px;margin:0 0 12px}
-#stage .over .box .sub{color:var(--g-muted);margin-bottom:16px;font-size:13px}
-.nav,.hero,footer,.footer-chain{display:none!important}
-body{overflow:hidden}
-#stage{position:fixed;inset:0;width:100%;height:100%;z-index:9998;background:#0d0a06;overflow:hidden}
-#stage .topbar{top:52px}
-.game-back{position:fixed;top:10px;left:10px;z-index:10000;display:inline-flex;align-items:center;gap:6px;background:rgba(10,8,4,.85);border:1px solid var(--g-border2);color:var(--g-bronze2);padding:7px 12px;border-radius:8px;font:700 13px/1 inherit;text-decoration:none;pointer-events:auto}
+/* ===== v2.31 网页版：iframe 嵌入式舞台（挂载 barbarian-age-play.html） ===== */
+#stage{position:relative;width:min(100%,calc(84vh * 0.5625));margin:0 auto;aspect-ratio:360/640;
+  border:1px solid var(--g-border2);border-radius:14px;overflow:hidden;background:#1a1208;
+  box-shadow:0 12px 44px rgba(0,0,0,.5)}
+#stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.stage-note{max-width:min(100%,calc(84vh * 0.5625));margin:10px auto 0;font-size:12px;color:var(--g-muted);text-align:center;line-height:1.7}
+.stage-note b{color:var(--g-bronze2)}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.shots figure{margin:0}
+.shots img{width:100%;height:auto;border:1px solid var(--g-border);border-radius:10px;display:block;background:#0d0a06}
+.shots figcaption{font-size:11.5px;color:var(--g-muted);text-align:center;margin-top:6px;line-height:1.55}
+.mode-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0 4px;padding:0;list-style:none}
+.mode-list li{background:var(--g-panel2,#141a26);border:1px solid var(--g-border);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.65}
+.mode-list b{color:var(--g-bronze2)}
+@media (max-width:640px){.shots{grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto}
+  .mode-list{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -119,48 +94,43 @@ body{overflow:hidden}
   <!-- ===== HEADER ===== -->
   <header class="hero" style="padding-bottom: 24px;">
     <div class="container">
-      <div class="hero-badge"><span class="dot"></span><span data-gt="badge_tag">Community</span></div>
-      <h1 data-gt="h1">🏛️ 蛮荒时代</h1>
-      <p class="sub" data-gt="sub">致敬《国家的崛起》远古时代（Ancient Age）· 可玩版</p>
-      <div class="game-badge" data-gt="badge">DEMO · 致敬远古时代机制，未接任何生态</div>
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="ba.tag">Community · Playable</span></div>
+      <h1 data-i18n="ba.h1">🏛️ 蛮荒时代 Barbarian Age</h1>
+      <p class="sub" data-i18n="ba.sub">A browser build of the community RTS — homage to the Ancient Age of Rise of Nations.</p>
+      <div class="game-badge" data-i18n="ba.badge">v2.31 full build · 4 modes · free, no wallet</div>
     </div>
   </header>
 
   <!-- ===== GAME ===== -->
   <section class="section" style="padding-top: 12px;">
     <div class="container">
-<div id="stage"><a class="game-back" href="/">← 返回 OMC</a>
-<canvas id="map"></canvas>
-
-<div class="hud topbar">
-  <div class="res" id="r-food"><span class="ic">🌾</span><span class="v">0</span></div>
-  <div class="res" id="r-wood"><span class="ic">🪵</span><span class="v">0</span></div>
-  <div class="res" id="r-stone"><span class="ic">🪨</span><span class="v">0</span></div>
-  <div class="res" id="r-ore"><span class="ic">⛏️</span><span class="v">0</span></div>
-  <div class="res" id="r-know"><span class="ic">📜</span><span class="v">0</span></div>
-  <div class="res" id="r-pop"><span class="ic">👥</span><span class="v">0/0</span></div>
-  <span class="sep"></span>
-  <div class="agechip" id="agechip">Ⅰ 远古</div>
+<div id="stage">
+  <iframe src="/barbarian-age-play.html" title="蛮荒时代 Barbarian Age — playable browser build v2.31" loading="lazy" allow="autoplay; fullscreen"></iframe>
 </div>
+<p class="stage-note" data-i18n="ba.note">The game runs entirely in your browser — no install, no account, no wallet. Portrait layout, best on a phone; mouse works on desktop.</p>
+    </div>
+  </section>
 
-<div class="hud dock">
-  <div class="panel" id="selPanel" style="display:none">
-    <div class="ttl">已选</div>
-    <div class="selinfo" id="selInfo"></div>
-    <div class="acts" id="selActs"></div>
-  </div>
-  <div class="panel" id="buildPanel">
-    <div class="ttl">建造 / 训练</div>
-    <div class="buildgrid" id="buildGrid"></div>
-  </div>
-</div>
-
-<canvas class="minimap" id="mini" width="150" height="108"></canvas>
-<div class="toast" id="toast"></div>
-<div class="hint" id="hint"></div>
-<div class="over" id="over"><div class="box"><h2 id="overT">胜利</h2><div class="sub" id="overS"></div><button class="btn" id="overBtn" style="font-size:15px;padding:9px 22px">再来一局</button></div></div>
-<div class="over" id="savePrompt" style="display:none"><div class="box"><h2 id="spT">继续上局？</h2><div class="sub" id="spS"></div><button class="btn" id="spCont" style="font-size:15px;padding:9px 22px;margin:4px">继续上局</button> <button class="btn" id="spNew" style="font-size:15px;padding:9px 22px;margin:4px">新游戏</button></div></div>
-</div>
+  <!-- ===== GAME INFO（v2.31 网页版介绍 + 截图） ===== -->
+  <section class="section">
+    <div class="container">
+      <h2 data-i18n="ba.intro_h">About this build</h2>
+      <p style="color:var(--txt);font-size:14px;line-height:1.8" data-i18n="ba.intro_p">Barbarian Age is a small real-time strategy game from the OMC community.</p>
+      <h3 style="margin:18px 0 4px;color:var(--gold)" data-i18n="ba.modes_h">Four modes</h3>
+      <ul class="mode-list">
+        <li data-i18n="ba.m1"><b>Classic</b> — a single duel against the AI on a symmetric map.</li>
+        <li data-i18n="ba.m2"><b>Campaign</b> — conquer five tribes in a row.</li>
+        <li data-i18n="ba.m3"><b>Endless</b> — wave after wave of ever-stronger enemies.</li>
+        <li data-i18n="ba.m4"><b>Epic</b> — an interactive-movie chapter with multiple endings.</li>
+      </ul>
+      <h3 style="margin:18px 0 4px;color:var(--gold)" data-i18n="ba.ctrl_h">Controls</h3>
+      <p style="color:var(--txt);font-size:14px;line-height:1.8" data-i18n="ba.ctrl_p">Click or tap to select.</p>
+      <h3 style="margin:18px 0 4px;color:var(--gold)" data-i18n="ba.shots_h">Screenshots</h3>
+      <div class="shots">
+        <figure><img src="assets/img/games/ba-battle.jpg" alt="Barbarian Age — battlefield" width="360" height="640" loading="lazy"><figcaption data-i18n="ba.shot1">Battle: three resources, unit caps and the build dock</figcaption></figure>
+        <figure><img src="assets/img/games/ba-altar.jpg" alt="Barbarian Age — altar and divine punishment" width="360" height="640" loading="lazy"><figcaption data-i18n="ba.shot2">The Altar and its divine punishment</figcaption></figure>
+        <figure><img src="assets/img/games/ba-epic.jpg" alt="Barbarian Age — epic mode cutscene" width="360" height="640" loading="lazy"><figcaption data-i18n="ba.shot3">Epic mode: story cutscene</figcaption></figure>
+      </div>
     </div>
   </section>
   <footer>
@@ -249,17 +219,6 @@ body{overflow:hidden}
     </div>
   </footer>
 
-  <div class="ov" id="win"><div class="c">
-    <h2 id="winH" data-gt="win_wonder_h">🗿 奇观胜利！</h2>
-    <p id="winP" data-gt="win_wonder_p"></p>
-    <button id="winClose" data-gt="again">再来一局</button>
-  </div></div>
-  <div class="ov" id="lose"><div class="c">
-    <h2 style="color:var(--g-red)" data-gt="lose_h">💀 部落覆灭</h2>
-    <p data-gt="lose_p"></p>
-    <button id="loseClose" style="background:var(--g-red);color:#1a120a" data-gt="again">再来一局</button>
-  </div></div>
-
   <script src="assets/js/lang/en.js"></script>
   <script src="assets/js/lang/zh.js"></script>
   <script src="assets/js/i18n.js"></script>
@@ -267,585 +226,7 @@ body{overflow:hidden}
   <script src="assets/js/main.js"></script>
   <script src="assets/js/binance-w3w.js"></script>
   <script src="assets/js/wallet.js"></script>
-                        <script>
-
-"use strict";
-/* =========================================================================
- * 蛮荒时代 — 远古 RTS 重做（M1 引擎 · M2 经济 · M3 战斗 · M4 时代科技 · M5 敌方AI · M6 胜负）
- * 复用旧版等距投影数学；玩法系统全部重写。
- * ========================================================================= */
-
-/* ---------- 常量 ---------- */
-const TW=64, TH=32, GW=30, GH=22, STEP=1000/20;
-const PLAYER=0, ENEMY=1;
-const EX=6, EY=5;  // 敌方基地坐标（左上象限，避开地图角水域）
-const CARRY=12, GATHER_S=1.4, FOOD_S=1.1;
-const AGGRO=4.5;            // 军事单位自动接敌半径
-const WONDER_T=150;         // 奇观胜利倒计时（秒）
-const TEAM={[PLAYER]:"#d9983d",[ENEMY]:"#cf5b46"};
-const SAVE_KEY="barbarian_age_save_v9", SAVE_VER=9;   // 存档键（v9 = 新版 RTS 格式；与旧 v8 不兼容，旧档自动忽略）
-
-/* 建筑 */
-const BLD={
-  town:{name:"中心",w:3,d:3,hp:1400,def:6,cost:{},pop:8,age:1},
-  house:{name:"民居",w:2,d:2,hp:320,def:2,cost:{wood:30},pop:5,age:1},
-  store:{name:"仓库",w:2,d:2,hp:360,def:2,cost:{wood:40},pop:0,age:1},
-  farm:{name:"农场",w:2,d:2,hp:260,def:1,cost:{wood:35},pop:0,age:1},
-  barracks:{name:"兵营",w:3,d:3,hp:650,def:4,cost:{wood:80,stone:40},pop:0,age:2},
-  range:{name:"射场",w:3,d:2,hp:520,def:3,cost:{wood:70,ore:30},pop:0,age:2},
-  stable:{name:"马厩",w:3,d:3,hp:650,def:4,cost:{wood:90,ore:40},pop:0,age:2},
-  smith:{name:"铁匠铺",w:2,d:2,hp:420,def:3,cost:{stone:60,ore:50},pop:0,age:2},
-  library:{name:"图书馆",w:2,d:2,hp:420,def:3,cost:{wood:60,stone:40},pop:0,age:2},
-  wall:{name:"城墙",w:1,d:1,hp:600,def:8,cost:{stone:10},pop:0,age:1},
-  tower:{name:"箭塔",w:1,d:1,hp:700,def:6,cost:{stone:50,ore:20},pop:0,age:1},
-  wonder:{name:"奇观",w:4,d:4,hp:2200,def:10,cost:{wood:300,stone:300,ore:200},pop:0,age:3},
-};
-/* 军事单位（石头剪刀布：枪>骑>弓>剑>枪） */
-const UNIT={
-  spear:{name:"枪兵",hp:70,atk:12,def:3,rng:0.9,atkSpeed:1.0,spd:2.3,cost:{food:35,wood:10},pop:1,time:5,bonusVs:{cav:1.8}},
-  sword:{name:"剑士",hp:70,atk:12,def:4,rng:0.9,atkSpeed:1.0,spd:2.0,cost:{food:45,wood:15},pop:1,time:6,bonusVs:{spear:1.8}},
-  slinger:{name:"投石兵",hp:70,atk:12,def:2,rng:3.2,atkSpeed:0.8,spd:2.1,cost:{food:30,wood:20},pop:1,time:5,bonusVs:{sword:1.8}},
-  cav:{name:"骑兵",hp:70,atk:13,def:2,rng:0.9,atkSpeed:0.9,spd:3.4,cost:{food:55,wood:25},pop:1,time:7,bonusVs:{slinger:1.8}},
-};
-/* 训练：建筑 → 可训单位 */
-const TRAINS={town:["villager"],barracks:["spear","sword"],range:["slinger"],stable:["cav"]};
-const TRAIN_VIL={cost:{food:50},pop:1,time:4};
-/* 时代 */
-const AGE={1:{name:"远古",cost:{food:200,stone:150,ore:50},time:20,next:2},2:{name:"青铜",cost:{food:400,stone:300,ore:200},time:30,next:3},3:{name:"铁器",cost:null,time:0,next:null}};
-/* 科技 */
-const TECH={
-  wep:{name:"利刃",from:"smith",cost:{ore:60},desc:"全军攻击+2"},
-  arm:{name:"甲胄",from:"smith",cost:{ore:60},desc:"全军防御+2"},
-  log:{name:"丰产",from:"library",cost:{know:40,food:60},desc:"采集速度+15%"},
-};
-
-/* ---------- 全局状态 ---------- */
-const G={
-  res:{food:220,wood:160,stone:120,ore:60,know:0},
-  eres:{food:220,wood:160,stone:120,ore:60,know:0},
-  pop:{cur:0,cap:8,eCur:0,eCap:0}, age:1,
-  cam:{x:GW/2,y:GH/2,zoom:1},
-  sel:[], E:[], nodes:[], terrain:[], dead:[], fx:[], uid:1,
-  build:null, paused:false, speed:1, drag:null, hover:null, over:null,
-  ageUp:0, wonderT:null,
-  mods:{atk:0,def:0,gather:1},
-  tech:{wep:false,arm:false,log:false},
-  ai:{phase:"arm",acc:0,t:0},
-};
-function nid(){return G.uid++;}
-
-/* ---------- 确定性随机 / 地形 ---------- */
-function hash2(x,y){let h=(x*374761393+y*668265263)|0;h=Math.imul(h^(h>>>13),1274126177);h=h^(h>>>16);return (h>>>0)/4294967296;}
-function vnoise(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi;
-  const tl=hash2(xi,yi),tr=hash2(xi+1,yi),bl=hash2(xi,yi+1),br=hash2(xi+1,yi+1);
-  const u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);
-  return (tl*(1-u)+tr*u)*(1-v)+(bl*(1-u)+br*u)*v;}
-function seedTerrain(){
-  G.terrain=[];const cx=GW/2,cy=GH/2,R=Math.min(GW,GH)*0.46;
-  for(let y=0;y<GH;y++){const row=[];
-    for(let x=0;x<GW;x++){
-      const d=Math.hypot(x-cx,y-cy)/R,n=vnoise(x*0.18,y*0.18)*0.7+vnoise(x*0.5,y*0.5)*0.3;
-      const shore=d-0.18-n*0.22;let t,water=false;
-      if(shore>0.86){water=true;t="water";}else if(n<0.32)t="dry";else if(n<0.55)t="grass";else if(n<0.78)t="lush";else t="dirt";
-      row.push({t,water});
-    }G.terrain.push(row);
-  }
-}
-function isLand(x,y){return x>=0&&y>=0&&x<GW&&y<GH&&!G.terrain[y|0][x|0].water;}
-function forceLand(cx,cy,r){for(let y=cy-r;y<=cy+r;y++)for(let x=cx-r;x<=cx+r;x++){if(x>=0&&y>=0&&x<GW&&y<GH)G.terrain[y][x]={t:"grass",water:false};}}
-
-/* ---------- 资源节点 ---------- */
-function spawnNodes(){
-  G.nodes=[];const kinds=["wood","stone","ore","food"];let tries=0;
-  while(G.nodes.length<52&&tries<5000){tries++;
-    const x=2+hash2(tries*1.3,7)*(GW-4),y=2+hash2(tries*2.7,13)*(GH-4),xi=x|0,yi=y|0;
-    if(G.terrain[yi][xi].water)continue;
-    if(Math.hypot(x-GW/2,y-GH/2)<4)continue;
-    if(Math.hypot(x-EX,y-EY)<4)continue;             // 给敌方基地留空
-    const k=kinds[(hash2(tries*5.1,3)*4)|0];let near=false;
-    for(const n of G.nodes)if(n.type===k&&Math.hypot(n.x-x,n.y-y)<2.2){near=true;break;}
-    if(near&&hash2(tries,9)>0.5)continue;
-    G.nodes.push({id:nid(),type:k,x,y,amount:600+((hash2(tries,1)*400)|0),r:0.8});
-  }
-}
-function nearestNode(x,y){let best=null,bd=1e9;for(const n of G.nodes){if(n.amount<=0)continue;const d=Math.hypot(n.x-x,n.y-y);if(d<bd){bd=d;best=n;}}return best;}
-// 均衡采集：敌方村民优先采集当前存量最低的资源，避免单一资源过载
-function nearestNodeByNeed(v){
-  const types=["food","wood","stone","ore"];
-  let bestType=types[0];
-  for(const k of types)if((G.eres[k]||0)<(G.eres[bestType]||0))bestType=k;
-  let best=null,bd=1e9;
-  for(const n of G.nodes){if(n.amount<=0)continue;const d=Math.hypot(n.x-v.x,n.y-v.y);const score=(n.type===bestType?0:300)+d;if(score<bd){bd=score;best=n;}}
-  return best;
-}
-
-/* ---------- 实体 ---------- */
-function addBuilding(key,x,y,owner){const d=BLD[key];const b={id:nid(),kind:"bld",type:key,owner,x:x|0,y:y|0,w:d.w,d:d.d,hp:d.hp,maxhp:d.hp,queue:[]};G.E.push(b);return b;}
-function addVillager(x,y,owner){const v={id:nid(),kind:"vil",owner,x,y,hp:45,maxhp:45,state:"idle",target:null,carry:0,carryType:null,work:0,face:1};G.E.push(v);return v;}
-function addUnit(x,y,owner,type){const d=UNIT[type];const u={id:nid(),kind:"unit",type,owner,x,y,hp:d.hp,maxhp:d.hp,state:"idle",target:null,cd:0,face:1,lastShot:null};G.E.push(u);return u;}
-function findEntity(id){return G.E.find(e=>e.id===id);}
-function recomputePop(){let cur=0,cap=0,eCur=0,eCap=0;for(const e of G.E){if(e.kind==="bld"){if(e.owner===PLAYER)cap+=(BLD[e.type].pop||0);else eCap+=(BLD[e.type].pop||0);}else if(e.kind==="vil"||e.kind==="unit"){if(e.owner===PLAYER)cur++;else eCur++;}}G.pop.cur=cur;G.pop.cap=cap;G.pop.eCur=eCur;G.pop.eCap=eCap;}
-
-/* ---------- 投影 ---------- */
-function w2s(wx,wy){const z=G.cam.zoom,cx=innerWidth/2,cy=innerHeight/2;
-  return {x:cx+((wx-G.cam.x)-(wy-G.cam.y))*(TW/2)*z,y:cy+((wx-G.cam.x)+(wy-G.cam.y))*(TH/2)*z};}
-function s2w(sx,sy){const z=G.cam.zoom,cx=innerWidth/2,cy=innerHeight/2;
-  const a=(sx-cx)/((TW/2)*z),b=(sy-cy)/((TH/2)*z);return {x:G.cam.x+(a+b)/2,y:G.cam.y+(b-a)/2};}
-
-/* ---------- 对局初始化 ---------- */
-function newGame(){
-  seedTerrain();spawnNodes();
-  G.E=[];G.uid=1;G.sel=[];G.build=null;G.over=null;G.ageUp=0;G.wonderT=null;G.dead=[];G.fx=[];
-  G.res={food:220,wood:160,stone:120,ore:60,know:0};G.eres={food:220,wood:160,stone:120,ore:60,know:0};G.age=1;
-  G.mods={atk:0,def:0,gather:1};G.tech={wep:false,arm:false,log:false};
-  G.ai={phase:"arm",acc:0,t:0,age:1,ageUp:0};
-  G.cam={x:GW/2,y:GH/2,zoom:1};
-  const px=(GW/2-1)|0,py=(GH/2-1)|0;
-  forceLand(px,py,3);forceLand(EX,EY,3);   // 保证两基地及周边为陆地，AI 可扩建
-  addBuilding("town",px,py,PLAYER);
-  for(let i=0;i<3;i++)addVillager(px+1+(i%2),py+3+((i/2)|0),PLAYER);
-  // 敌方基地（左上象限）
-  addBuilding("town",EX,EY,ENEMY);
-  for(let i=0;i<3;i++)addVillager(EX+1+(i%2),EY+1+((i/2)|0),ENEMY);
-  recomputePop();
-  el("over").style.display="none";
-  showHint("目标：摧毁敌方红色『中心』或建奇观倒计时取胜；中心被毁则败。选村民→右键资源采集；造兵营(Ⅱ时代)→选兵营训兵→框选部队右键敌方进攻。");
-}
-
-/* ---------- 建造合法性 ---------- */
-function canPlace(key,wx,wy){const d=BLD[key],xi=wx|0,yi=wy|0;
-  for(let yy=yi;yy<yi+d.d;yy++)for(let xx=xi;xx<xi+d.w;xx++){
-    if(!isLand(xx,yy))return false;
-    for(const e of G.E)if(e.kind==="bld"&&xx>=e.x&&xx<e.x+e.w&&yy>=e.y&&yy<e.y+e.d)return false;
-    for(const n of G.nodes)if((n.x|0)===xx&&(n.y|0)===yy)return false;
-  }return true;}
-function resOf(o){return o===PLAYER?G.res:G.eres;}
-function afford(c,o){const R=resOf(o);for(const k in c)if(R[k]<c[k])return false;return true;}
-function pay(c,o){const R=resOf(o);for(const k in c)R[k]-=c[k];}
-
-/* ---------- 命中测试 ---------- */
-function nodeAt(wx,wy){let b=null,bd=0.95;for(const n of G.nodes){const d=Math.hypot(n.x-wx,n.y-wy);if(d<bd){bd=d;b=n;}}return b;}
-function bldAt(wx,wy){const xi=wx|0,yi=wy|0;for(const e of G.E)if(e.kind==="bld"&&xi>=e.x&&xi<e.x+e.w&&yi>=e.y&&yi<e.y+e.d)return e;return null;}
-function unitAt(wx,wy,owner){let b=null,bd=0.75;for(const e of G.E){if(owner!==undefined&&e.owner!==owner)continue;if(e.kind!=="unit"&&e.kind!=="vil")continue;const d=Math.hypot(e.x-wx,e.y-wy);if(d<bd){bd=d;b=e;}}return b;}
-function enemyAt(wx,wy){const u=unitAt(wx,wy,ENEMY);if(u)return u;const b=bldAt(wx,wy);return (b&&b.owner===ENEMY)?b:null;}
-
-/* ---------- 指令 ---------- */
-function command(e,wx,wy){
-  let pingCol="#e8b85a";
-  if(e.kind==="vil"){
-    const n=nodeAt(wx,wy);if(n){e.state="toGather";e.target=n.id;e.carry=0;}
-    else{const b=bldAt(wx,wy);if(b&&b.type==="farm"&&b.owner===e.owner){e.state="farm";e.target=b.id;}
-      else{e.state="move";e.tx=wx;e.ty=wy;e.target=null;}}
-  }else{
-    const en=enemyAt(wx,wy);if(en&&en.owner!==e.owner){e.state="attack";e.target=en.id;pingCol="#cf5b46";}
-    else{e.state="move";e.tx=wx;e.ty=wy;e.target=null;}
-  }
-  addFx(wx,wy,"ping",pingCol);   // 右键落点反馈：移动金圈 / 攻击红圈
-}
-function dropPoint(v){let best=null,bd=1e9;
-  for(const e of G.E)if(e.kind==="bld"&&e.owner===v.owner&&(e.type==="town"||e.type==="store")){
-    const cx=e.x+e.w/2,cy=e.y+e.d/2,d=Math.hypot(cx-v.x,cy-v.y);if(d<bd){bd=d;best={cx,cy};}}
-  return best||{cx:G.cam.x,cy:G.cam.y};}
-
-/* ---------- 模拟 tick ---------- */
-function moveToward(e,tx,ty,spd,dt){const dx=tx-e.x,dy=ty-e.y,d=Math.hypot(dx,dy);
-  if(d<0.05){e.x=tx;e.y=ty;return true;}const step=spd*dt;e.face=dx<0?-1:1;
-  if(step>=d){e.x=tx;e.y=ty;return true;}e.x+=dx/d*step;e.y+=dy/d*step;return false;}
-function tick(dt){
-  if(G.over)return;
-  // 村民（双方）采集
-  for(const e of G.E){if(e.kind!=="vil")continue;const v=e;
-    if(v.state==="move"){if(moveToward(v,v.tx,v.ty,2.4,dt))v.state="idle";}
-    else if(v.state==="toGather"){const n=G.nodes.find(x=>x.id===v.target);if(!n){v.state="idle";continue;}
-      if(moveToward(v,n.x,n.y,2.4,dt)){if(n.amount<=0){v.state="idle";continue;}v.state="gather";v.work=0;v.carryType=n.type;}}
-    else if(v.state==="gather"){const n=G.nodes.find(x=>x.id===v.target);if(!n||n.amount<=0){v.state="idle";continue;}
-      v.work+=dt;if(v.work>=GATHER_S/G.mods.gather){const take=Math.min(CARRY,n.amount);v.carry=take;n.amount-=take;addFx(n.x,n.y,"spark",n.type==="wood"?"#7a5a32":n.type==="stone"?"#9a9488":n.type==="ore"?"#caa84a":"#cf4b6a");const dp=dropPoint(v);v.state="toDrop";v.tx=dp.cx;v.ty=dp.cy;v.work=0;}}
-    else if(v.state==="toDrop"){if(moveToward(v,v.tx,v.ty,2.4,dt)){resOf(v.owner)[v.carryType]+=v.carry;v.carry=0;v.carryType=null;const n=G.nodes.find(x=>x.id===v.target);if(n&&n.amount>0)v.state="toGather";else v.state="idle";}}
-    else if(v.state==="farm"){const b=G.E.find(x=>x.id===v.target);if(!b){v.state="idle";continue;}const fx=b.x+b.w/2,fy=b.y+b.d/2+0.6;
-      if(Math.hypot(v.x-fx,v.y-fy)>0.4)moveToward(v,fx,fy,2.4,dt);else resOf(v.owner).food+=FOOD_S*(v.owner===PLAYER?G.mods.gather:1)*dt;}
-  }
-  // 军事单位（双方）接敌/攻击
-  for(const e of G.E){if(e.kind!=="unit")continue;const u=e,d=UNIT[u.type];
-    if(u.state!=="attack"){const tgt=nearestEnemy(u.x,u.y,AGGRO,u.owner);if(tgt){u.state="attack";u.target=tgt.id;}}
-    if(u.state==="attack"){const t=findEntity(u.target);
-      if(!t||t.hp<=0){u.state="idle";u.target=null;continue;}
-      const dd=Math.hypot(t.x-u.x,t.y-u.y);
-      if(dd>d.rng+0.4){moveToward(u,t.x,t.y,d.spd,dt);}
-      else{u.cd-=dt;if(u.cd<=0){u.cd=1/d.atkSpeed;dealDamage(u,t);if(d.rng>1.5){u.lastShot={x:t.x,y:t.y,life:0.15};addFx(u.x,u.y,"arrow",{x1:t.x,y1:t.y});}}}}
-    else if(u.state==="move"){if(moveToward(u,u.tx,u.ty,d.spd,dt))u.state="idle";}
-    if(u.lastShot)u.lastShot.life-=dt;
-  }
-  // 建筑训练队列
-  for(const e of G.E)if(e.kind==="bld"&&e.queue.length){const q=e.queue[0];q.t-=dt;
-    if(q.t<=0){e.queue.shift();
-      if(q.kind==="vil")addVillager(e.x+e.w/2,e.y+e.d,e.owner);
-      else if(q.kind==="unit")addUnit(e.x+e.w/2,e.y+e.d,e.owner,q.ut);
-      recomputePop();}}
-  // 时代演进
-  if(G.ageUp>0){G.ageUp-=dt;if(G.ageUp<=0){G.ageUp=0;G.age=AGE[G.age].next;showHint("进入"+AGE[G.age].name+"时代！新建筑与科技解锁。");}}
-  // 奇观倒计时
-  if(G.wonderT!==null){const w=G.E.find(e=>e.kind==="bld"&&e.type==="wonder"&&e.owner===PLAYER);
-    if(!w){G.wonderT=null;}else{G.wonderT-=dt;}}
-  // AI
-  G.ai.acc+=dt;if(G.ai.acc>=1){G.ai.acc-=1;aiTick();}
-  // 清理阵亡实体 → 转入死亡特效列表（淡出），而非瞬间消失
-  for(let i=G.E.length-1;i>=0;i--){if(G.E[i].hp<=0){const e=G.E[i];G.dead.push({kind:e.kind,type:e.type,owner:e.owner,x:e.x,y:e.y,t:0.35,max:0.35});addFx(e.x,e.y,"dust");G.E.splice(i,1);}}
-  for(const e of G.E)if(e.flash>0)e.flash-=dt;
-  for(let i=G.dead.length-1;i>=0;i--){G.dead[i].t-=dt;if(G.dead[i].t<=0)G.dead.splice(i,1);}
-  recomputePop();checkOver();
-}
-function nearestEnemy(x,y,rad,owner){let best=null,bd=rad;
-  for(const e of G.E){if(e.owner===owner)continue;if(e.hp<=0)continue;const d=Math.hypot(e.x-x,e.y-y);if(d<bd){bd=d;best=e;}}return best;}
-function dealDamage(u,t){const d=UNIT[u.type];
-  const bonus=(d.bonusVs&&t.type&&d.bonusVs[t.type])?1.6:1;
-  const atk=(d.atk+(u.owner===PLAYER?G.mods.atk:0))*bonus;
-  const def=t.kind==="bld"?(BLD[t.type].def||0):t.kind==="unit"?((UNIT[t.type].def||0)+(t.owner===PLAYER?G.mods.def:0)):0;
-  t.hp-=Math.max(1,Math.round(atk-def));
-  t.flash=0.14;   // 命中闪白特效
-  addFx(t.x,t.y,"hit");
-}
-
-/* ---------- 敌方 AI ---------- */
-function aiTick(){
-  const eTown=G.E.find(e=>e.kind==="bld"&&e.type==="town"&&e.owner===ENEMY);if(!eTown)return;
-  const pTown=G.E.find(e=>e.kind==="bld"&&e.type==="town"&&e.owner===PLAYER);
-  // 时代演进（独立时间线）
-  if(G.ai.ageUp>0){G.ai.ageUp-=1;if(G.ai.ageUp<=0){G.ai.ageUp=0;G.ai.age=AGE[G.ai.age].next;}}
-  else if(G.ai.age<3){const a=AGE[G.ai.age];if(afford(a.cost,ENEMY)){pay(a.cost,ENEMY);G.ai.ageUp=a.time;}}
-  // 闲置敌方村民去采集（需求导向，保证 stone/ore 不被遗漏）
-  for(const v of G.E)if(v.kind==="vil"&&v.owner===ENEMY&&v.state==="idle"){const n=nearestNodeByNeed(v);if(n){v.state="toGather";v.target=n.id;}}
-  // 扩人口（仅在人口接近上限时）
-  if(G.pop.eCur>=G.pop.eCap-2 && afford({wood:30},ENEMY)){const spot=findFreeNear(eTown,2,2);if(spot){pay({wood:30},ENEMY);addBuilding("house",spot.x,spot.y,ENEMY);}}
-  // 时代 II 后建军营
-  const hasBar=G.E.some(e=>e.kind==="bld"&&e.type==="barracks"&&e.owner===ENEMY);
-  if(G.ai.age>=2&&!hasBar&&afford(BLD.barracks.cost,ENEMY)){const spot=findFreeNear(eTown,3,3);if(spot){pay(BLD.barracks.cost,ENEMY);addBuilding("barracks",spot.x,spot.y,ENEMY);}}
-  // 训练部队（城镇训村民；兵营/射场/马厩训作战单位）
-  for(const b of G.E)if(b.kind==="bld"&&b.owner===ENEMY&&b.queue.length<2){
-    if(b.type==="town"){
-      if(G.pop.eCur<7&&G.eres.food>220&&afford(TRAIN_VIL.cost,ENEMY)){pay(TRAIN_VIL.cost,ENEMY);b.queue.push({kind:"vil",t:TRAIN_VIL.time});recomputePop();}
-      continue;
-    }
-    let ut=null;
-    if(b.type==="barracks")ut=Math.random()<0.5?"spear":"sword";
-    else if(b.type==="range")ut="slinger";
-    else if(b.type==="stable")ut="cav";
-    if(!ut)continue;
-    if(TRAIN_OK(ut,ENEMY)){pay(UNIT[ut].cost,ENEMY);b.queue.push({kind:"unit",ut,t:UNIT[ut].time});recomputePop();}}
-  // 进攻波次（攻击玩家中心）
-  const army=G.E.filter(e=>e.kind==="unit"&&e.owner===ENEMY);
-  if(army.length>=6&&G.ai.phase!=="attack"&&pTown){G.ai.phase="attack";for(const u of army){u.state="attack";u.target=pTown.id;}}
-  if(G.ai.phase==="attack"&&army.length<2)G.ai.phase="arm";
-}
-function TRAIN_OK(ut,o){const cur=o===PLAYER?G.pop.cur:G.pop.eCur,cap=o===PLAYER?G.pop.cap:G.pop.eCap;return afford(UNIT[ut].cost,o)&&cur<cap-1;}
-function findFreeNear(b,w,d){const key=(w===3)?"barracks":"house";
-  for(let r=2;r<9;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
-    const x=b.x+dx,y=b.y+dy;if(canPlace(key,x,y))return {x,y};}return null;}
-
-/* ---------- 胜负 ---------- */
-function checkOver(){if(G.over)return;
-  const pT=G.E.find(e=>e.kind==="bld"&&e.type==="town"&&e.owner===PLAYER);
-  const eT=G.E.find(e=>e.kind==="bld"&&e.type==="town"&&e.owner===ENEMY);
-  if(!pT){G.over="lose";}
-  else if(!eT){G.over="win";}
-  else if(G.wonderT!==null&&G.wonderT<=0){G.over="win";}
-  if(G.over){clearSave();showOver(G.over==="win"?"胜利":"失败",G.over==="win"?"你摧毁了敌方中心 / 奇观落成。":"你的中心被摧毁了。");}
-}
-function showOver(t,s){el("overT").textContent=t;el("overT").style.color=t==="胜利"?"#9bbf5a":"#cf5b46";el("overS").textContent=s;el("over").style.display="flex";}
-
-/* ---------- 存档（localStorage 持久化） ---------- */
-function serialize(){
-  return {ver:SAVE_VER,
-    res:Object.assign({},G.res), eres:Object.assign({},G.eres), pop:Object.assign({},G.pop), age:G.age,
-    nodes:G.nodes.map(n=>({id:n.id,type:n.type,x:n.x,y:n.y,amount:n.amount,r:n.r})),
-    E:G.E.map(e=>{const o={id:e.id,kind:e.kind,owner:e.owner,x:e.x,y:e.y,hp:e.hp,maxhp:e.maxhp};
-      if(e.kind==="bld"){o.type=e.type;o.w=e.w;o.d=e.d;o.queue=(e.queue||[]).map(q=>({kind:q.kind,t:q.t,ut:q.ut}));}
-      else if(e.kind==="vil"){o.state=e.state;o.target=e.target;o.carry=e.carry;o.carryType=e.carryType;o.work=e.work;o.face=e.face;}
-      else{o.type=e.type;o.state=e.state;o.target=e.target;o.cd=e.cd;o.face=e.face;o.lastShot=e.lastShot?{x:e.lastShot.x,y:e.lastShot.y,life:e.lastShot.life}:null;}
-      return o;}),
-    uid:G.uid, ageUp:G.ageUp||0, wonderT:(G.wonderT===undefined?null:G.wonderT),
-    mods:Object.assign({},G.mods), tech:Object.assign({},G.tech),
-    ai:Object.assign({},G.ai), cam:Object.assign({},G.cam), sel:G.sel.slice(), speed:G.speed||1};
-}
-function store(){ try{ return (typeof localStorage!=="undefined"&&localStorage)?localStorage:null; }catch(e){ return null; } }
-function peekSave(){ const s=store(); if(!s)return null; try{ const raw=s.getItem(SAVE_KEY); if(!raw)return null; const o=JSON.parse(raw); if(!o||o.ver!==SAVE_VER)return null; return o; }catch(e){ return null; } }
-function saveGame(){ const s=store(); if(!s||G.over)return; try{ s.setItem(SAVE_KEY, JSON.stringify(serialize())); }catch(e){} }
-function hasSave(){ return peekSave()!==null; }
-function clearSave(){ const s=store(); if(!s)return; try{ s.removeItem(SAVE_KEY); }catch(e){} }
-function loadGame(){ const o=peekSave(); if(!o)return false;
-  G.res=o.res;G.eres=o.eres;G.pop=o.pop;G.age=o.age;G.nodes=o.nodes;G.E=o.E;
-  G.mods=o.mods;G.tech=o.tech;G.ai=o.ai;G.cam=o.cam;G.sel=o.sel||[];G.speed=o.speed||1;
-  G.ageUp=o.ageUp||0;G.wonderT=(o.wonderT===undefined?null:o.wonderT);
-  let mx=0; for(const e of G.E)if(e.id>mx)mx=e.id; for(const n of G.nodes)if(n.id>mx)mx=n.id; G.uid=mx+1;
-  G.build=null;G.paused=false;G.drag=null;G.hover=null;G.over=null;
-  recomputePop(); el("over").style.display="none"; return true; }
-
-/* ---------- 渲染 ---------- */
-const cv=document.getElementById("map"),ctx=cv.getContext("2d");
-const tcanvas=document.createElement("canvas"),tctx=tcanvas.getContext("2d");let tkey="";
-function resize(){const b=cv.getBoundingClientRect();const w=b.width?Math.round(b.width):(cv.clientWidth||innerWidth);const h=b.height?Math.round(b.height):(cv.clientHeight||innerHeight);cv.width=Math.max(1,w);cv.height=Math.max(1,h);}addEventListener("resize",resize);addEventListener("load",resize);requestAnimationFrame(resize);resize();
-function shade(hex,f){const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
-  r=Math.max(0,Math.min(255,r*f|0));g=Math.max(0,Math.min(255,g*f|0));b=Math.max(0,Math.min(255,b*f|0));return "rgb("+r+","+g+","+b+")";}
-function tileColor(t,water){if(water)return "#1f546e";if(t==="grass")return "#5f863f";if(t==="lush")return "#436b2c";if(t==="dry")return "#8f8044";return "#7d6d4a";}
-function drawTile(x,y){const s=w2s(x,y),z=G.cam.zoom,hw=TW/2*z,hh=TH/2*z,t=G.terrain[y][x];
-  ctx.beginPath();ctx.moveTo(s.x,s.y-hh);ctx.lineTo(s.x+hw,s.y);ctx.lineTo(s.x,s.y+hh);ctx.lineTo(s.x-hw,s.y);ctx.closePath();
-  const base=tileColor(t.t,t.water);ctx.fillStyle=base;ctx.fill();ctx.strokeStyle=shade(base,0.82);ctx.lineWidth=1;ctx.stroke();
-  if(!t.water&&hash2(x*3,y*3)>0.93){ctx.fillStyle=shade(base,1.18);ctx.fillRect(s.x-1,s.y-1,2,2);}}
-function drawNode(n){if(n.amount<=0)return;const s=w2s(n.x,n.y),z=G.cam.zoom;
-  const k=Math.max(0.45,Math.min(1,n.amount/600));   // 随开采缩小
-  ctx.save();ctx.translate(s.x,s.y);ctx.scale(k,k);ctx.translate(-s.x,-s.y);
-  if(n.amount<160)ctx.globalAlpha=Math.max(0.4,n.amount/160);   // 临近枯竭淡出
-  if(n.type==="wood"){
-    ctx.fillStyle="#4a2f17";ctx.beginPath();ctx.moveTo(s.x-3*z,s.y+4*z);ctx.lineTo(s.x-1*z,s.y-12*z);ctx.lineTo(s.x+1*z,s.y-12*z);ctx.lineTo(s.x+3*z,s.y+4*z);ctx.closePath();ctx.fill();
-    ctx.fillStyle="#2f5e2a";ctx.beginPath();ctx.arc(s.x,s.y-13*z,10*z,0,7);ctx.fill();
-    ctx.fillStyle="#3f7a36";ctx.beginPath();ctx.arc(s.x-4*z,s.y-10*z,7*z,0,7);ctx.fill();
-    ctx.fillStyle="#58a04a";ctx.beginPath();ctx.arc(s.x+4*z,s.y-15*z,5*z,0,7);ctx.fill();}
-  else if(n.type==="stone"){
-    ctx.fillStyle="#8d877b";ctx.beginPath();ctx.moveTo(s.x-9*z,s.y+5*z);ctx.lineTo(s.x-4*z,s.y-8*z);ctx.lineTo(s.x+3*z,s.y-5*z);ctx.lineTo(s.x+9*z,s.y+6*z);ctx.closePath();ctx.fill();
-    ctx.fillStyle="#a9a396";ctx.beginPath();ctx.moveTo(s.x-2*z,s.y-3*z);ctx.lineTo(s.x+1*z,s.y-9*z);ctx.lineTo(s.x+5*z,s.y-2*z);ctx.closePath();ctx.fill();}
-  else if(n.type==="ore"){
-    ctx.fillStyle="#5f5236";ctx.fillRect(s.x-8*z,s.y-2*z,16*z,8*z);
-    ctx.fillStyle="#caa84a";ctx.fillRect(s.x-5*z,s.y-1*z,4*z,3*z);ctx.fillRect(s.x+3*z,s.y+1*z,3*z,2*z);
-    ctx.fillStyle="#f0d878";ctx.fillRect(s.x-4*z,s.y,2*z,2*z);}
-  else{
-    ctx.fillStyle="#3f6e2c";ctx.beginPath();ctx.arc(s.x,s.y-3*z,9*z,0,7);ctx.fill();
-    ctx.fillStyle="#4f8a38";ctx.beginPath();ctx.arc(s.x-3*z,s.y-1*z,5*z,0,7);ctx.fill();
-    ctx.fillStyle="#cf4b6a";ctx.fillRect(s.x-4*z,s.y-5*z,2.5*z,2.5*z);ctx.fillRect(s.x+2*z,s.y-2*z,2.5*z,2.5*z);ctx.fillRect(s.x-1*z,s.y-7*z,2*z,2*z);}
-  ctx.restore();}
-function isoBox(o,w,h,H,colTop,colL,colR){const bA={x:o.x,y:o.y},bB={x:o.x+w,y:o.y-h*0.5},bC={x:o.x,y:o.y+h*0.5},bD={x:o.x-w,y:o.y-h*0.5};
-  const tA={x:bA.x,y:bA.y-H},tB={x:bB.x,y:bB.y-H},tC={x:bC.x,y:bC.y-H},tD={x:bD.x,y:bD.y-H};
-  ctx.fillStyle=colL;ctx.beginPath();ctx.moveTo(bD.x,bD.y);ctx.lineTo(tD.x,tD.y);ctx.lineTo(tA.x,tA.y);ctx.lineTo(bA.x,bA.y);ctx.closePath();ctx.fill();
-  ctx.fillStyle=colR;ctx.beginPath();ctx.moveTo(bB.x,bB.y);ctx.lineTo(tB.x,tB.y);ctx.lineTo(tC.x,tC.y);ctx.lineTo(bC.x,bC.y);ctx.closePath();ctx.fill();
-  ctx.fillStyle=colTop;ctx.beginPath();ctx.moveTo(tA.x,tA.y);ctx.lineTo(tB.x,tB.y);ctx.lineTo(tC.x,tC.y);ctx.lineTo(tD.x,tD.y);ctx.closePath();ctx.fill();
-  return {tA,tB,tC,tD,bA,bB,bC,bD};}
-function isoRoof(c,apex,colTop,colL,colR){const cx=(c.tA.x+c.tB.x+c.tC.x+c.tD.x)/4,cy=(c.tA.y+c.tB.y+c.tC.y+c.tD.y)/4-apex;
-  ctx.fillStyle=colL;ctx.beginPath();ctx.moveTo(c.tD.x,c.tD.y);ctx.lineTo(c.tA.x,c.tA.y);ctx.lineTo(cx,cy);ctx.closePath();ctx.fill();
-  ctx.fillStyle=colR;ctx.beginPath();ctx.moveTo(c.tB.x,c.tB.y);ctx.lineTo(c.tC.x,c.tC.y);ctx.lineTo(cx,cy);ctx.closePath();ctx.fill();
-  ctx.fillStyle=colTop;ctx.beginPath();ctx.moveTo(c.tA.x,c.tA.y);ctx.lineTo(c.tB.x,c.tB.y);ctx.lineTo(cx,cy);ctx.closePath();ctx.fill();
-  ctx.strokeStyle="rgba(18,11,5,.5)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(c.tD.x,c.tD.y);ctx.lineTo(c.tA.x,c.tA.y);ctx.lineTo(cx,cy);ctx.lineTo(c.tB.x,c.tB.y);ctx.lineTo(c.tC.x,c.tC.y);ctx.closePath();ctx.stroke();}
-function drawBld(b){const z=G.cam.zoom,d=BLD[b.type],o=w2s(b.x,b.y),w=b.w*TW/2*z,h=b.d*TH/2*z;
-  const team=TEAM[b.owner];
-  ctx.fillStyle="rgba(0,0,0,.26)";ctx.beginPath();ctx.ellipse(o.x,o.y+h*0.5,w*0.96,h*0.56,0,0,7);ctx.fill();
-  ctx.strokeStyle=shade(team,0.72);ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(o.x,o.y+h*0.5,w*0.92,h*0.52,0,0,7);ctx.stroke();   // 地基轮廓
-  const wallTop=shade("#c2a974",1),wallL=shade(team,0.52),wallR=shade(team,0.36);
-  let c,H,doorY=o.y-3*z;
-  if(b.type==="wall"){H=7*z;c=isoBox(o,w,h,H,wallTop,wallL,wallR);}
-  else if(b.type==="tower"){H=30*z;c=isoBox(o,w,h,H,wallTop,wallL,wallR);
-    ctx.fillStyle=wallTop;for(let i=-1;i<=1;i++)ctx.fillRect(o.x+i*5*z-2*z,o.y-H-3*z,4*z,3*z);}
-  else if(b.type==="wonder"){H=40*z;c=isoBox(o,w,h,H,shade("#d9c089",1),shade(team,0.62),shade(team,0.44));
-    ctx.fillStyle="rgba(232,184,90,.5)";ctx.beginPath();ctx.arc(o.x,o.y-H-6*z,6*z,0,7);ctx.fill();
-    ctx.fillStyle="#e8b85a";ctx.beginPath();ctx.moveTo(o.x-3*z,o.y-H);ctx.lineTo(o.x+3*z,o.y-H);ctx.lineTo(o.x,o.y-H-13*z);ctx.closePath();ctx.fill();}
-  else if(b.type==="town"){const c1=isoBox(o,w*0.82,h*0.82,16*z,wallTop,wallL,wallR);
-    const o2={x:o.x,y:o.y-15*z};c=isoBox(o2,w*0.5,h*0.5,15*z,shade("#d9c089",1),shade(team,0.6),shade(team,0.42));
-    ctx.strokeStyle="#3a2a16";ctx.lineWidth=1.6*z;ctx.beginPath();ctx.moveTo(o.x,o.y-31*z);ctx.lineTo(o.x,o.y-43*z);ctx.stroke();
-    ctx.fillStyle=team;ctx.beginPath();ctx.moveTo(o.x,o.y-43*z);ctx.lineTo(o.x+10*z,o.y-39*z);ctx.lineTo(o.x,o.y-35*z);ctx.closePath();ctx.fill();
-    ctx.fillStyle="#d9983d";ctx.beginPath();ctx.arc(o.x,o.y-31*z,3*z,0,7);ctx.fill();
-    doorY=o.y-12*z;H=31*z;}
-  else if(b.type==="farm"){H=10*z;c=isoBox(o,w,h,H,shade("#9a7a3a",1),shade(team,0.5),shade(team,0.36));
-    ctx.strokeStyle=shade("#5a7a3a",1);ctx.lineWidth=1*z;for(let i=-1;i<=1;i++){ctx.beginPath();ctx.moveTo(o.x+i*4*z,o.y-1*z);ctx.lineTo(o.x+i*4*z,o.y+H*0.4);ctx.stroke();}}
-  else{H=(b.type==="barracks"||b.type==="stable")?18*z:14*z;c=isoBox(o,w,h,H,wallTop,wallL,wallR);
-    isoRoof(c,12*z,shade("#7a5a30",1.15),shade("#6b4d28",1.1),shade("#5a3f20",1.1));
-    if(b.type==="barracks"||b.type==="range"||b.type==="stable"){ctx.strokeStyle="#3a2a16";ctx.lineWidth=1.4*z;ctx.beginPath();ctx.moveTo(o.x,o.y-H-2*z);ctx.lineTo(o.x,o.y-H-15*z);ctx.stroke();
-      ctx.fillStyle=team;ctx.beginPath();ctx.moveTo(o.x,o.y-H-15*z);ctx.lineTo(o.x+10*z,o.y-H-12*z);ctx.lineTo(o.x,o.y-H-9*z);ctx.closePath();ctx.fill();}}
-  if(b.type!=="wall"&&b.type!=="tower"&&b.type!=="wonder"){ctx.fillStyle="#2a1d12";ctx.fillRect(o.x-3*z,doorY,6*z,5*z);}
-  ctx.font=(11*z)+"px serif";ctx.textAlign="center";const _lab=d.name,_ly=o.y+(b.type==="town"?22*z:-H-6*z),_lw=ctx.measureText(_lab).width;
-  ctx.fillStyle="rgba(0,0,0,.5)";ctx.fillRect(o.x-_lw/2-3,_ly-9*z,_lw+6,12*z);ctx.fillStyle="#f1e6cf";ctx.fillText(_lab,o.x,_ly);
-  if(b.queue.length){ctx.fillStyle="#e8b85a";ctx.fillText("⏳",o.x,o.y-H-4*z);}
-  if(b.hp<b.maxhp)bar(o.x,o.y-H-9*z,w*2,3*z,b.hp/b.maxhp,b.owner===PLAYER?"#9bbf5a":"#cf5b46");
-  if(b.flash>0){ctx.globalAlpha=Math.min(0.6,b.flash*4.5);ctx.fillStyle="#fff";ctx.beginPath();ctx.moveTo(o.x-w,o.y);ctx.lineTo(o.x,o.y-H);ctx.lineTo(o.x+w,o.y);ctx.lineTo(o.x,o.y+h);ctx.closePath();ctx.fill();ctx.globalAlpha=1;}}
-function drawVil(v){const s=w2s(v.x,v.y),z=G.cam.zoom,f=v.face>=0?1:-1,team=TEAM[v.owner],skin="#e8c9a0";
-  ctx.fillStyle="rgba(0,0,0,.32)";ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,6*z,3*z,0,0,7);ctx.fill();   // 地面阴影（不随呼吸）
-  const moving=(v.state==="move"||v.state==="toGather"||v.state==="toDrop");
-  const ph=T*9+(v.id%7),bob=Math.sin(ph)*(moving?1.5:0.5)*z,sw=moving?Math.sin(ph)*2.2*z:0;
-  ctx.save();ctx.translate(0,bob);ctx.lineCap="round";ctx.strokeStyle="rgba(18,11,5,.7)";ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(s.x-1.8*z-sw,s.y);ctx.lineTo(s.x-1.8*z-sw,s.y-6*z);ctx.moveTo(s.x+1.8*z+sw,s.y);ctx.lineTo(s.x+1.8*z+sw,s.y-6*z);ctx.stroke();
-  ctx.fillStyle=team;ctx.beginPath();ctx.moveTo(s.x-3.6*z,s.y-6*z);ctx.lineTo(s.x+3.6*z,s.y-6*z);ctx.lineTo(s.x+2.5*z,s.y-13*z);ctx.lineTo(s.x-2.5*z,s.y-13*z);ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.fillStyle="#3a2a16";ctx.fillRect(s.x-3.6*z,s.y-7.6*z,7.2*z,1.5*z);
-  ctx.fillStyle=skin;ctx.beginPath();ctx.arc(s.x,s.y-16*z,3.6*z,0,7);ctx.fill();ctx.stroke();
-  ctx.fillStyle=shade(team,1.18);ctx.beginPath();ctx.arc(s.x,s.y-17*z,3.6*z,Math.PI,0);ctx.fill();
-  ctx.strokeStyle="#6b4a28";ctx.lineWidth=1.8*z;ctx.beginPath();ctx.moveTo(s.x+2*z*f,s.y-12*z);ctx.lineTo(s.x+5*z*f,s.y-15*z);ctx.stroke();
-  ctx.strokeStyle="#cfd2d6";ctx.lineWidth=2*z;ctx.beginPath();ctx.moveTo(s.x+5*z*f,s.y-15*z);ctx.lineTo(s.x+6*z*f,s.y-11*z);ctx.stroke();
-  if(v.carry>0){const cc=v.carryType==="wood"?"#7a5a32":v.carryType==="stone"?"#9a9488":v.carryType==="ore"?"#caa84a":"#cf4b6a";ctx.fillStyle=cc;ctx.fillRect(s.x-2*z,s.y-22*z,4*z,4*z);}
-  if(v.flash>0){ctx.globalAlpha=Math.min(0.7,v.flash*5);ctx.fillStyle="#fff";ctx.beginPath();ctx.ellipse(s.x,s.y-9*z,7*z,11*z,0,0,7);ctx.fill();ctx.globalAlpha=1;}
-  ctx.restore();
-  if(v.hp<v.maxhp)bar(s.x,s.y-24*z,12*z,2.5*z,v.hp/v.maxhp,"#cf5b46");}
-function drawUnit(u){const s=w2s(u.x,u.y),z=G.cam.zoom,f=u.face>=0?1:-1,col=TEAM[u.owner],skin="#e8c9a0";
-  ctx.fillStyle="rgba(0,0,0,.32)";ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,7*z,3.5*z,0,0,7);ctx.fill();
-  const moving=(u.state==="move"||u.state==="toGather"||u.state==="toDrop");
-  const ph=T*9+(u.id%7),bob=Math.sin(ph)*(moving?1.5:0.5)*z;
-  ctx.save();ctx.translate(0,bob);ctx.lineCap="round";ctx.strokeStyle="rgba(18,11,5,.7)";ctx.lineWidth=1;
-  if(u.state==="attack"&&u.target){const tg=findEntity(u.target);if(tg){const dx=tg.x-u.x,dy=tg.y-u.y,d=Math.hypot(dx,dy);if(d<2.6&&d>0.01){const L=Math.sin(T*16)*2.4*z;ctx.translate(dx/d*L,dy/d*L*0.5);}}}   // 近战戳刺前冲
-  if(u.type==="cav"){
-    ctx.fillStyle=shade("#6b4a28",1);ctx.beginPath();ctx.ellipse(s.x,s.y-5*z,9*z,5*z,0,0,7);ctx.fill();
-    ctx.fillStyle=shade("#5a3d20",1);ctx.fillRect(s.x-2*z*f,s.y-9*z,3.5*z,6*z);
-    ctx.fillStyle="#3a2a16";ctx.fillRect(s.x-7*z,s.y-1*z,2.5*z,3*z);ctx.fillRect(s.x+5*z,s.y-1*z,2.5*z,3*z);
-    ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(s.x-3*z,s.y-11*z);ctx.lineTo(s.x+3*z,s.y-11*z);ctx.lineTo(s.x+2*z,s.y-17*z);ctx.lineTo(s.x-2*z,s.y-17*z);ctx.closePath();ctx.fill();ctx.stroke();
-    ctx.fillStyle=skin;ctx.beginPath();ctx.arc(s.x,s.y-19*z,3*z,0,7);ctx.fill();ctx.stroke();
-    ctx.fillStyle=shade(col,1.18);ctx.beginPath();ctx.arc(s.x,s.y-20*z,3*z,Math.PI,0);ctx.fill();
-    if(u.hp<u.maxhp)bar(s.x,s.y-26*z,16*z,3*z,u.hp/u.maxhp,u.owner===PLAYER?"#9bbf5a":"#cf5b46");}
-  else{
-    const sw=Math.sin(ph)*2.2*z;
-    ctx.beginPath();ctx.moveTo(s.x-1.8*z-sw,s.y);ctx.lineTo(s.x-1.8*z-sw,s.y-6*z);ctx.moveTo(s.x+1.8*z+sw,s.y);ctx.lineTo(s.x+1.8*z+sw,s.y-6*z);ctx.stroke();
-    ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(s.x-3.6*z,s.y-6*z);ctx.lineTo(s.x+3.6*z,s.y-6*z);ctx.lineTo(s.x+2.5*z,s.y-14*z);ctx.lineTo(s.x-2.5*z,s.y-14*z);ctx.closePath();ctx.fill();ctx.stroke();
-    ctx.fillStyle="#3a2a16";ctx.fillRect(s.x-3.6*z,s.y-7.6*z,7.2*z,1.5*z);
-    ctx.fillStyle=skin;ctx.beginPath();ctx.arc(s.x,s.y-17*z,3.6*z,0,7);ctx.fill();ctx.stroke();
-    ctx.fillStyle=shade(col,1.18);ctx.beginPath();ctx.arc(s.x,s.y-18*z,3.6*z,Math.PI,0);ctx.fill();
-    ctx.strokeStyle="#cfd2d6";ctx.lineWidth=1.8*z;
-    if(u.type==="spear"){ctx.beginPath();ctx.moveTo(s.x+3*z*f,s.y-13*z);ctx.lineTo(s.x+9*z*f,s.y-26*z);ctx.stroke();ctx.fillStyle="#9a9488";ctx.beginPath();ctx.moveTo(s.x+9*z*f,s.y-26*z);ctx.lineTo(s.x+7.5*z*f,s.y-23*z);ctx.lineTo(s.x+10.5*z*f,s.y-23*z);ctx.closePath();ctx.fill();}
-    else if(u.type==="sword"){ctx.beginPath();ctx.moveTo(s.x+3.5*z*f,s.y-13*z);ctx.lineTo(s.x+6*z*f,s.y-25*z);ctx.stroke();}
-    else if(u.type==="slinger"){ctx.fillStyle="#cfd2d6";ctx.beginPath();ctx.arc(s.x+4*z*f,s.y-13*z,2*z,0,7);ctx.fill();}
-    if(u.hp<u.maxhp)bar(s.x,s.y-28*z,14*z,2.5*z,u.hp/u.maxhp,u.owner===PLAYER?"#9bbf5a":"#cf5b46");}
-  if(u.flash>0){ctx.globalAlpha=Math.min(0.7,u.flash*5);ctx.fillStyle="#fff";ctx.beginPath();ctx.ellipse(s.x,s.y-10*z,8*z,13*z,0,0,7);ctx.fill();ctx.globalAlpha=1;}
-  ctx.restore();}
-function bar(x,y,w,h,p,col){ctx.fillStyle="rgba(0,0,0,.5)";ctx.fillRect(x-w/2,y,w,h);ctx.fillStyle=col;ctx.fillRect(x-w/2,y,w*Math.max(0,p),h);}
-function drawDead(d){const s=w2s(d.x,d.y),z=G.cam.zoom,a=Math.max(0,d.t/d.max);
-  ctx.globalAlpha=a*0.6;ctx.fillStyle="#2a1d12";ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,9*z*a,5*z*a,0,0,7);ctx.fill();ctx.globalAlpha=1;}
-function addFx(x,y,kind,opt){G.fx.push({x,y,kind,t:0,life:kind==="dust"?0.55:kind==="arrow"?0.18:kind==="ping"?0.5:0.4,opt:opt||null});}
-function drawFx(){for(const f of G.fx){if(f.t>=f.life)continue;const s=w2s(f.x,f.y),z=G.cam.zoom,p=Math.min(1,f.t/f.life);
-  if(f.kind==="spark"){const col=f.opt||"#e8b85a",r=(2+p*7)*z;ctx.globalAlpha=1-p;ctx.strokeStyle=col;ctx.lineWidth=1.5;
-    ctx.beginPath();ctx.arc(s.x,s.y-10*z,r,0,7);ctx.stroke();
-    for(let i=0;i<5;i++){const a=i/5*6.283+p*2;ctx.beginPath();ctx.moveTo(s.x,s.y-10*z);ctx.lineTo(s.x+Math.cos(a)*r*1.3,s.y-10*z+Math.sin(a)*r*1.3);ctx.stroke();}ctx.globalAlpha=1;}
-  else if(f.kind==="dust"){ctx.globalAlpha=(1-p)*0.6;ctx.fillStyle="#6b5a3a";ctx.beginPath();ctx.ellipse(s.x,s.y+1*z,(6+p*10)*z,(3+p*5)*z,0,0,7);ctx.fill();ctx.globalAlpha=1;}
-  else if(f.kind==="hit"){ctx.globalAlpha=(1-p)*0.85;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(s.x,s.y-10*z,(1+p*4)*z,0,7);ctx.fill();ctx.globalAlpha=1;}
-  else if(f.kind==="arrow"){const t=w2s(f.opt.x1,f.opt.y1),x=s.x+(t.x-s.x)*p,y=(s.y-12*z)+((t.y-10*z)-(s.y-12*z))*p;
-    ctx.strokeStyle="rgba(207,210,214,"+(0.6*(1-p))+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-(t.x-s.x)*0.12,y-(t.y-s.y)*0.12);ctx.stroke();
-    ctx.fillStyle="#cfd2d6";ctx.beginPath();ctx.arc(x,y,2.2*z,0,7);ctx.fill();}
-  else if(f.kind==="ping"){const col=f.opt||"rgba(232,184,90,.9)";ctx.globalAlpha=1-p;ctx.strokeStyle=col;ctx.lineWidth=2;
-    ctx.beginPath();ctx.arc(s.x,s.y,4+p*14*z,0,7);ctx.stroke();
-    if(p>0.6){ctx.beginPath();ctx.arc(s.x,s.y,4+(p-0.6)*14*z*1.4,0,7);ctx.stroke();}ctx.globalAlpha=1;}}}
-function drawSel(e){const z=G.cam.zoom,pulse=0.5+0.5*Math.sin(T*5);
-  if(e.kind==="vil"||e.kind==="unit"){const s=w2s(e.x,e.y);
-    ctx.fillStyle="rgba(232,184,90,.16)";ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,(9+pulse*1.5)*z,(5+pulse*0.8)*z,0,0,7);ctx.fill();
-    ctx.strokeStyle="rgba(232,184,90,"+(0.55+0.45*pulse)+")";ctx.lineWidth=1.5+pulse;ctx.beginPath();ctx.ellipse(s.x,s.y+2*z,(8+pulse*1.5)*z,(4+pulse*0.8)*z,0,0,7);ctx.stroke();}
-  else{const o=w2s(e.x,e.y),w=e.w*TW/2*z,h=e.d*TH/2*z,H=(e.type==="town"?31:e.type==="wonder"?40:e.type==="tower"?30:18)*z;
-    ctx.fillStyle="rgba(232,184,90,.12)";ctx.beginPath();ctx.moveTo(o.x-w,o.y);ctx.lineTo(o.x,o.y-h*0.5);ctx.lineTo(o.x+w,o.y);ctx.lineTo(o.x,o.y+h);ctx.closePath();ctx.fill();
-    ctx.strokeStyle="rgba(232,184,90,"+(0.55+0.45*pulse)+")";ctx.lineWidth=2+pulse;ctx.strokeRect(o.x-w,o.y-h*0.5-H,w*2,h+H);}}
-function buildTerrainCache(){   // 地形离屏缓存：每帧只 blit，省去 660 块瓦片重绘
-  tcanvas.width=cv.width;tcanvas.height=cv.height;
-  tctx.clearRect(0,0,cv.width,cv.height);
-  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
-    const s=w2s(x,y),z=G.cam.zoom,hw=TW/2*z,hh=TH/2*z,t=G.terrain[y][x];
-    if(s.x<-TW||s.x>cv.width+TW||s.y<-TH||s.y>cv.height+TH)continue;
-    const base=tileColor(t.t,t.water);
-    const lit=1.10-0.24*((x+y)/(GW+GH));   // 方向光：左上偏亮、右下偏暗，读作 3D 表面
-    tctx.beginPath();tctx.moveTo(s.x,s.y-hh);tctx.lineTo(s.x+hw,s.y);tctx.lineTo(s.x,s.y+hh);tctx.lineTo(s.x-hw,s.y);tctx.closePath();
-    tctx.fillStyle=shade(base,lit);tctx.fill();
-    tctx.strokeStyle=shade(base,0.8);tctx.lineWidth=1;tctx.stroke();
-    if(!t.water){const r=hash2(x*7+2,y*7+5);
-      if(r>0.84){tctx.strokeStyle=shade(base,1.28);tctx.lineWidth=1;tctx.beginPath();tctx.moveTo(s.x,s.y);tctx.lineTo(s.x-1,s.y-3);tctx.moveTo(s.x,s.y);tctx.lineTo(s.x+1,s.y-3);tctx.moveTo(s.x,s.y);tctx.lineTo(s.x,s.y-4);tctx.stroke();}
-      else if(r<0.03){tctx.fillStyle="#d06b8c";tctx.beginPath();tctx.arc(s.x,s.y-1,1.4,0,7);tctx.fill();}
-      else if(hash2(x*3,y*3)>0.93){tctx.fillStyle=shade(base,1.18);tctx.fillRect(s.x-1,s.y-1,2,2);}}
-  }
-}
-function render(){
-  const key=G.cam.x.toFixed(2)+","+G.cam.y.toFixed(2)+","+G.cam.zoom.toFixed(3)+","+cv.width+"x"+cv.height;
-  if(key!==tkey||!tcanvas.width){buildTerrainCache();tkey=key;}
-  ctx.clearRect(0,0,cv.width,cv.height);
-  ctx.drawImage(tcanvas,0,0);
-  for(const n of G.nodes){const s=w2s(n.x,n.y);if(s.x<-20||s.x>cv.width+20||s.y<-20||s.y>cv.height+20)continue;drawNode(n);}
-  const list=G.E.slice().sort((a,b)=>(a.x+a.y)-(b.x+b.y));
-  for(const e of list)if(e.kind==="bld")drawBld(e);
-  for(const e of list)if(e.kind==="unit")drawUnit(e);
-  for(const e of list)if(e.kind==="vil")drawVil(e);
-  for(const d of G.dead)drawDead(d);
-  drawFx();
-  for(const id of G.sel){const e=G.E.find(x=>x.id===id);if(e)drawSel(e);}
-  if(G.drag){const a=G.drag;ctx.strokeStyle="#e8b85a";ctx.fillStyle="rgba(232,184,90,.12)";ctx.lineWidth=1.5;
-    const x=Math.min(a.x0,a.x1),y=Math.min(a.y0,a.y1),w=Math.abs(a.x1-a.x0),h=Math.abs(a.y1-a.y0);ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);}
-  if(G.build&&G.hover){const d=BLD[G.build],xi=G.hover.x|0,yi=G.hover.y|0,ok=canPlace(G.build,G.hover.x,G.hover.y)&&afford(d.cost);
-    const o=w2s(xi,yi),z=G.cam.zoom,w=d.w*TW/2*z,h=d.d*TH/2*z;ctx.globalAlpha=0.55;ctx.fillStyle=ok?"#9bbf5a":"#cf5b46";
-    ctx.beginPath();ctx.moveTo(o.x-w,o.y);ctx.lineTo(o.x,o.y-h*0.5);ctx.lineTo(o.x+w,o.y);ctx.lineTo(o.x,o.y+h*0.5);ctx.closePath();ctx.fill();ctx.globalAlpha=1;}
-  drawMini();
-}
-const mini=document.getElementById("mini"),mctx=mini.getContext("2d");
-function drawMini(){mctx.clearRect(0,0,mini.width,mini.height);const sx=mini.width/GW,sy=mini.height/GH;
-  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const t=G.terrain[y][x];mctx.fillStyle=t.water?"#16384a":(t.t==="grass"?"#3c5026":t.t==="lush"?"#2c3f1c":"#5a4e34");mctx.fillRect(x*sx,y*sy,sx+0.5,sy+0.5);}
-  for(const n of G.nodes)mctx.fillStyle="#caa84a",mctx.fillRect(n.x*sx-1,n.y*sy-1,2,2);
-  for(const e of G.E){mctx.fillStyle=TEAM[e.owner];if(e.kind==="bld")mctx.fillRect(e.x*sx,e.y*sy,e.w*sx,e.d*sy);else mctx.fillRect(e.x*sx-1,e.y*sy-1,2,2);}
-  const c0=s2w(0,0),c1=s2w(cv.width,cv.height);mctx.strokeStyle="#e8b85a";mctx.lineWidth=1;mctx.strokeRect(Math.min(c0.x,c1.x)*sx,Math.min(c0.y,c1.y)*sy,Math.abs(c1.x-c0.x)*sx,Math.abs(c1.y-c0.y)*sy);}
-
-/* ---------- 输入 ---------- */
-let mouse={down:false,sx:0,sy:0,moved:false,lx:0,ly:0};
-cv.addEventListener("contextmenu",e=>e.preventDefault());
-cv.addEventListener("mousedown",e=>{if(G.over)return;
-  const r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
-  if(e.button===2){if(G.build){G.build=null;updateBuildAfford();return;}const w=s2w(mx,my);
-    for(const id of G.sel){const ent=G.E.find(x=>x.id===id);if(ent&&ent.owner===PLAYER&&(ent.kind==="vil"||ent.kind==="unit"))command(ent,w.x,w.y);}return;}
-  if(G.build){const w=s2w(mx,my);if(canPlace(G.build,w.x,w.y)&&afford(BLD[G.build].cost,PLAYER)){pay(BLD[G.build].cost,PLAYER);addBuilding(G.build,w.x|0,w.y|0,PLAYER);recomputePop();if(G.build==="wonder")G.wonderT=WONDER_T;if(!e.shiftKey)G.build=null;}else toast("无法建造：位置或资源不满足");updateBuildAfford();return;}
-  mouse.down=true;mouse.sx=mx;mouse.sy=my;mouse.moved=false;G.drag={x0:mx,y0:my,x1:mx,y1:my};});
-cv.addEventListener("mousemove",e=>{const r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;G.hover=s2w(mx,my);
-  if(mouse.down&&G.drag){G.drag.x1=mx;G.drag.y1=my;if(Math.abs(mx-mouse.sx)>4)mouse.moved=true;}
-  if(e.buttons===4){G.cam.x-=(mx-mouse.lx)/((TW/2)*G.cam.zoom);G.cam.y+=(my-mouse.ly)/((TH/2)*G.cam.zoom);}mouse.lx=mx;mouse.ly=my;});
-addEventListener("mouseup",e=>{if(e.button===1)return;if(mouse.down){
-  if(mouse.moved&&G.drag){const a=G.drag,x0=Math.min(a.x0,a.x1),x1=Math.max(a.x0,a.x1),y0=Math.min(a.y0,a.y1),y1=Math.max(a.y0,a.y1);
-    G.sel=G.E.filter(function(en){if(en.owner!==PLAYER||(en.kind!=="vil"&&en.kind!=="unit"))return false;const s=w2s(en.x,en.y);return s.x>=x0&&s.x<=x1&&s.y>=y0&&s.y<=y1;}).map(function(en){return en.id;});
-    if(!G.sel.length)G.sel=pickAt(a.x1,a.y1);}
-  else G.sel=pickAt(mouse.sx,mouse.sy);G.drag=null;mouse.down=false;refreshSel();}});
-function pickAt(mx,my){const w=s2w(mx,my);const u=unitAt(w.x,w.y,PLAYER);if(u)return [u.id];const b=bldAt(w.x,w.y);if(b)return [b.id];const v=unitAt(w.x,w.y);if(v)return [v.id];return [];}
-cv.addEventListener("wheel",e=>{e.preventDefault();G.cam.zoom=Math.max(0.5,Math.min(2,G.cam.zoom*(e.deltaY<0?1.1:0.9)));},{passive:false});
-addEventListener("keydown",e=>{const sp=1.2/G.cam.zoom;
-  if(e.key==="w"||e.key==="ArrowUp")G.cam.y-=sp;if(e.key==="s"||e.key==="ArrowDown")G.cam.y+=sp;
-  if(e.key==="a"||e.key==="ArrowLeft")G.cam.x-=sp;if(e.key==="d"||e.key==="ArrowRight")G.cam.x+=sp;
-  if(e.key==="Escape"){G.build=null;updateBuildAfford();}if(e.key===" ")G.paused=!G.paused;});
-addEventListener("pagehide",saveGame);
-addEventListener("visibilitychange",()=>{ if(typeof document!=="undefined"&&document.hidden)saveGame(); });
-
-/* ---------- UI ---------- */
-const el=id=>document.getElementById(id);
-const BREFS={};
-function toast(m){const t=el("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1400);}
-function showHint(m){const h=el("hint");h.textContent=m;h.style.display="block";clearTimeout(h._t);h._t=setTimeout(()=>h.style.display="none",10000);}
-function costStr(c){const ic={food:"🌾",wood:"🪵",stone:"🪨",ore:"⛏️",know:"📜"};let s=[];for(const k in c)s.push(ic[k]+c[k]);return s.join(" ")||"免费";}
-function ageName(a){return {1:"Ⅰ",2:"Ⅱ",3:"Ⅲ"}[a]||a;}
-function stateName(s){return {idle:"待命",move:"移动",toGather:"前往采集",gather:"采集",toDrop:"回交",farm:"农场劳作",attack:"交战"}[s]||s;}
-function trainVil(){if(G.pop.cur>=G.pop.cap){toast("人口已满，先建民居");return;}if(!afford(TRAIN_VIL.cost,PLAYER)){toast("粮不足");return;}pay(TRAIN_VIL.cost,PLAYER);
-  const tc=G.E.find(e=>e.kind==="bld"&&e.type==="town"&&e.owner===PLAYER);if(tc)tc.queue.push({kind:"vil",t:TRAIN_VIL.time});recomputePop();updateBuildAfford();}
-function trainUnit(b,ut){if(G.pop.cur>=G.pop.cap){toast("人口已满");return;}if(!afford(UNIT[ut].cost,PLAYER)){toast("资源不足");return;}
-  pay(UNIT[ut].cost,PLAYER);b.queue.push({kind:"unit",ut,t:UNIT[ut].time});recomputePop();refreshSel();}
-function doAgeUp(){if(G.age>=3)return;const a=AGE[G.age];if(!afford(a.cost,PLAYER)){toast("资源不足，无法升时代");return;}pay(a.cost,PLAYER);G.ageUp=a.time;toast("正在进入"+AGE[a.next].name+"时代…");updateBuildAfford();refreshSel();}
-function doTech(k){const t=TECH[k];if(G.tech[k])return;if(!afford(t.cost,PLAYER)){toast("资源不足");return;}pay(t.cost,PLAYER);G.tech[k]=true;
-  if(k==="wep")G.mods.atk+=2;if(k==="arm")G.mods.def+=2;if(k==="log")G.mods.gather+=0.15;toast("已研究："+t.name);refreshSel();}
-function initBuildUI(){const g=el("buildGrid");g.innerHTML="";for(const k in BREFS)delete BREFS[k];
-  const b1=document.createElement("button");b1.className="btn";b1.innerHTML="训村民 <span class='cost'>"+costStr(TRAIN_VIL.cost)+" · 4s</span>";b1.onclick=trainVil;BREFS.villager=b1;g.appendChild(b1);
-  for(const key in BLD){if(key==="town")continue;const d=BLD[key];const btn=document.createElement("button");btn.className="btn";const locked=d.age>G.age;
-    btn.innerHTML=d.name+" <span class='cost'>"+costStr(d.cost)+(locked?" · 需"+ageName(d.age):"")+"</span>";btn.onclick=()=>{G.build=(G.build===key?null:key);updateBuildAfford();};BREFS[key]=btn;g.appendChild(btn);}updateBuildAfford();}
-function updateBuildAfford(){BREFS.villager&&(BREFS.villager.disabled=!afford(TRAIN_VIL.cost,PLAYER)||G.pop.cur>=G.pop.cap);
-  for(const key in BLD){if(key==="town")continue;const b=BREFS[key];if(!b)continue;const d=BLD[key];b.disabled=(d.age>G.age)||!afford(d.cost,PLAYER);b.classList.toggle("sel",G.build===key);}}
-function refreshSel(){const p=el("selPanel");if(!G.sel.length){p.style.display="none";return;}p.style.display="block";
-  const e=G.E.find(x=>x.id===G.sel[0]);const info=el("selInfo");const acts=el("selActs");acts.innerHTML="";if(!e){p.style.display="none";return;}
-  let line="<b>"+(e.kind==="bld"?BLD[e.type].name:e.kind==="unit"?UNIT[e.type].name:"村民")+"</b> · HP "+Math.ceil(e.hp)+"/"+e.maxhp;
-  if(e.kind==="vil")line+=" · "+stateName(e.state);if(e.queue&&e.queue.length)line+=" · 训练中";
-  info.innerHTML=line;
-  if(e.owner===PLAYER&&e.kind==="bld"){
-    const tr=TRAINS[e.type];if(tr)for(const ut of tr){const isVil=ut==="villager";const c=isVil?TRAIN_VIL.cost:UNIT[ut].cost;
-      const btn=document.createElement("button");btn.className="btn";btn.innerHTML=(isVil?"训村民":UNIT[ut].name)+" <span class='cost'>"+costStr(c)+"</span>";
-      btn.disabled=(isVil?!afford(c,PLAYER)||G.pop.cur>=G.pop.cap:!afford(c,PLAYER)||G.pop.cur>=G.pop.cap);btn.onclick=()=>isVil?trainVil():trainUnit(e,ut);acts.appendChild(btn);}
-    if(e.type==="town"&&G.age<3){const btn=document.createElement("button");btn.className="btn";const a=AGE[G.age];btn.innerHTML="升"+ageName(a.next)+"时代 <span class='cost'>"+costStr(a.cost)+"</span>";btn.disabled=!afford(a.cost)||G.ageUp>0;btn.onclick=doAgeUp;acts.appendChild(btn);}
-    if(e.type==="smith"||e.type==="library"){for(const k in TECH)if(TECH[k].from===e.type){const btn=document.createElement("button");btn.className="btn";btn.innerHTML=TECH[k].name+" <span class='cost'>"+costStr(TECH[k].cost)+"</span>";btn.disabled=G.tech[k]||!afford(TECH[k].cost);btn.onclick=()=>doTech(k);acts.appendChild(btn);}}
-  }
-}
-function refreshHUD(){for(const k of ["food","wood","stone","ore","know"])el("r-"+k).querySelector(".v").textContent=Math.floor(G.res[k]);
-  el("r-pop").querySelector(".v").textContent=G.pop.cur+"/"+G.pop.cap;
-  el("agechip").textContent=ageName(G.age)+" "+(G.age===1?"远古":G.age===2?"青铜":"铁器")+(G.ageUp>0?" ↑":"");
-  updateBuildAfford();}
-
-/* ---------- 主循环 ---------- */
-let last=performance.now(),acc=0,T=0;
-function frame(now){let dt=now-last;last=now;T+=dt/1000;if(dt>120)dt=120;
-  for(let i=G.fx.length-1;i>=0;i--){G.fx[i].t+=dt/1000;if(G.fx[i].t>=G.fx[i].life)G.fx.splice(i,1);}
-  if(!G.paused&&!G.over){acc+=dt*G.speed;let guard=0;while(acc>=STEP&&guard++<8){tick(STEP/1000);acc-=STEP;}}
-  render();refreshHUD();
-  G._sacc=(G._sacc||0)+dt; if(G._sacc>=5000){G._sacc=0; saveGame();}   // 每 5 秒自动快照
-  requestAnimationFrame(frame);}
-el("overBtn").onclick=()=>{newGame();initBuildUI();refreshSel();};
-function showSavePrompt(){const s=peekSave();if(!s){newGame();return;}
-  el("spS").textContent="上次进度：时代 "+ageName(s.age)+" · 人口 "+s.pop.cur+"/"+s.pop.cap+(s.wonderT!==null?" · 奇观建造中":"")+" — 继续或重开？";
-  el("savePrompt").style.display="flex";}
-el("spCont").onclick=()=>{if(loadGame()){el("savePrompt").style.display="none";initBuildUI();refreshSel();}};
-el("spNew").onclick=()=>{clearSave();el("savePrompt").style.display="none";newGame();initBuildUI();refreshSel();};
-
-/* ---------- 启动 ---------- */
-if(hasSave())showSavePrompt();else newGame();initBuildUI();refreshSel();requestAnimationFrame(frame);
-  </script>
+                        
 
 
 

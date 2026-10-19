@@ -922,4 +922,23 @@ window.I18N.en = {
   "aij.err_create": "createJob reverted. Check your tOMC balance and the escrow amount.",
   "aij.err_price": "Enter escrow above zero.",
   "aij.alert_transport": "The result hash is on chain, but the transport that carries the image back is not connected yet.\n\nresultHash:\n",
+
+  "ba.tag": "Community · Playable",
+  "ba.h1": "🏛️ 蛮荒时代 Barbarian Age",
+  "ba.sub": "A browser build of the community RTS — homage to the Ancient Age of Rise of Nations.",
+  "ba.badge": "v2.31 full build · 4 modes · free, no wallet",
+  "ba.note": "The game runs entirely in your browser — no install, no account, no wallet. Portrait layout, best on a phone; mouse works on desktop.",
+  "ba.intro_h": "About this build",
+  "ba.intro_p": "Barbarian Age is a small real-time strategy game from the OMC community: dual-faction economy with self-driving villagers, free-placement city building, and an AI that runs its own base and pushes in waves. This web build is the full v2.31 release — including the Altar of the tribe totems with its five divine punishments, and the interactive-movie Epic mode.",
+  "ba.modes_h": "Four modes",
+  "ba.m1": "<b>Classic</b> — a single duel against the AI on a symmetric map.",
+  "ba.m2": "<b>Campaign</b> — conquer five tribes in a row (Boar / Wolf / Bear / Eagle / Dragon). Your economy, army and base carry over between fights, and every tribe fights differently.",
+  "ba.m3": "<b>Endless</b> — wave after wave of ever-stronger enemies; the Dragon Lord returns every fifth battle.",
+  "ba.m4": "<b>Epic</b> — an interactive-movie chapter: story cutscenes, three moral choices that reshape the battle ahead, and multiple endings.",
+  "ba.ctrl_h": "Controls",
+  "ba.ctrl_p": "Click or tap to select units, drag to box-select, click the ground to move and click an enemy to attack. Build from the bottom dock, queue troops in the barracks, range and forge, research techs, and keep an eye on the minimap. The war horn and the hero war cry are your two active buttons — time them well.",
+  "ba.shots_h": "Screenshots",
+  "ba.shot1": "Battle: three resources, unit caps and the build dock",
+  "ba.shot2": "The Altar and its divine punishment, keyed to the tribe you face",
+  "ba.shot3": "Epic mode: story cutscene with a tribal portrait"
 };
