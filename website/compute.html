@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <title data-i18n="meta.title_compute">AI Compute Station — Omniverse Compute (OMC)</title>
   <link rel="canonical" href="https://omc.network/compute">
+  <link rel="alternate" hreflang="en" href="https://omc.network/compute" />
+  <link rel="alternate" hreflang="x-default" href="https://omc.network/compute" />
   <script type="application/ld+json">
 {"@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"],"@context":"https://schema.org"}
 </script>
@@ -106,7 +109,7 @@
   <nav class="nav">
     <div class="nav-inner">
       <a class="brand" href="/">
-        <img class="logo" src="assets/img/logo.png" alt="OMC" />
+        <img class="logo" src="assets/img/logo.png" alt="OMC" width="36" height="36" loading="eager" decoding="async" />
         <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
       </a>
       <div class="nav-links" id="navLinks">
@@ -175,7 +178,7 @@
         <!-- ===== LEFT: configure ===== -->
         <div>
           <div class="stk-panel">
-            <h3 data-i18n="cst.h_config">1 · Configure the job</h3>
+            <h2 class="as-h3" data-i18n="cst.h_config">1 · Configure the job</h2>
             <p class="p-sub" data-i18n="cst.h_config_sub">The tier is the hardware class you need. Every tier minimum is read live from the staking contract, so this page and the staking page can never disagree.</p>
 
             <div class="field">
@@ -257,7 +260,7 @@
           </div>
 
           <div class="stk-panel" style="margin-top:20px;">
-            <h3 data-i18n="cst.h_why">Who stands behind the job</h3>
+            <h2 class="as-h3" data-i18n="cst.h_why">Who stands behind the job</h2>
             <p class="p-sub" data-i18n="cst.h_why_sub">Read straight from the two contracts. No wallet needed.</p>
 
             <div class="cmp-why">
@@ -279,7 +282,7 @@
           </div>
 
           <div class="stk-panel" style="margin-top:20px;">
-            <h3 data-i18n="cst.h_ladder">Tier ladder</h3>
+            <h2 class="as-h3" data-i18n="cst.h_ladder">Tier ladder</h2>
             <p class="p-sub" data-i18n="cst.h_ladder_sub">The same five tiers priced on the staking page, read live from the contract.</p>
             <table class="tier-table">
               <thead><tr><th data-i18n="stk.th_tier">Tier</th><th data-i18n="stk.th_hw">Hardware</th><th data-i18n="stk.th_min">Minimum stake</th></tr></thead>
@@ -288,7 +291,7 @@
           </div>
 
           <div class="stk-panel" style="margin-top:20px;">
-            <h3 data-i18n="cst.h_net">Market</h3>
+            <h2 class="as-h3" data-i18n="cst.h_net">Market</h2>
             <p class="p-sub" data-i18n="cst.h_net_sub">Counters for the requester side, live.</p>
             <div class="kv"><span class="k" data-i18n="cst.m_jobs">Jobs created</span><span class="v" id="cmpJobsTotal">—</span></div>
             <div class="kv"><span class="k" data-i18n="cst.m_settled">Jobs settled</span><span class="v" id="cmpJobsSettled2">—</span></div>
@@ -355,17 +358,17 @@
       <div class="grid-3">
         <div class="card reveal">
           <div class="icon">🧮</div>
-          <h3 data-i18n="cst.pr1_t">Structure, not a rate card</h3>
+          <h2 class="as-h3" data-i18n="cst.pr1_t">Structure, not a rate card</h2>
           <p data-i18n="cst.pr1_d">GPU-hours × reference rate × verification multiplier, plus a 3% protocol fee, minus 10% of that fee when you pay in OMC. You set the ceiling; the contract refuses to settle above it.</p>
         </div>
         <div class="card reveal">
           <div class="icon">🔍</div>
-          <h3 data-i18n="cst.pr2_t">Verification is the price lever</h3>
+          <h2 class="as-h3" data-i18n="cst.pr2_t">Verification is the price lever</h2>
           <p data-i18n="cst.pr2_d">Spot-check adds the audit rate on top. Full redundancy costs 2–3× because the work is done 2–3 times. TEE carries a premium and needs TEE-capable nodes to be online.</p>
         </div>
         <div class="card reveal">
           <div class="icon">📉</div>
-          <h3 data-i18n="cst.pr3_t">The target, stated plainly</h3>
+          <h2 class="as-h3" data-i18n="cst.pr3_t">The target, stated plainly</h2>
           <p data-i18n="cst.pr3_d">OMC targets below the median of the centralized GPU marketplaces. Hyperscalers ran $6.88–$12.29 per H100 SXM GPU-hour, marketplaces $2.49–$6.16, other decentralized networks $1.25–$3.00. The measured OMC benchmark is published after mainnet.</p>
         </div>
       </div>
@@ -385,7 +388,7 @@
       </div>
       <ul class="wlt-list">
         <li class="wlt-item wlt-primary">
-          <img class="wlt-logo" src="assets/img/wallets/binance-web3.svg" alt="Binance Web3 Wallet" width="40" height="40" />
+          <img class="wlt-logo" src="assets/img/wallets/binance-web3.svg" alt="Binance Web3 Wallet" width="40" height="40" loading="lazy" decoding="async" />
           <span>
             <span class="wlt-name" data-i18n="wlt.bnb">Binance Web3 Wallet</span>
             <span class="wlt-tag" data-i18n="wlt.bnb_tag">Detected automatically inside the Binance App &#8212; no extension needed</span>
@@ -418,7 +421,7 @@
       <div class="footer-grid">
         <div>
           <a class="brand" href="/">
-            <img class="logo" src="assets/img/logo.png" alt="OMC" />
+            <img class="logo" src="assets/img/logo.png" alt="OMC" width="36" height="36" loading="lazy" decoding="async" />
             <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
           </a>
           <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
@@ -429,27 +432,27 @@
           </div>
         </div>
         <div class="f-col">
-          <h5 data-i18n="footer.h_protocol">Protocol</h5>
+          <h3 class="as-h5" data-i18n="footer.h_protocol">Protocol</h2>
           <a href="/whitepaper" data-i18n="f.wp">Whitepaper</a>
           <a href="/testnet" data-i18n="f.testnet">Testnet</a>
           <a href="/stake" data-i18n="f.stake">Staking</a>
           <a href="/tokenomics" data-i18n="f.tokenomics">Tokenomics</a>
         </div>
         <div class="f-col">
-          <h5 data-i18n="footer.h_community">Community</h5>
+          <h3 class="as-h5" data-i18n="footer.h_community">Community</h2>
           <a href="/airdrop" data-i18n="f.airdrop">Airdrop</a>
           <a href="/news" data-i18n="nav.news">News</a>
           <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
           <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
         </div>
         <div class="f-col">
-          <h5 data-i18n="footer.h_ecosystem">Ecosystem</h5>
+          <h3 class="as-h5" data-i18n="footer.h_ecosystem">Ecosystem</h2>
           <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
           <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
           <a href="/barbarian-age" data-i18n="f.barbarian">Barbarian Age</a>
         </div>
         <div class="f-col">
-          <h5 data-i18n="footer.h_resources">Resources</h5>
+          <h3 class="as-h5" data-i18n="footer.h_resources">Resources</h2>
           <a href="/calculator" data-i18n="f.calculator">GPU Cost Calculator</a>
           <a href="/compute" data-i18n="f.compute">AI Compute Station</a>
           <a href="/ai-tools" data-i18n="f.aitools">Image Upscaler</a>

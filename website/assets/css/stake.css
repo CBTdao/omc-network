@@ -92,7 +92,9 @@
   border-radius: var(--radius-lg);
   padding: 24px;
 }
-.stk-panel h3 { font-size: 18px; font-weight: 800; letter-spacing: -0.2px; }
+.stk-panel h3,
+.stk-panel h1.as-h3,
+.stk-panel h2.as-h3 { font-size: 18px; font-weight: 800; letter-spacing: -0.2px; }
 .stk-panel .p-sub { color: var(--muted); font-size: 13.5px; margin: 6px 0 18px; }
 .stk-panel + .stk-panel { margin-top: 0; }
 

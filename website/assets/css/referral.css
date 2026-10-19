@@ -21,7 +21,9 @@
   flex-wrap: wrap;
 }
 
-.ref-head h3 {
+.ref-head h3,
+.ref-head h1.as-h3,
+.ref-head h2.as-h3 {
   font-size: 17px;
   font-weight: 800;
   letter-spacing: -0.2px;
