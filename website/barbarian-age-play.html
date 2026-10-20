@@ -130,7 +130,6 @@
     </aside>
   </div>
 <script>
-window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio: 1/1)').matches) ? 'desktop' : '';
 // 蛮荒时代 · RTS 微信小游戏宿主（wx）
 // 复刻《国家的崛起》：双阵营经济（村民自主种地/伐木/采石）、自由选址建造、AI 自主运营+压境
 // 逻辑与浏览器版 _proto/rts5.html 一致；差异仅在：wx.createCanvas/createImage、
@@ -143,25 +142,19 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
   var DESK = LAYOUT === 'desktop';
   var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
 
-  // ---- 桌面版：画布跟随自身 CSS 盒子（可嵌入任意尺寸的容器），逻辑 1280x720 等比居中 ----
-  var DPR = Math.min(window.devicePixelRatio || 1, 2);
-  var PW = 0, PH = 0, scale = 1, ox = 0, oy = 0;
-  function fit(){
-    var r = cv.getBoundingClientRect();
-    var w = Math.max(1, Math.round(r.width || window.innerWidth)), h = Math.max(1, Math.round(r.height || window.innerHeight));
-    PW = Math.round(w * DPR); PH = Math.round(h * DPR);
-    if (cv.width !== PW || cv.height !== PH) { cv.width = PW; cv.height = PH; }
-    scale = Math.min(PW / W, PH / H); ox = (PW - W * scale) / 2; oy = (PH - H * scale) / 2;
-    try { draw(); } catch (e) {}
-  }
-  fit(); window.addEventListener('resize', fit);
-  if (window.ResizeObserver) { try { new ResizeObserver(fit).observe(cv); } catch (e) {} }
+  // ---- 固定 hi-DPI：逻辑 360x640 → 位图 720x1280 ----
+  var SW = 360, SH = 640, DPR = 2;
+  var PW = SW * DPR, PH = SH * DPR;
+  cv.width = PW; cv.height = PH;
+  var scale = Math.min(PW / W, PH / H), ox = (PW - W * scale) / 2, oy = (PH - H * scale) / 2;
 
   function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
   function rrp(g,x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
   function dist(a,b){ return Math.hypot(a.x-b.x,a.y-b.y); }
   function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
-  function wrapText(txt,x,y,maxW,lh){ var cur='',yy=y; for(var c=0;c<txt.length;c++){ cur+=txt[c]; if(ctx.measureText(cur).width>maxW){ ctx.fillText(cur,x,yy); cur=''; yy+=lh; } } if(cur) ctx.fillText(cur,x,yy); return yy+lh; }
+  // 文本宽度守卫：沙箱/降级 ctx 可能没有 measureText，直接取 width 会抛异常（v2.33 硬规则）
+  function tw(s){ var _m=ctx.measureText?ctx.measureText(s):null; return (_m&&_m.width)||0; }
+  function wrapText(txt,x,y,maxW,lh){ var cur='',yy=y; for(var c=0;c<txt.length;c++){ cur+=txt[c]; if(tw(cur)>maxW){ ctx.fillText(cur,x,yy); cur=''; yy+=lh; } } if(cur) ctx.fillText(cur,x,yy); return yy+lh; }
 
   // ---- 迷雾层 ----
   var fogC = document.createElement('canvas'); fogC.width=W; fogC.height=H; var fogX = fogC.getContext('2d');
@@ -224,8 +217,8 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
   ];
   function diffAI(){ return DIFF_AI[DIFF]||DIFF_AI[1]; }
   var DIFF=1;
-  function loadDiff(){ try{ var v=wx.getStorageSync('mh_diff'); return (v===0||v===1||v===2)?v:1; }catch(e){ return 1; } }
-  function saveDiff(){ try{ wx.setStorageSync('mh_diff',DIFF); }catch(e){} }
+  function loadDiff(){ try{ var v=localStorage.getItem('mh_diff'); return (v==='0'||v==='1'||v==='2')?(+v):1; }catch(e){ return 1; } }
+  function saveDiff(){ try{ localStorage.setItem('mh_diff',String(DIFF)); }catch(e){} }
   function setDiff(v){ DIFF=(v===0||v===1||v===2)?v:1; }
   DIFF=loadDiff();
   function saveBest(){ try{
@@ -237,9 +230,9 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
   // ---- 写实精灵（降分辨率资产，自有版权） ----
   var SPR = {};
   function loadSPR(k,src){ var im=new Image(); im.src=src; SPR[k]=im; }
-  loadSPR('inf_you','/game/a_inf_you.png');   loadSPR('inf_enemy','/game/a_inf_enemy.png');
-  loadSPR('arc_you','/game/a_arc_you.png');   loadSPR('arc_enemy','/game/a_arc_enemy.png');
-  loadSPR('cav_you','/game/a_cav_you.png');   loadSPR('cav_enemy','/game/a_cav_enemy.png');
+  loadSPR('inf_you','../a_inf_you.png');   loadSPR('inf_enemy','../a_inf_enemy.png');
+  loadSPR('arc_you','../a_arc_you.png');   loadSPR('arc_enemy','../a_arc_enemy.png');
+  loadSPR('cav_you','../a_cav_you.png');   loadSPR('cav_enemy','../a_cav_enemy.png');
   function imgReady(im){ return im && im.width && im.width>0; }
 
   // 战场边界先定，后面所有纵向坐标都由它派生（竖屏取值与历史完全一致：40 / 536）
@@ -756,7 +749,7 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
       ctx.fillStyle='#ffe7a8'; ctx.font='bold 30px sans-serif'; ctx.fillText('结局 · '+ed.title,W/2,eTop+44);
       ctx.strokeStyle='rgba(255,212,121,.4)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(ex+40,eTop+66); ctx.lineTo(ex+ew-40,eTop+66); ctx.stroke();
       ctx.fillStyle='#cfe0ff'; ctx.font='13px sans-serif';
-      var el=[]; (function(){ var cur=''; for(var c=0;c<ed.text.length;c++){ cur+=ed.text[c]; if(ctx.measureText(cur).width>ew-64){ el.push(cur); cur=''; } } if(cur)el.push(cur); })();
+      var el=[]; (function(){ var cur=''; for(var c=0;c<ed.text.length;c++){ cur+=ed.text[c]; if(tw(cur)>ew-64){ el.push(cur); cur=''; } } if(cur)el.push(cur); })();
       for(var li=0;li<el.length;li++) ctx.fillText(el[li],W/2,eTop+92+li*20);
       var fx2=CUT.flags||{};
       ctx.fillStyle='#9fb2e6'; ctx.font='12px sans-serif'; ctx.fillText('本章抉择   仁 ×'+(fx2.mercy||0)+'    武 ×'+(fx2.war||0)+'    谋 ×'+((fx2.cunning||0)+(fx2.neutral||0))+'    勇 ×'+(fx2.honor||0),W/2,eTop+92+el.length*20+20);
@@ -778,7 +771,7 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
       ctx.fillStyle='#1a1208'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(nd.who,bx+46,by+22);
       ctx.fillStyle='#e6ddc8'; ctx.font='13px sans-serif'; ctx.textAlign='left';
       var full=cutText(nd), tP=hasP?96:0, txtW=bw-44-tP;
-      var lines=[]; (function(){ var cur=''; for(var c=0;c<full.length;c++){ cur+=full[c]; if(ctx.measureText(cur).width>txtW){ lines.push(cur); cur=''; } } if(cur)lines.push(cur); })();
+      var lines=[]; (function(){ var cur=''; for(var c=0;c<full.length;c++){ cur+=full[c]; if(tw(cur)>txtW){ lines.push(cur); cur=''; } } if(cur)lines.push(cur); })();
       var shown=Math.floor(CUT.sub), used=0;
       for(var li2=0;li2<lines.length;li2++){ var take=Math.max(0,Math.min(lines[li2].length,shown-used));
         if(take>0) ctx.fillText(lines[li2].slice(0,take),bx+22,by+54+li2*20);
@@ -2371,7 +2364,7 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
 
   // v2.32 桌面横屏：按钮在「屏幕空间」绘制（不受顶栏 UH 放大影响），左右两列竖排
   var DX0=14, DX1=W-14-170;                                                     // 左列 x / 右列 x
-  var techBtn = DESK?{x:DX1,y:76,w:170,h:30}:{x:266,y:38,w:88,h:22};                 // v2.33：竖屏版科技钮并入右列（腾出右上角给敌情+AI进攻倒计时）
+  var techBtn = DESK?{x:DX1,y:76,w:170,h:30}:{x:266,y:38,w:88,h:22};                 // v2.33：竖屏版科技钮并入右列（腾出右上角给敌情+AI进攻倒计时，消除与⚔Ns重叠）
   var advBtn=DESK?{x:DX0,y:76,w:130,h:30}:{x:8,y:44,w:66,h:24};
   var sndBtn = DESK?{x:DX0,y:114,w:130,h:30}:{x:8,y:72,w:66,h:22};
   var recallBtn = DESK?{x:DX0,y:152,w:130,h:30}:{x:8,y:100,w:66,h:22};
@@ -2629,7 +2622,7 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
     var y=88;
     for(var b=0;b<blocks.length;b++){ ctx.fillStyle='#ffd479'; ctx.font='bold 14px sans-serif'; ctx.fillText(blocks[b][0],38,y);
       ctx.fillStyle='#d6e4ff'; ctx.font='12px sans-serif'; var txt=blocks[b][1], cur='', yy=y+22;
-      for(var c=0;c<txt.length;c++){ cur+=txt[c]; if(ctx.measureText(cur).width>LW-78){ ctx.fillText(cur,38,yy); cur=''; yy+=18; } }
+      for(var c=0;c<txt.length;c++){ cur+=txt[c]; if(tw(cur)>LW-78){ ctx.fillText(cur,38,yy); cur=''; yy+=18; } }
       if(cur) ctx.fillText(cur,38,yy); y=yy+26; }
     ctx.textAlign='center'; ctx.fillStyle='#7fa0d8'; ctx.font='12px sans-serif'; ctx.fillText('（点击任意处关闭）',LW/2,LH-92);
     ctx.restore();
@@ -2866,7 +2859,7 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
         ctx.fillText('攻城'+S.stage+'/5·'+CITY_NAMES[S.stage-1]+'·剩'+left, cx, 13);
         ctx.fillStyle='#ffb86b'; ctx.font='9px sans-serif'; ctx.fillText(tr5.name, cx, 25);
       } else {
-        var cnm = S.endless ? ('第'+S.stage+'阵') : (TRIBE_NAMES[S.stage-1]||'');
+        var cnm = S.endless ? ('第'+S.stage+'阵') : (function(){ var ti=S.enemyTrait?TRIBE_TRAIT.indexOf(S.enemyTrait):-1; return ti>0?(TRIBE_NAMES[ti-1]||''):(TRIBE_NAMES[S.stage-1]||''); })();   // v2.32.4：史诗模式 feat 与幕号解耦（分支决定），顶栏部族名必须按 enemyTrait 反查，否则第三章打黑龙部会显示赤熊部
         var ctr = S.enemyTrait || TRIBE_TRAIT[Math.min(5,S.stage)];
         ctx.fillStyle='#ffd479'; ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
         ctx.fillText(S.epic?('史诗 第'+S.stage+'幕 · '+cnm):((S.endless?'无尽 ':'部落 ')+S.stage+(S.endless?'':'/'+cN)+'·'+cnm), cx, 13);
@@ -3388,9 +3381,9 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
   cv.addEventListener('touchstart', function(e){ e.preventDefault(); var t=e.changedTouches[0]; down(t.clientX,t.clientY); }, {passive:false});
   cv.addEventListener('touchmove', function(e){ e.preventDefault(); var t=e.changedTouches[0]; move(t.clientX,t.clientY); }, {passive:false});
   cv.addEventListener('touchend', function(e){ e.preventDefault(); var t=e.changedTouches[0]; up(t.clientX,t.clientY); }, {passive:false});
-  cv.addEventListener('mousedown', function(e){ if(e.button===0) down(e.clientX,e.clientY); });
+  cv.addEventListener('mousedown', function(e){ down(e.clientX,e.clientY); });
   cv.addEventListener('mousemove', function(e){ move(e.clientX,e.clientY); });
-  cv.addEventListener('mouseup', function(e){ if(e.button===0) up(e.clientX,e.clientY); });
+  cv.addEventListener('mouseup', function(e){ up(e.clientX,e.clientY); });
 
   // ---- v2.32 桌面版相机操作（仅浏览器：滚轮以光标为锚点缩放，右键/中键拖拽平移；小游戏端无 document，整段跳过） ----
   if(DESK && typeof document!=='undefined' && cv.addEventListener){
