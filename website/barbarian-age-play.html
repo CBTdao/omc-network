@@ -2371,17 +2371,17 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
 
   // v2.32 桌面横屏：按钮在「屏幕空间」绘制（不受顶栏 UH 放大影响），左右两列竖排
   var DX0=14, DX1=W-14-170;                                                     // 左列 x / 右列 x
-  var techBtn = DESK?{x:DX1,y:76,w:170,h:30}:{x:300,y:6,w:54,h:26};
+  var techBtn = DESK?{x:DX1,y:76,w:170,h:30}:{x:266,y:38,w:88,h:22};                 // v2.33：竖屏版科技钮并入右列（腾出右上角给敌情+AI进攻倒计时）
   var advBtn=DESK?{x:DX0,y:76,w:130,h:30}:{x:8,y:44,w:66,h:24};
   var sndBtn = DESK?{x:DX0,y:114,w:130,h:30}:{x:8,y:72,w:66,h:22};
   var recallBtn = DESK?{x:DX0,y:152,w:130,h:30}:{x:8,y:100,w:66,h:22};
-  var hornBtn = DESK?{x:DX1,y:114,w:170,h:30}:{x:266,y:100,w:88,h:22};               // 冲锋号角：全军短时提速 +25%攻
+  var hornBtn = DESK?{x:DX1,y:114,w:170,h:30}:{x:266,y:90,w:88,h:22};                // 冲锋号角：全军短时提速 +25%攻（v2.33：竖屏右列等距 26px）
   var selBtn = DESK?{x:DX0,y:190,w:130,h:30}:{x:8,y:126,w:66,h:22};                  // 全军框选 / 取消选择（显示当前选中数）
-  var formBtn = DESK?{x:DX1,y:152,w:170,h:30}:{x:266,y:126,w:88,h:22};               // 阵型切换：方阵 / 横排 / 楔形 / 圆环
-  var stanceBtn=DESK?{x:DX1,y:266,w:170,h:30}:{x:266,y:152,w:88,h:22};             // 姿态切换：进攻 / 驻守
-  var pauseBtn = DESK?{x:DX1,y:38,w:170,h:30}:{x:266,y:38,w:88,h:22};               // 暂停/继续
+  var formBtn = DESK?{x:DX1,y:152,w:170,h:30}:{x:266,y:116,w:88,h:22};               // 阵型切换：方阵 / 横排 / 楔形 / 圆环（v2.33：竖屏右列等距）
+  var stanceBtn=DESK?{x:DX1,y:190,w:170,h:30}:{x:266,y:142,w:88,h:22};             // 姿态切换：进攻 / 驻守（v2.33：竖屏右列等距，桌面紧跟阵型）
+  var pauseBtn = DESK?{x:DX1,y:38,w:170,h:30}:{x:266,y:64,w:88,h:22};                // 暂停/继续（v2.33：竖屏右列等距）
   var heroBtn = DESK?{x:DX0,y:228,w:130,h:30}:{x:8,y:152,w:66,h:22};                 // v2.27 主公战吼：冲击波击退敌军 + 强化附近友军（仅主公在场显示）
-  var spBtn = DESK?{x:DX1,y:190,w:170,h:30}:{x:266,y:178,w:88,h:22};                 // v2.30 神罚（超级武器）：祭坛建成后可用，点击瞄准 → 点战场释放
+  var spBtn = DESK?{x:DX1,y:228,w:170,h:30}:{x:266,y:168,w:88,h:22};                 // v2.30 神罚（超级武器）：祭坛建成后可用，点击瞄准 → 点战场释放（v2.33：竖屏右列等距、桌面沉底）
   function blowHorn(){ if(S.hornCd>0||S.over) return; if(S.tips)S.tips.horn='done'; S.horn=6; S.hornCd=26; S.banner={txt:'冲锋号角！全军加速·攻击+25%（6s）',life:2.2,max:2.2}; sfx('age'); }
   // v2.27 A：主公战吼（主动技，仅主公在场·战役/无尽）。附近敌军被震退+硬直，附近友军战斗单位短暂奋勇强化（攻/速+35%，5s）
   function heroAlive(){ for(var i=0;i<S.units.length;i++){ var hu=S.units[i]; if(hu.type==='hero'&&!hu.dead&&hu.side==='you') return hu; } return null; }
@@ -3002,13 +3002,26 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
       else if(S.t>240&&S.age<2) hintBar='提示：资源宽裕就点「晋升」进入下一时代';
     }
     if(hintBar){
-      var hx=DESK?156:80, hw=W-hx-(DESK?200:6), hh=DESK?30:24;   // v2.32：桌面版让开两侧按钮列，条带加高
-      ctx.fillStyle='rgba(30,20,10,.9)'; rr(hx,FIELD_TOP+4,hw,hh,6); ctx.fill();
-      ctx.strokeStyle='rgba(255,205,130,.3)'; ctx.lineWidth=1; rr(hx+.5,FIELD_TOP+4.5,hw-1,hh-1,6); ctx.stroke();
-      var hfs=DESK?15:11; ctx.font=hfs+'px sans-serif';    // 超长提示自动缩字号，避免溢出
-      while(hfs>8){ var mt=ctx.measureText?ctx.measureText(hintBar):null; if(!mt||mt.width<=hw-14) break; hfs--; ctx.font=hfs+'px sans-serif'; }
-      ctx.fillStyle=hintCol; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(hintBar,hx+hw/2,FIELD_TOP+4+hh/2);
+      var hbx=DESK?156:78, hbw=W-hbx-(DESK?200:106), hby=FIELD_TOP+4;   // v2.33：竖屏提示条收进中央 gutter（左右按钮列之间），不再越过右列压住暂停键
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      if(DESK){
+        var hbf=15; ctx.font=hbf+'px sans-serif';    // 超长提示自动缩字号，避免溢出
+        while(hbf>8){ var _hbmt=ctx.measureText?ctx.measureText(hintBar):null; if(!_hbmt||_hbmt.width<=hbw-14) break; hbf--; ctx.font=hbf+'px sans-serif'; }
+        ctx.fillStyle='rgba(30,20,10,.9)'; rr(hbx,hby,hbw,30,6); ctx.fill();
+        ctx.strokeStyle='rgba(255,205,130,.3)'; ctx.lineWidth=1; rr(hbx+.5,hby+.5,hbw-1,29,6); ctx.stroke();
+        ctx.fillStyle=hintCol; ctx.font=hbf+'px sans-serif'; ctx.fillText(hintBar,hbx+hbw/2,hby+15);
+      } else {
+        var hbf2=10, _hbmw=hbw-12, hbLines=[], hbCur='';   // 竖屏窄 gutter：按可用宽度自动换行（最多2行），左右各留空
+        ctx.font=hbf2+'px sans-serif';
+        for(var hbci=0;hbci<hintBar.length && hbLines.length<2;hbci++){ var hbch=hintBar[hbci]; var _hm=ctx.measureText?ctx.measureText(hbCur+hbch):null; if(hbCur&&_hm&&_hm.width>_hbmw){ hbLines.push(hbCur); hbCur=hbch; } else hbCur+=hbch; }
+        if(hbCur&&hbLines.length<2) hbLines.push(hbCur);
+        if(hbLines.length>2) hbLines.length=2;
+        var hblh=hbf2+3, hbbh=hbLines.length*hblh+8;
+        ctx.fillStyle='rgba(30,20,10,.9)'; rr(hbx,hby,hbw,hbbh,6); ctx.fill();
+        ctx.strokeStyle='rgba(255,205,130,.3)'; ctx.lineWidth=1; rr(hbx+.5,hby+.5,hbw-1,hbbh-1,6); ctx.stroke();
+        ctx.fillStyle=hintCol; ctx.font=hbf2+'px sans-serif';
+        for(var hbli=0;hbli<hbLines.length;hbli++) ctx.fillText(hbLines[hbli],hbx+hbw/2,hby+4+hblh/2+hbli*hblh);
+      }
     }
     if(!S.techOpen){
       for(i=0;i<buildBtns.length;i++) drawBtn(buildBtns[i], buildDefs[i].label, buildDefs[i].en());
@@ -3440,7 +3453,7 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
     var ar=LAY0?(16/9):(360/640);
     var w=r.width, h=r.height;
     if(w<=0||h<=0) return;
-    if(w/h>ar) w=h*ar; else h=w*ar;
+    if(w/h>ar) w=h*ar; else h=w/ar;   // contain 适配：宽>目标比按宽缩高，窄>目标比按高缩宽（旧写成 h=w*ar 会把舞台拉成竖屏，桌面游戏被挤成细条）
     wrap.style.width=Math.max(120,Math.round(w))+'px';
     wrap.style.height=Math.max(120,Math.round(h))+'px';
   }
@@ -3450,6 +3463,9 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
     layout();
   });
   window.addEventListener('orientationchange', function(){ setTimeout(function(){ if(isWide()!==LAY0){ location.reload(); } else { layout(); } },260); });
+  /* 全屏进出：舞台尺寸突变（#stage:fullscreen → 100vw/100vh），必须重排 #wrap；部分浏览器不保证派发 resize */
+  document.addEventListener('fullscreenchange', function(){ if(isWide()===LAY0) layout(); });
+  document.addEventListener('webkitfullscreenchange', function(){ if(isWide()===LAY0) layout(); });
   layout();
 
   function tapRect(p){
@@ -3462,8 +3478,10 @@ window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio:
     cv.dispatchEvent(new MouseEvent('mouseup',o));
   }
   /* 竖屏回落坐标表（360x640 逻辑空间），与桌面键位一一对应 */
-  var LEGACY={ KeyA:[41,137], KeyT:[327,19], Space:[310,49], KeyH:[310,111], F2:[310,137],
-    KeyG:[310,163], KeyR:[41,163], KeyQ:[310,189], KeyM:[41,83] };
+  /* v2.33 重算：竖屏右列等距 26px 后各钮中心 = [310, y+11]：科技49/暂停75/号角101/阵型127/神罚179；
+     左列中心 = [41, y+11]：晋升56/音效83/集结111/全军137/战吼163（顺带修正旧表 KeyG/KeyR 错指到邻钮） */
+  var LEGACY={ KeyA:[41,137], KeyT:[310,49], Space:[310,75], KeyH:[310,101], F2:[310,127],
+    KeyG:[41,163], KeyR:[41,111], KeyQ:[310,179], KeyM:[41,83] };
   var LEGACY_TRAIN=[27,78.5,130,181.5,233,284.5];
   for(var i=0;i<LEGACY_TRAIN.length;i++) LEGACY['Digit'+(i+1)]=[LEGACY_TRAIN[i],598];
   LEGACY.Escape=[336,598];
