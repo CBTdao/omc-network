@@ -36,20 +36,21 @@
 <meta name="twitter:title" content="蛮荒时代 Barbarian Age — Play the browser RTS at OMC">
 <meta name="twitter:description" content="Browser RTS 蛮荒时代 (Barbarian Age): five tribes battle for the Altar's five divine punishments, plus an Epic interactive movie. Free, no wallet, no token.">
 <meta name="twitter:image" content="https://omc.network/og-image.png">
-<link rel="icon" type="image/svg+xml" href="https://omc.network/favicon.svg" />
-<link rel="icon" type="image/x-icon" href="https://omc.network/favicon.ico" sizes="any" />
-<link rel="icon" type="image/png" href="https://omc.network/assets/img/logo.png" />
-<link rel="apple-touch-icon" href="https://omc.network/apple-touch-icon.png" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: #120d07; overflow: hidden;
     font-family: "Microsoft YaHei", "PingFang SC", sans-serif; color: #e9dfc9; }
   #app { height: 100%; display: flex; align-items: center; justify-content: center; gap: 26px; padding: 14px; }
-  #stage { height: 100%; min-width: 0; display: flex; align-items: center; justify-content: center; }
+  #stage { flex: 1; min-width: 0; height: 100%; display: flex; align-items: center; justify-content: center; }
   #stage:fullscreen, #stage:-webkit-full-screen { width: 100vw; height: 100vh; padding: 0; }
-  #wrap { position: relative; height: 100%; aspect-ratio: 360 / 640; max-width: 100vw; }
+  /* 舞台尺寸由 JS 精确计算（宽屏 16:9 / 窄屏 9:16），避免 aspect-ratio + max-height 失真 */
+  #wrap { position: relative; }
   canvas { background: #1a1208; width: 100%; height: 100%; display: block; border-radius: 10px;
-    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55); }
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55); touch-action: none; }
   /* desktop side rail — hidden on narrow screens, the game fills the viewport there */
   #rail { display: none; width: 330px; flex-shrink: 0; max-height: 100%; overflow: auto; }
   @media (min-width: 1120px) { #rail { display: block; } }
@@ -71,7 +72,7 @@
   .rail-card p.dim { color: #97876c; font-size: 11.5px; margin: 0; }
   .rail-keys { width: 100%; border-collapse: collapse; }
   .rail-keys td { padding: 3.5px 0; font-size: 12px; color: #d8cbb0; vertical-align: top; }
-  .rail-keys td:first-child { width: 76px; white-space: nowrap; padding-right: 8px; }
+  .rail-keys td:first-child { width: 92px; white-space: nowrap; padding-right: 8px; }
   kbd { display: inline-block; background: #2b2113; border: 1px solid #4a3a20; border-bottom-width: 2px; border-radius: 5px;
     padding: 1px 6px; font: 700 11px/1.5 Consolas, monospace; color: #ffd479; }
   .rail-eco a { display: block; color: #c9b489; text-decoration: none; font-size: 12.5px; font-weight: 600;
@@ -79,64 +80,81 @@
   .rail-eco a:last-child { border-bottom: 0; }
   .rail-eco a:hover { color: #ffd479; }
 </style>
+</style>
+</style>
   <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
   <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
 </head>
 <body>
   <div id="app">
-    <div id="stage"><div id="wrap"><canvas id="cv" width="720" height="1280"></canvas></div></div>
+    <div id="stage"><div id="wrap"><canvas id="cv"></canvas></div></div>
     <aside id="rail">
       <div class="rail-top">
-        <a class="rail-back" href="https://omc.network/barbarian-age">← OMC · 蛮荒时代</a>
-        <button id="fsBtn" type="button">⛶ 全屏游戏</button>
+        <a class="rail-back" href="https://omc.network/barbarian-age">&larr; OMC &middot; 蛮荒时代</a>
+        <button id="fsBtn" type="button">&#9974; 全屏游戏</button>
       </div>
       <h1 class="rail-title">蛮荒时代 <span>网页版</span></h1>
-      <p class="rail-sub">《国家的崛起》致敬作 · 浏览器直接玩，无需安装。Free to play — no wallet, no token.</p>
+      <p class="rail-sub">《国家的崛起》致敬作 &middot; 横屏全页面战场 + 相机缩放 &middot; 浏览器直接玩，无需安装。Free to play — no wallet, no token.</p>
       <div class="rail-card">
-        <h2>怎么玩 · HOW TO PLAY</h2>
-        <p>鼠标 = 手指：点击底部按钮建造建筑、训练部队；点战场选中部队，再点地面移动、点敌人攻击。</p>
-        <p class="dim">Mouse works like touch: click the panels to build and train, click the field to command.</p>
+        <h2>怎么玩 &middot; HOW TO PLAY</h2>
+        <p>鼠标 = 手指：点底部按钮建造建筑、训练部队；拖框选中部队，再点地面移动、点敌人攻击。<strong>滚轮</strong>以光标为锚点缩放战场，<strong>右键拖拽</strong>平移视野。</p>
+        <p class="dim">Mouse works like touch. Scroll to zoom around the cursor, right-drag to pan.</p>
       </div>
       <div class="rail-card">
-        <h2>键盘快捷键 · KEYBOARD</h2>
+        <h2>键盘快捷键 &middot; KEYBOARD</h2>
         <table class="rail-keys">
-          <tr><td><kbd>1</kbd>–<kbd>6</kbd></td><td>训练：步兵 / 弓手 / 勇士 / 村民 / 骑兵 / 投石</td></tr>
+          <tr><td><kbd>1</kbd>&ndash;<kbd>6</kbd></td><td>训练：步兵 / 弓手 / 勇士 / 村民 / 骑兵 / 投石</td></tr>
           <tr><td><kbd>Space</kbd></td><td>暂停 / 继续</td></tr>
-          <tr><td><kbd>A</kbd></td><td>晋升时代</td></tr>
+          <tr><td><kbd>A</kbd></td><td>全军框选 / 取消选择</td></tr>
           <tr><td><kbd>T</kbd></td><td>科技树开关</td></tr>
-          <tr><td><kbd>E</kbd></td><td>全军框选 / 取消选择</td></tr>
-          <tr><td><kbd>H</kbd></td><td>冲锋号角（全军加速·攻击）</td></tr>
-          <tr><td><kbd>F</kbd></td><td>切换阵型（方阵/横排/楔形/圆环）</td></tr>
-          <tr><td><kbd>G</kbd></td><td>切换姿态（进攻 / 驻守）</td></tr>
-          <tr><td><kbd>R</kbd></td><td>主公战吼（击退敌军）</td></tr>
-          <tr><td><kbd>Q</kbd></td><td>神罚 · 超级武器（需祭坛）</td></tr>
+          <tr><td><kbd>R</kbd></td><td>集结回防</td></tr>
+          <tr><td><kbd>F2</kbd></td><td>切换阵型（方阵/横排/楔形/圆环）</td></tr>
+          <tr><td><kbd>H</kbd></td><td>冲锋号角（全军加速&middot;攻击）</td></tr>
+          <tr><td><kbd>G</kbd></td><td>主公战吼（击退敌军）</td></tr>
+          <tr><td><kbd>Q</kbd></td><td>神罚 &middot; 超级武器（需祭坛）</td></tr>
           <tr><td><kbd>M</kbd></td><td>声音开关</td></tr>
           <tr><td><kbd>Esc</kbd></td><td>取消放置 / 取消瞄准</td></tr>
+          <tr><td><kbd>+</kbd> <kbd>&minus;</kbd> <kbd>0</kbd></td><td>战场放大 / 缩小 / 复位视野</td></tr>
+          <tr><td><kbd>&larr;&uarr;&darr;&rarr;</kbd></td><td>平移视野</td></tr>
+          <tr><td><kbd>F</kbd></td><td>全屏 / 退出全屏</td></tr>
         </table>
-        <p class="dim">Keys 1–6 train infantry / archer / heavy / villager / cavalry / siege.</p>
+        <p class="dim">Keys 1&ndash;6 train infantry / archer / heavy / villager / cavalry / siege.</p>
       </div>
       <div class="rail-card rail-eco">
-        <h2>生态 · ECOSYSTEM</h2>
-        <a href="https://top.omc.network" target="_blank" rel="noopener">AITop — AI 工具站</a>
-        <a href="https://forum.omc.network" target="_blank" rel="noopener">DCF — 算力论坛</a>
-        <a href="https://omc.network/barbarian-age">蛮荒时代 · 游戏介绍页</a>
+        <h2>生态 &middot; ECOSYSTEM</h2>
+        <a href="https://top.omc.network" target="_blank" rel="noopener">AITop &mdash; AI 工具站</a>
+        <a href="https://forum.omc.network" target="_blank" rel="noopener">DCF &mdash; 算力论坛</a>
+        <a href="https://omc.network/barbarian-age">蛮荒时代 &middot; 游戏介绍页</a>
       </div>
     </aside>
   </div>
 <script>
+window.__BA_LAYOUT = (window.matchMedia && window.matchMedia('(min-aspect-ratio: 1/1)').matches) ? 'desktop' : '';
 // 蛮荒时代 · RTS 微信小游戏宿主（wx）
 // 复刻《国家的崛起》：双阵营经济（村民自主种地/伐木/采石）、自由选址建造、AI 自主运营+压境
 // 逻辑与浏览器版 _proto/rts5.html 一致；差异仅在：wx.createCanvas/createImage、
 // DPR 高清适配、onTouch 输入（Start/Move/End）、createOffscreenCanvas 迷雾、InnerAudioContext 音效。
 (function () {
-  var W = 360, H = 640;
+  // v2.32 呈现层：portrait = 小游戏/手机竖屏 360x640；desktop = 网页版横屏 16:9 全页面 1280x720。
+  // 构建脚本在内核执行前置 globalThis.__BA_LAYOUT='desktop'；小游戏侧不设该变量，默认走 portrait。
+  var LAYOUT = (typeof globalThis !== 'undefined' && globalThis.__BA_LAYOUT === 'desktop') ? 'desktop' : 'portrait';
+  var W = LAYOUT === 'desktop' ? 1280 : 360, H = LAYOUT === 'desktop' ? 720 : 640;
+  var DESK = LAYOUT === 'desktop';
   var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
 
-  // ---- 固定 hi-DPI：逻辑 360x640 → 位图 720x1280 ----
-  var SW = 360, SH = 640, DPR = 2;
-  var PW = SW * DPR, PH = SH * DPR;
-  cv.width = PW; cv.height = PH;
-  var scale = Math.min(PW / W, PH / H), ox = (PW - W * scale) / 2, oy = (PH - H * scale) / 2;
+  // ---- 桌面版：画布跟随自身 CSS 盒子（可嵌入任意尺寸的容器），逻辑 1280x720 等比居中 ----
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var PW = 0, PH = 0, scale = 1, ox = 0, oy = 0;
+  function fit(){
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(1, Math.round(r.width || window.innerWidth)), h = Math.max(1, Math.round(r.height || window.innerHeight));
+    PW = Math.round(w * DPR); PH = Math.round(h * DPR);
+    if (cv.width !== PW || cv.height !== PH) { cv.width = PW; cv.height = PH; }
+    scale = Math.min(PW / W, PH / H); ox = (PW - W * scale) / 2; oy = (PH - H * scale) / 2;
+    try { draw(); } catch (e) {}
+  }
+  fit(); window.addEventListener('resize', fit);
+  if (window.ResizeObserver) { try { new ResizeObserver(fit).observe(cv); } catch (e) {} }
 
   function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
   function rrp(g,x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
@@ -218,12 +236,24 @@
   // ---- 写实精灵（降分辨率资产，自有版权） ----
   var SPR = {};
   function loadSPR(k,src){ var im=new Image(); im.src=src; SPR[k]=im; }
-  loadSPR('inf_you','../a_inf_you.png');   loadSPR('inf_enemy','../a_inf_enemy.png');
-  loadSPR('arc_you','../a_arc_you.png');   loadSPR('arc_enemy','../a_arc_enemy.png');
-  loadSPR('cav_you','../a_cav_you.png');   loadSPR('cav_enemy','../a_cav_enemy.png');
+  loadSPR('inf_you','/game/a_inf_you.png');   loadSPR('inf_enemy','/game/a_inf_enemy.png');
+  loadSPR('arc_you','/game/a_arc_you.png');   loadSPR('arc_enemy','/game/a_arc_enemy.png');
+  loadSPR('cav_you','/game/a_cav_you.png');   loadSPR('cav_enemy','/game/a_cav_enemy.png');
   function imgReady(im){ return im && im.width && im.width>0; }
 
-  var YOUR_BASE_Y=496, ENEMY_BASE_Y=86, LANE_X=180;
+  // 战场边界先定，后面所有纵向坐标都由它派生（竖屏取值与历史完全一致：40 / 536）
+  var FIELD_TOP=DESK?64:40, FIELD_BOT=H-(DESK?150:104);
+  var YOUR_BASE_Y=FIELD_BOT-40, ENEMY_BASE_Y=FIELD_TOP+46, LANE_X=Math.round(W/2);
+  var TOFF=DESK?210:96;
+  var LW=360, LH=640, MS=DESK?1.12:1;                                        // 面板沿用竖屏 360×640 逻辑坐标，桌面版整体放大居中
+  var MTX=DESK?(W-LW*MS)/2:0, MTY=DESK?(H-LH*MS)/2:0, MPAD=DESK?50:0;
+  var UH=DESK?1.5:1;                                                         // 顶栏 HUD 放大系数（桌面版字号一起变大）
+  // v2.32 相机：默认整幅可见（z=1），滚轮以光标为锚点放大，右键/中键拖拽平移。竖屏恒为 1，等价无相机。
+  var CAM={cx:W/2,cy:H/2,z:1,ZMIN:1,ZMAX:2.4};
+  function camApply(){ ctx.translate(W/2-CAM.cx*CAM.z, H/2-CAM.cy*CAM.z); ctx.scale(CAM.z,CAM.z); }
+  function s2w(px,py){ return [(px-W/2)/CAM.z+CAM.cx, (py-H/2)/CAM.z+CAM.cy]; }
+  function camClamp(){ var hw=W/(2*CAM.z), hh=H/(2*CAM.z); CAM.cx=clamp(CAM.cx,hw,W-hw); CAM.cy=clamp(CAM.cy,hh,H-hh); }
+  function camZoomAt(nz,ax,ay){ var w0=s2w(ax,ay); CAM.z=clamp(nz,CAM.ZMIN,CAM.ZMAX); var w1=s2w(ax,ay); CAM.cx+=w0[0]-w1[0]; CAM.cy+=w0[1]-w1[1]; camClamp(); }                          // 敌方箭塔横向展开：桌面版战场更宽，正面拉开
   var ebx=LANE_X;                                  // 当前敌方主城 X（经典=LANE_X；战役"新城"逐关变化）
   var eby=ENEMY_BASE_Y;                            // 当前敌方主城 Y（五城征战随激活城池变化）
   // ===== 五城征战（v2.8 遗留，已弃用：战役改为每部族一场独立战斗，见 startCampaign/nextCampaignStage）=====
@@ -232,10 +262,12 @@
   var CITY_NAMES=['野猪部','风狼部','赤熊部','苍鹰部','黑龙部'];
   function cityActive(k){ var c=S.cities[k-1]; return !!c && !c.conquered && S.cities[S.activeCity-1]===c; }
   function bldVulnerable(b){ return !b.city || cityActive(b.city); }   // 未激活城池有护盾，不可被攻击
-  var FIELD_TOP=40, FIELD_BOT=536;
-  var BUILD_ROW={y:544,h:30}, TRAIN_ROW={y:578,h:40};
-  var MID_Y=300, NEUT=48;                       // 争夺带：±48px，中立资源丰厚但不再生
-  var ATTR_LINE_YOU=270, ATTR_LINE_EN=330;      // 敌境消耗线：我方单位 y<270（敌腹）/ 敌方单位 y>330（我腹）
+  var BUILD_ROW=DESK?{y:FIELD_BOT+10,h:42}:{y:544,h:30};
+  var TRAIN_ROW=DESK?{y:FIELD_BOT+58,h:56}:{y:578,h:40};
+  var SPAN=FIELD_BOT-FIELD_TOP;                 // 竖屏 496 / 桌面 506
+  var MID_Y=Math.round(FIELD_TOP+SPAN*0.524);   // 竖屏 300
+  var NEUT=48;                                  // 争夺带：±48px，中立资源丰厚但不再生
+  var ATTR_LINE_YOU=MID_Y-30, ATTR_LINE_EN=MID_Y+30;   // 敌境消耗线（竖屏 270 / 330）
   var ATTR_DPS=1.4;                             // 消耗速率：1.4 HP/s（步兵 40 血 ≈ 28s 耗空，逼快攻不鼓励蹲坑）
   var POINT_R=44, POINT_CAP=3.0, POINT_CAP_BONUS=3;   // v2.29 ④据点争夺：中立富点争夺半径/占满所需秒数/每占一点军力上限+3
   // ===== v2.30 神话奇观：图腾祭坛 + 五族超级武器「神罚」=====
@@ -372,8 +404,8 @@
       ai:{res:{grain:130,wood:90,iron:45}, age:1, tech:{}, push:Math.round(60*diffAI().pace), buildT:1.5, trainT:0.6, techT:5, villagerCap:diffAI().vil} };
     S.buildings.push({type:'base',side:'you', x:LANE_X,y:YOUR_BASE_Y, hp:620,maxhp:620,hitFlash:0,cd:0});
     S.buildings.push({type:'base',side:'enemy',x:LANE_X,y:ENEMY_BASE_Y,hp:820,maxhp:820,hitFlash:0,cd:0});
-    S.buildings.push({type:'tower',side:'enemy',x:LANE_X-96,y:ENEMY_BASE_Y+40,hp:130,maxhp:130,hitFlash:0,cd:0});
-    S.buildings.push({type:'tower',side:'enemy',x:LANE_X+96,y:ENEMY_BASE_Y+40,hp:130,maxhp:130,hitFlash:0,cd:0});
+    S.buildings.push({type:'tower',side:'enemy',x:LANE_X-TOFF,y:ENEMY_BASE_Y+40,hp:130,maxhp:130,hitFlash:0,cd:0});
+    S.buildings.push({type:'tower',side:'enemy',x:LANE_X+TOFF,y:ENEMY_BASE_Y+40,hp:130,maxhp:130,hitFlash:0,cd:0});
     S.buildings.push({type:'tower',side:'enemy',x:LANE_X,y:ENEMY_BASE_Y+78,hp:130,maxhp:130,hitFlash:0,cd:0});
     S.buildings.push({type:'barracks',side:'enemy',x:128,y:146,hp:150,maxhp:150,hitFlash:0,cd:0});
     // 地图：双方腹地各 6 资源点（缓慢再生）+ 中带 3 中立富点（不再生）
@@ -385,7 +417,10 @@
       {type:'grain',x:88,y:236,amt:320,max:320,owner:'enemy'}, {type:'grain',x:272,y:232,amt:320,max:320,owner:'enemy'},
       {type:'wood',x:80,y:160,amt:300,max:300,owner:'enemy'},  {type:'wood',x:280,y:156,amt:300,max:300,owner:'enemy'},
       {type:'iron',x:88,y:204,amt:240,max:240,owner:'enemy'},  {type:'iron',x:272,y:200,amt:240,max:240,owner:'enemy'}
-    ];
+    ].map(function(n){                                        // 桌面版：据点随战场等比展开，否则会挤在中间一条线
+      if(DESK){ n.x=Math.round(LANE_X+(n.x-180)*2.6); n.y=Math.round(FIELD_TOP+(n.y-40)*SPAN/496); }
+      return n;
+    });
     for(var iv=0;iv<4;iv++){                        // AI 初始家底：主城+兵营+双箭塔+4村民（付费但直接入场，不走产能冷却）
       var ivu=UNIT.work, igm=ageMul('enemy');
       S.ai.res.grain=Math.max(0,S.ai.res.grain-COST.work.grain);
@@ -618,7 +653,7 @@
     var nd=cutNode();
     if(CUT.phase==='talk'&&nd&&nd.t==='say'&&CUT.sub<nd.text.length){ CUT.sub+=dt*30; if(CUT.sub>nd.text.length)CUT.sub=nd.text.length; }
   }
-  function cutOptRect(i){ return {x:W/2-130, y:340+i*62, w:260, h:52}; }
+  function cutOptRect(i){ var ow=DESK?400:260, oh=DESK?60:52; return {x:Math.round(W/2-ow/2), y:(DESK?372:340)+i*(oh+10), w:ow, h:oh}; }
   function cutDown(px,py){
     if(!CUT){ S.scene='menu'; return; }
     var nd=cutNode();
@@ -696,19 +731,22 @@
     ctx.fillStyle=g; ctx.fillRect(0,0,cv.width,cv.height);
     ctx.setTransform(scale,0,0,scale,ox,oy);
     for(var i=0;i<decor.length;i++){ var d=decor[i]; ctx.fillStyle='rgba(255,212,140,'+(d.a*0.7)+')'; ctx.beginPath(); ctx.arc(d.x,d.y*0.62,d.r*1.2,0,7); ctx.fill(); }  // 星点
+    ctx.save(); if(DESK) ctx.scale(W/360,1);                            // v2.32：桌面版远景按宽度铺满
     ctx.fillStyle='rgba(20,12,6,.85)';                                  // 远山剪影
     ctx.beginPath(); ctx.moveTo(0,330); ctx.quadraticCurveTo(70,250,140,320); ctx.quadraticCurveTo(210,230,290,315); ctx.quadraticCurveTo(330,270,360,320); ctx.lineTo(360,400); ctx.lineTo(0,400); ctx.closePath(); ctx.fill();
     ctx.fillStyle='rgba(40,24,10,.9)'; ctx.beginPath(); ctx.moveTo(0,380); ctx.quadraticCurveTo(90,320,180,375); ctx.quadraticCurveTo(270,325,360,380); ctx.lineTo(360,420); ctx.lineTo(0,420); ctx.closePath(); ctx.fill();
+    ctx.restore();
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillStyle='#ffd479'; ctx.font='bold 15px sans-serif'; ctx.fillText('部落史诗 · 第一章「野火之年」',W/2,FIELD_TOP+14);
     ctx.fillStyle='rgba(159,178,230,.7)'; ctx.font='10px sans-serif'; ctx.textAlign='right'; ctx.fillText('剧情 '+(CUT?Math.min(CUT.i+1,CUT.script.length):1)+'/'+(CUT?CUT.script.length:1),W-14,FIELD_TOP+14);
     if(CUT.phase==='end'){
       var ed=epicEnding();
       ctx.textAlign='center';
-      ctx.fillStyle='rgba(0,0,0,.5)'; rr(24,150,W-48,300,16); ctx.fill(); ctx.strokeStyle='#ffd479'; ctx.lineWidth=2; rr(24.5,150.5,W-49,299,16); ctx.stroke();
+      var ew=DESK?Math.min(W-48,880):(W-48), ex=Math.round((W-ew)/2);       // v2.32：桌面版结局卡收窄居中，避免整屏空荡
+      ctx.fillStyle='rgba(0,0,0,.5)'; rr(ex,150,ew,300,16); ctx.fill(); ctx.strokeStyle='#ffd479'; ctx.lineWidth=2; rr(ex+.5,150.5,ew-1,299,16); ctx.stroke();
       ctx.fillStyle='#ffe7a8'; ctx.font='bold 30px sans-serif'; ctx.fillText('结局 · '+ed.title,W/2,196);
       ctx.fillStyle='#cfe0ff'; ctx.font='13px sans-serif';
-      var el=[]; (function(){ var cur=''; for(var c=0;c<ed.text.length;c++){ cur+=ed.text[c]; if(ctx.measureText(cur).width>W-96){ el.push(cur); cur=''; } } if(cur)el.push(cur); })();
+      var el=[]; (function(){ var cur=''; for(var c=0;c<ed.text.length;c++){ cur+=ed.text[c]; if(ctx.measureText(cur).width>ew-64){ el.push(cur); cur=''; } } if(cur)el.push(cur); })();
       for(var li=0;li<el.length;li++) ctx.fillText(el[li],W/2,238+li*20);
       var fx2=CUT.flags||{};
       ctx.fillStyle='#9fb2e6'; ctx.font='11px sans-serif'; ctx.fillText('本章抉择 仁 ×'+(fx2.mercy||0)+' · 武 ×'+(fx2.war||0)+' · 谋 ×'+((fx2.cunning||0)+(fx2.neutral||0))+' · 勇 ×'+(fx2.honor||0),W/2,238+el.length*20+14);
@@ -722,7 +760,7 @@
         ctx.fillStyle='#ffe7a8'; ctx.font='13px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(qn.opts[oi].txt,ob.x+ob.w/2,ob.y+ob.h/2); }
     } else if(nd){
       var hasP=!!nd.feat;
-      var bw=W-32, bx=16, by=H-186, bh=170;
+      var bw=DESK?Math.min(W-32,960):(W-32), bx=Math.round((W-bw)/2), by=H-(DESK?200:186), bh=DESK?184:170;
       ctx.fillStyle='rgba(10,12,24,.92)'; rr(bx,by,bw,bh,14); ctx.fill();
       ctx.strokeStyle='rgba(255,212,121,.55)'; ctx.lineWidth=1.5; rr(bx+.5,by+.5,bw-1,bh-1,14); ctx.stroke();
       ctx.fillStyle=nd.col||'#ffd479'; rr(bx+14,by+12,64,20,6); ctx.fill();       // 名签
@@ -1492,6 +1530,7 @@
     ctx.fillText('已攻克 · '+name, x, y-24);
   }
   function drawBuilding(b){
+    if(DESK){ var bd=1.5*(0.88+0.24*clamp(b.y/H,0,1)); ctx.save(); ctx.translate(b.x,b.y); ctx.scale(bd,bd); ctx.translate(-b.x,-b.y); }
     var city=b.city||0;
     var col=b.col||(city?CITY_COLORS[city]:'#d54b3a');   // b.col=当前部族主题色（征程各族不同）
     var locked=city&&!cityActive(city);
@@ -1659,6 +1698,7 @@
       ctx.beginPath(); ctx.ellipse(b.x,b.y+6,_srw,_srh,0,0,7); ctx.stroke();
       if(_bnm){ ctx.fillStyle='#7dffb0'; ctx.font='bold 8px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(_bnm,b.x,_by2); }
     }
+    if(DESK) ctx.restore();   // v2.32：配对 1390 行的 2.5D 缩放 save（漏掉会让后续所有绘制逐次放大）
   }
   function drawHeroAura(){
     for(var i=0;i<S.units.length;i++){ var h=S.units[i]; if(h.type!=='hero'||h.dead||h.side!=='you') continue;
@@ -2014,6 +2054,7 @@
     var anchorX = u.x + (u.face||1)*lunge;
     var anchorY = u.y + (u.type==='cav'?2:0);
     ctx.translate(anchorX, anchorY + bob + sink*0.15);
+    if(DESK){ var dp=1.62*(0.88+0.24*clamp(u.y/H,0,1)); ctx.scale(dp,dp); }   // v2.32 2.5D 景深：远小近大（横屏视野更大，基准放大到 1.62）
     ctx.globalAlpha=deadAlpha;
     if(u.dead){ if(u.face<0) ctx.scale(-1,1); ctx.rotate(dRot); }   // 死亡：朝面向方向翻倒旋转
     else { if(u.face<0) ctx.scale(-1,1); }
@@ -2255,30 +2296,33 @@
     }
     fogX.globalCompositeOperation='source-over';
     fogX.clearRect(0,0,W,H);
-    fogX.fillStyle='rgba(24,14,4,0.8)'; fogX.fillRect(0,0,W,H);
+    fogX.fillStyle='rgba(24,14,4,'+(DESK?0.72:0.8)+')'; fogX.fillRect(0,0,W,H);
     fogX.globalCompositeOperation='destination-out';
     (function(){
+      var FR=DESK?2:1;   // v2.32：桌面横屏视野半径整体放大（同比例覆盖，否则整屏偏暗）
       function hole(x,y,r){ var gr=fogX.createRadialGradient(x,y,0,x,y,r); gr.addColorStop(0,'rgba(0,0,0,1)'); gr.addColorStop(0.6,'rgba(0,0,0,0.72)'); gr.addColorStop(1,'rgba(0,0,0,0)'); fogX.fillStyle=gr; fogX.beginPath(); fogX.arc(x,y,r,0,7); fogX.fill(); }
-      hole(LANE_X,YOUR_BASE_Y,150); hole(ebx,eby,32);
-      if(S.fiveCity){ for(var fc=0;fc<S.cities.length;fc++){ var cc=S.cities[fc]; if(!cc.conquered) hole(cc.x,cc.y,44); } }
-      for(var i=0;i<S.buildings.length;i++){ var b=S.buildings[i]; if(b.dead)continue; if(b.side==='you') hole(b.x,b.y+8,(b.type==='outpost'?140:105)); }
-      for(i=0;i<S.units.length;i++){ var u=S.units[i]; if(u.dead)continue; if(u.side==='you') hole(u.x,u.y-10,88); }
+      hole(LANE_X,YOUR_BASE_Y,150*FR); hole(ebx,eby,32*FR);
+      if(S.fiveCity){ for(var fc=0;fc<S.cities.length;fc++){ var cc=S.cities[fc]; if(!cc.conquered) hole(cc.x,cc.y,44*FR); } }
+      for(var i=0;i<S.buildings.length;i++){ var b=S.buildings[i]; if(b.dead)continue; if(b.side==='you') hole(b.x,b.y+8,(b.type==='outpost'?140:105)*FR); }
+      for(i=0;i<S.units.length;i++){ var u=S.units[i]; if(u.dead)continue; if(u.side==='you') hole(u.x,u.y-10,88*FR); }
     })();
     fogX.globalCompositeOperation='source-over';
     ctx.drawImage(fogC,0,0);
   }
 
-  var techBtn={x:300,y:6,w:54,h:26};
-  var advBtn={x:8,y:44,w:66,h:24};
-  var sndBtn={x:8,y:72,w:66,h:22};
-  var recallBtn={x:8,y:100,w:66,h:22};
-  var hornBtn={x:266,y:100,w:88,h:22};               // 冲锋号角：全军短时提速 +25%攻
-  var selBtn={x:8,y:126,w:66,h:22};                  // 全军框选 / 取消选择（显示当前选中数）
-  var formBtn={x:266,y:126,w:88,h:22};               // 阵型切换：方阵 / 横排 / 楔形 / 圆环
-  var stanceBtn={x:266,y:152,w:88,h:22};             // 姿态切换：进攻 / 驻守
-  var pauseBtn={x:266,y:38,w:88,h:22};               // 暂停/继续
-  var heroBtn={x:8,y:152,w:66,h:22};                 // v2.27 主公战吼：冲击波击退敌军 + 强化附近友军（仅主公在场显示）
-  var spBtn={x:266,y:178,w:88,h:22};                 // v2.30 神罚（超级武器）：祭坛建成后可用，点击瞄准 → 点战场释放
+  // v2.32 桌面横屏：按钮在「屏幕空间」绘制（不受顶栏 UH 放大影响），左右两列竖排
+  var DX0=14, DX1=W-14-170;                                                     // 左列 x / 右列 x
+  var techBtn = DESK?{x:DX1,y:76,w:170,h:30}:{x:300,y:6,w:54,h:26};
+  var advBtn=DESK?{x:DX0,y:76,w:130,h:30}:{x:8,y:44,w:66,h:24};
+  var sndBtn = DESK?{x:DX0,y:114,w:130,h:30}:{x:8,y:72,w:66,h:22};
+  var recallBtn = DESK?{x:DX0,y:152,w:130,h:30}:{x:8,y:100,w:66,h:22};
+  var hornBtn = DESK?{x:DX1,y:114,w:170,h:30}:{x:266,y:100,w:88,h:22};               // 冲锋号角：全军短时提速 +25%攻
+  var selBtn = DESK?{x:DX0,y:190,w:130,h:30}:{x:8,y:126,w:66,h:22};                  // 全军框选 / 取消选择（显示当前选中数）
+  var formBtn = DESK?{x:DX1,y:152,w:170,h:30}:{x:266,y:126,w:88,h:22};               // 阵型切换：方阵 / 横排 / 楔形 / 圆环
+  var stanceBtn=DESK?{x:DX1,y:266,w:170,h:30}:{x:266,y:152,w:88,h:22};             // 姿态切换：进攻 / 驻守
+  var pauseBtn = DESK?{x:DX1,y:38,w:170,h:30}:{x:266,y:38,w:88,h:22};               // 暂停/继续
+  var heroBtn = DESK?{x:DX0,y:228,w:130,h:30}:{x:8,y:152,w:66,h:22};                 // v2.27 主公战吼：冲击波击退敌军 + 强化附近友军（仅主公在场显示）
+  var spBtn = DESK?{x:DX1,y:190,w:170,h:30}:{x:266,y:178,w:88,h:22};                 // v2.30 神罚（超级武器）：祭坛建成后可用，点击瞄准 → 点战场释放
   function blowHorn(){ if(S.hornCd>0||S.over) return; if(S.tips)S.tips.horn='done'; S.horn=6; S.hornCd=26; S.banner={txt:'冲锋号角！全军加速·攻击+25%（6s）',life:2.2,max:2.2}; sfx('age'); }
   // v2.27 A：主公战吼（主动技，仅主公在场·战役/无尽）。附近敌军被震退+硬直，附近友军战斗单位短暂奋勇强化（攻/速+35%，5s）
   function heroAlive(){ for(var i=0;i<S.units.length;i++){ var hu=S.units[i]; if(hu.type==='hero'&&!hu.dead&&hu.side==='you') return hu; } return null; }
@@ -2295,7 +2339,7 @@
       else if(u.side==='you'&&u.type!=='work'){ u.warT=5; part('spark',u.x,u.y-16); }
     }
   }
-  var mmRect={x:6,y:FIELD_BOT-6-71,w:56,h:71};   // 小地图热区（点击=全军集结）
+  var mmRect=DESK?{x:14,y:FIELD_BOT-14-124,w:100,h:124}:{x:6,y:FIELD_BOT-6-71,w:56,h:71};   // 小地图热区（点击=全军集结）
   // ===== v2.30 神罚：五种兽灵超级武器 =====
   function spawnSpiritWolf(x,y){
     var d=SP_DEFS.wolf, gm=ageMul('you');
@@ -2350,7 +2394,7 @@
       if(e.t>=e.life) S.fx.splice(xi,1);
     }
   }
-  function rowBtns(y,h){ var xs=[3,54.5,106,157.5,209,260.5,312]; return xs.map(function(x,i){ return {x:x,y:y,w:48,h:h,i:i}; }); }   // v2.30：7 格（建造行含祭坛）
+  function rowBtns(y,h){ var n=7,bw=DESK?120:48,gap=DESK?18:3.5,x0=DESK?Math.round((W-(n*bw+(n-1)*gap))/2):3,xs=[]; for(var i=0;i<n;i++) xs.push(x0+i*(bw+gap)); return xs.map(function(x,i){ return {x:x,y:y,w:bw,h:h,i:i}; }); }   // v2.30：7 格（建造行含祭坛）
   var buildBtns = rowBtns(BUILD_ROW.y,BUILD_ROW.h);
   var trainBtns = rowBtns(TRAIN_ROW.y,TRAIN_ROW.h);
   var buildDefs=[
@@ -2386,7 +2430,8 @@
       if(countArmy('you')>=capArmy('you'))return{txt:'兵力已满 '+countArmy('you')+'/'+capArmy('you')+'：晋升时代或建军事建筑扩容'};
       if(!prodReady('you','siege'))return{txt:'工坊产能冷却中'}; return null;},act:function(){spawnYou('siege');}}
   ];
-  var overBtns={ again:{x:48,y:372,w:124,h:30}, menu:{x:W-48-124,y:372,w:124,h:30} };
+  var overBtns=DESK?{ again:{x:Math.round(W/2-215),y:440,w:200,h:46}, menu:{x:Math.round(W/2+15),y:440,w:200,h:46} }
+                   :{ again:{x:48,y:372,w:124,h:30}, menu:{x:W-48-124,y:372,w:124,h:30} };
   function togglePlace(t){ if(!afford(COST[t])) return; S.placing=(S.placing===t?null:t); S.ghost=null; S.wallPath=null; S.wallDrag=false; }
   // 顶部资源栏图标：麦穗 / 原木 / 矿石
   function icoGrain(g,x,y){
@@ -2404,10 +2449,12 @@
     g.fillStyle='#aeb9d0'; g.beginPath(); g.moveTo(x+4,y+3); g.lineTo(x+7,y+2); g.lineTo(x+6,y+5); g.closePath(); g.fill();
   }
   function drawBtn(b,label,en){
-    ctx.fillStyle=en?'#4a3a20':'#271d10'; rr(b.x,b.y,b.w,b.h,6); ctx.fill();
-    ctx.strokeStyle=en?'#a8814a':'#4a3820'; ctx.lineWidth=1; rr(b.x+0.5,b.y+0.5,b.w-1,b.h-1,6); ctx.stroke();
-    if(en){ ctx.fillStyle='rgba(255,212,121,.10)'; rr(b.x+2,b.y+2,b.w-4,b.h*0.4,4); ctx.fill(); }
-    ctx.fillStyle=en?'#ffd479':'#8a7a5a'; ctx.font=(b.h<26?'11px':'12px')+' sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';     ctx.fillText(label,b.x+b.w/2,b.y+b.h/2);
+    var big=DESK&&b.big;                                   // v2.32：桌面主菜单主按钮（更大更亮）
+    ctx.fillStyle=big?'#8a6320':(en?'#4a3a20':'#271d10'); rr(b.x,b.y,b.w,b.h,6); ctx.fill();
+    ctx.strokeStyle=big?'#ffd479':(en?'#a8814a':'#4a3820'); ctx.lineWidth=big?2:1; rr(b.x+0.5,b.y+0.5,b.w-1,b.h-1,6); ctx.stroke();
+    if(en){ ctx.fillStyle='rgba(255,212,121,'+(big?0.20:0.10)+')'; rr(b.x+2,b.y+2,b.w-4,b.h*0.4,4); ctx.fill(); }
+    var fs=DESK?Math.max(11,Math.round(b.h*0.34)):(b.h<26?11:12);
+    ctx.fillStyle=en?(big?'#fff3d0':'#ffd479'):'#8a7a5a'; ctx.font=(big?'bold ':'')+fs+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';     ctx.fillText(label,b.x+b.w/2,b.y+b.h/2);
   }
   // 冲锋号角按钮：生效中（金）/可吹（亮）/冷却中（暗+进度）
   function drawHornBtn(){
@@ -2437,6 +2484,24 @@
   var campStartBtn={x:W/2-80,y:492,w:160,h:40};
   var endlessStartBtn={x:W/2-80,y:492,w:160,h:40};
   var diffRects=[{id:0,label:'简单',x:40,y:470,w:86,h:32},{id:1,label:'普通',x:137,y:470,w:86,h:32},{id:2,label:'困难',x:234,y:470,w:86,h:32}];
+  if(DESK){                                   // v2.32 桌面横屏主菜单：三列铺满整屏
+    var _bw=220, _gp=24, _rw=_bw*3+_gp*2, _x0=Math.round(W/2-_rw/2);
+    menuBtns=[
+      {id:'start', label:'开始游戏', x:Math.round(W/2-200), y:242, w:400, h:64, big:true},
+      {id:'camp',  label:'部落征程', x:_x0, y:326, w:_bw, h:54},
+      {id:'endless',label:'无尽试炼',x:_x0+_bw+_gp, y:326, w:_bw, h:54},
+      {id:'epic', label:'部落史诗', x:_x0+2*(_bw+_gp), y:326, w:_bw, h:54},
+      {id:'info',  label:'玩法说明', x:Math.round(W/2-200), y:396, w:400, h:44},
+      {id:'build', label:'建造图鉴', x:_x0, y:456, w:_bw, h:46},
+      {id:'unit',  label:'兵种图鉴', x:_x0+_bw+_gp, y:456, w:_bw, h:46},
+      {id:'ages',  label:'时代征程', x:_x0+2*(_bw+_gp), y:456, w:_bw, h:46},
+      {id:'sys',   label:'系统中心', x:_x0, y:512, w:_bw, h:46},
+      {id:'achv',  label:'成就',     x:_x0+_bw+_gp, y:512, w:_bw, h:46},
+      {id:'set',   label:'设置',     x:_x0+2*(_bw+_gp), y:512, w:_bw, h:46}
+    ];
+    var _dw=180, _dg=24, _dr=_dw*3+_dg*2, _dx=Math.round(W/2-_dr/2);
+    diffRects=[{id:0,label:'简单',x:_dx,y:608,w:_dw,h:44},{id:1,label:'普通',x:_dx+_dw+_dg,y:608,w:_dw,h:44},{id:2,label:'困难',x:_dx+2*(_dw+_dg),y:608,w:_dw,h:44}];
+  }
   function toMenu(){ reset(); S.scene='menu'; }
   function menuDown(px,py){
     if(S.menuInfo){ S.menuInfo=false; return; }
@@ -2461,38 +2526,42 @@
     ctx.fillStyle=g; ctx.fillRect(0,0,cv.width,cv.height);
     ctx.setTransform(scale,0,0,scale,ox,oy);
     for(var i=0;i<decor.length;i++){ var d=decor[i]; ctx.fillStyle='rgba(255,210,140,'+(d.a*0.5)+')'; ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,7); ctx.fill(); }
-    for(i=0;i<rocks.length;i++){ var rk=rocks[i]; ctx.fillStyle='rgba(70,46,22,.55)'; ctx.beginPath(); ctx.ellipse(rk.x,560,rk.s*15,rk.s*7,0,0,7); ctx.fill(); }
-    for(i=0;i<tufts.length;i++){ var tf=tufts[i]; ctx.fillStyle='rgba(120,92,42,.45)'; ctx.fillRect(tf.x-1,560,tf.s*3,-tf.s*9); }
+    var GY=DESK?H-120:560, GS=DESK?1.5:1;                                    // v2.32：桌面版地平线下移、碎石放大
+    for(i=0;i<rocks.length;i++){ var rk=rocks[i]; ctx.fillStyle='rgba(70,46,22,.55)'; ctx.beginPath(); ctx.ellipse(rk.x,GY,rk.s*15*GS,rk.s*7*GS,0,0,7); ctx.fill(); }
+    for(i=0;i<tufts.length;i++){ var tf=tufts[i]; ctx.fillStyle='rgba(120,92,42,.45)'; ctx.fillRect(tf.x-1,GY,tf.s*3*GS,-tf.s*9*GS); }
     if(S.panel){ drawCodex(S.panel); return; }
     if(S.menuInfo){ drawMenuInfo(); return; }
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.save(); ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=12; ctx.shadowOffsetY=3;
-    var tg=ctx.createLinearGradient(0,110,0,150); tg.addColorStop(0,'#ffe7a8'); tg.addColorStop(1,'#e0a23c');
-    ctx.fillStyle=tg; ctx.font='bold 46px sans-serif'; ctx.fillText('蛮荒时代',W/2,140);
+    var TY0=DESK?118:140, SY0=DESK?158:174, CY0=DESK?192:196, FS=DESK?1.4:1;
+    var tg=ctx.createLinearGradient(0,TY0-30,0,TY0+10); tg.addColorStop(0,'#ffe7a8'); tg.addColorStop(1,'#e0a23c');
+    ctx.fillStyle=tg; ctx.font='bold '+Math.round(46*FS)+'px sans-serif'; ctx.fillText('蛮荒时代',W/2,TY0);
     ctx.restore();
-    ctx.fillStyle='#e6c089'; ctx.font='13px sans-serif'; ctx.fillText('从荒原余烬 · 燃起文明黎明',W/2,174);
-    var chips=['部落策略','采集建设','实时对战'], cw=92, gap=8, csum=cw*3+gap*2, cx0=W/2-csum/2, cy=196;
-    for(i=0;i<chips.length;i++){ var rx=cx0+i*(cw+gap); ctx.fillStyle='rgba(255,212,121,.12)'; rr(rx,cy,cw,24,12); ctx.fill(); ctx.strokeStyle='rgba(168,129,74,.7)'; ctx.lineWidth=1; rr(rx+.5,cy+.5,cw-1,23,12); ctx.stroke(); ctx.fillStyle='#ffd479'; ctx.font='12px sans-serif'; ctx.fillText(chips[i],rx+cw/2,cy+12); }
+    ctx.fillStyle='#e6c089'; ctx.font=Math.round(13*FS)+'px sans-serif'; ctx.fillText('从荒原余烬 · 燃起文明黎明',W/2,SY0);
+    var chips=['部落策略','采集建设','实时对战'], cw=Math.round(92*FS), gap=Math.round(8*FS), csum=cw*3+gap*2, cx0=W/2-csum/2, cy=CY0;
+    var chh=Math.round(24*FS);
+    for(i=0;i<chips.length;i++){ var rx=cx0+i*(cw+gap); ctx.fillStyle='rgba(255,212,121,.12)'; rr(rx,cy,cw,chh,12); ctx.fill(); ctx.strokeStyle='rgba(168,129,74,.7)'; ctx.lineWidth=1; rr(rx+.5,cy+.5,cw-1,chh-1,12); ctx.stroke(); ctx.fillStyle='#ffd479'; ctx.font=Math.round(12*FS)+'px sans-serif'; ctx.fillText(chips[i],rx+cw/2,cy+chh/2); }
     for(i=0;i<menuBtns.length;i++){ var b=menuBtns[i];
       if(b.id==='camp'||b.id==='endless'||b.id==='epic'){
         ctx.fillStyle=b.id==='endless'?'#7a3ab8':(b.id==='epic'?'#6b4a1e':'#b8472e'); rr(b.x,b.y,b.w,b.h,8); ctx.fill();
         ctx.strokeStyle=b.id==='endless'?'#e0b0ff':'#ffd479'; ctx.lineWidth=1.5; rr(b.x+.5,b.y+.5,b.w-1,b.h-1,8); ctx.stroke();
-        ctx.fillStyle=b.id==='endless'?'#f4e3ff':'#ffe7a8'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(b.label,b.x+b.w/2,b.y+b.h/2);
+        ctx.fillStyle=b.id==='endless'?'#f4e3ff':'#ffe7a8'; ctx.font='bold '+Math.round(14*FS)+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(b.label,b.x+b.w/2,b.y+b.h/2);
       } else drawBtn(b,b.label,true);
     }
-    if(S.best&&S.best.sc>-1){ ctx.fillStyle='#9fb2e6'; ctx.font='11px sans-serif'; ctx.fillText('历史最佳 击杀 '+S.best.kills+' · '+fmtTime(S.best.t)+(S.best.win?' · 胜':'')+((S.best.endless)?(' · 无尽第'+S.best.endless+'阵'):''),W/2,450); }
+    if(S.best&&S.best.sc>-1){ ctx.fillStyle='#9fb2e6'; ctx.font=Math.round(11*FS)+'px sans-serif'; ctx.fillText('历史最佳 击杀 '+S.best.kills+' · '+fmtTime(S.best.t)+(S.best.win?' · 胜':'')+((S.best.endless)?(' · 无尽第'+S.best.endless+'阵'):''),W/2,DESK?574:450); }
     // 难度选择（经典战 & 部落征程通用）
-    ctx.fillStyle='#8ba3cc'; ctx.font='11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('难度选择',W/2,462);
+    ctx.fillStyle='#8ba3cc'; ctx.font=Math.round(11*FS)+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('难度选择',W/2,DESK?590:462);
     for(var dbi=0;dbi<diffRects.length;dbi++){ var db=diffRects[dbi], sel=(DIFF===db.id);
       ctx.fillStyle=sel?'#ffd479':'rgba(255,205,130,.10)'; rr(db.x,db.y,db.w,db.h,6); ctx.fill();
       ctx.strokeStyle=sel?'#ffe7a8':'rgba(168,129,74,.6)'; ctx.lineWidth=sel?1.5:1; rr(db.x+.5,db.y+.5,db.w-1,db.h-1,6); ctx.stroke();
-      ctx.fillStyle=sel?'#3a2410':'#ffb86b'; ctx.font='bold 13px sans-serif'; ctx.fillText(db.label,db.x+db.w/2,db.y+db.h/2); }
-    ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='bold 11px sans-serif'; ctx.fillText('蛮荒时代',W/2,612);
+      ctx.fillStyle=sel?'#3a2410':'#ffb86b'; ctx.font='bold '+Math.round(13*FS)+'px sans-serif'; ctx.fillText(db.label,db.x+db.w/2,db.y+db.h/2); }
+    ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='bold '+Math.round(11*FS)+'px sans-serif'; ctx.fillText('蛮荒时代',W/2,DESK?682:612);
   }
   function drawMenuInfo(){
     ctx.fillStyle='rgba(6,10,20,.93)'; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#0f1a2e'; rr(22,66,W-44,H-150,14); ctx.fill();
-    ctx.strokeStyle='#2a4a75'; ctx.lineWidth=1; rr(22.5,66.5,W-45,H-151,14); ctx.stroke();
+    ctx.save(); if(DESK){ ctx.translate(MTX,MTY); ctx.scale(MS,MS); }       // v2.32：桌面版面板整体放大居中
+    ctx.fillStyle='#0f1a2e'; rr(22-MPAD,66,LW-44+2*MPAD,LH-150,14); ctx.fill();
+    ctx.strokeStyle='#2a4a75'; ctx.lineWidth=1; rr(22.5-MPAD,66.5,LW-45+2*MPAD,LH-151,14); ctx.stroke();
     ctx.textAlign='left'; ctx.textBaseline='top';
     var blocks=[['场景','2.5D 等距荒漠战场，玩家与 AI 双阵营对抗；顶部资源栏、左下小地图、底部建造训练面板。'],
       ['玩法','村民自动采集粮/木/铁，建造兵营箭塔工坊，研究利刃盾墙急行农耕冶炼，晋升时代，推平敌方主城获胜。战斗中可吹「冲锋号角」全军加速，也可随时暂停思考策略。老兵连斩晋升精锐（攻+8%/阶，头顶金星）；深入敌腹却不交战会持续掉兵（贴近己方主城/哨站豁免）。中带三处富点可派兵占领，每占一处军力上限+3，敌军也会来抢。建造「图腾祭坛」可积蓄神力释放超级武器「神罚」——对阵何部族便驭其兽灵：野猪踏境/狼灵召唤/熊碎地裂/天羽箭雨/龙息烈焰。'],
@@ -2501,20 +2570,22 @@
     var y=88;
     for(var b=0;b<blocks.length;b++){ ctx.fillStyle='#ffd479'; ctx.font='bold 14px sans-serif'; ctx.fillText(blocks[b][0],38,y);
       ctx.fillStyle='#d6e4ff'; ctx.font='12px sans-serif'; var txt=blocks[b][1], cur='', yy=y+22;
-      for(var c=0;c<txt.length;c++){ cur+=txt[c]; if(ctx.measureText(cur).width>W-78){ ctx.fillText(cur,38,yy); cur=''; yy+=18; } }
+      for(var c=0;c<txt.length;c++){ cur+=txt[c]; if(ctx.measureText(cur).width>LW-78){ ctx.fillText(cur,38,yy); cur=''; yy+=18; } }
       if(cur) ctx.fillText(cur,38,yy); y=yy+26; }
-    ctx.textAlign='center'; ctx.fillStyle='#7fa0d8'; ctx.font='12px sans-serif'; ctx.fillText('（点击任意处关闭）',W/2,H-92);
+    ctx.textAlign='center'; ctx.fillStyle='#7fa0d8'; ctx.font='12px sans-serif'; ctx.fillText('（点击任意处关闭）',LW/2,LH-92);
+    ctx.restore();
   }
   // ===== 资料库面板（建造/兵种/时代/系统/成就/设置，均带「蛮荒时代」游戏名） =====
   function codexTitle(name){
     var titleMap={build:'建造图鉴',unit:'兵种图鉴',ages:'时代征程',sys:'系统中心',achv:'成就',set:'设置',camp:'部落征程',endless:'无尽试炼'};
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillStyle='#ffd479'; ctx.font='bold 16px sans-serif'; ctx.fillText(titleMap[name]||'资料库',W/2,96);
-    ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='10px sans-serif'; ctx.fillText('蛮荒时代 · 资料库',W/2,116);
+    ctx.fillStyle='#ffd479'; ctx.font='bold 16px sans-serif'; ctx.fillText(titleMap[name]||'资料库',LW/2,96);
+    ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='10px sans-serif'; ctx.fillText('蛮荒时代 · 资料库',LW/2,116);
   }
   function drawCodex(name){
     ctx.fillStyle='rgba(6,10,20,.92)'; ctx.fillRect(0,0,W,H);
-    var cx=22, cy=70, cw=W-44, ch=H-150;
+    ctx.save(); if(DESK){ ctx.translate(MTX,MTY); ctx.scale(MS,MS); }       // v2.32：桌面版面板整体放大居中
+    var cx=22-MPAD, cy=70, cw=LW-44+2*MPAD, ch=LH-150;
     ctx.fillStyle='#0f1a2e'; rr(cx,cy,cw,ch,14); ctx.fill();
     ctx.strokeStyle='#2a4a75'; ctx.lineWidth=1; rr(cx+.5,cy+.5,cw-1,ch-1,14); ctx.stroke();
     codexTitle(name);
@@ -2528,7 +2599,8 @@
     else if(name==='camp') drawCampaign(innerY);
     else if(name==='endless') drawEndless(innerY);
     ctx.textAlign='center'; ctx.fillStyle='#7fa0d8'; ctx.font='11px sans-serif';
-    ctx.fillText((name==='camp'||name==='endless')?'点击空白处返回':'点击任意处关闭',W/2,cy+ch-16);
+    ctx.fillText((name==='camp'||name==='endless')?'点击空白处返回':'点击任意处关闭',LW/2,cy+ch-16);
+    ctx.restore();
   }
   function codexBuild(y){
     var ks=['barracks','range','tower','forge','wall','outpost','altar'];
@@ -2575,7 +2647,7 @@
       ctx.fillStyle='#cfe0ff'; ctx.font='11px sans-serif'; yy=wrapText(bl[i][1],40,yy+22,282,17)+8; }
   }
   function codexAchv(y){
-    if(!S.best||S.best.sc===-1){ ctx.textAlign='center'; ctx.fillStyle='#9fb2e6'; ctx.font='13px sans-serif'; ctx.fillText('暂无战绩，去战场赢一局吧！',W/2,y+34); return; }
+    if(!S.best||S.best.sc===-1){ ctx.textAlign='center'; ctx.fillStyle='#9fb2e6'; ctx.font='13px sans-serif'; ctx.fillText('暂无战绩，去战场赢一局吧！',LW/2,y+34); return; }
     var b=S.best;
     var lines=[['历史最佳击杀',''+b.kills,'#ffd479'],['最快用时',fmtTime(b.t),'#cfe0ff'],
       ['到达时代',AGES[(b.age||1)-1],'#9fb2e6'],['胜负',b.win?'胜利':'未取胜',b.win?'#5fe0a8':'#ff9b6b']];
@@ -2601,10 +2673,10 @@
   }
   function drawCampaign(y){
     ctx.textAlign='center'; ctx.fillStyle='#ffd479'; ctx.font='12px sans-serif';
-    ctx.fillText('连续征战五大部族：每族一场独立战斗，',W/2, y+2);   // v2.29：长句拆两行居中，避免溢出面板圆角
-    ctx.fillText('攻克后自动进军下一部族。',W/2, y+18);
+    ctx.fillText('连续征战五大部族：每族一场独立战斗，',LW/2, y+2);   // v2.29：长句拆两行居中，避免溢出面板圆角
+    ctx.fillText('攻克后自动进军下一部族。',LW/2, y+18);
     var best=(S.best&&S.best.campStage)||0;
-    ctx.fillStyle='#9fb2e6'; ctx.font='11px sans-serif'; ctx.fillText('历史最佳：已攻克 '+best+'/'+TRIBE_NAMES.length+' 座城',W/2,y+36);
+    ctx.fillStyle='#9fb2e6'; ctx.font='11px sans-serif'; ctx.fillText('历史最佳：已攻克 '+best+'/'+TRIBE_NAMES.length+' 座城',LW/2,y+36);
     for(var i=0;i<TRIBE_NAMES.length;i++){
       var ry=y+56+i*50, done=i<best, tr=TRIBE_TRAIT[i+1];
       ctx.fillStyle=done?'rgba(95,224,168,.14)':'rgba(255,205,130,.07)'; rr(40,ry,280,42,8); ctx.fill();
@@ -2620,9 +2692,9 @@
   }
   function drawEndless(y){
     ctx.textAlign='center'; ctx.fillStyle='#ffd479'; ctx.font='12px sans-serif';
-    ctx.fillText('连续征战无上限：每征服一阵，敌军更强。',W/2, y+2);
+    ctx.fillText('连续征战无上限：每征服一阵，敌军更强。',LW/2, y+2);
     var best=(S.best&&S.best.endless)||0;
-    ctx.fillStyle='#9fb2e6'; ctx.font='11px sans-serif'; ctx.fillText('历史最佳：坚守到第 '+best+' 阵',W/2,y+22);
+    ctx.fillStyle='#9fb2e6'; ctx.font='11px sans-serif'; ctx.fillText('历史最佳：坚守到第 '+best+' 阵',LW/2,y+22);
     var rules=[
       '· 前 5 阵为五大部族序章，此后特性循环登场',
       '· 每多一阵，敌军全军生命/攻击 +12%',
@@ -2647,6 +2719,7 @@
     ctx.setTransform(1,0,0,1,0,0);
     ctx.fillStyle='#170f07'; ctx.fillRect(0,0,PW,PH);
     ctx.setTransform(scale,0,0,scale,ox+shx,oy+shy);
+    if(DESK) camApply();
     ctx.clearRect(-24,-24,W+48,H+48);
     drawTerrain();
     drawTerritoryOverlay();
@@ -2680,6 +2753,11 @@
     drawPartsFx();
     drawSpiritFx();   // v2.30 神罚特效（踏境/地裂/箭雨/龙息）
     drawFog();
+    if(DESK){   // v2.32 2.5D 空气透视：远端（画面上方）压一层冷色雾，越远越淡
+      var fg=ctx.createLinearGradient(0,FIELD_TOP,0,FIELD_TOP+SPAN*0.55);
+      fg.addColorStop(0,'rgba(96,124,158,.30)'); fg.addColorStop(1,'rgba(96,124,158,0)');
+      ctx.fillStyle=fg; ctx.fillRect(-24,FIELD_TOP,W+48,SPAN*0.55);
+    }
     if(S.flash>0){ ctx.fillStyle='rgba(255,236,200,'+Math.min(0.6,S.flash).toFixed(3)+')'; ctx.fillRect(-24,-24,W+48,H+48); }   // 攻城爆破白闪
     ctx.textAlign='center'; ctx.textBaseline='middle';
     for(var f2=0;f2<S.floats.length;f2++){ var f2i=S.floats[f2]; var fa=Math.min(1,f2i.life/f2i.max*1.6);
@@ -2694,9 +2772,11 @@
       ctx.strokeStyle='rgba(120,220,160,.85)'; ctx.lineWidth=1; ctx.setLineDash([4,3]); ctx.strokeRect(sx0+.5,sy0+.5,sw0,sh0); ctx.setLineDash([]);
       ctx.fillStyle='#a8e6c4'; ctx.font='bold 10px sans-serif'; ctx.fillText('框 选', sx0+sw0/2, sy0+sh0/2);
     }
+    if(DESK) ctx.setTransform(scale,0,0,scale,ox+shx,oy+shy);   // HUD 在屏幕空间，不受相机影响
     // ===== 顶部状态栏：双行三区，资源(左) / 征程(中) / 敌情(右) 互不压字 =====
-    ctx.fillStyle='rgba(32,22,12,.94)'; ctx.fillRect(0,0,W,40);
-    ctx.fillStyle='rgba(255,205,130,.32)'; ctx.fillRect(0,40,W,1.5);
+    ctx.fillStyle='rgba(32,22,12,.94)'; ctx.fillRect(0,0,W,FIELD_TOP);
+    ctx.fillStyle='rgba(255,205,130,.32)'; ctx.fillRect(0,FIELD_TOP,W,1.5);
+    if(DESK) ctx.scale(UH,UH);   // v2.32：顶栏整块放大，桌面版字号同步变大
     ctx.textBaseline='middle';
     var _rf=S.resFlash?Math.max(0,S.resFlash.life/S.resFlash.max):0;
     function _resGlow(k,x,w){ if(_rf<=0||!S.resFlash||S.resFlash.k!==k) return; ctx.fillStyle='rgba(255,86,70,'+(0.40*_rf).toFixed(2)+')'; rr(x,4,w,16,4); ctx.fill(); }
@@ -2705,8 +2785,8 @@
     _resGlow('wood',70,38); icoWood(ctx,74,12); ctx.fillStyle=(_rf>0&&S.resFlash.k==='wood')?'#ff9b8c':'#e0c08a'; ctx.fillText(''+Math.floor(S.res.wood),84,12);
     _resGlow('iron',100,38); icoIron(ctx,104,12); ctx.fillStyle=(_rf>0&&S.resFlash.k==='iron')?'#ff9b8c':'#b9c4dd'; ctx.fillText(''+Math.floor(S.res.iron),115,12);
     // 敌情（右列，行1/行2）
-    ctx.textAlign='right'; ctx.font='11px sans-serif'; ctx.fillStyle='#ff9b6b'; ctx.fillText('敌 '+countArmy('enemy'),W-66,13);
-    ctx.fillStyle='#5fe0a8'; ctx.fillText('时代·'+AGES[S.age-1],W-66,29);
+    ctx.textAlign='right'; ctx.font='11px sans-serif'; ctx.fillStyle='#ff9b6b'; ctx.fillText('敌 '+countArmy('enemy'),W/(DESK?UH:1)-66,13);
+    ctx.fillStyle='#5fe0a8'; ctx.fillText('时代·'+AGES[S.age-1],W/(DESK?UH:1)-66,29);
     // 兵力人口 + 游戏计时（左列，行2 y=29）—— RoN 式常显，与资源行错开
     var _armyN=countArmy('you'), _armyC=capArmy('you');
     ctx.textAlign='left'; ctx.font='10px sans-serif';
@@ -2716,10 +2796,10 @@
     ctx.beginPath(); ctx.arc(14,29,5,0,7); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(14,29); ctx.lineTo(14,26); ctx.moveTo(14,29); ctx.lineTo(16.5,29); ctx.stroke();
     if(S.campaign){
-      var cN=S.maxStage||Math.max(6,S.stage), pgw=80, pgx=200-pgw/2;
+      var cN=S.maxStage||Math.max(6,S.stage), pgw=80, pgx=W/(DESK?UH:1)*(DESK?0.5:0.5556)-pgw/2;
       ctx.fillStyle='rgba(255,205,130,.22)'; rr(pgx,3,pgw,3,1.5); ctx.fill();
       ctx.fillStyle='#ffd479'; rr(pgx,3,pgw*(S.stage/cN),3,1.5); ctx.fill();
-      var cx=200;
+      var cx=W/(DESK?UH:1)*(DESK?0.5:0.5556);
       if(S.fiveCity){
         var left=5-S.cities.filter(function(c){return c.conquered;}).length;
         var tr5=TRIBE_TRAIT[S.stage]||TRIBE_TRAIT[5];
@@ -2739,6 +2819,7 @@
     ctx.fillStyle='rgba(0,0,0,.32)'; rr(W-58,7,52,26,6); ctx.fill();
     ctx.strokeStyle=wcol; ctx.lineWidth=1; rr(W-57.5,7.5,51,25,6); ctx.stroke();
     ctx.fillStyle=wcol; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.fillText('⚔'+Math.ceil(Math.max(0,S.ai.push))+'s',W-32,20);
+    if(DESK) ctx.setTransform(scale,0,0,scale,ox+shx,oy+shy);   // v2.32：侧边按钮脱离顶栏放大，回到屏幕空间
     if(!S.techOpen) drawBtn(advBtn, S.age<3?('晋升'+AGES[S.age]):'已巅峰', S.age<3);
     drawBtn(sndBtn, soundOn?'♪ 音效开':'♪ 音效关', true);
     if(!S.techOpen) drawBtn(recallBtn, '集结回防', true);
@@ -2758,6 +2839,7 @@
     }
     drawBtn(pauseBtn, S.paused?'▶ 继续':'■ 暂停', true);
     drawBtn(techBtn, '科技', true);
+    if(DESK) ctx.setTransform(scale,0,0,scale,ox+shx,oy+shy);
     // ===== 底部控制面板（木纹） =====
     ctx.fillStyle='#241a10'; ctx.fillRect(0,FIELD_BOT,W,H-FIELD_BOT);
     ctx.fillStyle='rgba(255,205,130,.28)'; ctx.fillRect(0,FIELD_BOT,W,1.5);
@@ -2861,13 +2943,13 @@
       else if(S.t>240&&S.age<2) hintBar='提示：资源宽裕就点「晋升」进入下一时代';
     }
     if(hintBar){
-      var hx=80, hw=W-hx-6;                        // 只占左侧按钮列（x<74）右侧，绝不遮挡晋升/音效/集结
-      ctx.fillStyle='rgba(30,20,10,.9)'; rr(hx,FIELD_TOP+4,hw,24,6); ctx.fill();
-      ctx.strokeStyle='rgba(255,205,130,.3)'; ctx.lineWidth=1; rr(hx+.5,FIELD_TOP+4.5,hw-1,23,6); ctx.stroke();
-      var hfs=11; ctx.font=hfs+'px sans-serif';    // 超长提示自动缩字号，避免溢出
+      var hx=DESK?156:80, hw=W-hx-(DESK?200:6), hh=DESK?30:24;   // v2.32：桌面版让开两侧按钮列，条带加高
+      ctx.fillStyle='rgba(30,20,10,.9)'; rr(hx,FIELD_TOP+4,hw,hh,6); ctx.fill();
+      ctx.strokeStyle='rgba(255,205,130,.3)'; ctx.lineWidth=1; rr(hx+.5,FIELD_TOP+4.5,hw-1,hh-1,6); ctx.stroke();
+      var hfs=DESK?15:11; ctx.font=hfs+'px sans-serif';    // 超长提示自动缩字号，避免溢出
       while(hfs>8){ var mt=ctx.measureText?ctx.measureText(hintBar):null; if(!mt||mt.width<=hw-14) break; hfs--; ctx.font=hfs+'px sans-serif'; }
       ctx.fillStyle=hintCol; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(hintBar,hx+hw/2,FIELD_TOP+16);
+      ctx.fillText(hintBar,hx+hw/2,FIELD_TOP+4+hh/2);
     }
     if(!S.techOpen){
       for(i=0;i<buildBtns.length;i++) drawBtn(buildBtns[i], buildDefs[i].label, buildDefs[i].en());
@@ -2894,65 +2976,68 @@
       ctx.fillStyle='rgba(0,0,0,.6)'; ctx.fillRect(0,0,W,H);
       ctx.fillStyle='rgba(38,28,16,.98)'; rr(18,84,W-36,H-140,12); ctx.fill();
       ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillStyle='#ffd479'; ctx.font='15px sans-serif'; ctx.fillText('科技研究',W/2,110);
+      var TF=DESK?1.3:1;                                   // v2.32：桌面版科技面板放大铺开
+      ctx.fillStyle='#ffd479'; ctx.font=Math.round(15*TF)+'px sans-serif'; ctx.fillText('科技研究',W/2,DESK?116:110);
       // —— 时代主干：横向三节点（蛮荒→部落→城邦），当前时代高亮 ——
-      var exs=[70,180,290], ey=146;
+      var exs=DESK?[Math.round(W*0.22),Math.round(W*0.5),Math.round(W*0.78)]:[70,180,290], ey=DESK?172:146;
       ctx.strokeStyle='rgba(255,212,121,.35)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(exs[0],ey); ctx.lineTo(exs[2],ey); ctx.stroke();
       for(var ae=0;ae<3;ae++){
         var cur=ae+1;
         ctx.beginPath(); ctx.arc(exs[ae],ey,12,0,7);
         ctx.fillStyle=(cur===S.age)?'#5fe0a8':(cur<S.age?'#a8814a':'#5a4a30'); ctx.fill();
         ctx.strokeStyle=(cur===S.age)?'#bff5d6':'rgba(255,212,121,.5)'; ctx.lineWidth=2; ctx.stroke();
-        ctx.fillStyle='#1a1206'; ctx.font='13px sans-serif'; ctx.fillText(AGES[ae][0],exs[ae],ey);
+        ctx.fillStyle=(cur===S.age)?'#0d2418':(cur<S.age?'#2a1a08':'#d8c9a8'); ctx.font=Math.round(13*TF)+'px sans-serif'; ctx.fillText(AGES[ae][0],exs[ae],ey);
       }
-      ctx.fillStyle='#9fb2e6'; ctx.font='10px sans-serif'; ctx.fillText('蛮荒 · 部落 · 城邦',W/2,ey+22);
+      ctx.fillStyle='#9fb2e6'; ctx.font=Math.round(10*TF)+'px sans-serif'; ctx.fillText('蛮荒 · 部落 · 城邦',W/2,ey+22);
       // —— 科技节点：按 req 挂接到对应时代，连线成树 ——
-      var req1pos=[{x:108,y:252},{x:252,y:252},{x:108,y:332},{x:252,y:332}];
-      var req2pos={x:180,y:432}, gi=0;
+      var req1pos=DESK?[{x:Math.round(W*0.30),y:280},{x:Math.round(W*0.70),y:280},{x:Math.round(W*0.30),y:390},{x:Math.round(W*0.70),y:390}]
+                      :[{x:108,y:252},{x:252,y:252},{x:108,y:332},{x:252,y:332}];
+      var req2pos=DESK?{x:Math.round(W/2),y:500}:{x:180,y:432}, gi=0;
       for(var ti=0;ti<TECHS.length;ti++){ var t=TECHS[ti];
         var cx,cy,exX;
         if(t.req>=2){ cx=req2pos.x; cy=req2pos.y; exX=exs[2]; }
         else { cx=req1pos[gi%4].x; cy=req1pos[gi%4].y; gi++; exX=exs[0]; }
-        var tw=132, th=62, tx=cx-tw/2, ty=cy-th/2;
+        var tw=DESK?236:132, th=DESK?80:62, tx=cx-tw/2, ty=cy-th/2;
         ctx.strokeStyle='rgba(255,212,121,.30)'; ctx.lineWidth=1.5;   // 连接线：时代节点 → 科技卡
         ctx.beginPath(); ctx.moveTo(exX,ey+12); ctx.lineTo(cx,ty); ctx.stroke();
         var done=!!S.tech[t.id], need=S.age<t.req, can=!done&&!need&&afford(t.cost);
         ctx.fillStyle=done?'#1f5a3f':(can?'#4a3a20':'#2a2012'); rr(tx,ty,tw,th,8); ctx.fill();
         ctx.strokeStyle=done?'#5fe0a8':(can?'#a8814a':'#4a3820'); ctx.lineWidth=1; rr(tx+.5,ty+.5,tw-1,th-1,8); ctx.stroke();
-        drawTechIcon(t.id, tx+18, cy, 11);
-        ctx.textAlign='left'; ctx.fillStyle='#e6ecff'; ctx.font='14px sans-serif'; ctx.fillText(t.name,tx+36,cy-14);
-        ctx.fillStyle='#9fb2e6'; ctx.font='10px sans-serif'; ctx.fillText(t.desc,tx+36,cy+2);
-        ctx.fillStyle=done?'#5fe0a8':(need?'#ff9b6b':(can?'#ffd479':'#7a83a8')); ctx.font='10px sans-serif';
+        drawTechIcon(t.id, tx+(DESK?26:18), cy, DESK?15:11);
+        ctx.textAlign='left'; ctx.fillStyle='#e6ecff'; ctx.font=Math.round(14*TF)+'px sans-serif'; ctx.fillText(t.name,tx+(DESK?50:36),cy-(DESK?18:14));
+        ctx.fillStyle='#9fb2e6'; ctx.font=Math.round(10*TF)+'px sans-serif'; ctx.fillText(t.desc,tx+(DESK?50:36),cy+(DESK?4:2));
+        ctx.fillStyle=done?'#5fe0a8':(need?'#ff9b6b':(can?'#ffd479':'#7a83a8')); ctx.font=Math.round(10*TF)+'px sans-serif';
         var cs=[]; if(t.cost.grain)cs.push('粮'+t.cost.grain); if(t.cost.wood)cs.push('木'+t.cost.wood); if(t.cost.iron)cs.push('铁'+t.cost.iron);
-        ctx.fillText(done?'已研究':(need?('需'+AGES[t.req-1]+'时代'):('耗 '+cs.join(' '))),tx+36,cy+18);
+        ctx.fillText(done?'已研究':(need?('需'+AGES[t.req-1]+'时代'):('耗 '+cs.join(' '))),tx+(DESK?50:36),cy+(DESK?26:18));
         t._rect={x:tx,y:ty,w:tw,h:th};
       }
-      ctx.fillStyle='#7fa0d8'; ctx.font='11px sans-serif'; ctx.textAlign='center'; ctx.fillText('点击空白处关闭',W/2,H-70);
+      ctx.fillStyle='#7fa0d8'; ctx.font=Math.round(11*TF)+'px sans-serif'; ctx.textAlign='center'; ctx.fillText('点击空白处关闭',W/2,H-70);
     }
     if(S.over){
       ctx.restore();   // v2.29：结算面板先 restore 掉世界层的震屏 translate，面板/横幅不随死亡震屏抖动
       var _ot=S.overT||0, _win=S.over===1;
       ctx.fillStyle='rgba(0,0,0,.74)'; ctx.fillRect(0,0,W,H);
-      ctx.fillStyle=_win?'#5fe0a8':'#ff7b8a'; ctx.font='bold 26px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(_win?'胜利！':'战败',W/2,150);
+      ctx.fillStyle=_win?'#5fe0a8':'#ff7b8a'; ctx.font='bold '+(DESK?40:26)+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(_win?'胜利！':'战败',W/2,DESK?146:150);
       // v2.25 ③：评级印章（盖戳动画）
       var _g=endGrade(), _gs=Math.min(1,Math.max(0,(_ot-0.12)/0.26));
       if(_gs>0){
-        var _gr=26*_gs;
-        ctx.save(); ctx.translate(W-70,152); ctx.rotate(-0.16); ctx.globalAlpha=Math.min(1,_gs*1.35);
+        var _gr=(DESK?40:26)*_gs;
+        ctx.save(); ctx.translate(DESK?(W/2+330):(W-70),DESK?146:152); ctx.rotate(-0.16); ctx.globalAlpha=Math.min(1,_gs*1.35);
         ctx.strokeStyle=_win?'#ffd479':'#ff7b8a'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(0,0,_gr,0,7); ctx.stroke();
         ctx.strokeStyle='rgba(255,212,121,.32)'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(0,0,Math.max(0,_gr-4),0,7); ctx.stroke();
-        ctx.fillStyle=_win?'#ffd479':'#ff7b8a'; ctx.font='bold '+Math.max(1,Math.round(24*_gs))+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillStyle=_win?'#ffd479':'#ff7b8a'; ctx.font='bold '+Math.max(1,Math.round((DESK?38:24)*_gs))+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
         ctx.fillText(_g,0,1); ctx.restore(); ctx.globalAlpha=1;
       }
-      ctx.fillStyle='rgba(18,32,68,.94)'; rr(38,186,W-76,236,12); ctx.fill();
-      ctx.strokeStyle='rgba(255,212,121,.30)'; ctx.lineWidth=1; rr(38.5,186.5,W-77,235,12); ctx.stroke();
+      var OX=DESK?Math.round(W/2-280):38, OW=DESK?560:(W-76), OFS=DESK?1.35:1;      // v2.32：结算面板居中收窄、字号放大
+      ctx.fillStyle='rgba(18,32,68,.94)'; rr(OX,186,OW,236,12); ctx.fill();
+      ctx.strokeStyle='rgba(255,212,121,.30)'; ctx.lineWidth=1; rr(OX+.5,186.5,OW-1,235,12); ctx.stroke();
       var stats=[['击 杀',''+S.kills,'#ffd479'],['造 兵',''+S.spawned,'#5fe0a8'],['战 损',''+(S.losses||0),'#ff9b6b'],['用 时',fmtTime(S.t),'#cfe0ff'],['到达时代',AGES[S.age-1],'#9fb2e6'],['峰值兵力',''+S.peak,'#ffb86b']];
       for(var st2=0;st2<stats.length;st2++){ var sy=206+st2*20;
-        ctx.textAlign='left'; ctx.font='12px sans-serif'; ctx.fillStyle='#9fb2e6'; ctx.fillText(stats[st2][0],58,sy);
-        ctx.textAlign='right'; ctx.font='bold 13px sans-serif'; ctx.fillStyle=stats[st2][2]; ctx.fillText(stats[st2][1],W-58,sy); }
-      ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fillRect(58,336,W-116,1);
-      ctx.textAlign='center'; ctx.font='10px sans-serif'; ctx.fillStyle='#7fa0d8';
+        ctx.textAlign='left'; ctx.font=Math.round(12*OFS)+'px sans-serif'; ctx.fillStyle='#9fb2e6'; ctx.fillText(stats[st2][0],OX+20,sy);
+        ctx.textAlign='right'; ctx.font='bold '+Math.round(13*OFS)+'px sans-serif'; ctx.fillStyle=stats[st2][2]; ctx.fillText(stats[st2][1],OX+OW-20,sy); }
+      ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fillRect(OX+20,336,OW-40,1);
+      ctx.textAlign='center'; ctx.font=Math.round(10*OFS)+'px sans-serif'; ctx.fillStyle='#7fa0d8';
       ctx.fillText(S.best?('历史最佳：击杀 '+S.best.kills+' · '+fmtTime(S.best.t)+(S.best.win?' · 胜':'')):'暂无历史最佳',W/2,350);
       drawBtn(overBtns.again, S.epic?(_win?'▶ 继续征程':'↻ 重打本幕'):(S.campaign?(_win?'再战本阵':'重整旗鼓'):'再 战'), true);
       drawBtn(overBtns.menu, '返回主菜单', true);
@@ -3105,8 +3190,9 @@
   }
   function down(cx,cy){
     var p=toLogical(cx,cy), px=p[0], py=p[1];
+    var wx=px, wy=py; if(DESK){ var _w=s2w(px,py); wx=_w[0]; wy=_w[1]; }   // 桌面版：战场用世界坐标
     if(px<-30||px>W+30||py<-30||py>H+30) return;
-    if(S.scene==='menu'){ menuDown(px,py); return; }
+    if(S.scene==='menu'){ if(DESK&&(S.panel||S.menuInfo)){ px=(px-MTX)/MS; py=(py-MTY)/MS; } menuDown(px,py); return; }
     if(S.scene==='cut'){ cutDown(px,py); return; }   // v2.31：过场输入（推进对话/选项/结局按钮）
     if(S.over){
       if(S.epic){                                   // v2.31 部落史诗结算：胜利→继续征程；失败→重打本幕
@@ -3120,12 +3206,12 @@
     }
     if(S.placing){
       if(py>=FIELD_BOT){ S.placing=null; S.ghost=null; S.wallPath=null; return; }   // 放置模式下点按钮行 = 取消
-      if(S.placing==='wall'){ S.wallPath=[{x:px,y:py}]; S.wallDrag=false; S.ghost={x:px,y:py}; return; }  // v2.26-C：记录拖拽起点
-      S.ghost={x:px,y:py}; return;
+      if(S.placing==='wall'){ S.wallPath=[{x:wx,y:wy}]; S.wallDrag=false; S.ghost={x:wx,y:wy}; return; }  // v2.26-C：记录拖拽起点
+      S.ghost={x:wx,y:wy}; return;
     }
     if(S.spTgt){                                        // v2.30 神罚瞄准态（先于一切战场输入）
       if(py>=FIELD_BOT||py<FIELD_TOP){ S.spTgt=false; return; }   // 点非战场区=取消瞄准
-      castSpirit(px,py); S.spTgt=false; return;
+      castSpirit(wx,wy); S.spTgt=false; return;
     }
     if(S.paused){ S.paused=false; return; }                        // 暂停中：点战场任意处继续
     if(hit(pauseBtn,px,py)){ S.paused=!S.paused; return; }         // 暂停 / 继续
@@ -3164,6 +3250,7 @@
       else { clearOrders(); S.focus=null; clearSel(); S.rally=mp2; for(var v3=0;v3<S.units.length;v3++) if(S.units[v3].side==='you') S.units[v3].foff=(Math.random()*2-1)*44; }
       return;
     }
+    if(DESK){ px=wx; py=wy; }   // 其下全是战场判定，改用世界坐标
     if(py<ENEMY_BASE_Y+34){   // 点敌方统区上空
       if(selCount()>0){ var eb2=enemyBaseRef(); if(eb2) orderAttack(eb2); }
       else { clearOrders(); S.focus='base'; }
@@ -3192,6 +3279,7 @@
   }
   function move(cx,cy){
     var p=toLogical(cx,cy);
+    if(DESK){ var _m=s2w(p[0],p[1]); p[0]=_m[0]; p[1]=_m[1]; }
     if(S.placing==='wall'&&S.wallPath){   // v2.26-C：拖拽时采样路径点，距离阈值以上才记一段
       var lp=S.wallPath[S.wallPath.length-1];
       if(Math.hypot(p[0]-lp.x,p[1]-lp.y)>=16){ S.wallPath.push({x:p[0],y:p[1]}); S.wallDrag=true; }
@@ -3202,6 +3290,7 @@
   }
   function up(cx,cy){
     var p=toLogical(cx,cy), px=p[0], py=p[1];
+    if(DESK){ var _u=s2w(px,py); px=_u[0]; py=_u[1]; }
     if(S.placing==='wall'){   // v2.26-C：拖拽成线则连建多段，否则单段
       if(S.wallDrag&&S.wallPath&&S.wallPath.length>=2){ buildWallLine('you',S.wallPath); }
       else { var g=S.ghost||{x:px,y:py}; if(!placeBuilding('you','wall',g.x,g.y)){ shake(3); sfx('hit'); } }
@@ -3227,9 +3316,48 @@
   cv.addEventListener('touchstart', function(e){ e.preventDefault(); var t=e.changedTouches[0]; down(t.clientX,t.clientY); }, {passive:false});
   cv.addEventListener('touchmove', function(e){ e.preventDefault(); var t=e.changedTouches[0]; move(t.clientX,t.clientY); }, {passive:false});
   cv.addEventListener('touchend', function(e){ e.preventDefault(); var t=e.changedTouches[0]; up(t.clientX,t.clientY); }, {passive:false});
-  cv.addEventListener('mousedown', function(e){ down(e.clientX,e.clientY); });
+  cv.addEventListener('mousedown', function(e){ if(e.button===0) down(e.clientX,e.clientY); });
   cv.addEventListener('mousemove', function(e){ move(e.clientX,e.clientY); });
-  cv.addEventListener('mouseup', function(e){ up(e.clientX,e.clientY); });
+  cv.addEventListener('mouseup', function(e){ if(e.button===0) up(e.clientX,e.clientY); });
+
+  // ---- v2.32 桌面版相机操作（仅浏览器：滚轮以光标为锚点缩放，右键/中键拖拽平移；小游戏端无 document，整段跳过） ----
+  if(DESK && typeof document!=='undefined' && cv.addEventListener){
+    var _lxy=function(e){ var r=cv.getBoundingClientRect(); return [ (e.clientX-r.left)/r.width*W, (e.clientY-r.top)/r.height*H ]; };
+    cv.addEventListener('wheel', function(e){
+      e.preventDefault();
+      var q=_lxy(e); camZoomAt(CAM.z*(e.deltaY<0?1.12:1/1.12), q[0], q[1]);
+    }, {passive:false});
+    cv.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+    var _pan=false, _plx=0, _ply=0;
+    cv.addEventListener('mousedown', function(e){
+      if(e.button===2||e.button===1){ _pan=true; var q=_lxy(e); _plx=q[0]; _ply=q[1]; e.preventDefault(); }
+    });
+    window.addEventListener('mousemove', function(e){
+      if(!_pan) return;
+      var q=_lxy(e);
+      CAM.cx-=(q[0]-_plx)/CAM.z; CAM.cy-=(q[1]-_ply)/CAM.z; camClamp();
+      _plx=q[0]; _ply=q[1];
+    });
+    window.addEventListener('mouseup', function(){ _pan=false; });
+    window.addEventListener('keydown', function(e){          // 键盘相机：+/- 缩放，0 复位，方向键平移
+      if(e.code==='Equal'||e.code==='NumpadAdd'){ camZoomAt(CAM.z*1.15,W/2,H/2); e.preventDefault(); }
+      else if(e.code==='Minus'||e.code==='NumpadSubtract'){ camZoomAt(CAM.z/1.15,W/2,H/2); e.preventDefault(); }
+      else if(e.code==='Digit0'){ CAM.z=1; CAM.cx=W/2; CAM.cy=H/2; e.preventDefault(); }
+      else if(e.code==='ArrowLeft'){ CAM.cx-=60/CAM.z; camClamp(); e.preventDefault(); }
+      else if(e.code==='ArrowRight'){ CAM.cx+=60/CAM.z; camClamp(); e.preventDefault(); }
+      else if(e.code==='ArrowUp'){ CAM.cy-=60/CAM.z; camClamp(); e.preventDefault(); }
+      else if(e.code==='ArrowDown'){ CAM.cy+=60/CAM.z; camClamp(); e.preventDefault(); }
+    });
+    // 把 HUD 实际几何暴露给网页外壳：键盘层据此派发合成点击，坐标不再写死（换布局也不会失效）
+    try{ var _c=function(b){ return {x:b.x+b.w/2, y:b.y+b.h/2}; };
+      globalThis.__BA_UI={W:W,H:H,cam:CAM,
+        // 逻辑坐标 → 客户端坐标：外壳的键盘层据此派发合成点击（letterbox + DPR 都在这里消化掉）
+        toClient:function(lx,ly){ var r=cv.getBoundingClientRect(); var k=r.width/PW; return [ r.left+(ox+lx*scale)*k, r.top+(oy+ly*scale)*k ]; },
+        train:trainBtns.map(_c), build:buildBtns.map(_c),
+        hero:_c(heroBtn), horn:_c(hornBtn), sp:_c(spBtn), sel:_c(selBtn), form:_c(formBtn),
+        recall:_c(recallBtn), pause:_c(pauseBtn), snd:_c(sndBtn), tech:_c(techBtn)};
+    }catch(err){}
+  }
 
   var last=performance.now();
   function loop(now){ var dt=(now-last)/1000; last=now; if(dt>0.1)dt=0.1; try{ if(!S.over) update(dt); else { S.overT=(S.overT||0)+dt; if(S.shakeMag>0)S.shakeMag=Math.max(0,S.shakeMag-dt*24); if(S.flash>0)S.flash=Math.max(0,S.flash-dt*1.7); if(S.banner){ S.banner.life-=dt; if(S.banner.life<=0)S.banner=null; } for(var pgi=S.pings.length-1;pgi>=0;pgi--){ S.pings[pgi].life-=dt; if(S.pings[pgi].life<=0)S.pings.splice(pgi,1); } for(var fi=S.floats.length-1;fi>=0;fi--){ var f2=S.floats[fi]; f2.life-=dt; f2.y-=26*dt; if(f2.life<=0)S.floats.splice(fi,1); } } }catch(e){} try{ draw(); }catch(e){} requestAnimationFrame(loop); }
@@ -3238,65 +3366,95 @@
 })();
 
 </script>
-
-<a id="backOMC" class="back-chip" href="https://omc.network/barbarian-age" title="Back to OMC">← OMC · 蛮荒时代</a>
-<style>
-.back-chip{position:fixed;z-index:99999;display:none;align-items:center;gap:4px;background:rgba(10,8,4,.85);border:1px solid rgba(255,212,121,.45);color:#ffd479;padding:6px 12px;border-radius:8px;font:700 12px/1 "Microsoft YaHei","PingFang SC",sans-serif;text-decoration:none;opacity:.78}
-.back-chip:hover{opacity:1;border-color:#ffd479}
-</style>
 <script>
-/* desktop layer: synthetic mouse taps for keyboard play + fullscreen + back-chip placement.
-   The game kernel is untouched — we only dispatch MouseEvents its own listeners already
-   handle (mousedown/mouseup on #cv), with client coords derived from the canvas rect. */
+/* 外壳层：舞台尺寸 + 全屏 + 键盘合成点击。
+   游戏内核一字节未改——只派发它自己已在监听的 MouseEvent（mousedown/mouseup on #cv）。
+   坐标优先取自内核发布的 __BA_UI（桌面横屏），竖屏回落到 360x640 逻辑坐标表。 */
 (function(){
-  var cv=document.getElementById('cv'), stage=document.getElementById('stage'), b=document.getElementById('backOMC');
-  function tap(lx,ly){
-    var r=cv.getBoundingClientRect();
-    var x=r.left+lx*r.width/360, y=r.top+ly*r.height/640;
-    var o={clientX:x,clientY:y,bubbles:true,cancelable:true};
+  var cv=document.getElementById('cv'), stage=document.getElementById('stage'), wrap=document.getElementById('wrap');
+  function isWide(){ return !!(window.matchMedia && window.matchMedia('(min-aspect-ratio: 1/1)').matches); }
+  var LAY0=isWide();
+  function layout(){
+    if(!stage||!wrap) return;
+    var r=stage.getBoundingClientRect();
+    var ar=LAY0?(16/9):(360/640);
+    var w=r.width, h=r.height;
+    if(w<=0||h<=0) return;
+    if(w/h>ar) w=h*ar; else h=w*ar;
+    wrap.style.width=Math.max(120,Math.round(w))+'px';
+    wrap.style.height=Math.max(120,Math.round(h))+'px';
+  }
+  window.addEventListener('resize', function(){
+    /* 布局是在内核加载时定死的（__BA_Layout），跨过宽/窄阈值只能重载才能换内核布局 */
+    if(isWide()!==LAY0){ location.reload(); return; }
+    layout();
+  });
+  window.addEventListener('orientationchange', function(){ setTimeout(function(){ if(isWide()!==LAY0){ location.reload(); } else { layout(); } },260); });
+  layout();
+
+  function tapRect(p){
+    var UI=window.__BA_UI;
+    var x,y;
+    if(UI&&UI.toClient){ var c=UI.toClient(p.x,p.y); x=c[0]; y=c[1]; }
+    else { var r=cv.getBoundingClientRect(); x=r.left+p.x*r.width/360; y=r.top+p.y*r.height/640; }
+    var o={clientX:x,clientY:y,bubbles:true,cancelable:true,button:0};
     cv.dispatchEvent(new MouseEvent('mousedown',o));
     cv.dispatchEvent(new MouseEvent('mouseup',o));
   }
-  /* logical coords of on-screen controls (360x640 space) */
-  var TRAIN_X=[27,78.5,130,181.5,233,284.5];      /* train row slots 1-6, y=598 */
-  var KEYS={};
-  for(var i=0;i<TRAIN_X.length;i++) KEYS['Digit'+(i+1)]=[TRAIN_X[i],598];
-  KEYS.KeyA=[41,56];      /* 晋升时代 */
-  KEYS.KeyT=[327,19];     /* 科技树 */
-  KEYS.KeyE=[41,137];     /* 全军框选/取消 */
-  KEYS.Space=[310,49];    /* 暂停 */
-  KEYS.KeyH=[310,111];    /* 冲锋号角 */
-  KEYS.KeyF=[310,137];    /* 阵型 */
-  KEYS.KeyG=[310,163];    /* 姿态 */
-  KEYS.KeyR=[41,163];     /* 主公战吼 */
-  KEYS.KeyQ=[310,189];    /* 神罚 */
-  KEYS.KeyM=[41,83];      /* 声音 */
-  document.addEventListener('keydown',function(e){
-    if(e.repeat||e.metaKey||e.ctrlKey||e.altKey)return;
-    if(e.code==='Escape'){ tap(336,598); return; }   /* 空训练格：战斗无副作用；放置/瞄准态=取消 */
-    var p=KEYS[e.code]; if(!p)return;
-    e.preventDefault(); tap(p[0],p[1]);
+  /* 竖屏回落坐标表（360x640 逻辑空间），与桌面键位一一对应 */
+  var LEGACY={ KeyA:[41,137], KeyT:[327,19], Space:[310,49], KeyH:[310,111], F2:[310,137],
+    KeyG:[310,163], KeyR:[41,163], KeyQ:[310,189], KeyM:[41,83] };
+  var LEGACY_TRAIN=[27,78.5,130,181.5,233,284.5];
+  for(var i=0;i<LEGACY_TRAIN.length;i++) LEGACY['Digit'+(i+1)]=[LEGACY_TRAIN[i],598];
+  LEGACY.Escape=[336,598];
+  function pick(code){
+    var UI=window.__BA_UI;
+    if(UI&&UI.toClient){
+      var m=/^Digit([1-6])$/.exec(code);
+      if(m) return UI.train[+m[1]-1];
+      if(code==='KeyA') return UI.sel;
+      if(code==='F2') return UI.form;
+      if(code==='KeyR') return UI.recall;
+      if(code==='KeyH') return UI.horn;
+      if(code==='KeyG') return UI.hero;
+      if(code==='KeyQ') return UI.sp;
+      if(code==='KeyT') return UI.tech;
+      if(code==='Space') return UI.pause;
+      if(code==='KeyM') return UI.snd;
+      if(code==='Escape') return UI.esc;
+      return null;
+    }
+    return LEGACY[code]?{x:LEGACY[code][0],y:LEGACY[code][1]}:null;
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.repeat||e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.code==='KeyF'&&!e.shiftKey){
+      e.preventDefault();
+      if(document.fullscreenElement||document.webkitFullscreenElement){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+      else if(stage&&stage.requestFullscreen){ stage.requestFullscreen(); }
+      else if(stage&&stage.webkitRequestFullscreen){ stage.webkitRequestFullscreen(); }
+      return;
+    }
+    var p=pick(e.code); if(!p) return;
+    e.preventDefault(); tapRect(p);
   });
-  /* fullscreen */
+  /* #play：自测/截图用，加载后直接点「开始游戏」 */
+  if(location.hash==='#play') setTimeout(function(){
+    var UI=window.__BA_UI;
+    /* 横屏主菜单「开始游戏」= (W/2, 274)；竖屏 = (180, 245) */
+    tapRect(UI&&UI.W>600?{x:Math.round(UI.W/2),y:274}:{x:180,y:245});
+  },600);
   var fsBtn=document.getElementById('fsBtn');
   if(fsBtn&&stage){
-    fsBtn.addEventListener('click',function(){
+    fsBtn.addEventListener('click', function(){
       if(document.fullscreenElement||document.webkitFullscreenElement){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
       else if(stage.requestFullscreen){ stage.requestFullscreen(); }
       else if(stage.webkitRequestFullscreen){ stage.webkitRequestFullscreen(); }
     });
-    function fsLabel(){ fsBtn.textContent=(document.fullscreenElement||document.webkitFullscreenElement)?'⛶ 退出全屏':'⛶ 全屏游戏'; }
+    function fsLabel(){ fsBtn.textContent=(document.fullscreenElement||document.webkitFullscreenElement)?'\u26F6 退出全屏':'\u26F6 全屏游戏'; }
     document.addEventListener('fullscreenchange',fsLabel);
     document.addEventListener('webkitfullscreenchange',fsLabel);
   }
-  /* back chip sits in the stage gutter (desktop); hidden when the game fills the viewport */
-  function pl(){
-    if(!cv||!stage||!b)return;
-    var r=cv.getBoundingClientRect();
-    if(window.innerWidth-r.width>90){ var st=stage.getBoundingClientRect(); b.style.display='inline-flex'; b.style.left=Math.max(10,st.left+12)+'px'; b.style.top='18px'; }
-    else b.style.display='none';
-  }
-  window.addEventListener('resize',pl); pl();
 })();
 </script>
 </body>
