@@ -342,48 +342,70 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function altarReady(){ return !S.over && hasB('altar','you'); }               // 神罚可用前提：祭坛在场且未结算
   // ===== v2.31 互动影游「部落史诗」：过场剧情 + 抉择分支 + RTS 高潮战 + 多结局 =====
   var CUT=null;                    // 过场状态机（独立于 S：reset() 不动它，战斗胜负后回剧情用）
-  var EPIC_CH1=[                   // 第一章「野火之年」：3 过场抉择 + 3 场 RTS 高潮战 + 结局判定
-    // v2.32：每个选项携带 feat/ename/hint/say → 不同抉择跳到不同敌军部族与战场风味（不再是固定三战）
+  var EPIC_CH1=[                   // 第一章「野火之年」：3 过场抉择 + 3 场 RTS 高潮战 + 3 份战报 + 多结局
+    // v2.41 抉择可见化：每个选项携带 tag/gain（得失写在按钮上）+ 强分化 fx（真的改变打法）；
+    // 每场战斗后插入 {t:'report'} 战报节点 → 「怎么打」换算成 仁/武/谋/勇，直接决定结局。
     {t:'say', who:'旁白', feat:null, col:'#9fb2e6', text:'蛮荒历八十三年，大旱。五大部族为最后的水源互相厮杀，荒原上每天都有一个营地彻底消失。'},
     {t:'say', who:'旁白', feat:null, col:'#9fb2e6', text:'你是「炎族」的新任首领。离族前长老只留下一句话：让五个部族止战，荒原才有活路。'},
     {t:'say', who:'族长·岩', feat:'boar', col:'#9a8a5e', text:'新首领，野猪部又在边境烧杀。羸弱者不该先流血——可问题是，我们该谈，还是该打？'},
     {t:'ch', q:'边境的野猪部难民，如何处置？', opts:[
-      {txt:'开仓放粮，收留难民', flag:'mercy', fx:{res:{grain:60,wood:40}, capB:2}, feat:1, ename:'第一幕 · 野猪部边境', hint:'敌多村民、少军队，稳扎稳打即可破局', say:'你开仓放粮。难民里有人偷偷抹泪，也有人把弯刀藏进了草垛——但你看见了。'},
-      {txt:'难民也是探子，拒之门外', flag:'neutral', fx:{}, feat:3, ename:'第一幕 · 赤熊部坚壁', hint:'赤熊部重甲勇士+双环高墙，先破门户再攻坚', say:'你闭紧寨门。他们在墙外咒骂了一夜，天亮时却留下几车被遗弃的粮草。'},
-      {txt:'抓起来充作先锋', flag:'war', fx:{atk:1.15}, feat:2, ename:'第一幕 · 风狼部骑兵海', hint:'风狼骑兵冲锋极快，当心侧翼被切', say:'你把探子捆作先锋。他们战战兢兢，却比谁都怕死在你的阵前——正好拿去探路。'}]},
+      {txt:'开仓放粮，收留难民', flag:'mercy', tag:'丰饶', gain:'+90粮 +60木 · 兵营容量+2 · 采集+15%', fx:{res:{grain:90,wood:60}, capB:2, gather:1.15}, feat:1, ename:'第一幕 · 野猪部边境', hint:'资源充裕——筑兵营、补村民，稳扎稳打', say:'你开仓放粮。难民里有人偷偷抹泪，也有人把弯刀藏进了草垛——但你看见了。'},
+      {txt:'难民也是探子，拒之门外', flag:'neutral', tag:'深壁', gain:'免费城墙×3 · 敌军首波进攻推迟35秒', fx:{freeWall:3, enemyCd:35}, feat:3, ename:'第一幕 · 赤熊部坚壁', hint:'敌人还在观望——抓紧把城墙垒起来', say:'你闭紧寨门。他们在墙外咒骂了一夜，天亮时却留下几车被遗弃的粮草。'},
+      {txt:'抓起来充作先锋', flag:'war', tag:'血勇', gain:'全军攻+30% · 移速+10% · 采集-25%', fx:{atk:1.3, spd:1.1, gather:0.75}, feat:2, ename:'第一幕 · 风狼部骑兵海', hint:'攻势正盛——别跟骑兵拖，直接压过去', say:'你把探子捆作先锋。他们战战兢兢，却比谁都怕死在你的阵前——正好拿去探路。'}]},
     {t:'say', who:'巫祭·翎', feat:'eagle', col:'#4e9a6a', dyn:true, fb:'兽灵在注视着你的每一个选择。炎族的火，会记住今天烧的究竟是什么。'},
     {t:'battle'},
+    {t:'report', text:'第一份战报摊开在兽皮上。族人围着沙盘，低声念出你的名字。'},
     {t:'say', who:'旁白', feat:null, col:'#9fb2e6', text:'敌酋跪在你的阵前。他交出图腾的那一刻，部落的炊烟第一次没有转向逃难的方向。'},
     {t:'say', who:'旁白', feat:null, col:'#9fb2e6', text:'敌酋垂下头。荒原从不容人久卧——下一个对手，已经在数你的马蹄印了。'},
     {t:'ch', q:'如何处置战俘？', opts:[
-      {txt:'收编他们，荒原不缺仇敌', flag:'mercy', fx:{res:{grain:40}, spawn:['inf']}, feat:4, ename:'第二幕 · 苍鹰部箭林', hint:'苍鹰弓手如林、四塔交叉火力，须快速贴近', say:'你解开他们的绑绳。昨日的俘虏，今晨已是你阵前的弓手。'},
-      {txt:'放他们回家，带话给敌部', flag:'neutral', fx:{}, feat:2, ename:'第二幕 · 风狼部峡谷', hint:'风狼骑兵成群，隘口处勿被包抄', say:'你放他们归去。风里传回话：风狼部不信仁慈，只信刀锋。'},
-      {txt:'献给兽灵，以儆效尤', flag:'war', fx:{atk:1.1, res:{iron:50}}, feat:3, ename:'第二幕 · 赤熊部重墙', hint:'赤熊重甲+高墙，投石车拆墙最快', say:'你把战俘推上祭坛。兽灵的火光里，敌营的鼓声明显乱了半拍。'}]},
+      {txt:'收编他们，荒原不缺仇敌', flag:'mercy', tag:'归义', gain:'开局援军：弓手×2 勇士×1 · 兵营容量+1', fx:{spawn:['arc','arc','heavy'], capB:1}, feat:4, ename:'第二幕 · 苍鹰部箭林', hint:'你带着俘虏加入的援军——快速贴近四塔交叉火力', say:'你解开他们的绑绳。昨日的俘虏，今晨已是你阵前的弓手。'},
+      {txt:'放他们回家，带话给敌部', flag:'neutral', tag:'威信', gain:'敌军攻-15% · 出兵间隔+25%', fx:{enemyAtk:0.85, enemySpawn:1.25}, feat:2, ename:'第二幕 · 风狼部峡谷', hint:'他们士气低落——但仍会来，别大意', say:'你放他们归去。风里传回话：风狼部不信仁慈，只信刀锋。'},
+      {txt:'献给兽灵，以儆效尤', flag:'war', tag:'威慑', gain:'全军攻+20% · 免费城墙×2 · +60玄铁', fx:{atk:1.2, freeWall:2, res:{iron:60}}, feat:3, ename:'第二幕 · 赤熊部重墙', hint:'先破门户再攻坚——你有城墙兜底', say:'你把战俘推上祭坛。兽灵的火光里，敌营的鼓声明显乱了半拍。'}]},
     {t:'say', who:'巫祭·翎', feat:'eagle', col:'#4e9a6a', dyn:true, fb:'守住脚下，荒原从不相信侥幸。'},
     {t:'battle'},
+    {t:'report', text:'第二份战报落定。这一次，连长老都没有说话。'},
     {t:'say', who:'旁白', feat:null, col:'#9fb2e6', text:'敌军大败。而荒原最深的阴影，终于朝你转过了头。'},
     {t:'say', who:'旁白', feat:null, col:'#9fb2e6', text:'最后的战场已在眼前。无论你选择何种方式，这一战都避无可避。'},
     {t:'ch', q:'终战，你选择？', opts:[
-      {txt:'我与你单挑', flag:'honor', fx:{hero:60, enemyAtk:0.9}, feat:5, ename:'终幕 · 黑龙部圣山', hint:'单挑之势：英雄+60血，敌军攻势-10%', say:'你独自走向黑龙霸主。火把在你手中燃成一线，照见他鳞甲上一道旧伤。'},
-      {txt:'全军压上，不留活口', flag:'war', fx:{atk:1.2, res:{grain:100,wood:100}}, feat:5, ename:'终幕 · 黑龙部圣山', hint:'强攻之势：你全军+20%攻，敌军亦倾巢', say:'你举起战旗。五部联军如潮压上，黑龙的翼影在尘烟里第一次显得不那么大了。'},
-      {txt:'夜袭他们的粮草', flag:'cunning', fx:{res:{grain:200,wood:150}, enemyAtk:0.9}, feat:4, ename:'终幕 · 苍鹰部侧翼', hint:'偷袭之势：先断其粮道，敌军攻势-10%', say:'你趁夜摸进敌后。等黑龙察觉时，他的粮草早已成了你营里的炊烟。'}]},
+      {txt:'我与你单挑', flag:'honor', tag:'荣耀', gain:'英雄+120血 · 全军攻+15% · 敌军攻-15%', fx:{hero:120, atk:1.15, enemyAtk:0.85}, feat:5, ename:'终幕 · 黑龙部圣山', hint:'单挑之势：英雄身先士卒，敌军攻势-15%', say:'你独自走向黑龙霸主。火把在你手中燃成一线，照见他鳞甲上一道旧伤。'},
+      {txt:'全军压上，不留活口', flag:'war', tag:'铁流', gain:'全军攻+25% · 移速+20% · 采集-30%', fx:{atk:1.25, spd:1.2, gather:0.7}, feat:5, ename:'终幕 · 黑龙部圣山', hint:'强攻之势：你全军+25%攻，敌军亦倾巢', say:'你举起战旗。五部联军如潮压上，黑龙的翼影在尘烟里第一次显得不那么大了。'},
+      {txt:'夜袭他们的粮草', flag:'cunning', tag:'断粮', gain:'+260粮 +180木 · 敌军出兵+40% · 攻-10%', fx:{res:{grain:260,wood:180}, enemySpawn:1.4, enemyAtk:0.9}, feat:4, ename:'终幕 · 苍鹰部侧翼', hint:'偷袭之势：先断其粮道，敌军攻势-10%', say:'你趁夜摸进敌后。等黑龙察觉时，他的粮草早已成了你营里的炊烟。'}]},
     {t:'say', who:'巫祭·翎', feat:'eagle', col:'#4e9a6a', dyn:true, fb:'去吧。无论结局如何，族人的歌谣都会记住这一天。'},
     {t:'battle'},
+    {t:'report', text:'最后一份战报落定。歌谣的第一句，从今晚开始流传。'},
     {t:'say', who:'旁白', feat:null, col:'#9fb2e6', text:'敌军倒下了。荒原的风，第一次带上了雨意。'},
     {t:'end'}
   ];
   var EPIC_ENDINGS=[
     {k:'mercy', n:2, title:'黎明之子', text:'五位部族歃血为盟。你的族谱里从此没有征服，只有盟约。据说那年荒原的春天，来得特别早。'},
     {k:'war', n:2, title:'赤面王', text:'五部族臣服于你的铁蹄，连夜里哭闹的孩子听到你的名字都会止啼。王座是用敌人的号角铸成的——很重，很冷。'},
-    {k:'any', n:0, title:'荒原行者', text:'你婉拒了王座，独自走向荒原深处。后来有人说，见过你与五部兽灵对饮；也有人说，你只是走远了。'}
+    {k:'cunning', n:2, title:'天算 · 弈棋者', text:'你没有输过任何一场仗——因为开战之前你就已经赢了。五部族至今没想明白，水源是怎么在一夜之间改道的。'},
+    {k:'honor', n:2, title:'武神 · 不败者', text:'你的名字被刻在每一面缴来的盾上。黑龙霸主临死前说：输给你不丢人——然后他掰断自己的角，交给了你。'},
+    {k:'any', n:0, title:'荒原行者', text:'你婉拒了王座，独自走向荒原深处。后来有人说，见过你与五部兽灵对饮；也有人说，你只是走远了。'},
+    {k:'all', n:0, title:'荒原共主', text:'仁、武、谋、勇，你四样都拿住了。长老说这不是人族该走的路——可歌谣已经唱起来了，五部族在同一堆火旁喝酒。'}
   ];
   var epicEndBtns={again:{x:W/2-130,y:H-118,w:118,h:38}, menu:{x:W/2+12,y:H-118,w:118,h:38}};
-  function epicEnding(){   // 结局判定：仁≥2=黎明之子，武≥2=赤面王，否则=荒原行者
-    if(!CUT||!CUT.flags) return EPIC_ENDINGS[2];
+  function epicEnding(){   // v2.41：仁/武/谋/勇 四向皆≥2 → 隐藏结局「荒原共主」；否则按阈值分派
+    if(!CUT||!CUT.flags) return EPIC_ENDINGS[4];
     var f=CUT.flags;
-    if((f.mercy||0)>=2) return EPIC_ENDINGS[0];
-    if((f.war||0)>=2) return EPIC_ENDINGS[1];
-    return EPIC_ENDINGS[2];
+    var m=f.mercy||0, w=f.war||0, c=f.cunning||0, h=f.honor||0;
+    if(m>=2&&w>=2&&c>=2&&h>=2) return EPIC_ENDINGS[5];
+    if(m>=2) return EPIC_ENDINGS[0];
+    if(w>=2) return EPIC_ENDINGS[1];
+    if(c>=2) return EPIC_ENDINGS[2];
+    if(h>=2) return EPIC_ENDINGS[3];
+    return EPIC_ENDINGS[4];
+  }
+  function epicReport(){   // v2.41 战报：本幕实战数据 → 换算成剧情取向（让「怎么打」真的影响结局）
+    if(!CUT) return null;
+    var f=CUT.flags=CUT.flags||{}, got=[];
+    var loss=S.losses||0, kll=S.kills||0, rz=S.razed||0, tm=Math.round(S.t||0), hero=heroAlive();
+    if(loss<=3){ f.mercy=(f.mercy||0)+1; got.push({n:'仁', why:'我军损失 '+loss+' 人（≤3）· 兵不血刃'}); }
+    if(kll>=12){ f.honor=(f.honor||0)+1; got.push({n:'勇', why:'歼敌 '+kll+' 人（≥12）· 骁勇善战'}); }
+    if(rz>=3){ f.war=(f.war||0)+1; got.push({n:'武', why:'夷平敌军建筑 '+rz+' 座（≥3）· 犁庭扫穴'}); }
+    if(tm<=100){ f.cunning=(f.cunning||0)+1; got.push({n:'谋', why:'用时 '+tm+' 秒（≤100s）· 速战速决'}); }
+    CUT.report={n:CUT.battle||1, kills:kll, losses:loss, razed:rz, time:tm, hero:!!hero, got:got};
+    return CUT.report;
   }
   var AGES=['蛮荒','部落','城邦'];
   var TRIBE_NAMES=['野猪部','风狼部','赤熊部','苍鹰部','黑龙部'];
@@ -456,7 +478,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     S = { res:{grain:130,wood:90,iron:45}, t:0, over:0, scene:'play', menuInfo:false, panel:null, age:1, focus:null, sel:null, selA:[], dragFrom:null, selBox:null, lastTapId:0, lastTapT:0, form:0, stance:0, lastOrder:null, placing:null, ghost:null, q:{}, wallPath:null, wallDrag:false,
       rally:{x:LANE_X,y:YOUR_BASE_Y-70}, tech:{}, proj:[], units:[], parts:[], floats:[], buildings:[], nodes:[], techOpen:false, uid:0,
       kills:0, spawned:0, peak:0, shakeMag:0, flash:0, best:loadBest(), campaign:false, stage:1, maxStage:0, banner:null, enemyTrait:null, heroLv:1, horn:0, hornCd:0, paused:false, endless:false, endlessMul:1, fiveCity:false, cities:[], activeCity:1,
-      losses:0, overT:0, toast:null, resFlash:null, warMsg:null, warCd:0, edge:0, pings:[],
+      losses:0, razed:0, overT:0,   // v2.41 razed=夷平敌军建筑数（战报用）
+      toast:null, resFlash:null, warMsg:null, warCd:0, edge:0, pings:[],
       heroCd:0, streak:0, streakT:0,   // v2.27：主公战吼冷却 / 连斩计数与窗口
       sp:0, spTgt:false, fx:[],        // v2.30：神力充能 0..1 / 神罚瞄准态 / 延迟特效（踏境·地裂·箭雨·龙息）
       ai:{res:{grain:130,wood:90,iron:45}, age:1, tech:{}, push:Math.round(60*diffAI().pace), buildT:1.5, trainT:0.6, techT:5, villagerCap:diffAI().vil} };
@@ -702,7 +725,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   // ===== v2.31 互动影游引擎：过场（say）→ 抉择（ch）→ RTS 高潮战（battle）→ 多结局（end）=====
   function startEpic(){
     reset(); S.scene='cut'; S.over=0; S.banner=null; S.toast=null;
-    CUT={script:EPIC_CH1, i:0, sub:0, phase:'talk', flags:{}, mods:null, battle:0, cutT:0};
+    CUT={script:EPIC_CH1, i:0, sub:0, phase:'talk', flags:{}, mods:null, battle:0, cutT:0, tags:[], report:null};   // v2.41 tags=已作出的抉择清单（HUD/战报/结局展示用）
   }
   function cutNode(){ return CUT? CUT.script[Math.min(CUT.i, CUT.script.length-1)] : null; }
   function cutText(nd){   // v2.32：抉择分支后，动态过场节点显示该选项自带的叙事文案（否则回退 fb）
@@ -713,16 +736,17 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(!CUT) return;
     CUT.cutT=(CUT.cutT||0)+dt;
     var nd=cutNode();
-    if(CUT.phase==='talk'&&nd&&nd.t==='say'&&CUT.sub<cutText(nd).length){ CUT.sub+=dt*30; if(CUT.sub>cutText(nd).length)CUT.sub=cutText(nd).length; }
+    if(CUT.phase==='talk'&&nd&&(nd.t==='say'||nd.t==='report')&&CUT.sub<cutText(nd).length){ CUT.sub+=dt*30; if(CUT.sub>cutText(nd).length)CUT.sub=cutText(nd).length; }
   }
-  function cutOptRect(i){ var ow=DESK?400:260, oh=DESK?60:52; return {x:Math.round(W/2-ow/2), y:(DESK?372:340)+i*(oh+10), w:ow, h:oh}; }
+  function cutOptRect(i){ var ow=DESK?430:300, oh=DESK?80:66; return {x:Math.round(W/2-ow/2), y:(DESK?344:314)+i*(oh+12), w:ow, h:oh}; }   // v2.41：三行（选项 / 得失 / 将面对之敌）
   function cutDown(px,py){
     if(!CUT){ S.scene='menu'; return; }
     var nd=cutNode();
     if(CUT.phase==='choice'){
       for(var i=0;i<nd.opts.length;i++){ if(hit(cutOptRect(i),px,py)){
         CUT.flags[nd.opts[i].flag]=(CUT.flags[nd.opts[i].flag]||0)+1;
-        CUT.branch={feat:nd.opts[i].feat, ename:nd.opts[i].ename, hint:nd.opts[i].hint, say:nd.opts[i].say, flag:nd.opts[i].flag, enemyName:TRIBE_NAMES[nd.opts[i].feat-1]};   // v2.32：抉择路由 → 下一战敌军/战场/文案
+        CUT.branch={feat:nd.opts[i].feat, ename:nd.opts[i].ename, hint:nd.opts[i].hint, say:nd.opts[i].say, flag:nd.opts[i].flag, enemyName:TRIBE_NAMES[nd.opts[i].feat-1], tag:nd.opts[i].tag, gain:nd.opts[i].gain};   // v2.41：抉择路由 → 下一战敌军/战场/文案 + 可见的得失
+        if(nd.opts[i].tag){ CUT.tags=CUT.tags||[]; CUT.tags.push({tag:nd.opts[i].tag, gain:nd.opts[i].gain||''}); }
         if(!CUT.mods) CUT.mods={atk:1,hp:1,enemyAtk:1};
         var fx=nd.opts[i].fx||{};
         if(fx.atk) CUT.mods.atk*=fx.atk;
@@ -731,6 +755,11 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
         if(fx.hero) CUT.mods.heroBonus=(CUT.mods.heroBonus||0)+fx.hero;
         if(fx.spawn) CUT.mods.spawn=(CUT.mods.spawn||[]).concat(fx.spawn);
         if(fx.capB) CUT.mods.capB=(CUT.mods.capB||0)+fx.capB;
+        if(fx.gather) CUT.mods.gather=(CUT.mods.gather||1)*fx.gather;         // v2.41 采集速率
+        if(fx.spd) CUT.mods.spd=(CUT.mods.spd||1)*fx.spd;                       // v2.41 全军移速
+        if(fx.freeWall) CUT.mods.freeWall=(CUT.mods.freeWall||0)+fx.freeWall;   // v2.41 免费城墙段数
+        if(fx.enemyCd) CUT.mods.enemyCd=(CUT.mods.enemyCd||0)+fx.enemyCd;       // v2.41 敌军首波推迟
+        if(fx.enemySpawn) CUT.mods.enemySpawn=(CUT.mods.enemySpawn||1)*fx.enemySpawn;   // v2.41 敌军出兵间隔
         sfx('spawn'); cutAdvance(); return; } }
       return;
     }
@@ -739,7 +768,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       if(hit(epicEndBtns.menu,px,py)){ CUT=null; toMenu(); return; }
       return;
     }
-    if(nd&&nd.t==='say'&&CUT.sub<cutText(nd).length){ CUT.sub=cutText(nd).length; return; }   // 先补全打字机，再点才下一句
+    if(nd&&(nd.t==='say'||nd.t==='report')&&CUT.sub<cutText(nd).length){ CUT.sub=cutText(nd).length; return; }   // 先补全打字机，再点才下一句
     cutAdvance();
   }
   function cutAdvance(){
@@ -762,8 +791,15 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(S.epicMod.spawn) for(var si=0;si<S.epicMod.spawn.length;si++){ var tp=S.epicMod.spawn[si], su=UNIT[tp], sgm=ageMul('you');   // v2.31 抉择援军：开局直接加入（不占产线）
       S.units.push({id:++S.uid,side:'you',type:tp,x:LANE_X+(Math.random()*2-1)*40,y:YOUR_BASE_Y-22,
         hp:su.hp*sgm*(S.epicMod.hp||1),maxhp:su.hp*sgm*(S.epicMod.hp||1),atkU:su.atkU*sgm*(S.epicMod.atk||1),atkB:su.atkB*sgm*(S.epicMod.atk||1),
-        range:su.range,speed:su.speed,cd:0,dead:false,deadT:0,t:Math.random()*6,hitFlash:0,node:null,face:1,swing:0,walk:Math.random()*6,dustT:0,foff:0,stage:false}); }
-    S.banner={txt: br.ename || nd.name || ('第'+(CUT.battle)+'幕'), life:2.8,max:2.8}; if(br.hint) toast(br.hint, null, W/2, FIELD_TOP+70); sfx('age');
+        range:su.range,speed:su.speed*(S.epicMod.spd||1),cd:0,dead:false,deadT:0,t:Math.random()*6,hitFlash:0,node:null,face:1,swing:0,walk:Math.random()*6,dustT:0,foff:0,stage:false}); }
+    if(S.epicMod.freeWall){            // v2.41「深壁/威慑」：开局在主营前免费落数段城墙
+      var _fw=Math.min(S.epicMod.freeWall|0, WALL_MAX), _wx0=LANE_X-(_fw-1)*30/2, _wi;
+      for(_wi=0;_wi<_fw;_wi++){ var _wx=Math.round(_wx0+_wi*30), _wy=YOUR_BASE_Y-64;
+        if(countB('wall','you')<WALL_MAX&&validSpot('you','wall',_wx,_wy,11)){ S.buildings.push({type:'wall',side:'you',x:_wx,y:_wy,hp:340,maxhp:340,hitFlash:0,cd:0,hw:11});
+          for(var _wp=0;_wp<6;_wp++) part('dust',_wx+(Math.random()*2-1)*14,_wy+10); } } }
+    if(S.epicMod.enemyCd) S.ai.push=(S.ai.push||0)+S.epicMod.enemyCd;   // v2.41「深壁」：敌军首波总攻推迟
+    S.banner={txt:(br.tag?('【'+br.tag+'】'):'')+(br.ename || nd.name || ('第'+(CUT.battle)+'幕')), life:2.8,max:2.8};   // v2.41：幕名带上抉择标签
+    if(br.gain||br.hint) toast('本幕得失：'+(br.gain||''), null, W/2, FIELD_TOP+72, br.hint||null); sfx('age');   // v2.41：得失+提示同屏双行
   }
   function epicResume(){          // 战斗胜利 → 结算页「继续征程」→ 回到剧情的下一节点
     S.over=0; S.scene='cut'; S.epicDone=0;
@@ -815,15 +851,47 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       var el=[]; (function(){ var cur=''; for(var c=0;c<ed.text.length;c++){ cur+=ed.text[c]; if(tw(cur)>ew-64){ el.push(cur); cur=''; } } if(cur)el.push(cur); })();
       for(var li=0;li<el.length;li++) ctx.fillText(el[li],W/2,eTop+92+li*20);
       var fx2=CUT.flags||{};
-      ctx.fillStyle='#9fb2e6'; ctx.font='12px sans-serif'; ctx.fillText('本章抉择   仁 ×'+(fx2.mercy||0)+'    武 ×'+(fx2.war||0)+'    谋 ×'+((fx2.cunning||0)+(fx2.neutral||0))+'    勇 ×'+(fx2.honor||0),W/2,eTop+92+el.length*20+20);
+      ctx.fillStyle='#9fb2e6'; ctx.font=(DESK?13:11)+'px sans-serif';
+      ctx.fillText('取向   仁 ×'+(fx2.mercy||0)+'    武 ×'+(fx2.war||0)+'    谋 ×'+(fx2.cunning||0)+'    勇 ×'+(fx2.honor||0),W/2,eTop+92+el.length*20+20);
+      var _et=(CUT.tags||[]).map(function(t){ return '【'+t.tag+'】'+t.gain; }).join('　');
+      if(_et){ var _el2=[]; (function(){ var cur=''; for(var cc=0;cc<_et.length;cc++){ cur+=_et[cc]; if(tw(cur)>ew-72){ _el2.push(cur); cur=''; } } if(cur)_el2.push(cur); })();
+        ctx.font=(DESK?11:9)+'px sans-serif'; ctx.fillStyle='#8ba3cc';
+        for(var li3=0;li3<Math.min(_el2.length,3);li3++) ctx.fillText(_el2[li3],W/2,eTop+92+el.length*20+42+li3*(DESK?17:14)); }
       drawBtn(epicEndBtns.again,'重开史诗',true); drawBtn(epicEndBtns.menu,'返回主菜单',true);
     } else if(CUT.phase==='choice'){
       var qn=cutNode();
-      ctx.fillStyle='rgba(255,212,121,.94)'; ctx.font='bold 15px sans-serif'; ctx.textAlign='center'; ctx.fillText(qn.q,W/2,300);
+      ctx.fillStyle='rgba(255,212,121,.94)'; ctx.font='bold '+(DESK?17:14)+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(qn.q,W/2,DESK?306:292);
       for(var oi=0;oi<qn.opts.length;oi++){ var ob=cutOptRect(oi);
         ctx.fillStyle='rgba(20,26,48,.92)'; rr(ob.x,ob.y,ob.w,ob.h,10); ctx.fill();
         ctx.strokeStyle='#ffd479'; ctx.lineWidth=1.5; rr(ob.x+.5,ob.y+.5,ob.w-1,ob.h-1,10); ctx.stroke();
-        ctx.fillStyle='#ffe7a8'; ctx.font='13px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(qn.opts[oi].txt,ob.x+ob.w/2,ob.y+ob.h/2); }
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillStyle='#ffe7a8'; ctx.font='bold '+(DESK?15:12)+'px sans-serif'; ctx.fillText(qn.opts[oi].txt,ob.x+ob.w/2,ob.y+(DESK?24:20));
+        ctx.fillStyle='#9fd8a8'; ctx.font=(DESK?12:9)+'px sans-serif'; ctx.fillText(qn.opts[oi].gain||'',ob.x+ob.w/2,ob.y+(DESK?48:39));
+        ctx.fillStyle='rgba(255,212,121,.6)'; ctx.font=(DESK?10:9)+'px sans-serif'; ctx.fillText('将面对 → '+(qn.opts[oi].ename||''),ob.x+ob.w/2,ob.y+(DESK?66:56)); }
+    } else if(nd&&nd.t==='report'){
+      var rp=CUT.report||{n:1,kills:0,losses:0,razed:0,time:0,got:[]};
+      var rw=DESK?Math.min(W-48,800):(W-48), rx=Math.round((W-rw)/2), ry=DESK?78:62, rh=DESK?410:380;
+      ctx.fillStyle='rgba(8,10,20,.95)'; rr(rx,ry,rw,rh,16); ctx.fill();
+      ctx.strokeStyle='#ffd479'; ctx.lineWidth=1.6; rr(rx+.5,ry+.5,rw-1,rh-1,16); ctx.stroke();
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle='#ffe7a8'; ctx.font='bold '+(DESK?24:19)+'px sans-serif'; ctx.fillText('第 '+rp.n+' 幕 · 战报',W/2,ry+38);
+      ctx.strokeStyle='rgba(255,212,121,.4)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(rx+40,ry+58); ctx.lineTo(rx+rw-40,ry+58); ctx.stroke();
+      ctx.fillStyle='#cfe0ff'; ctx.font=(DESK?13:11)+'px sans-serif';
+      var rshow=Math.min(cutText(nd).length,Math.floor(CUT.sub)); ctx.fillText(cutText(nd).slice(0,rshow),W/2,ry+78);
+      var rrows=[['歼敌',''+rp.kills],['我军损失',''+rp.losses],['夷平敌军建筑',''+rp.razed],['用时',rp.time+' 秒']], rry=ry+112, ri;
+      for(ri=0;ri<rrows.length;ri++){
+        ctx.textAlign='left'; ctx.fillStyle='#9fb2e6'; ctx.font=(DESK?13:11)+'px sans-serif'; ctx.fillText(rrows[ri][0],rx+56,rry);
+        ctx.textAlign='right'; ctx.fillStyle='#ffe7a8'; ctx.font='bold '+(DESK?15:12)+'px sans-serif'; ctx.fillText(rrows[ri][1],rx+rw-56,rry);
+        ctx.strokeStyle='rgba(159,178,230,.18)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(rx+52,rry+15); ctx.lineTo(rx+rw-52,rry+15); ctx.stroke();
+        rry+=31; }
+      ctx.textAlign='center'; ctx.fillStyle='#ffd479'; ctx.font='bold '+(DESK?14:12)+'px sans-serif';
+      ctx.fillText((rp.got&&rp.got.length)?'—— 本幕战绩换来的取向 ——':'本幕未换来任何取向：族人记不住这一战',W/2,rry+12);
+      rry+=42;
+      if(rp.got&&rp.got.length) for(var gi=0;gi<rp.got.length;gi++){ var gg=rp.got[gi];
+        ctx.textAlign='left'; ctx.fillStyle='#5fe0a8'; ctx.font='bold '+(DESK?15:12)+'px sans-serif'; ctx.fillText('【'+gg.n+'】',rx+64,rry);
+        ctx.fillStyle='#cfe0ff'; ctx.font=(DESK?12:10)+'px sans-serif'; ctx.fillText(gg.why,rx+64+(DESK?58:48),rry);
+        rry+=26; }
+      if(CUT.sub>=cutText(nd).length){ var bl2=0.5+0.5*Math.sin(CUT.cutT*5); ctx.fillStyle='rgba(255,212,121,'+bl2.toFixed(2)+')'; ctx.font='11px sans-serif'; ctx.textAlign='right'; ctx.fillText('点击继续 ▸', rx+rw-16, ry+rh-16); }
     } else if(nd){
       var hasP=!!nd.feat;
       var bw=DESK?Math.min(W-32,960):(W-32), bx=Math.round((W-bw)/2), by=H-(DESK?200:186), bh=DESK?184:170;
@@ -862,8 +930,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     for(var k in cost){ if(S.res[k]<cost[k]) return {txt:RES_NAME[k]+'不足 差'+Math.ceil(cost[k]-S.res[k]), res:k}; }
     return null;
   }
-  function toast(txt,res,x,y){
-    S.toast={txt:txt,life:1.9,max:1.9,res:res||null,x:(x==null?W/2:x),y:(y==null?(FIELD_BOT-16):y)};
+  function toast(txt,res,x,y,sub){   // v2.41 sub=第二行（部落史诗「本幕得失」+「战术提示」同屏，不再互相覆盖）
+    S.toast={txt:txt,sub:sub||null,life:1.9,max:1.9,res:res||null,x:(x==null?W/2:x),y:(y==null?(FIELD_BOT-16):y)};
     if(res) S.resFlash={k:res,life:0.9,max:0.9};
   }
   function failTap(def,rect){                    // 点了置灰按钮 → 说明原因
@@ -920,7 +988,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     var inNeut = (y>=MID_Y-NEUT&&y<=MID_Y+NEUT);
     if(!(inOwn||(inNeut&&type==='outpost'))) return false;      // 只准在自家腹地建；哨站可前出到争夺带
     for(var i=0;i<S.buildings.length;i++){ var b=S.buildings[i]; if(b.dead)continue;
-      var hw2=HALFW[b.type]||18;
+      var hw2=b.hw||HALFW[b.type]||18;   // v2.41：用实例真实半宽（城墙实放 hw=11，HALFW.wall=34 只是绘制基准）——否则 30px 段距的连续城墙全被判重叠
       if(dist(b,{x:x,y:y}) < hw+hw2+6) return false; }
     for(var j=0;j<S.nodes.length;j++){ var n=S.nodes[j]; if(dist(n,{x:x,y:y}) < hw+16) return false; }
     return true;
@@ -983,7 +1051,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     var _watk=(side==='you'&&S.epicMod&&S.epicMod.atk)?2*gm*S.epicMod.atk:2*gm;    // v2.31 抉择 mods：村民攻击加成
     var by = side==='you'?YOUR_BASE_Y-14:eby+14;
     S.units.push({id:++S.uid,side:side,type:'work',x:(side==='you'?LANE_X:ebx)+(Math.random()*2-1)*40,y:by,
-      hp:hpv,maxhp:hpv,atkU:_watk,atkB:_watk,range:18,speed:42,cd:0,dead:false,deadT:0,t:Math.random()*6,
+      hp:hpv,maxhp:hpv,atkU:_watk,atkB:_watk,range:18,speed:42*(side==='you'&&S.epicMod&&S.epicMod.spd?S.epicMod.spd:1),cd:0,dead:false,deadT:0,t:Math.random()*6,
       hitFlash:0,node:null,face:side==='you'?1:-1,swing:0,walk:Math.random()*6,dustT:0,foff:(Math.random()*2-1)*40,stage:true,city:(side==='enemy'?S.activeCity:0)});
   }
   function catOf(type){ return type==='work'?'base':(type==='siege'?'forge':(type==='arc'?'range':'barracks')); }
@@ -997,7 +1065,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(b2.melee){ atkU=b2.atkU*am*gm; atkB=b2.atkB*am*gm; } else { atkU=b2.atkU*rm*gm; atkB=b2.atkB*rm*gm; }
     var hpv=b2.hp*hm*gm, rng2=b2.range, sp2=b2.speed*sm;
     if(side==='enemy'){ var _tn={hp:hpv,maxhp:hpv,atkU:atkU,atkB:atkB,range:rng2,speed:sp2}; applyTraitMods(_tn,type,S.enemyTrait); hpv=_tn.hp; atkU=_tn.atkU; atkB=_tn.atkB; rng2=_tn.range; sp2=_tn.speed; }
-    if(side==='you'&&S.epicMod){ if(S.epicMod.hp&&S.epicMod.hp!==1) hpv*=S.epicMod.hp; if(S.epicMod.atk&&S.epicMod.atk!==1){ atkU*=S.epicMod.atk; atkB*=S.epicMod.atk; } }   // v2.31 抉择 mods：全军生命/攻击加成
+    if(side==='you'&&S.epicMod){ if(S.epicMod.hp&&S.epicMod.hp!==1) hpv*=S.epicMod.hp; if(S.epicMod.atk&&S.epicMod.atk!==1){ atkU*=S.epicMod.atk; atkB*=S.epicMod.atk; } if(S.epicMod.spd&&S.epicMod.spd!==1) sp2*=S.epicMod.spd; }   // v2.31 抉择 mods：全军生命/攻击加成 + v2.41 移速
     var by = side==='you'?YOUR_BASE_Y-14:eby+14;
     S.units.push({id:++S.uid,side:side,type:type,x:(side==='you'?LANE_X:ebx)+(Math.random()*2-1)*66,y:by,
       hp:hpv,maxhp:hpv,atkU:atkU,atkB:atkB,range:rng2,speed:sp2,
@@ -1115,7 +1183,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     }
     // 暴兵（村民没补到 6 个前优先发展经济）
     A.trainT-=dt;
-    if(A.trainT<=0&&S.t>2&&countWork('enemy')>=6&&countArmy('enemy')<13+A.age*4+diffAI().cap){ A.trainT=0.6;
+    if(A.trainT<=0&&S.t>2&&countWork('enemy')>=6&&countArmy('enemy')<13+A.age*4+diffAI().cap){ A.trainT=0.6*(S.epicMod&&S.epicMod.enemySpawn?S.epicMod.enemySpawn:1);   // v2.41「威信/断粮」：敌军出兵变慢
       A.trainN=(A.trainN||0)+1;
       var order = A.age>=3? ((A.trainN%4===2)?['cav','inf','arc','heavy']:['inf','arc','heavy','cav']) : (A.age>=2? ['inf','arc','heavy'] : ['inf','arc']);
       for(var oi=0;oi<order.length;oi++){ var ty=order[oi], rqb=AI_BUILD_REQ[ty];
@@ -1242,7 +1310,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
         }
         if(u.node){ var d2=dist(u.node,u), vx=(u.node.x-u.x), vy=(u.node.y-u.y);
           if(d2>22){ u.x+=vx/d2*u.speed*dt; u.y+=vy/d2*u.speed*dt; if(Math.abs(vx)>3)u.face=vx>0?1:-1; u.walk+=dt*9; }
-          else { var g=(sideState(u.side).tech.farm?10:6.5)*dt; var take=Math.min(g,u.node.amt); u.node.amt-=take; sideState(u.side).res[u.node.type]+=take; if(Math.random()<dt*2)part('dust',u.x+(Math.random()*2-1)*8,u.y); } }
+          else { var g=(sideState(u.side).tech.farm?10:6.5)*dt*(u.side==='you'&&S.epicMod&&S.epicMod.gather?S.epicMod.gather:1); var take=Math.min(g,u.node.amt); u.node.amt-=take; sideState(u.side).res[u.node.type]+=take; if(Math.random()<dt*2)part('dust',u.x+(Math.random()*2-1)*8,u.y); } }
         u.dustT-=dt; if(u.dustT<=0){ u.dustT=0.22; part('dust',u.x,u.y+2); }
         continue;
       }
@@ -1322,10 +1390,12 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     S.units=S.units.filter(function(u){return !(u.dead&&u.deadT>0.95);});   // 倒地旋转动画需要更长寿命
     for(i=0;i<S.buildings.length;i++){ var bld=S.buildings[i]; if(bld.dead)continue; if(bld.hp<=0){ if(bld.type==='base'){
         if(bld.side==='you'){ S.over=2; sfx('lose'); shake(9); S.flash=1; S.banner={txt:'城池陷落…',life:2.4,max:2.4}; saveBest(); awardRunGem(); }
-        else if(S.epic){ S.over=1; S.epicDone=1; S.epicNext=(CUT?CUT.i+1:0); sfx('win'); shake(9); S.flash=1; S.banner={txt:'战斗胜利！',life:2.4,max:2.4}; saveBest(); }   // v2.31 部落史诗：本幕胜 → 回剧情（不走战役推进）
+        else if(S.epic){ epicReport(); S.over=1; S.epicDone=1; S.epicNext=(CUT?CUT.i+1:0); sfx('win'); shake(9); S.flash=1; S.banner={txt:'战斗胜利！',life:2.4,max:2.4}; saveBest(); }   // v2.41 部落史诗：本幕胜 → 先算战报 → 回剧情
         else if(S.campaign && (S.endless || S.stage<S.maxStage)){ S.flash=1; S.banner={txt:'征服成功！整备后进军下一部族',life:2.4,max:2.4}; nextCampaignStage(); }   // 战役：攻克当前部族 → 自动进军下一部族（全新战场）
         else { S.over=1; sfx('win'); shake(9); S.flash=1; S.banner={txt:'征服大片！',life:2.4,max:2.4}; saveBest(); }
-      } bld.dead=true;
+      }
+      if(bld.side==='enemy') S.razed=(S.razed||0)+1;   // v2.41 战报：夷平敌军建筑数
+      bld.dead=true;
       var _dn = bld.type==='base'?40:(bld.type==='wall'?28:22);
       for(var e2=0;e2<_dn;e2++) part('debris', bld.x+(Math.random()*2-1)*28, bld.y+(Math.random()*2-1)*22);
       for(var e3=0;e3<9;e3++) part('spark', bld.x+(Math.random()*2-1)*20, bld.y+(Math.random()*2-1)*16);
@@ -3888,6 +3958,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       else if(S.hornCd<=0&&countArmy('you')>=5&&tipOn('horn')) hintBar='技巧：点「冲锋号角」全军 6 秒提速 35%、攻击 +25%（冷却 26s）';
       else if(S.t>150&&countB('outpost','you')===0) hintBar='提示：哨站可前出争夺带（开视野+回血光环）';
       else if(S.t>240&&S.age<2) hintBar='提示：资源宽裕就点「晋升」进入下一时代';
+      else if(S.epic&&CUT&&CUT.tags&&CUT.tags.length) hintBar='本章抉择：'+CUT.tags.map(function(t){ return '【'+t.tag+'】'+t.gain; }).join('　');
     }
     if(hintBar){
       var hbx=DESK?156:78, hbw=W-hbx-(DESK?200:106), hby=FIELD_TOP+4;   // v2.33：竖屏提示条收进中央 gutter（左右按钮列之间），不再越过右列压住暂停键
@@ -4026,13 +4097,16 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     // ===== v2.25 ①：置灰按钮点按提示 =====
     if(!S.over && S.toast){
       var _ta=Math.min(1,S.toast.life/0.28);
-      var _tw=Math.min(W-24, S.toast.txt.length*10.6+26);
-      var _tx=Math.max(12,Math.min(W-12-_tw, S.toast.x-_tw/2)), _ty=S.toast.y-13;
+      var _t2=!!S.toast.sub, _th=_t2?40:26;   // v2.41：双行药丸（得失 + 战术提示）
+      var _tw=Math.min(W-24, Math.max(S.toast.txt.length, _t2?S.toast.sub.length:0)*10.6+26);
+      var _tx=Math.max(12,Math.min(W-12-_tw, S.toast.x-_tw/2)), _ty=S.toast.y-_th/2;
       ctx.globalAlpha=_ta;
-      ctx.fillStyle='rgba(28,10,8,.95)'; rr(_tx,_ty,_tw,26,7); ctx.fill();
-      ctx.strokeStyle='rgba(255,120,96,.88)'; ctx.lineWidth=1.2; rr(_tx+.6,_ty+.6,_tw-1.2,25,7); ctx.stroke();
+      ctx.fillStyle='rgba(28,10,8,.95)'; rr(_tx,_ty,_tw,_th,7); ctx.fill();
+      ctx.strokeStyle='rgba(255,120,96,.88)'; ctx.lineWidth=1.2; rr(_tx+.6,_ty+.6,_tw-1.2,_th-1.2,7); ctx.stroke();
       ctx.fillStyle='#ffb08a'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText(S.toast.txt, _tx+_tw/2, _ty+13.5);
+      if(_t2){ ctx.fillText(S.toast.txt, _tx+_tw/2, _ty+11.5);
+        ctx.fillStyle='#ffd9a8'; ctx.font='10px sans-serif'; ctx.fillText(S.toast.sub, _tx+_tw/2, _ty+27); }
+      else ctx.fillText(S.toast.txt, _tx+_tw/2, _ty+13.5);
       ctx.globalAlpha=1;
     }
     // ===== v2.25 ②：受袭屏幕边缘红光 =====
