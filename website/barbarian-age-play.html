@@ -2838,8 +2838,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   var B3_COL=['#d7e3f7','#f6e9c6','#ff9a4d','#a4e08d','#8fc4f5','#f0a6c8','#c8c2b4','#cda9f7'];
   function b3Layout(){                       // 按可用高度自适应：顶栏 104、底部提示 34，其余尽量给石板
     var avail=H-104-34;
-    var ts=clamp(Math.floor(Math.min(W*0.076,(avail-52)/5.78)),22,96);
-    var hs=Math.round(ts/2), bw=12*hs+ts, bh=8*hs+ts;   // 7 列 × 5 行（半格错位堆叠）
+    var ts=clamp(Math.floor(Math.min(W*0.076,(avail-52)/7.78)),22,96);
+    var hs=Math.round(ts/2), bw=16*hs+ts, bh=12*hs+ts;   // 9 列 × 7 行（半格错位 4 层堆叠）
     var t2=Math.round(ts*0.78), gp=8, tw=t2*7+gp*6;
     var content=bh+16+t2+34;
     var by=Math.round(104+Math.max(12,(avail-content)/2));
@@ -2910,8 +2910,9 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function b3Start(level){
     reset(); S.scene='bone3';
     var lv=clamp(level||1,1,3), L=b3Layout();
-    var quota=[[14,10,6],[20,14,8],[26,18,10]][lv-1], lay=[[7,5],[6,4],[5,3]], pool=[];   // 30 / 42 / 54 块
-    for(var l=0;l<3;l++){
+    var _bspec=[[22,18,12,8, 6,3,2],[30,26,18,10, 7,2,1],[38,32,22,16, 8,1,1]][lv-1];   // L1 60 / L2 84 / L3 108 块（4 层）
+    var quota=_bspec.slice(0,4), lay=[[9,7],[8,6],[7,5],[6,4]], pool=[];   // 63 / 48 / 35 / 24 格
+    for(var l=0;l<lay.length;l++){
       var c=lay[l][0], rw=lay[l][1], arr=[];
       for(var j=0;j<rw;j++) for(var i=0;i<c;i++) arr.push({layer:l,gx:i*2+l,gy:j*2+l});
       for(var s=arr.length-1;s>0;s--){ var q=Math.floor(Math.random()*(s+1)), tm=arr[s]; arr[s]=arr[q]; arr[q]=tm; }
@@ -2926,7 +2927,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       var pk=free[Math.floor(Math.random()*free.length)];
       order.push(rem[pk]); rem.splice(pk,1);
     }
-    var kn=lv+5, kinds=[];
+    var kn=_bspec[4], kinds=[];
     for(var g=0;g<Math.ceil(order.length/3);g++) kinds.push(g%kn);
     for(var sh=kinds.length-1;sh>0;sh--){ var q2=Math.floor(Math.random()*(sh+1)), tk=kinds[sh]; kinds[sh]=kinds[q2]; kinds[q2]=tk; }
     var tiles=[];
@@ -2935,7 +2936,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       tiles.push({kind:kinds[Math.floor(o/3)], layer:st.layer, gx:st.gx, gy:st.gy,
         bx:cx, by:cy, x:cx, y:cy, tx:cx, ty:cy, sz:L.ts, state:'board', popT:0});
     }
-    B3={level:lv, L:L, tiles:tiles, tray:[], parts:[], state:'play', t:0, undo:3, shuf:2, msg:null, msgT:0};
+    B3={level:lv, L:L, tiles:tiles, tray:[], parts:[], state:'play', t:0, undo:_bspec[5], shuf:_bspec[6], msg:null, msgT:0};
     sfx('build');
   }
   function b3StartMode(){ b3Start(1); }
