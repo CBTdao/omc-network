@@ -90,7 +90,7 @@ img { max-width: 100%; display: block; }
   height: 68px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 16px;
 }
 
@@ -125,9 +125,13 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
 }
 
-.nav-links { display: flex; align-items: center; gap: 4px; }
+/* brand left, the whole action cluster (menu + airdrop CTA + wallet + language)
+   right-aligned. The CTA used to sit outside this group and was pushed to the far
+   right on its own, which left a ~220px dead hole in the middle in Chinese (its
+   labels are ~120px shorter than English). Keeping it in the flow closes that. */
+.nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
 
-.nav-links a {
+.nav-links a:not(.nav-cta) {
   color: var(--muted);
   font-size: 14.5px;
   font-weight: 600;
@@ -139,9 +143,11 @@ img { max-width: 100%; display: block; }
   flex: none;
 }
 
-.nav-links a:hover { color: var(--text); background: var(--panel); }
+/* :not(.nav-cta) — the airdrop CTA is an <a> inside the same list and must keep
+   its gradient, otherwise the generic hover wash repaints it grey on hover */
+.nav-links a:not(.nav-cta):hover { color: var(--text); background: var(--panel); }
 
-.nav-links a.active { color: #fff; background: var(--accent-soft); }
+.nav-links a:not(.nav-cta).active { color: #fff; background: var(--accent-soft); }
 
 /* ---------- nav dropdown groups ---------- */
 .nav-drop { position: relative; }
@@ -210,18 +216,22 @@ img { max-width: 100%; display: block; }
 
 .nav-drop-menu a.active { color: #fff; background: var(--accent-soft); }
 
+/* sits inside .nav-links, right after Whitepaper and before the wallet button */
 .nav-cta {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   background: linear-gradient(135deg, var(--accent), #4f8bff);
   color: #fff !important;
+  font-size: 14.5px;
   font-weight: 700;
-  padding: 9px 18px !important;
+  line-height: 1.45;
+  padding: 9px 18px;
   border-radius: 11px;
   box-shadow: 0 6px 20px rgba(43, 107, 243, 0.4);
   white-space: nowrap;
   flex: none;
+  margin: 0 6px;
 }
 
 .nav-cta:hover { filter: brightness(1.12); transform: translateY(-1px); }
@@ -1178,14 +1188,16 @@ footer {
 
 @media (max-width: 1024px) {
   .nav-inner { gap: 12px; }
-  /* brand left; CTA + burger grouped on the right */
-  .nav-cta { margin-left: auto; }
+  /* brand left, burger right — the CTA now lives inside the panel, so it
+     stretches to a full-width button under the menu items */
+  .nav-links .nav-cta { margin: 10px 0 0; justify-content: center; }
   .nav-links {
     display: none;
     position: absolute;
     top: 68px;
     left: 0;
     right: 0;
+    margin: 0;
     flex-direction: column;
     align-items: stretch;
     background: #070d1c;
@@ -1230,7 +1242,7 @@ footer {
 @media (max-width: 560px) {
   .nav-inner { padding: 0 14px; gap: 8px; }
   .brand span { display: none; }
-  .nav-cta { padding: 8px 12px !important; font-size: 13px; }
+  .nav-cta { padding: 10px 12px; font-size: 13.5px; }
 }
 
 /* ============================================================
