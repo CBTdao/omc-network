@@ -38,7 +38,8 @@ window.I18N.zh = {
   "nav.wp": "白皮书",
   "nav.testnet": "测试网",
   "nav.stake": "质押",
-  "nav.airdrop": "空投",
+  "nav.product": "产品",
+  "nav.network": "网络",
   "nav.claim": "🎁 参与空投",
 
   "footer.tag": "去中心化高性能 GPU 基础设施网络，构建 DeAI 的未来。",

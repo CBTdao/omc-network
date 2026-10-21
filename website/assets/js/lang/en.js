@@ -40,7 +40,8 @@ window.I18N.en = {
   "nav.wp": "Whitepaper",
   "nav.testnet": "Testnet",
   "nav.stake": "Stake",
-  "nav.airdrop": "Airdrop",
+  "nav.product": "Product",
+  "nav.network": "Network",
   "nav.claim": "🎁 Claim Airdrop",
 
   /* footer (shared) */

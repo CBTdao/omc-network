@@ -138,6 +138,71 @@ img { max-width: 100%; display: block; }
 
 .nav-links a.active { color: #fff; background: var(--accent-soft); }
 
+/* ---------- nav dropdown groups ---------- */
+.nav-drop { position: relative; }
+
+.nav-drop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 14.5px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 8px 14px;
+  border: 0;
+  background: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-drop-btn:hover,
+.nav-drop-btn:focus-visible,
+.nav-drop-btn.active { color: var(--text); background: var(--panel); outline: none; }
+
+.nav-drop-btn.active { color: #fff; background: var(--accent-soft); }
+
+.nav-drop-btn .caret { font-size: 9px; line-height: 1; opacity: 0.65; transition: transform 0.2s; }
+
+.nav-drop:hover > .nav-drop-btn .caret,
+.nav-drop.open > .nav-drop-btn .caret { transform: rotate(180deg); }
+
+.nav-drop-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 196px;
+  padding: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 120;
+}
+
+.nav-drop:hover > .nav-drop-menu,
+.nav-drop:focus-within > .nav-drop-menu,
+.nav-drop.open > .nav-drop-menu { display: flex; }
+
+/* drop-menu links are styled independently of the flat nav links */
+.nav-drop-menu a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 12px;
+  border-radius: 8px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.nav-drop-menu a:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
+
+.nav-drop-menu a.active { color: #fff; background: var(--accent-soft); }
+
 .nav-cta {
   display: inline-flex;
   align-items: center;
@@ -1117,6 +1182,20 @@ footer {
   }
   .nav-links.open { display: flex; }
   .nav-burger { display: block; }
+  /* mobile: dropdowns render inline & always open inside the panel */
+  .nav-drop { position: static; }
+  .nav-drop-btn { width: 100%; justify-content: space-between; padding: 10px 12px; }
+  .nav-drop-btn .caret { transform: rotate(0); }
+  .nav-drop-menu {
+    position: static;
+    display: flex;
+    min-width: 0;
+    padding: 0 0 4px 14px;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+  .nav-drop-menu a { padding: 9px 12px; }
   .grid-2, .grid-3, .reward-grid, .dl-cards { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 64px 0; }
