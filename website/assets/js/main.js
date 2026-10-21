@@ -154,11 +154,11 @@ const MAX_DAILY = 1;                                    // per UTC+8 calendar da
    never render them in the UI or in visible copy.
    ============================================================ */
 /* internal only — the UI never quotes a network-fee figure */
-/* Airdrop opens together with mainnet; the public commitment is the 2027
-   Q2–Q3 window, so these are its earliest bound (see airdrop-stats.js).
-   Re-pin when the exact TGE date is announced. */
-const AIRDROP_START = new Date("2027-04-01T00:00:00+08:00").getTime();
-const AIRDROP_END = new Date("2027-07-01T23:59:59+08:00").getTime();
+/* Airdrop opens together with mainnet, staking and the claim window on
+   2027-01-01 (UTC+8); the campaign runs three months (see airdrop-stats.js,
+   which must carry the same two instants). */
+const AIRDROP_START = new Date("2027-01-01T00:00:00+08:00").getTime();
+const AIRDROP_END = new Date("2027-03-31T23:59:59+08:00").getTime();
 const TASK_IDS = ["follow", "retweet", "telegram"];
 
 function i18n(key, params) {
@@ -285,7 +285,7 @@ function renderAirdrop() {
   }
 
   /* Claim-all — claim-as-you-go: the claim window opens together with
-     participation at mainnet (2027 Q2–Q3), the same day staking opens. */
+     participation at mainnet (2027-01-01, UTC+8), the same day staking opens. */
   const cAll = document.getElementById("claimAllBtn");
   if (cAll) {
     const claimOpen = now >= AIRDROP_START;
