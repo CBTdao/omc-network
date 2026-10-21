@@ -3159,11 +3159,17 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       b3Btn(P.b1,(B3.state==='clear')?'下一关':'再来一局',true); b3Btn(P.b2,'返回菜单',true);
     }
   }
-  // ===== v2.37 桌面专属玩法：荒原大逃杀（潮玩大逃杀式 · 房间躲杀手）=====
-  // 参考：一座多房间营地，族人成堆在房里产宝石；每回合「荒原杀手」锁定一处房间，
-  // 待在/跑向那间房的族人会被清场。搬家躲杀 + 投入宝石扩编，十回合后按宝石排行。
+  // ===== v2.37 桌面专属玩法：荒原大逃杀（压宝石 · 房间躲杀手）=====
+  // v2.39 经济（压宝石）：设计给「很多玩家同时在线」——9 个房间、每间都是真实玩家，
+  // 进门各押一笔宝石；每回合「荒原杀手」锁定一处房间，待在/跑向那间房的族人被清场；
+  // 该房押注的 90% 按其余 8 个幸存房间的押注比例分掉，10% 销毁（通缩）。
+  // 当前无服务端，8 个 AI 部落只陪玩：不押注（押注重置 0）→ 押注比例恒 0 → 自然分不到；
+  // 真实玩家上线后同一段代码即按押注比例分成。玩家进门押注 = max(平台宝石, BR_ANTE)；
+  // 自己那间被锁中 → 押注重归荒原（今天无人认领即全损）；躲到第 10 回合 → 押注全额带回。
+  // 投入宝石扩编加族人、降本金，是唯一两难。排行按族人实力。
   // 只在桌面端主菜单出现入口（DESK 分支），竖屏/小程序不暴露；状态全挂在 BR 一个对象上。
   var BR=null;
+  var BR_ANTE=100;   // v2.39：玩家入门押注本金下限（平台宝石高于它则按平台宝石押）
   var BR_ROOMS=[
     {n:'粮仓',r:1.0,icon:'grain'},{n:'兽栏',r:1.2,icon:'beast'},{n:'石作',r:1.4,icon:'stone'},
     {n:'织坊',r:1.1,icon:'loom'},{n:'祭坛',r:1.9,icon:'altar'},{n:'铁铺',r:1.5,icon:'anvil'},
@@ -3195,12 +3201,13 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     var L=brLayout(), rivals=[];
     for(var i=0;i<8;i++) rivals.push({ name:BR_RIVAL[i], col:BR_RCOL[i], room:(i*4+2)%9,
       swarm:10+Math.floor(Math.random()*7), gems:0, alive:true, bob:Math.random()*6 });
-    BR={ L:L, at:4, dest:-1, travel:0, t:0, swarm:12, gems:GEM, bought:0,
+    BR={ L:L, at:4, dest:-1, travel:0, t:0, swarm:12, gems:Math.max(GEM||0, BR_ANTE), bought:0,
          round:1, rounds:10, interval:22, phase:'run', timer:22, target:-1, last:-1,
          killer:null, rivals:rivals, floats:[], dead:false, msg:null, msgT:0, shakeT:0, best:0 };
     sfx('build');
   }
   function brStartMode(){ brStart(); }
+  function brAnte(){ return BR_ANTE; }
   function brRand9(ex){ var i; do { i=Math.floor(Math.random()*9); } while(i===ex); return i; }
   function brPickTarget(){ var b=BR; b.target=brRand9(b.last);
     for(var i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(!v.alive) continue;
@@ -3235,20 +3242,22 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       if(v.room===tgt){ v.swarm=Math.round(v.swarm*0.3);
         if(v.swarm<4){ v.alive=false; } } }
     b.last=tgt;
-    // v2.39 经济：被杀房间宝石 90% 分给其余 8 个幸存房间（按各房间宝石持有比例），10% 销毁
+    // v2.39 经济（压宝石）：被杀房间押的宝石即总投入 → 90% 按其余 8 个幸存房间的「押注比例」分，
+    // 10% 销毁。收款方只算押了宝石的房间：AI 部落只陪玩（不押注 → 押注重置 0）自然分不到；
+    // 真实玩家上线后，同一段代码即按各自押注比例分成（多人同场）。
     (function(){
       var pool=0, inR=(b.travel>0?b.dest:b.at);
       if(inR===tgt) pool+=b.gems;
       for(var k=0;k<b.rivals.length;k++){ var rv=b.rivals[k]; if(rv.alive&&rv.room===tgt) pool+=rv.gems; }
       if(pool<=0) return;
       var surv=[], tot=0;
-      if(inR!==tgt) surv.push(b);
-      for(var k2=0;k2<b.rivals.length;k2++){ var w=b.rivals[k2]; if(w.alive&&w.room!==tgt){ surv.push(w); tot+=w.gems; } }
-      for(var k3=0;k3<b.rivals.length;k3++){ var x=b.rivals[k3]; if(x.alive&&x.room===tgt) x.gems=0; }
+      if(inR!==tgt&&b.gems>0){ surv.push({o:b,s:b.gems}); tot+=b.gems; }
+      for(var k2=0;k2<b.rivals.length;k2++){ var w=b.rivals[k2]; if(w.alive&&w.room!==tgt&&w.gems>0){ surv.push({o:w,s:w.gems}); tot+=w.gems; } }
       if(inR===tgt) b.gems=0;
-      if(surv.length===0) return;
-      if(tot<=0){ var _e=pool*0.9/surv.length; for(var k4=0;k4<surv.length;k4++) surv[k4].gems+=_e; }
-      else { for(var k5=0;k5<surv.length;k5++) surv[k5].gems+=pool*0.9*(surv[k5].gems/tot); }
+      for(var k3=0;k3<b.rivals.length;k3++){ var x=b.rivals[k3]; if(x.alive&&x.room===tgt) x.gems=0; }
+      if(surv.length===0||tot<=0) return;   // 幸存者都没押注（今天只有 AI 陪跑）→ 90% 与 10% 一起重归荒原
+      for(var i2=0;i2<surv.length;i2++) surv[i2].o.gems+=pool*0.9*(surv[i2].s/tot);
+      if(inR===tgt&&b.gems>0) b.floats.push({txt:'押注重归荒原',x:rm.x+rm.w/2,y:rm.y+rm.h/2,col:'#ff9b8c',life:1.4,max:1.4,sz:15});
     })();
     b.phase='after'; b.timer=2.4;
     sfx('rock');
@@ -3269,12 +3278,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(b.killer){ b.killer.t+=dt; if(b.killer.t>2.6) b.killer=null; }
     if(b.phase==='end'||b.phase==='dead') return;
     if(b.travel>0){ b.travel-=dt; if(b.travel<=0){ b.at=b.dest; b.dest=-1; } }
-    var rate=BR_ROOMS[b.at]?BR_ROOMS[b.at].r:0.7;
-    b.gems+=(b.travel>0? b.swarm*0.35 : b.swarm*rate)*0.55*dt;
-    if(b.gems>b.best) b.best=b.gems;
-    for(i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(!v.alive) continue;
-      var rr2=BR_ROOMS[v.room]?BR_ROOMS[v.room].r:1;
-      v.gems+=v.swarm*rr2*0.55*dt; }
+    if(b.gems>b.best) b.best=b.gems;   // v2.39：宝石只来自入门押注 / 再分配，无被动产币
     if(b.phase==='run'){
       b.timer-=dt;
       if(b.timer<=6&&b.target<0) brPickTarget();
@@ -3287,9 +3291,9 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function brRank(){
     var b=BR, list=[], i;
     for(i=0;i<b.rivals.length;i++){ var v=b.rivals[i];
-      if(v.alive) list.push({name:v.name, gems:v.gems, me:false, col:v.col}); }
-    list.push({name:'你的部落', gems:b.gems, me:true, col:'#ffd479'});
-    list.sort(function(a,c){ return c.gems-a.gems; });
+      if(v.alive) list.push({name:v.name, pw:v.swarm, me:false, col:v.col}); }
+    list.push({name:'你的部落', pw:b.swarm, me:true, col:'#ffd479'});
+    list.sort(function(a,c){ return c.pw-a.pw; });
     return list;
   }
   function brDown(px,py){
@@ -3414,9 +3418,12 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       brRoomIcon(rm.x+22,rm.y+34,16,R.icon);
       ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillStyle=mine?'#ffe7a8':'#c9a97a'; ctx.font='bold 14px sans-serif';
       ctx.fillText(R.n,rm.x+40,rm.y+34);
-      brGem(rm.x+rm.w-19, rm.y+33, 7, '#5cc6f0');
-      ctx.textAlign='right'; ctx.fillStyle='#bfe6ff'; ctx.font='bold 11px sans-serif';
-      ctx.fillText('×'+R.r.toFixed(1), rm.x+rm.w-32, rm.y+34);
+      var _pot=(b.travel>0?b.dest:b.at)===i?b.gems:0;
+      if(_pot>0){
+        brGem(rm.x+rm.w-19, rm.y+33, 7, '#5cc6f0');
+        ctx.textAlign='right'; ctx.fillStyle='#bfe6ff'; ctx.font='bold 11px sans-serif';
+        ctx.fillText(Math.floor(_pot)+'押', rm.x+rm.w-30, rm.y+34);
+      }
       if(hot){ ctx.textAlign='center'; ctx.fillStyle='#ff8f7a'; ctx.font='bold 11px sans-serif';
         ctx.fillText('杀手目标',rm.x+rm.w/2,rm.y+rm.h-12); }
     }
@@ -3516,7 +3523,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.fillStyle='rgba(10,7,4,.86)'; rr(P2.x,P2.y,P2.w,P2.h,14); ctx.fill();
     ctx.strokeStyle='rgba(255,205,130,.24)'; ctx.lineWidth=1; rr(P2.x+.5,P2.y+.5,P2.w-1,P2.h-1,14); ctx.stroke();
     ctx.textAlign='left'; ctx.fillStyle='#ffd479'; ctx.font='bold 15px sans-serif';
-    ctx.fillText('宝石排行',P2.x+16,P2.y+26);
+    ctx.fillText('部落实力',P2.x+16,P2.y+26);
     var rank=brRank();
     for(i=0;i<rank.length&&i<9;i++){
       var row=rank[i], ry=P2.y+52+i*44;
@@ -3524,7 +3531,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       ctx.textAlign='left'; ctx.fillStyle=row.me?'#ffe7a8':'#9c8a6a'; ctx.font='bold 13px sans-serif';
       ctx.fillText((i+1)+'. '+row.name,P2.x+18,ry);
       ctx.textAlign='right'; ctx.fillStyle=row.me?'#ffd479':'#c9b995'; ctx.font='bold 13px sans-serif';
-      ctx.fillText(String(Math.floor(row.gems)),P2.x+P2.w-18,ry);
+      ctx.fillText(String(Math.floor(row.pw)),P2.x+P2.w-18,ry);
       ctx.fillStyle=row.col; ctx.beginPath(); ctx.arc(P2.x+10,ry,3,0,7); ctx.fill();
     }
     // 底栏
@@ -3537,7 +3544,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.fillStyle=can?'#ffb347':'#6f6048'; ctx.font='12px sans-serif';
     ctx.fillText('族人 +2',IB.x+IB.w/2,IB.y+48);
     ctx.textAlign='left'; ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif';
-    ctx.fillText('点击任意房间即可整族迁徙 · 杀手锁定后快跑开 · 房里人越多宝石越快',IB.x+IB.w+26,IB.y+24);
+    ctx.fillText('点房迁徙躲杀 · 你那间被锁中则押注重归荒原 · 活到第 10 回合全额带回',IB.x+IB.w+26,IB.y+24);
     if(b.msg){ ctx.fillStyle='#ffd479'; ctx.font='bold 14px sans-serif'; ctx.fillText(b.msg,IB.x+IB.w+26,IB.y+50); }
     ctx.save(); ctx.setTransform(scale,0,0,scale,ox,oy); drawScreenVignette(); ctx.restore();
     if(b.phase==='end'||b.phase==='dead'){
@@ -3549,7 +3556,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       ctx.textAlign='center'; ctx.textBaseline='middle';
       var ttl, sub;
       if(b.phase==='dead'){ ttl='族人散尽 · 出局'; sub='第 '+b.round+' 回合倒在了「'+BR_ROOMS[b.last>=0?b.last:0].n+'」'; }
-      else if(myRank===1){ ttl='荒原最强部落！'; sub='十回合后宝石第一，称霸荒原'; }
+      else if(myRank===1){ ttl='荒原最强部落！'; sub='十回合后族人最多，称霸荒原'; }
       else { ttl='第 '+myRank+' 名 · 存活到最后'; sub='宝石 '+Math.floor(b.gems)+'，再练练还能更强'; }
       ctx.fillStyle=(b.phase==='dead'||myRank>3)?'#ff9b8c':'#ffd479'; ctx.font='bold 31px sans-serif';
       ctx.fillText(ttl,Math.round(W/2),PB.py+78);
