@@ -141,6 +141,10 @@
 // 布局自动判定：横屏视口 → desktop(1280x720)，竖屏视口(手机) → portrait(360x640)。
 // 与外壳 layout() 的 isWide() 用同一条 media query，两边永远一致。
 window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspect-ratio: 1/1)').matches) ? 'desktop' : 'portrait';
+/*v2.37VISUAL4*/
+/*v2.37VISUAL3*/
+/*v2.37VISUAL2*/
+/*v2.37VISUAL*/
 // 蛮荒时代 · RTS 微信小游戏宿主（wx）
 // 复刻《国家的崛起》：双阵营经济（村民自主种地/伐木/采石）、自由选址建造、AI 自主运营+压境
 // 逻辑与浏览器版 _proto/rts5.html 一致；差异仅在：wx.createCanvas/createImage、
@@ -3119,9 +3123,9 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   // 只在桌面端主菜单出现入口（DESK 分支），竖屏/小程序不暴露；状态全挂在 BR 一个对象上。
   var BR=null;
   var BR_ROOMS=[
-    {n:'粮仓',r:1.0},{n:'兽栏',r:1.2},{n:'石作',r:1.4},
-    {n:'织坊',r:1.1},{n:'祭坛',r:1.9},{n:'铁铺',r:1.5},
-    {n:'酒窖',r:1.3},{n:'浴场',r:0.9},{n:'瞭望',r:1.6}
+    {n:'粮仓',r:1.0,icon:'grain'},{n:'兽栏',r:1.2,icon:'beast'},{n:'石作',r:1.4,icon:'stone'},
+    {n:'织坊',r:1.1,icon:'loom'},{n:'祭坛',r:1.9,icon:'altar'},{n:'铁铺',r:1.5,icon:'anvil'},
+    {n:'酒窖',r:1.3,icon:'jar'},{n:'浴场',r:0.9,icon:'bath'},{n:'瞭望',r:1.6,icon:'tower'}
   ];
   var BR_RIVAL=['赤狼部','灰熊部','苍鹰部','毒蜥部','黑鸦部','白鹿部','铁角部','幽狐部'];
   var BR_RCOL=['#d0705a','#a8823c','#6f93c8','#7bb36a','#8b7fb8','#cfd0c2','#c88a4a','#b06a9a'];
@@ -3150,7 +3154,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     for(var i=0;i<8;i++) rivals.push({ name:BR_RIVAL[i], col:BR_RCOL[i], room:(i*4+2)%9,
       swarm:10+Math.floor(Math.random()*7), gems:0, alive:true, bob:Math.random()*6 });
     BR={ L:L, at:4, dest:-1, travel:0, t:0, swarm:12, gems:0, bought:0,
-         round:1, rounds:10, interval:15, phase:'run', timer:15, target:-1, last:-1,
+         round:1, rounds:10, interval:22, phase:'run', timer:22, target:-1, last:-1,
          killer:null, rivals:rivals, floats:[], dead:false, msg:null, msgT:0, shakeT:0, best:0 };
     sfx('build');
   }
@@ -3188,7 +3192,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     for(i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(!v.alive) continue;
       if(v.room===tgt){ v.swarm=Math.round(v.swarm*0.3);
         if(v.swarm<4){ v.alive=false; } } }
-    b.last=tgt; b.phase='after'; b.timer=1.6;
+    b.last=tgt; b.phase='after'; b.timer=2.4;
     sfx('rock');
   }
   function brNextRound(){
@@ -3204,7 +3208,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     b.t+=dt; if(b.msgT>0){ b.msgT-=dt; if(b.msgT<=0) b.msg=null; }
     if(b.shakeT>0) b.shakeT=Math.max(0,b.shakeT-dt);
     for(i=b.floats.length-1;i>=0;i--){ var f=b.floats[i]; f.life-=dt; f.y-=26*dt; if(f.life<=0) b.floats.splice(i,1); }
-    if(b.killer){ b.killer.t+=dt; if(b.killer.t>2.2) b.killer=null; }
+    if(b.killer){ b.killer.t+=dt; if(b.killer.t>2.6) b.killer=null; }
     if(b.phase==='end'||b.phase==='dead') return;
     if(b.travel>0){ b.travel-=dt; if(b.travel<=0){ b.at=b.dest; b.dest=-1; } }
     var rate=BR_ROOMS[b.at]?BR_ROOMS[b.at].r:0.7;
@@ -3215,7 +3219,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       v.gems+=v.swarm*rr2*0.55*dt; }
     if(b.phase==='run'){
       b.timer-=dt;
-      if(b.timer<=5.5&&b.target<0) brPickTarget();
+      if(b.timer<=6&&b.target<0) brPickTarget();
       if(b.timer<=0) brStrike();
     } else if(b.phase==='after'){
       b.timer-=dt;
@@ -3245,47 +3249,118 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     for(var i=0;i<9;i++){ var rm=L.rooms[i];
       if(px>=rm.x&&px<=rm.x+rm.w&&py>=rm.y&&py<=rm.y+rm.h){ brMoveTo(i); return; } }
   }
-  function brChibi(x,y,s,col,skin,bob){
-    ctx.fillStyle='rgba(0,0,0,.34)'; ctx.beginPath(); ctx.ellipse(x,y+s*0.52,s*0.36,s*0.13,0,0,7); ctx.fill();
-    ctx.fillStyle=col; rr(x-s*0.33,y-s*0.12+bob,s*0.66,s*0.60,s*0.22); ctx.fill();
-    ctx.fillStyle=skin||'#e9cda8'; ctx.beginPath(); ctx.arc(x,y-s*0.44+bob,s*0.32,0,7); ctx.fill();
-    ctx.fillStyle='rgba(20,12,6,.85)'; ctx.beginPath(); ctx.arc(x-s*0.11,y-s*0.46+bob,s*0.045,0,7); ctx.fill();
-    ctx.beginPath(); ctx.arc(x+s*0.11,y-s*0.46+bob,s*0.045,0,7); ctx.fill();
+  // ---- 视觉工具：房间图标 / 宝石（矢量手绘，不依赖 emoji 字形）----
+  function brRoomIcon(x,y,s,type){
+    ctx.save(); ctx.translate(x,y); ctx.lineJoin='round'; ctx.lineCap='round';
+    ctx.lineWidth=Math.max(1.4,s*0.12); ctx.strokeStyle='#ffe9b0'; ctx.fillStyle='#ffd27a';
+    if(type==='grain'){
+      ctx.beginPath(); ctx.moveTo(0,-s*0.5); ctx.lineTo(0,s*0.5); ctx.stroke();
+      for(var _g=-2;_g<=2;_g++){ ctx.beginPath(); ctx.moveTo(0,_g*s*0.18); ctx.lineTo(-s*0.32,_g*s*0.18-s*0.2); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,_g*s*0.18); ctx.lineTo(s*0.32,_g*s*0.18-s*0.2); ctx.stroke(); }
+    } else if(type==='beast'){
+      ctx.beginPath(); ctx.arc(0,-s*0.08,s*0.22,0,7); ctx.fill();
+      for(var _p=0;_p<4;_p++){ var _a=_p*Math.PI/2+Math.PI/4; ctx.beginPath(); ctx.ellipse(Math.cos(_a)*s*0.34,Math.sin(_a)*s*0.34+s*0.18,s*0.1,s*0.16,_a,0,7); ctx.fill(); }
+    } else if(type==='stone'){
+      ctx.beginPath(); ctx.moveTo(-s*0.4,-s*0.1); ctx.lineTo(s*0.4,-s*0.1); ctx.lineTo(s*0.2,s*0.45); ctx.lineTo(-s*0.2,s*0.45); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-s*0.1,-s*0.1); ctx.lineTo(-s*0.18,s*0.45); ctx.moveTo(s*0.18,-s*0.1); ctx.lineTo(s*0.1,s*0.45); ctx.stroke();
+    } else if(type==='loom'){
+      ctx.beginPath(); ctx.ellipse(0,0,s*0.22,s*0.5,0,0,7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-s*0.22,-s*0.2); ctx.lineTo(s*0.22,s*0.2); ctx.moveTo(s*0.22,-s*0.2); ctx.lineTo(-s*0.22,s*0.2); ctx.stroke();
+    } else if(type==='altar'){
+      ctx.beginPath(); ctx.moveTo(0,s*0.5); ctx.quadraticCurveTo(-s*0.4,-s*0.1,0,-s*0.55); ctx.quadraticCurveTo(s*0.4,-s*0.1,0,s*0.5); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#fff2c8'; ctx.beginPath(); ctx.moveTo(0,s*0.25); ctx.quadraticCurveTo(-s*0.2,-s*0.05,0,-s*0.35); ctx.quadraticCurveTo(s*0.2,-s*0.05,0,s*0.25); ctx.closePath(); ctx.fill(); ctx.fillStyle='#ffd27a';
+    } else if(type==='anvil'){
+      ctx.beginPath(); ctx.moveTo(-s*0.45,-s*0.3); ctx.lineTo(s*0.1,-s*0.3); ctx.lineTo(s*0.1,-s*0.1); ctx.lineTo(s*0.45,-s*0.1); ctx.lineTo(s*0.45,s*0.1); ctx.lineTo(-s*0.45,s*0.1); ctx.lineTo(-s*0.45,s*0.3); ctx.lineTo(s*0.2,s*0.3); ctx.lineTo(s*0.2,s*0.45); ctx.lineTo(-s*0.45,s*0.45); ctx.closePath(); ctx.stroke();
+    } else if(type==='jar'){
+      ctx.beginPath(); ctx.moveTo(-s*0.25,-s*0.4); ctx.lineTo(s*0.25,-s*0.4); ctx.lineTo(s*0.4,s*0.2); ctx.lineTo(s*0.2,s*0.5); ctx.lineTo(-s*0.2,s*0.5); ctx.lineTo(-s*0.4,s*0.2); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-s*0.18,-s*0.4); ctx.lineTo(s*0.18,-s*0.4); ctx.stroke();
+    } else if(type==='bath'){
+      for(var _w=-1;_w<=1;_w++){ ctx.beginPath(); ctx.moveTo(-s*0.45,_w*s*0.25); for(var _t=0;_t<=1;_t+=0.1) ctx.lineTo(-s*0.45+_t*s*0.9,_w*s*0.25+Math.sin(_t*Math.PI*2)*s*0.12); ctx.stroke(); }
+    } else {
+      ctx.beginPath(); ctx.moveTo(-s*0.28,-s*0.5); ctx.lineTo(s*0.28,-s*0.5); ctx.lineTo(s*0.22,s*0.5); ctx.lineTo(-s*0.22,s*0.5); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,-s*0.5); ctx.lineTo(0,s*0.5); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function brGem(x,y,s,col){
+    ctx.save(); ctx.translate(x,y);
+    var _g=ctx.createLinearGradient(0,-s,0,s); _g.addColorStop(0,'#bff3ff'); _g.addColorStop(1,col||'#4fb6e8');
+    ctx.fillStyle=_g; ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s*0.8,-s*0.2); ctx.lineTo(s*0.5,s); ctx.lineTo(-s*0.5,s); ctx.lineTo(-s*0.8,-s*0.2); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.6)'; ctx.lineWidth=Math.max(1,s*0.1); ctx.stroke();
+    ctx.restore();
+  }
+  function brChibi(x,y,s,col,skin,bob,weapon){
+    bob=bob||0; var _sw=Math.max(1,s*0.07);
+    ctx.fillStyle='rgba(0,0,0,.34)'; ctx.beginPath(); ctx.ellipse(x,y+s*0.56,s*0.32,s*0.11,0,0,7); ctx.fill();
+    ctx.fillStyle=col; ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineWidth=_sw;
+    ctx.beginPath(); ctx.moveTo(x-s*0.30,y-s*0.02+bob); ctx.lineTo(x+s*0.30,y-s*0.02+bob); ctx.lineTo(x+s*0.22,y+s*0.5+bob); ctx.lineTo(x-s*0.22,y+s*0.5+bob); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.16)'; ctx.beginPath(); ctx.moveTo(x-s*0.30,y-s*0.02+bob); ctx.lineTo(x+s*0.30,y-s*0.02+bob); ctx.lineTo(x+s*0.20,y+s*0.10+bob); ctx.lineTo(x-s*0.20,y+s*0.10+bob); ctx.closePath(); ctx.fill();
+    var _hx=x, _hy=y-s*0.34+bob, _hr=s*0.27;
+    ctx.fillStyle=skin||'#e9cda8'; ctx.strokeStyle='rgba(0,0,0,.3)';
+    ctx.beginPath(); ctx.arc(_hx,_hy,_hr,0,7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(_hx,_hy-_hr*0.25,_hr,Math.PI*1.05,Math.PI*1.95); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(25,15,8,.9)'; ctx.beginPath(); ctx.arc(_hx-_hr*0.34,_hy,_hr*0.14,0,7); ctx.arc(_hx+_hr*0.34,_hy,_hr*0.14,0,7); ctx.fill();
+    if(weapon==='spear'){ ctx.strokeStyle='#caa46a'; ctx.lineWidth=Math.max(1.4,s*0.06);
+      ctx.beginPath(); ctx.moveTo(x+s*0.34,y-s*0.4+bob); ctx.lineTo(x+s*0.40,y+s*0.55+bob); ctx.stroke();
+      ctx.fillStyle='#d8d2c0'; ctx.beginPath(); ctx.moveTo(x+s*0.40,y-s*0.46+bob); ctx.lineTo(x+s*0.30,y-s*0.30+bob); ctx.lineTo(x+s*0.50,y-s*0.30+bob); ctx.closePath(); ctx.fill(); }
   }
   function brBtn(r,label,on,fs){
-    ctx.fillStyle=on?'#4a3a20':'#241a10'; rr(r.x,r.y,r.w,r.h,8); ctx.fill();
-    ctx.strokeStyle=on?'#a8814a':'#4a3820'; ctx.lineWidth=1; rr(r.x+.5,r.y+.5,r.w-1,r.h-1,8); ctx.stroke();
-    ctx.fillStyle=on?'#ffd479':'#6f6048'; ctx.font='bold '+(fs||15)+'px sans-serif';
+    var _g=ctx.createLinearGradient(0,r.y,0,r.y+r.h);
+    _g.addColorStop(0,on?'#5c4424':'#241a10'); _g.addColorStop(1,on?'#3a2c16':'#160f08');
+    ctx.fillStyle=_g; rr(r.x,r.y,r.w,r.h,9); ctx.fill();
+    ctx.strokeStyle=on?'#c89a52':'#4a3820'; ctx.lineWidth=1.4; rr(r.x+.7,r.y+.7,r.w-1.4,r.h-1.4,9); ctx.stroke();
+    ctx.fillStyle=on?'#ffe7a8':'#6f6048'; ctx.font='bold '+(fs||15)+'px sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,r.x+r.w/2,r.y+r.h/2);
   }
   function drawBr(){
     ctx.setTransform(1,0,0,1,0,0);
     var bg=ctx.createLinearGradient(0,0,0,PH);
-    bg.addColorStop(0,'#0c0a12'); bg.addColorStop(0.55,'#170f0a'); bg.addColorStop(1,'#2a1608');
+    bg.addColorStop(0,'#0c0a12'); bg.addColorStop(0.5,'#1a110a'); bg.addColorStop(1,'#321a0a');
     ctx.fillStyle=bg; ctx.fillRect(0,0,PW,PH);
+    ctx.fillStyle='rgba(40,26,16,.55)';
+    ctx.beginPath(); ctx.moveTo(0,PH); for(var _hx=0;_hx<=PW;_hx+=40){ ctx.lineTo(_hx, PH*0.6 - Math.sin(_hx*0.012)*26 - Math.cos(_hx*0.03)*14); } ctx.lineTo(PW,PH); ctx.closePath(); ctx.fill();
     ctx.setTransform(scale,0,0,scale,ox,oy);
     if(!BR) return;
     var b=BR, L=b.L, i;
     var sh=0,sv=0;
     if(b.shakeT>0){ sh=(Math.random()*2-1)*4*b.shakeT*2; sv=(Math.random()*2-1)*3*b.shakeT*2; }
     ctx.save(); ctx.translate(sh,sv);
-    // 地面
-    ctx.fillStyle='#1b120b'; rr(L.fx-14,L.fy-14,L.fw+28,L.fh+28,16); ctx.fill();
-    ctx.fillStyle='rgba(255,205,130,.05)'; rr(L.fx-6,L.fy-6,L.fw+12,L.fh+12,12); ctx.fill();
-    // 房间
+    // 营地地台
+    ctx.fillStyle='#1c130b'; rr(L.fx-16,L.fy-16,L.fw+32,L.fh+32,18); ctx.fill();
+    var _pl=ctx.createLinearGradient(0,L.fy,0,L.fy+L.fh);
+    _pl.addColorStop(0,'rgba(72,50,30,.5)'); _pl.addColorStop(1,'rgba(28,18,10,.5)');
+    ctx.fillStyle=_pl; rr(L.fx-6,L.fy-6,L.fw+12,L.fh+12,12); ctx.fill();
+    // 房间（卡片化：屋顶/图标/倍率宝石徽章/我方或杀手高亮）
+    var _pulse=0.5+0.5*Math.sin(b.t*5);
     for(i=0;i<9;i++){
       var rm=L.rooms[i], R=BR_ROOMS[i], mine=(b.travel>0? b.dest===i : b.at===i);
       var hot=(b.target===i);
-      ctx.fillStyle=hot?'rgba(122,42,42,.42)':'rgba(58,40,24,.92)'; rr(rm.x,rm.y,rm.w,rm.h,10); ctx.fill();
-      ctx.strokeStyle=mine?'#ffd479':(hot?'#ff8f7a':'rgba(255,205,130,.22)'); ctx.lineWidth=mine?2:1;
-      rr(rm.x+.6,rm.y+.6,rm.w-1.2,rm.h-1.2,10); ctx.stroke();
-      ctx.textAlign='left'; ctx.textBaseline='middle';
-      ctx.fillStyle=mine?'#ffe7a8':'#c9a97a'; ctx.font='bold 14px sans-serif';
-      ctx.fillText(R.n,rm.x+12,rm.y+16);
-      ctx.textAlign='right'; ctx.fillStyle='#8ba3cc'; ctx.font='11px sans-serif';
-      ctx.fillText('×'+R.r.toFixed(1),rm.x+rm.w-12,rm.y+16);
-      if(hot){ ctx.textAlign='left'; ctx.fillStyle='#ff8f7a'; ctx.font='bold 11px sans-serif';
-        ctx.fillText('杀手目标',rm.x+12,rm.y+rm.h-12); }
+      var _g=ctx.createLinearGradient(0,rm.y,0,rm.y+rm.h);
+      _g.addColorStop(0, mine?'#3b2b15':'#241809'); _g.addColorStop(1, mine?'#241a0e':'#160f07');
+      ctx.fillStyle=_g; rr(rm.x,rm.y,rm.w,rm.h,12); ctx.fill();
+      // 屋顶暖光 + 底部落地阴影（纵深，避免空房像空盒子）
+      var _fg=ctx.createLinearGradient(0,rm.y+rm.h*0.5,0,rm.y+rm.h);
+      _fg.addColorStop(0,'rgba(0,0,0,0)'); _fg.addColorStop(1,'rgba(0,0,0,.24)');
+      ctx.fillStyle=_fg; rr(rm.x,rm.y,rm.w,rm.h,12); ctx.fill();
+      var _rg=ctx.createRadialGradient(rm.x+rm.w/2,rm.y+8,2,rm.x+rm.w/2,rm.y+8,rm.w*0.55);
+      _rg.addColorStop(0,'rgba(255,190,110,.12)'); _rg.addColorStop(1,'rgba(255,190,110,0)');
+      ctx.fillStyle=_rg; rr(rm.x,rm.y,rm.w,rm.h,12); ctx.fill();
+      ctx.fillStyle= mine?'#5a3f1c':'#2e2010'; rr(rm.x,rm.y,rm.w,15,12); ctx.fill();
+      ctx.fillStyle= mine?'#caa05a':'#5a4326'; rr(rm.x,rm.y+11,rm.w,4,2); ctx.fill();
+      ctx.strokeStyle='rgba(255,220,160,.055)'; ctx.lineWidth=1;
+      for(var _fl=0;_fl<3;_fl++){ var _fy=rm.y+rm.h*0.52+_fl*(rm.h*0.34/3); ctx.beginPath(); ctx.moveTo(rm.x+8,_fy); ctx.lineTo(rm.x+rm.w-8,_fy); ctx.stroke(); }
+      ctx.lineWidth= mine?2.4:1.2;
+      if(hot){ ctx.strokeStyle='rgba(255,'+Math.round(120+100*_pulse)+','+Math.round(90+50*_pulse)+','+(0.55+0.4*_pulse)+')'; }
+      else ctx.strokeStyle= mine?'#ffd479':'rgba(255,205,130,.22)';
+      rr(rm.x+.6,rm.y+.6,rm.w-1.2,rm.h-1.2,12); ctx.stroke();
+      if(hot){ ctx.fillStyle='rgba(170,40,40,'+(0.12+0.16*_pulse)+')'; rr(rm.x,rm.y,rm.w,rm.h,12); ctx.fill(); }
+      brRoomIcon(rm.x+22,rm.y+34,16,R.icon);
+      ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillStyle=mine?'#ffe7a8':'#c9a97a'; ctx.font='bold 14px sans-serif';
+      ctx.fillText(R.n,rm.x+40,rm.y+34);
+      brGem(rm.x+rm.w-19, rm.y+33, 7, '#5cc6f0');
+      ctx.textAlign='right'; ctx.fillStyle='#bfe6ff'; ctx.font='bold 11px sans-serif';
+      ctx.fillText('×'+R.r.toFixed(1), rm.x+rm.w-32, rm.y+34);
+      if(hot){ ctx.textAlign='center'; ctx.fillStyle='#ff8f7a'; ctx.font='bold 11px sans-serif';
+        ctx.fillText('杀手目标',rm.x+rm.w/2,rm.y+rm.h-12); }
     }
     // 房内占用：对手一簇（房右），玩家族人（房左），标签统一压到底部一行
     var occ=[[],[],[],[],[],[],[],[],[]], k3, m3;
@@ -3293,29 +3368,33 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     for(i=0;i<9;i++){
       var R3=L.rooms[i], os=occ[i];
       for(k3=0;k3<os.length;k3++){
-        var ov=os[k3], on=Math.min(9,Math.max(2,Math.round(ov.swarm*0.5)));
+        var ov=os[k3], on=Math.min(10,Math.max(2,Math.round(ov.swarm*0.45)));
         for(m3=0;m3<on;m3++){
-          var ox2=R3.x+R3.w-18-k3*36-(m3%3)*13, oy2=R3.y+R3.h-46-Math.floor(m3/3)*13;
-          brChibi(ox2,oy2,9.5,ov.col,'#d9bfa0',Math.sin(b.t*3+ov.bob+m3)*1.0);
+          var _col=(m3%3), _row=Math.floor(m3/3);
+          var _jx=Math.sin(k3*2.1+m3*1.7)*3, _jy=Math.cos(k3*1.3+m3*2.3)*2;
+          var ox2=R3.x+R3.w-26-k3*34-_col*15+_jx, oy2=R3.y+R3.h-40-_row*15+_jy;
+          brChibi(ox2,oy2,9.5,ov.col,'#d9bfa0',Math.sin(b.t*3+ov.bob+m3)*0.9,null);
         }
       }
     }
-    var yRoom=b.at, yr=L.rooms[yRoom], show=Math.min(18,b.swarm);
+    var yRoom=b.at, yr=L.rooms[yRoom], show=Math.min(16,b.swarm);
     for(i=0;i<show;i++){
-      var px2=yr.x+22+(i%6)*25, py2=yr.y+58+Math.floor(i/6)*21;
-      brChibi(px2,py2,15,'#b8472e',null,Math.sin(b.t*4+i*0.7)*1.4);
+      var _gx=i%5, _gy=Math.floor(i/5);
+      var _jx2=Math.sin(i*1.9)*4, _jy2=Math.cos(i*1.4)*3;
+      var px2=yr.x+30+_gx*27+_jx2, py2=yr.y+64+_gy*23+_jy2;
+      brChibi(px2,py2,15,'#b8472e',null,Math.sin(b.t*4+i*0.7)*1.2,(i%2===0?'spear':null));
     }
     if(b.swarm>show){
-      ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillStyle='#ffb347'; ctx.font='bold 11px sans-serif';
-      ctx.fillText('+'+(b.swarm-show),yr.x+22+6*25,yr.y+48);
+      ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillStyle='#ffb347'; ctx.font='bold 12px sans-serif';
+      ctx.fillText('+'+(b.swarm-show),yr.x+30+5*27,yr.y+54);
     }
     if(b.travel>0){
       var a2=brRoomCenter(b.at), c2=brRoomCenter(b.dest), p=1-Math.max(0,b.travel)/1.45;
       p=Math.max(0,Math.min(1,p));
       var mx=a2.x+(c2.x-a2.x)*p, my=a2.y+(c2.y-a2.y)*p;
-      brChibi(mx,my,15,'#b8472e',null,0);
-      ctx.fillStyle='rgba(255,212,121,.85)'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText('迁徙中',mx,my-16);
+      brChibi(mx,my,15,'#b8472e',null,0,'spear');
+      ctx.fillStyle='rgba(255,212,121,.9)'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('迁徙中',mx,my-18);
     }
     for(i=0;i<9;i++){
       var R4=L.rooms[i], lx=R4.x+12, ly=R4.y+R4.h-10;
@@ -3324,20 +3403,23 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       for(k3=0;k3<occ[i].length;k3++){ var lv2=occ[i][k3];
         ctx.fillStyle=lv2.col; ctx.fillText(lv2.name+' '+lv2.swarm,lx,ly); lx+=62; }
     }
-    // 杀手
+    // 杀手：兜帽 + 镰刀 + 红雾
     if(b.killer){
       var kf=b.killer, pp=Math.min(1,kf.t/0.55);
       var kx=kf.from.x+(kf.to.x-kf.from.x)*pp, ky=kf.from.y+(kf.to.y-kf.from.y)*pp;
       if(kf.t>1.1) pp=1;
-      var fade=Math.max(0,Math.min(1,(2.2-kf.t)/0.8));
+      var fade=Math.max(0,Math.min(1,(2.6-kf.t)/0.9));
       ctx.globalAlpha=fade;
-      ctx.fillStyle='rgba(200,40,40,.30)';
-      ctx.beginPath(); ctx.ellipse(kx,kf.to.y+16,42,14,0,0,7); ctx.fill();
-      ctx.fillStyle='#16101a'; rr(kx-11,ky-34,22,30,6); ctx.fill();
-      ctx.fillStyle='#241a22'; ctx.beginPath(); ctx.arc(kx,ky-40,10,0,7); ctx.fill();
-      ctx.fillStyle='#ff4d4d'; ctx.beginPath(); ctx.arc(kx-4,ky-41,1.8,0,7); ctx.fill();
-      ctx.beginPath(); ctx.arc(kx+4,ky-41,1.8,0,7); ctx.fill();
-      ctx.strokeStyle='#4a3a42'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(kx+12,ky-26); ctx.lineTo(kx+22,ky-4); ctx.stroke();
+      var _aura=ctx.createRadialGradient(kx,ky-10,4,kx,ky-10,48);
+      _aura.addColorStop(0,'rgba(255,50,50,.5)'); _aura.addColorStop(1,'rgba(255,50,50,0)');
+      ctx.fillStyle=_aura; ctx.beginPath(); ctx.arc(kx,ky-10,48,0,7); ctx.fill();
+      ctx.fillStyle='rgba(0,0,0,.4)'; ctx.beginPath(); ctx.ellipse(kx,ky+20,20,7,0,0,7); ctx.fill();
+      ctx.fillStyle='#140a12'; ctx.beginPath();
+      ctx.moveTo(kx-13,ky+20); ctx.quadraticCurveTo(kx-17,ky-20,kx,ky-32); ctx.quadraticCurveTo(kx+17,ky-20,kx+13,ky+20); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.arc(kx,ky-32,11,0,7); ctx.fill();
+      ctx.fillStyle='#ff3b3b'; ctx.beginPath(); ctx.arc(kx-4,ky-33,2.1,0,7); ctx.arc(kx+4,ky-33,2.1,0,7); ctx.fill();
+      ctx.strokeStyle='#8a8a96'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(kx+14,ky-24); ctx.lineTo(kx+14,ky+16); ctx.stroke();
+      ctx.fillStyle='#c9ccd6'; ctx.beginPath(); ctx.moveTo(kx+14,ky-24); ctx.quadraticCurveTo(kx+31,ky-30,kx+25,ky-8); ctx.quadraticCurveTo(kx+18,ky-16,kx+14,ky-12); ctx.closePath(); ctx.fill();
       ctx.globalAlpha=1;
     }
     // 飘字
@@ -3348,22 +3430,28 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.globalAlpha=1;
     ctx.restore();
     // 顶栏
-    ctx.fillStyle='rgba(14,9,4,.94)'; ctx.fillRect(0,0,W,100);
+    var _tg=ctx.createLinearGradient(0,0,0,100); _tg.addColorStop(0,'rgba(20,12,5,.98)'); _tg.addColorStop(1,'rgba(14,9,4,.92)');
+    ctx.fillStyle=_tg; ctx.fillRect(0,0,W,100);
     ctx.fillStyle='rgba(255,205,130,.26)'; ctx.fillRect(0,99,W,1.5);
     ctx.textAlign='left'; ctx.textBaseline='middle';
-    ctx.fillStyle='#ff7b6b'; ctx.font='bold 26px sans-serif'; ctx.fillText('荒原大逃杀',44,42);
-    ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif'; ctx.fillText('房间躲杀手 · 十回合决出最强部落',44,72);
+    ctx.fillStyle='#ff7b6b'; ctx.font='bold 26px sans-serif'; ctx.fillText('荒原大逃杀',44,40);
+    ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif'; ctx.fillText('房间躲杀手 · 十回合决出最强部落',44,70);
     // 回合 / 宝石 / 倒计时
     ctx.textAlign='center';
-    ctx.fillStyle='#ffe7a8'; ctx.font='bold 19px sans-serif'; ctx.fillText('第 '+b.round+' / '+b.rounds+' 回合',Math.round(W*0.42),42);
-    ctx.fillStyle='#ffd479'; ctx.font='bold 17px sans-serif'; ctx.fillText('宝石 '+Math.floor(b.gems),Math.round(W*0.42),72);
+    ctx.fillStyle='#ffe7a8'; ctx.font='bold 19px sans-serif'; ctx.fillText('第 '+b.round+' / '+b.rounds+' 回合',Math.round(W*0.40),40);
+    brGem(Math.round(W*0.40)-72, 70, 9, '#5cc6f0');
+    ctx.fillStyle='#ffd479'; ctx.font='bold 17px sans-serif'; ctx.fillText('宝石 '+Math.floor(b.gems),Math.round(W*0.40),70);
     var cd=Math.max(0,b.timer);
-    ctx.fillStyle=cd<=5?'#ff8f7a':'#9fb2e6'; ctx.font='bold 17px sans-serif';
-    ctx.fillText(cd<=5? ('杀手 '+cd.toFixed(1)+'s') : (cd.toFixed(1)+'s 后'),Math.round(W*0.58),42);
+    ctx.fillStyle=cd<=6?'#ff8f7a':'#9fb2e6'; ctx.font='bold 17px sans-serif';
+    ctx.fillText(cd<=6? ('杀手 '+cd.toFixed(1)+'s') : (cd.toFixed(1)+'s 后'),Math.round(W*0.58),40);
     if(b.target>=0){
       ctx.fillStyle='#ff8f7a'; ctx.font='bold 15px sans-serif';
-      ctx.fillText('锁定「'+BR_ROOMS[b.target].n+'」',Math.round(W*0.58),72);
+      ctx.fillText('锁定「'+BR_ROOMS[b.target].n+'」',Math.round(W*0.58),70);
     }
+    // 回合进度条
+    var _bw=130, _bx=Math.round(W*0.58-_bw/2), _by=88, _fr=Math.max(0,Math.min(1,b.timer/b.interval));
+    ctx.fillStyle='rgba(255,255,255,.12)'; rr(_bx,_by,_bw,5,3); ctx.fill();
+    ctx.fillStyle= cd<=6?'#ff8f7a':'#9fb2e6'; rr(_bx,_by,_bw*_fr,5,3); ctx.fill();
     brBtn(L.again,'重新开局',true,14); brBtn(L.back,'返回菜单',true,14);
     // 右侧排行
     var P2=L.panel;
