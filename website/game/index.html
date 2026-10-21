@@ -2877,19 +2877,42 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     wl.addColorStop(0,'rgba(255,214,150,.07)'); wl.addColorStop(1,'rgba(255,214,150,0)');
     ctx.fillStyle=wl; ctx.fillRect(0,0,W,H);
   }
-  // ===== v2.36 桌面专属休闲玩法：兽骨三消（羊了个羊式三层堆叠 · 三消）=====
-  // 只在桌面端主菜单出现入口（DESK 分支），竖屏/小程序不暴露；状态全部挂在 B3 一个对象上，不新增散落的模块级变量。
+  // ===== v2.36 桌面专属休闲玩法：兽骨三消（羊了个羊式堆叠 · 三消）=====
+  // v2.40 第 3 关拉满：10 层 × 20×8 格 = 1500 块、80 种纹样（8 形 × 10 色），
+  // 并新增宝石包「60 宝石 → 撤回 +5 / 重排 +5」（b3Aid）。为撑住 1500 块：
+  //   ① 遮挡判定改增量 t.cov（O(1)），出牌/撤回只更新 3×3 邻域内更低层的石板；
+  //   ② 拓扑出牌序改「Kahn 随机自由表」（O(n·k)），不再是 O(n³) 全表重扫；
+  //   ③ 板上石板走离屏精灵缓存（80 张），槽位/消除中的牌仍实时绘制。
+  // 只在桌面端主菜单出现入口（DESK 分支），竖屏/小程序不暴露；状态全部挂在 B3 一个对象上。
   var B3=null;
-  var B3_COL=['#d7e3f7','#f6e9c6','#ff9a4d','#a4e08d','#8fc4f5','#f0a6c8','#c8c2b4','#cda9f7'];
-  function b3Layout(){                       // 按可用高度自适应：顶栏 104、底部提示 34，其余尽量给石板
-    var avail=H-104-34;
-    var ts=clamp(Math.floor(Math.min(W*0.076,(avail-52)/7.78)),22,96);
-    var hs=Math.round(ts/2), bw=16*hs+ts, bh=12*hs+ts;   // 9 列 × 7 行（半格错位 4 层堆叠）
+  var B3_COL=['#d7e3f7','#f6e9c6','#ff9a4d','#a4e08d','#8fc4f5','#f0a6c8','#c8c2b4','#cda9f7','#6fd3b8','#f2725f'];
+  // 每关规格：[每层配额..., 纹样数, 撤回次数, 重排次数]；层网格见 _blay（同序、同长度）
+  var _bspec=[[16,12,6,2, 4,4,3],
+              [24,20,12,4, 6,3,2],
+              [150,150,150,150,150,150,150,150,150,150, 80,1,1]];   // L3：10 层 × 150 = 1500 块 / 80 纹样
+  var _blay=[[[9,7],[8,6],[7,5],[6,4]],
+             [[9,7],[8,6],[7,5],[6,4]],
+             [[20,8],[20,8],[20,8],[20,8],[20,8],[20,8],[20,8],[20,8],[20,8],[20,8]]];
+  var B3_AID_GEM=60, B3_AID_N=5;     // 宝石包：60 宝石 → 撤回 +5 / 重排 +5
+  function b3ShapeOf(k){ return B3.kn>8 ? (k%8) : k; }                      // 形状：8 种手绘矢量
+  function b3ColOf(k){ return B3.kn>8 ? B3_COL[(k/8)|0] : B3_COL[k]; }      // 颜色：10 种（L3 用满 8×10）
+  function b3Layout(lv){                  // 按关卡层数/格数自适应：顶栏 104，底部留给 槽位+道具行+提示
+    lv=clamp(lv||1,1,3);
+    var sp=_bspec[lv-1], n=sp.length-3, lay=_blay[lv-1], gw=0, gh=0, l;
+    for(l=0;l<n;l++){ gw=Math.max(gw,(l%2)+2*(lay[l][0]-1)+2); gh=Math.max(gh,(l%2)+2*(lay[l][1]-1)+2); }
+    var hs=Math.floor(Math.min((W-36)/gw,(H-212)/gh));
+    while(hs>11){                          // 逐格回缩，直到 板面+槽位+道具行+提示 全塞进 720
+      if(gh*hs<=H-104-108-Math.round(hs*1.56) && gw*hs<=W-36) break;
+      hs--;
+    }
+    var ts=hs*2, bw=gw*hs, bh=gh*hs;
     var t2=Math.round(ts*0.78), gp=8, tw=t2*7+gp*6;
-    var content=bh+16+t2+34;
-    var by=Math.round(104+Math.max(12,(avail-content)/2));
-    var bx=Math.round(W/2-bw/2), tx=Math.round(W/2-tw/2), ty=by+bh+16;
-    return {ts:ts,hs:hs,bw:bw,bh:bh,bx:bx,by:by,t2:t2,gp:gp,tw:tw,tx:tx,ty:ty};
+    var avail=H-104-108-t2;
+    var by=Math.round(104+Math.max(6,(avail-bh)/2));
+    var bx=Math.round(W/2-bw/2);
+    var ty=by+bh+32, tx=Math.round(W/2-tw/2);
+    return {ts:ts,hs:hs,bw:bw,bh:bh,bx:bx,by:by,t2:t2,gp:gp,tw:tw,tx:tx,ty:ty,
+            btnY:ty+t2+10, hintY:ty+t2+10+34+12, gw:gw, gh:gh};
   }
   function b3Sig(kind,cx,cy,r,col){        // 八种图腾纹样：全部手绘矢量（不依赖 emoji 字形）
     ctx.save(); ctx.translate(cx,cy);
@@ -2938,61 +2961,81 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     }
     ctx.restore();
   }
-  function b3CovIn(list,t){                 // 槽位是否被 list 里更高层的石板压住（半格错位：重叠即压）
-    for(var i=0;i<list.length;i++){ var u=list[i];
-      if(u===t||u.layer<=t.layer) continue;
-      if(Math.abs(u.gx-t.gx)<2&&Math.abs(u.gy-t.gy)<2) return true; }
-    return false;
+  function b3Nbrs(t,cells,cw,ch){          // 与 t 重叠的全部石板（顶格落在 t 周围 3×3 内即重叠）
+    var out=[], dx, dy, a, lst, nx, ny;
+    for(dx=-1;dx<=1;dx++) for(dy=-1;dy<=1;dy++){
+      nx=t.gx+dx; ny=t.gy+dy;
+      if(nx<0||ny<0||nx>=cw||ny>=ch) continue;
+      lst=cells[nx*ch+ny]; if(!lst) continue;
+      for(a=0;a<lst.length;a++) if(lst[a]!==t) out.push(lst[a]);
+    }
+    return out;
   }
-  function b3Covered(t){                    // 只有「仍在板上」的更高层石板才算压住（已消掉/进槽的不再遮挡）
-    if(!B3||t.state!=='board') return false;
-    var a=B3.tiles;
-    for(var i=0;i<a.length;i++){ var u=a[i];
-      if(u===t||u.state!=='board'||u.layer<=t.layer) continue;
-      if(Math.abs(u.gx-t.gx)<2&&Math.abs(u.gy-t.gy)<2) return true; }
-    return false;
+  function b3Covered(t){                   // 只有「仍在板上」的更高层石板才算压住（O(1)：读增量计数）
+    return !!B3 && t.state==='board' && t.cov>0;
+  }
+  function b3Uncover(t){                   // t 离板：被它压住的更低层石板少一个压制者
+    var nb=b3Nbrs(t,B3.cells,B3.cw,B3.ch);
+    for(var i=0;i<nb.length;i++){ var u=nb[i]; if(u.layer<t.layer&&u.cov>0) u.cov--; }
+  }
+  function b3Recover(t){                   // t 回板（撤回）：更低层石板多一个压制者
+    var nb=b3Nbrs(t,B3.cells,B3.cw,B3.ch);
+    for(var j=0;j<nb.length;j++){ var v=nb[j]; if(v.layer<t.layer) v.cov++; }
   }
   function b3Start(level){
     reset(); S.scene='bone3';
-    var lv=clamp(level||1,1,3), L=b3Layout();
-    var _bspec=[[16,12,6,2, 4,4,3],[24,20,12,4, 6,3,2],[52,42,34,22, 8,1,1]][lv-1];   // L1 36 / L2 60 / L3 150 块（4 层，撤/排最小非零）
-    var quota=_bspec.slice(0,4), lay=[[9,7],[8,6],[7,5],[6,4]], pool=[];   // 63 / 48 / 35 / 24 格
-    for(var l=0;l<lay.length;l++){
+    var lv=clamp(level||1,1,3), L=b3Layout(lv);
+    var sp=_bspec[lv-1], n=sp.length-3, quota=sp.slice(0,n), lay=_blay[lv-1], pool=[];
+    for(var l=0;l<n;l++){
       var c=lay[l][0], rw=lay[l][1], arr=[];
-      for(var j=0;j<rw;j++) for(var i=0;i<c;i++) arr.push({layer:l,gx:i*2+l,gy:j*2+l});
+      for(var j=0;j<rw;j++) for(var i=0;i<c;i++) arr.push({layer:l,gx:i*2+(l%2),gy:j*2+(l%2)});
       for(var s=arr.length-1;s>0;s--){ var q=Math.floor(Math.random()*(s+1)), tm=arr[s]; arr[s]=arr[q]; arr[q]=tm; }
       for(var k=0;k<quota[l]&&k<arr.length;k++) pool.push(arr[k]);
     }
-    // 先求一条「完全可出」的拓扑顺序（每次只挑当前没被压住的槽位）→ 再按每 3 个一组分配同纹，保证一定存在通关解
-    var rem=pool.slice(), order=[];
-    while(rem.length){
-      var free=[];
-      for(var a=0;a<rem.length;a++) if(!b3CovIn(rem,rem[a])) free.push(a);
-      if(!free.length) free.push(0);
-      var pk=free[Math.floor(Math.random()*free.length)];
-      order.push(rem[pk]); rem.splice(pk,1);
+    var tiles=[], maxgx=0, maxgy=0, p, st;
+    for(p=0;p<pool.length;p++){ st=pool[p];
+      var cx=L.bx+st.gx*L.hs+L.ts/2, cy=L.by+st.gy*L.hs+L.ts/2;
+      tiles.push({kind:0, layer:st.layer, gx:st.gx, gy:st.gy, bx:cx, by:cy, x:cx, y:cy,
+        tx:cx, ty:cy, sz:L.ts, state:'board', popT:0, cov:0, _k:0, _done:false});
+      if(st.gx>maxgx) maxgx=st.gx; if(st.gy>maxgy) maxgy=st.gy;
     }
-    var kn=_bspec[4], kinds=[];
-    for(var g=0;g<Math.ceil(order.length/3);g++) kinds.push(g%kn);
+    // 位置索引：cells[gx*ch+gy] = 顶格落在该处的石板（多层同相位可叠加）
+    var cw=maxgx+3, ch=maxgy+3, cells=new Array(cw*ch), i2, a;
+    for(i2=0;i2<tiles.length;i2++){ var t0=tiles[i2], key=t0.gx*ch+t0.gy; (cells[key]||(cells[key]=[])).push(t0); }
+    // 覆盖计数 + 拓扑出牌序（Kahn 随机自由表：每次只挑当前没被压住的，O(n·k)）
+    var free=[], order=[];
+    for(i2=0;i2<tiles.length;i2++){ var t1=tiles[i2], nb=b3Nbrs(t1,cells,cw,ch), c1=0;
+      for(a=0;a<nb.length;a++) if(nb[a].layer>t1.layer) c1++;
+      t1.cov=c1; t1._k=c1; if(c1===0) free.push(t1); }
+    while(free.length){
+      var pk=Math.floor(Math.random()*free.length), t2=free[pk];
+      free[pk]=free[free.length-1]; free.pop();
+      t2._done=true; order.push(t2);
+      var nb2=b3Nbrs(t2,cells,cw,ch);
+      for(a=0;a<nb2.length;a++){ var u=nb2[a];
+        if(u.layer<t2.layer){ u._k--; if(u._k===0) free.push(u); } }
+    }
+    if(order.length<tiles.length) for(i2=0;i2<tiles.length;i2++) if(!tiles[i2]._done) order.push(tiles[i2]);
+    // 沿拓扑序每 3 个一组分配同纹 → 一定存在通关解
+    var kn=sp[n], kinds=[], g;
+    for(g=0;g<Math.ceil(order.length/3);g++) kinds.push(g%kn);
     for(var sh=kinds.length-1;sh>0;sh--){ var q2=Math.floor(Math.random()*(sh+1)), tk=kinds[sh]; kinds[sh]=kinds[q2]; kinds[q2]=tk; }
-    var tiles=[];
-    for(var o=0;o<order.length;o++){
-      var st=order[o], cx=L.bx+st.gx*L.hs+L.ts/2, cy=L.by+st.gy*L.hs+L.ts/2;
-      tiles.push({kind:kinds[Math.floor(o/3)], layer:st.layer, gx:st.gx, gy:st.gy,
-        bx:cx, by:cy, x:cx, y:cy, tx:cx, ty:cy, sz:L.ts, state:'board', popT:0});
-    }
-    B3={level:lv, L:L, tiles:tiles, tray:[], parts:[], state:'play', t:0, undo:_bspec[5], shuf:_bspec[6], msg:null, msgT:0};
+    for(var o=0;o<order.length;o++) order[o].kind=kinds[Math.floor(o/3)];
+    // B3.tiles 直接采用拓扑出牌序（测试/复盘可沿序全清）；绘制另用按层深排序的 B3.order
+    var ord=order.slice().sort(function(x,y){ return (x.layer-y.layer)||(x.gy-y.gy)||(x.gx-y.gx); });
+    B3={level:lv, L:L, kn:kn, tiles:order, order:ord, tray:[], parts:[], state:'play', t:0,
+        undo:sp[n+1], shuf:sp[n+2], msg:null, msgT:0, cells:cells, cw:cw, ch:ch, spr:null, _nc:false};
     sfx('build');
   }
   function b3StartMode(){ b3Start(1); }
   function b3Burst(x,y,k){
     for(var i=0;i<10;i++){ var a=Math.random()*Math.PI*2, sp=40+Math.random()*120;
-      B3.parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-30,life:0.42+Math.random()*0.26,max:0.68,col:B3_COL[k],sz:2+Math.random()*2.6}); }
+      B3.parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-30,life:0.42+Math.random()*0.26,max:0.68,col:b3ColOf(k),sz:2+Math.random()*2.6}); }
   }
   function b3Pick(t){
     if(!B3||B3.state!=='play'||t.state!=='board') return;
     if(b3Covered(t)){ sfx('hit'); B3.msg='这块石板还被压着'; B3.msgT=0.9; return; }
-    t.state='tray';
+    t.state='tray'; b3Uncover(t);
     var ins=B3.tray.length;
     for(var i=B3.tray.length-1;i>=0;i--){ if(B3.tray[i].kind===t.kind){ ins=i+1; break; } }   // 同纹自动靠在一起
     B3.tray.splice(ins,0,t);
@@ -3009,8 +3052,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   }
   function b3Undo(){
     if(!B3||B3.state!=='play') return;
-    if(B3.undo>0){ if(!B3.tray.length){ B3.msg='还没有可取回的石板'; B3.msgT=1; return; } var t=B3.tray.pop(); t.state='board'; B3.undo--; sfx('build'); return; }
-    if(spendGem(20)){ if(!B3.tray.length){ addGem(20); B3.msg='还没有可取回的石板'; B3.msgT=1; return; } var t2=B3.tray.pop(); t2.state='board'; sfx('build'); B3.msg='花 20 宝石撤回'; B3.msgT=1; return; }
+    if(B3.undo>0){ if(!B3.tray.length){ B3.msg='还没有可取回的石板'; B3.msgT=1; return; } var t=B3.tray.pop(); t.state='board'; b3Recover(t); B3.undo--; sfx('build'); return; }
+    if(spendGem(20)){ if(!B3.tray.length){ addGem(20); B3.msg='还没有可取回的石板'; B3.msgT=1; return; } var t2=B3.tray.pop(); t2.state='board'; b3Recover(t2); sfx('build'); B3.msg='花 20 宝石撤回'; B3.msgT=1; return; }
     B3.msg='撤回需 20 宝石'; B3.msgT=1;
   }
   function b3Shuffle(){
@@ -3019,11 +3062,18 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(spendGem(20)){ var bs=[], i; for(i=0;i<B3.tiles.length;i++) if(B3.tiles[i].state==='board') bs.push(B3.tiles[i]); if(bs.length<4){ addGem(20); B3.msg='石板太少，无需重排'; B3.msgT=1; return; } var ks=[]; for(i=0;i<bs.length;i++) ks.push(bs[i].kind); for(i=ks.length-1;i>0;i--){ var q=Math.floor(Math.random()*(i+1)), tk=ks[i]; ks[i]=ks[q]; ks[q]=tk; } for(i=0;i<bs.length;i++) bs[i].kind=ks[i]; sfx('spawn'); B3.msg='花 20 宝石重排'; B3.msgT=0.9; return; }
     B3.msg='重排需 20 宝石'; B3.msgT=1;
   }
+  function b3Aid(){                        // v2.40 宝石包：60 宝石 → 撤回 +5 / 重排 +5
+    if(!B3||B3.state!=='play') return;
+    if(!spendGem(B3_AID_GEM)){ B3.msg='需 '+B3_AID_GEM+' 宝石'; B3.msgT=1; return; }
+    B3.undo+=B3_AID_N; B3.shuf+=B3_AID_N; sfx('build');
+    B3.msg='撤回 +'+B3_AID_N+' · 重排 +'+B3_AID_N; B3.msgT=1.2;
+  }
   function b3Btns(){
-    if(!B3) return {back:{x:W-118,y:26,w:92,h:36},again:{x:W-222,y:26,w:92,h:36},undo:{x:0,y:0,w:1,h:1},shuf:{x:0,y:0,w:1,h:1}};
-    var L=B3.L;
+    if(!B3) return {back:{x:W-118,y:26,w:92,h:36},again:{x:W-222,y:26,w:92,h:36},
+                    undo:{x:0,y:0,w:1,h:1},aid:{x:0,y:0,w:1,h:1},shuf:{x:0,y:0,w:1,h:1}};
+    var L=B3.L, bw=132, gp=14, tot=bw*3+gp*2, x0=Math.round(W/2-tot/2), y=L.btnY;
     return { back:{x:W-118,y:26,w:92,h:36}, again:{x:W-222,y:26,w:92,h:36},
-             undo:{x:L.tx+L.tw+26,y:L.ty+2,w:112,h:34}, shuf:{x:L.tx+L.tw+26,y:L.ty+48,w:112,h:34} };
+             undo:{x:x0,y:y,w:bw,h:34}, aid:{x:x0+bw+gp,y:y,w:bw,h:34}, shuf:{x:x0+(bw+gp)*2,y:y,w:bw,h:34} };
   }
   function b3PanelBox(){
     var pw=480, ph=252;
@@ -3043,6 +3093,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(hit(bt.back,px,py)){ toMenu(); return; }
     if(hit(bt.again,px,py)){ b3Start(B3.level); return; }
     if(hit(bt.undo,px,py)){ b3Undo(); return; }
+    if(hit(bt.aid,px,py)){ b3Aid(); return; }
     if(hit(bt.shuf,px,py)){ b3Shuffle(); return; }
     var best=null, bl=-1, ts=B3.L.ts;
     for(var i=0;i<B3.tiles.length;i++){ var t=B3.tiles[i];
@@ -3080,17 +3131,47 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.fillStyle=on?'#ffd479':'#6f6048'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillText(label,r.x+r.w/2,r.y+r.h/2);
   }
-  function b3Tile(t){
-    var sz=t.sz||B3.L.ts, al=1, x=t.x-sz/2, y=t.y-sz/2;
-    if(t.state==='pop'){ var k=Math.max(0,t.popT/0.28); al=k; sz=sz*(1+(1-k)*0.22); x=t.x-sz/2; y=t.y-sz/2; }
-    ctx.globalAlpha=al;
+  function b3NewCanvas(w,h){                // 离屏画布（仅浏览器/Electron；沙箱无 document 时返回 null → 走实时绘制）
+    try{ if(typeof document!=='undefined'&&document.createElement){
+      var cv=document.createElement('canvas'); cv.width=w; cv.height=h; return cv; } }catch(e){}
+    return null;
+  }
+  function b3Sprite(kind,sz){               // 80 纹样各缓存一张：1500 块时把每帧矢量绘制降为 drawImage
+    if(!B3.spr) B3.spr={};
+    var key=kind+'@'+sz, cv=B3.spr[key];
+    if(cv!==undefined) return cv;
+    cv=null;
+    if(!B3._nc){
+      try{
+        var c2=b3NewCanvas(sz+12,sz+12), g=c2&&c2.getContext?c2.getContext('2d'):null;
+        if(g){ var _o=ctx; ctx=g; b3DrawTile(kind,sz/2+6,sz/2+6,sz); ctx=_o; cv=c2; }
+      }catch(e){ cv=null; }
+      if(!cv) B3._nc=true;
+    }
+    B3.spr[key]=cv; return cv;
+  }
+  function b3DrawTile(kind,cx,cy,sz){       // 单块石板的纯绘制（板上精灵与槽位飞牌共用）
+    var x=cx-sz/2, y=cy-sz/2;
     ctx.fillStyle='rgba(0,0,0,.38)'; rr(x+3,y+5,sz,sz,Math.max(3,sz*0.12)); ctx.fill();
     ctx.fillStyle='#3a2b1b'; rr(x,y,sz,sz,Math.max(3,sz*0.12)); ctx.fill();
     ctx.fillStyle='rgba(255,214,150,.07)'; rr(x+sz*0.06,y+sz*0.06,sz*0.88,sz*0.36,Math.max(2,sz*0.08)); ctx.fill();
     ctx.strokeStyle='#8a6a3c'; ctx.lineWidth=1.4; rr(x+.7,y+.7,sz-1.4,sz-1.4,Math.max(3,sz*0.12)); ctx.stroke();
     ctx.strokeStyle='rgba(255,214,150,.13)'; ctx.lineWidth=1; rr(x+sz*0.09,y+sz*0.09,sz*0.82,sz*0.82,Math.max(2,sz*0.08)); ctx.stroke();
-    b3Sig(t.kind,t.x,t.y,sz*0.335,B3_COL[t.kind]);
-    if(b3Covered(t)){ ctx.fillStyle='rgba(4,7,13,.50)'; rr(x,y,sz,sz,Math.max(3,sz*0.12)); ctx.fill(); }
+    b3Sig(b3ShapeOf(kind),cx,cy,sz*0.335,b3ColOf(kind));
+  }
+  function b3Tile(t){
+    var sz=t.sz||B3.L.ts, cov=(t.state==='board'&&t.cov>0);
+    if(t.state==='board'&&Math.abs(sz-B3.L.ts)<0.5){
+      var sp=b3Sprite(t.kind,Math.round(B3.L.ts));
+      if(sp&&ctx.drawImage){ ctx.drawImage(sp,t.x-B3.L.ts/2-6,t.y-B3.L.ts/2-6);
+        if(cov){ ctx.fillStyle='rgba(4,7,13,.50)'; var qx=t.x-B3.L.ts/2, qy=t.y-B3.L.ts/2; rr(qx,qy,B3.L.ts,B3.L.ts,Math.max(3,B3.L.ts*0.12)); ctx.fill(); }
+        return; }
+    }
+    var al=1, x=t.x-sz/2, y=t.y-sz/2;
+    if(t.state==='pop'){ var k=Math.max(0,t.popT/0.28); al=k; sz=sz*(1+(1-k)*0.22); x=t.x-sz/2; y=t.y-sz/2; }
+    ctx.globalAlpha=al;
+    b3DrawTile(t.kind,t.x,t.y,sz);
+    if(cov){ ctx.fillStyle='rgba(4,7,13,.50)'; rr(x,y,sz,sz,Math.max(3,sz*0.12)); ctx.fill(); }
     ctx.globalAlpha=1;
   }
   function drawBone3(){
@@ -3114,14 +3195,13 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     for(i=0;i<7;i++){ var sx=L.tx+i*(L.t2+L.gp);
       ctx.fillStyle=(i<B3.tray.length)?'rgba(255,205,130,.06)':'rgba(255,255,255,.04)'; rr(sx,L.ty,L.t2,L.t2,8); ctx.fill();
       ctx.strokeStyle='rgba(255,205,130,.13)'; ctx.lineWidth=1; rr(sx+.5,L.ty+.5,L.t2-1,L.t2-1,8); ctx.stroke(); }
-    // 道具
+    // 道具（撤回 / 宝石包 / 重排）
     var bt=b3Btns();
-    b3Btn(bt.undo, B3.undo>0?('撤回 '+B3.undo):'撤回 20宝', B3.undo>0||GEM>=20); b3Btn(bt.shuf, B3.shuf>0?('重排 '+B3.shuf):'重排 20宝', B3.shuf>0||GEM>=20);
-    // 石板（底层→顶层，行序在上；被压住的最后盖暗罩）
-    var lay=[];
-    for(i=0;i<B3.tiles.length;i++){ var t=B3.tiles[i]; if(t.state==='gone') continue; lay.push(t); }
-    lay.sort(function(a,b){ return (a.layer-b.layer)||(a.gy-b.gy)||(a.gx-b.gx); });
-    for(i=0;i<lay.length;i++) b3Tile(lay[i]);
+    b3Btn(bt.undo, B3.undo>0?('撤回 '+B3.undo):'撤回 20宝', B3.undo>0||GEM>=20);
+    b3Btn(bt.aid, '+5撤排 '+B3_AID_GEM+'宝', GEM>=B3_AID_GEM);
+    b3Btn(bt.shuf, B3.shuf>0?('重排 '+B3.shuf):'重排 20宝', B3.shuf>0||GEM>=20);
+    // 石板（按预排序的层级顺序，跳过已消除的；被压住的盖暗罩）
+    for(i=0;i<B3.order.length;i++){ var t=B3.order[i]; if(t.state==='gone') continue; b3Tile(t); }
     // 粒子
     for(i=0;i<B3.parts.length;i++){ var p=B3.parts[i];
       ctx.globalAlpha=Math.max(0,p.life/p.max); ctx.fillStyle=p.col;
@@ -3132,7 +3212,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.fillStyle='rgba(255,205,130,.26)'; ctx.fillRect(0,103,W,1.5);
     ctx.textAlign='left'; ctx.textBaseline='middle';
     ctx.fillStyle='#ffd479'; ctx.font='bold 26px sans-serif'; ctx.fillText('兽骨三消',44,44);
-    ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif'; ctx.fillText('图腾石板 · 三层堆叠三消',44,74);
+    ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif';
+    ctx.fillText(B3.level>=3?'十层堆叠 · 80 种图腾纹样':'图腾石板 · 堆叠三消',44,74);
     var left=0; for(i=0;i<B3.tiles.length;i++) if(B3.tiles[i].state!=='gone') left++;
     ctx.textAlign='center';
     ctx.fillStyle='#ffe7a8'; ctx.font='bold 20px sans-serif'; ctx.fillText('第 '+B3.level+' / 3 关',Math.round(W/2),44);
@@ -3140,8 +3221,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     b3Btn(bt.again,'再来一局',true); b3Btn(bt.back,'返回菜单',true);
     // 底部提示
     ctx.textAlign='center'; ctx.fillStyle='#8ba3cc'; ctx.font='12px sans-serif';
-    ctx.fillText('点击未被压住的石板 · 集齐 3 块同纹自动消除 · 槽位满 7 格即失败',Math.round(W/2),L.ty+L.t2+24);
-    if(B3.msg){ ctx.fillStyle='rgba(255,212,121,.95)'; ctx.font='bold 15px sans-serif'; ctx.fillText(B3.msg,Math.round(W/2),L.ty-18); }
+    ctx.fillText('点击未被压住的石板 · 集齐 3 块同纹自动消除 · 槽位满 7 格即失败',Math.round(W/2),L.hintY);
+    if(B3.msg){ ctx.fillStyle='rgba(255,212,121,.95)'; ctx.font='bold 15px sans-serif'; ctx.fillText(B3.msg,Math.round(W/2),L.ty-14); }
     ctx.save(); ctx.setTransform(scale,0,0,scale,ox,oy); drawScreenVignette(); ctx.restore();
     if(B3.state!=='play'){
       var P=b3PanelBox();
