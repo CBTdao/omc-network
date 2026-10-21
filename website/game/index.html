@@ -203,6 +203,46 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     else if(type==='lose'){ [392,330,262,196].forEach(function(f,i){ setTimeout(function(){beep(f,0.3,'sawtooth',0.06);}, i*160); }); }
   }
 
+  // ===== v2.39 平台积分（宝石）经济层：跨玩法通用货币；本地持久化 mh_gem；后续供平台积分打通 =====
+  var GEMKEY='mh_gem', __AD_BTN=null;
+  function loadGem(){ try{ var v=wx.getStorageSync(GEMKEY); return (typeof v==='number'&&v>=0)?Math.floor(v):0; }catch(e){ return 0; } }
+  function saveGem(){ try{ wx.setStorageSync(GEMKEY,GEM); }catch(e){} }
+  var GEM=loadGem();
+  function addGem(n){ GEM=Math.max(0,Math.floor((GEM||0)+n)); saveGem(); return GEM; }
+  function spendGem(n){ n=Math.floor(n||0); if((GEM||0)>=n){ GEM-=n; saveGem(); return true; } return false; }
+  function setGem(n){ GEM=Math.max(0,Math.floor(n||0)); saveGem(); return GEM; }
+  // 小程序：看广告得宝石（wx 激励视频；广告单元 ID 在 mp.weixin.qq.com 申请后替换下方 AD_UNIT_ID）
+  var AD_UNIT_ID='adunit-REPLACE_ME';
+  var _adV=null;
+  function watchAdGem(cb){
+    if(DESK||!wx.createRewardedVideoAd){ if(cb)cb(false); return; }
+    try{ if(!_adV) _adV=wx.createRewardedVideoAd({adUnitId:AD_UNIT_ID});
+      _adV.onClose(function(r){ var ok=r&&r.isEnded; if(ok){ addGem(50); toast('看广告 +50 宝石'); } if(cb)cb(ok); });
+      _adV.show().catch(function(){ _adV.load().then(function(){ _adV.show(); }); });
+    }catch(e){ if(cb)cb(false); }
+  }
+  // 每局结算奖励（胜/负/模式加成）
+  function awardRunGem(){
+    var n=(S.over===1)?30:10;
+    if(S.endless) n+=(S.stage||0)*2;
+    if(S.campaign) n+=(S.stage||0)*2;
+    if(S.epic) n+=5;
+    addGem(n); S._gemGain=n;
+  }
+  // 天降援军按钮矩形（避开 spBtn：desktop 用 y318 / 竖屏用 y194）
+  function aidBtnRect(){ return DESK?{x:DX1,y:318,w:170,h:30}:{x:266,y:194,w:88,h:22}; }
+  // 天降援军：耗 30 宝石召唤 +3 族人（每局上限 2，保留「近不可能通关」基调：只补小兵、不翻盘）
+  function callAid(){
+    if(S.over||S.paused||S.spTgt) return;
+    if((S.aidUsed||0)>=2){ toast('本局援军已用尽（上限 2）'); sfx('hit'); return; }
+    if(!spendGem(30)){ toast('宝石不足（需 30）'); sfx('hit'); return; }
+    S.aidUsed=(S.aidUsed||0)+1;
+    var bx=LANE_X, by=YOUR_BASE_Y-22, types=['inf','arc','work'], g=ageMul('you');
+    for(var ai=0;ai<3;ai++){ var tp=types[ai], u=UNIT[tp];
+      S.units.push({id:++S.uid,side:'you',type:tp,x:bx+(Math.random()*2-1)*40,y:by, hp:u.hp*g,maxhp:u.hp*g,atkU:u.atkU*g,atkB:u.atkB*g,range:u.range,speed:u.speed,cd:0,dead:false,deadT:0,t:Math.random()*6,hitFlash:0,node:null,face:1,swing:0,walk:Math.random()*6,dustT:0,foff:0,stage:false}); }
+    sfx('build'); S.banner={txt:'天降援军 +3 族人',life:1.8,max:1.8}; toast('天降援军！-30 宝石');
+  }
+
   // ---- 打磨：飘字 / 震屏 / 最佳战绩 ----
   function fnum(x,y,txt,col,sz){ if(S.floats.length>28) return; S.floats.push({x:x,y:y,txt:txt,col:col,life:0.85,max:0.85,sz:sz}); }
   function atkMul(a,d){   // RoN 式兵种克制四环：勇>步、步>骑、骑>弓、弓>勇（软克制约 +28%~34%，对建筑/未知不加成）
@@ -1281,7 +1321,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     }
     S.units=S.units.filter(function(u){return !(u.dead&&u.deadT>0.95);});   // 倒地旋转动画需要更长寿命
     for(i=0;i<S.buildings.length;i++){ var bld=S.buildings[i]; if(bld.dead)continue; if(bld.hp<=0){ if(bld.type==='base'){
-        if(bld.side==='you'){ S.over=2; sfx('lose'); shake(9); S.flash=1; S.banner={txt:'城池陷落…',life:2.4,max:2.4}; saveBest(); }
+        if(bld.side==='you'){ S.over=2; sfx('lose'); shake(9); S.flash=1; S.banner={txt:'城池陷落…',life:2.4,max:2.4}; saveBest(); awardRunGem(); }
         else if(S.epic){ S.over=1; S.epicDone=1; S.epicNext=(CUT?CUT.i+1:0); sfx('win'); shake(9); S.flash=1; S.banner={txt:'战斗胜利！',life:2.4,max:2.4}; saveBest(); }   // v2.31 部落史诗：本幕胜 → 回剧情（不走战役推进）
         else if(S.campaign && (S.endless || S.stage<S.maxStage)){ S.flash=1; S.banner={txt:'征服成功！整备后进军下一部族',life:2.4,max:2.4}; nextCampaignStage(); }   // 战役：攻克当前部族 → 自动进军下一部族（全新战场）
         else { S.over=1; sfx('win'); shake(9); S.flash=1; S.banner={txt:'征服大片！',life:2.4,max:2.4}; saveBest(); }
@@ -2398,6 +2438,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   var pauseBtn = DESK?{x:DX1,y:78,w:170,h:30}:{x:266,y:64,w:88,h:22};                // 暂停/继续（v2.33：竖屏右列等距；v2.34 桌面下移出顶栏，避免压住「时代·X」）
   var heroBtn = DESK?{x:DX0,y:238,w:130,h:30}:{x:8,y:152,w:66,h:22};                 // v2.27 主公战吼：冲击波击退敌军 + 强化附近友军（仅主公在场显示）
   var spBtn = DESK?{x:DX1,y:278,w:170,h:30}:{x:266,y:168,w:88,h:22};                 // v2.30 神罚（超级武器）：祭坛建成后可用，点击瞄准 → 点战场释放（v2.33：竖屏右列等距、桌面沉底）
+  var aidBtn = DESK?{x:DX1,y:318,w:170,h:30}:{x:266,y:194,w:88,h:22};                // v2.39 天降援军：耗宝石召唤 +3 族人（每局上限 2）
   function blowHorn(){ if(S.hornCd>0||S.over) return; if(S.tips)S.tips.horn='done'; S.horn=6; S.hornCd=26; S.banner={txt:'冲锋号角！全军加速·攻击+25%（6s）',life:2.2,max:2.2}; sfx('age'); }
   // v2.27 A：主公战吼（主动技，仅主公在场·战役/无尽）。附近敌军被震退+硬直，附近友军战斗单位短暂奋勇强化（攻/速+35%，5s）
   function heroAlive(){ for(var i=0;i<S.units.length;i++){ var hu=S.units[i]; if(hu.type==='hero'&&!hu.dead&&hu.side==='you') return hu; } return null; }
@@ -2588,6 +2629,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       if(S.panel==='endless'&&hit(endlessStartBtn,px,py)){ startEndless(); return; }
       S.panel=null; return;
     }
+    if(!DESK&&__AD_BTN&&hit(__AD_BTN,px,py)){ watchAdGem(); return; }
     for(var di=0;di<diffRects.length;di++){ if(hit(diffRects[di],px,py)){ DIFF=diffRects[di].id; saveDiff(); if(soundOn)sndPlay('spawn'); return; } }
     for(var i=0;i<menuBtns.length;i++){ var b=menuBtns[i]; if(hit(b,px,py)){
       if(b.id==='start'){ reset(); }
@@ -2631,6 +2673,9 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       } else drawBtn(b,b.label,true);
     }
     if(S.best&&S.best.sc>-1){ ctx.fillStyle='#9fb2e6'; ctx.font=Math.round(11*FS)+'px sans-serif'; ctx.fillText('历史最佳 击杀 '+S.best.kills+' · '+fmtTime(S.best.t)+(S.best.win?' · 胜':'')+((S.best.endless)?(' · 无尽第'+S.best.endless+'阵'):''),W/2,DESK?574:450); }
+    // v2.39 平台积分（宝石）
+    ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillStyle='#ffd479'; ctx.font='bold '+Math.round(13*FS)+'px sans-serif'; ctx.fillText('宝石（平台积分）：'+GEM, 24, DESK?44:22);
+    if(!DESK){ __AD_BTN={x:W-152,y:DESK?34:14,w:128,h:30}; ctx.fillStyle='rgba(255,205,130,.14)'; rr(__AD_BTN.x,__AD_BTN.y,__AD_BTN.w,__AD_BTN.h,8); ctx.fill(); ctx.strokeStyle='rgba(168,129,74,.7)'; ctx.lineWidth=1; rr(__AD_BTN.x+.5,__AD_BTN.y+.5,__AD_BTN.w-1,__AD_BTN.h-1,8); ctx.stroke(); ctx.fillStyle='#ffd479'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center'; ctx.fillText('看广告 +50宝石',__AD_BTN.x+__AD_BTN.w/2,__AD_BTN.y+__AD_BTN.h/2); }
     // 难度选择（经典战 & 部落征程通用）
     ctx.fillStyle='#8ba3cc'; ctx.font=Math.round(11*FS)+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('难度选择',W/2,DESK?590:462);
     for(var dbi=0;dbi<diffRects.length;dbi++){ var db=diffRects[dbi], sel=(DIFF===db.id);
@@ -2964,20 +3009,15 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   }
   function b3Undo(){
     if(!B3||B3.state!=='play') return;
-    if(B3.undo<=0){ B3.msg='撤回次数用完了'; B3.msgT=1; return; }
-    if(!B3.tray.length){ B3.msg='还没有可取回的石板'; B3.msgT=1; return; }
-    var t=B3.tray.pop(); t.state='board'; B3.undo--; sfx('build');
+    if(B3.undo>0){ if(!B3.tray.length){ B3.msg='还没有可取回的石板'; B3.msgT=1; return; } var t=B3.tray.pop(); t.state='board'; B3.undo--; sfx('build'); return; }
+    if(spendGem(20)){ if(!B3.tray.length){ addGem(20); B3.msg='还没有可取回的石板'; B3.msgT=1; return; } var t2=B3.tray.pop(); t2.state='board'; sfx('build'); B3.msg='花 20 宝石撤回'; B3.msgT=1; return; }
+    B3.msg='撤回需 20 宝石'; B3.msgT=1;
   }
   function b3Shuffle(){
     if(!B3||B3.state!=='play') return;
-    if(B3.shuf<=0){ B3.msg='重排次数用完了'; B3.msgT=1; return; }
-    var bs=[], i;
-    for(i=0;i<B3.tiles.length;i++) if(B3.tiles[i].state==='board') bs.push(B3.tiles[i]);
-    if(bs.length<4){ B3.msg='石板太少，无需重排'; B3.msgT=1; return; }
-    var ks=[]; for(i=0;i<bs.length;i++) ks.push(bs[i].kind);
-    for(i=ks.length-1;i>0;i--){ var q=Math.floor(Math.random()*(i+1)), tk=ks[i]; ks[i]=ks[q]; ks[q]=tk; }
-    for(i=0;i<bs.length;i++) bs[i].kind=ks[i];
-    B3.shuf--; sfx('spawn'); B3.msg='石板已重排'; B3.msgT=0.9;
+    if(B3.shuf>0){ var _bs=[],_i; for(_i=0;_i<B3.tiles.length;_i++) if(B3.tiles[_i].state==='board') _bs.push(B3.tiles[_i]); if(_bs.length<4){ B3.msg='石板太少，无需重排'; B3.msgT=1; return; } var _ks=[]; for(_i=0;_i<_bs.length;_i++) _ks.push(_bs[_i].kind); for(_i=_ks.length-1;_i>0;_i--){ var _q=Math.floor(Math.random()*(_i+1)),_tk=_ks[_i]; _ks[_i]=_ks[_q]; _ks[_q]=_tk; } for(_i=0;_i<_bs.length;_i++) _bs[_i].kind=_ks[_i]; B3.shuf--; sfx('spawn'); B3.msg='石板已重排'; B3.msgT=0.9; return; }
+    if(spendGem(20)){ var bs=[], i; for(i=0;i<B3.tiles.length;i++) if(B3.tiles[i].state==='board') bs.push(B3.tiles[i]); if(bs.length<4){ addGem(20); B3.msg='石板太少，无需重排'; B3.msgT=1; return; } var ks=[]; for(i=0;i<bs.length;i++) ks.push(bs[i].kind); for(i=ks.length-1;i>0;i--){ var q=Math.floor(Math.random()*(i+1)), tk=ks[i]; ks[i]=ks[q]; ks[q]=tk; } for(i=0;i<bs.length;i++) bs[i].kind=ks[i]; sfx('spawn'); B3.msg='花 20 宝石重排'; B3.msgT=0.9; return; }
+    B3.msg='重排需 20 宝石'; B3.msgT=1;
   }
   function b3Btns(){
     if(!B3) return {back:{x:W-118,y:26,w:92,h:36},again:{x:W-222,y:26,w:92,h:36},undo:{x:0,y:0,w:1,h:1},shuf:{x:0,y:0,w:1,h:1}};
@@ -3031,7 +3071,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(B3.state!=='play') return;
     var left=0;
     for(i=0;i<B3.tiles.length;i++) if(B3.tiles[i].state!=='gone') left++;
-    if(!left){ B3.state=(B3.level>=3)?'alldone':'clear'; sfx('win'); }
+    if(!left){ B3.state=(B3.level>=3)?'alldone':'clear'; sfx('win');
+      if(!B3._awarded){ B3._awarded=true; var _gn=(B3.level>=3?25:(B3.level===2?15:10)); if(B3.state==='alldone') _gn+=50; addGem(_gn); B3._gain=_gn; B3.msg='通关 +'+_gn+' 宝石'; B3.msgT=1.4; } }
   }
   function b3Btn(r,label,on){
     ctx.fillStyle=on?'#4a3a20':'#241a10'; rr(r.x,r.y,r.w,r.h,8); ctx.fill();
@@ -3075,7 +3116,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       ctx.strokeStyle='rgba(255,205,130,.13)'; ctx.lineWidth=1; rr(sx+.5,L.ty+.5,L.t2-1,L.t2-1,8); ctx.stroke(); }
     // 道具
     var bt=b3Btns();
-    b3Btn(bt.undo,'撤回 '+B3.undo, B3.undo>0); b3Btn(bt.shuf,'重排 '+B3.shuf, B3.shuf>0);
+    b3Btn(bt.undo, B3.undo>0?('撤回 '+B3.undo):'撤回 20宝', B3.undo>0||GEM>=20); b3Btn(bt.shuf, B3.shuf>0?('重排 '+B3.shuf):'重排 20宝', B3.shuf>0||GEM>=20);
     // 石板（底层→顶层，行序在上；被压住的最后盖暗罩）
     var lay=[];
     for(i=0;i<B3.tiles.length;i++){ var t=B3.tiles[i]; if(t.state==='gone') continue; lay.push(t); }
@@ -3154,7 +3195,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     var L=brLayout(), rivals=[];
     for(var i=0;i<8;i++) rivals.push({ name:BR_RIVAL[i], col:BR_RCOL[i], room:(i*4+2)%9,
       swarm:10+Math.floor(Math.random()*7), gems:0, alive:true, bob:Math.random()*6 });
-    BR={ L:L, at:4, dest:-1, travel:0, t:0, swarm:12, gems:0, bought:0,
+    BR={ L:L, at:4, dest:-1, travel:0, t:0, swarm:12, gems:GEM, bought:0,
          round:1, rounds:10, interval:22, phase:'run', timer:22, target:-1, last:-1,
          killer:null, rivals:rivals, floats:[], dead:false, msg:null, msgT:0, shakeT:0, best:0 };
     sfx('build');
@@ -3193,13 +3234,29 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     for(i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(!v.alive) continue;
       if(v.room===tgt){ v.swarm=Math.round(v.swarm*0.3);
         if(v.swarm<4){ v.alive=false; } } }
-    b.last=tgt; b.phase='after'; b.timer=2.4;
+    b.last=tgt;
+    // v2.39 经济：被杀房间宝石 90% 分给其余 8 个幸存房间（按各房间宝石持有比例），10% 销毁
+    (function(){
+      var pool=0, inR=(b.travel>0?b.dest:b.at);
+      if(inR===tgt) pool+=b.gems;
+      for(var k=0;k<b.rivals.length;k++){ var rv=b.rivals[k]; if(rv.alive&&rv.room===tgt) pool+=rv.gems; }
+      if(pool<=0) return;
+      var surv=[], tot=0;
+      if(inR!==tgt) surv.push(b);
+      for(var k2=0;k2<b.rivals.length;k2++){ var w=b.rivals[k2]; if(w.alive&&w.room!==tgt){ surv.push(w); tot+=w.gems; } }
+      for(var k3=0;k3<b.rivals.length;k3++){ var x=b.rivals[k3]; if(x.alive&&x.room===tgt) x.gems=0; }
+      if(inR===tgt) b.gems=0;
+      if(surv.length===0) return;
+      if(tot<=0){ var _e=pool*0.9/surv.length; for(var k4=0;k4<surv.length;k4++) surv[k4].gems+=_e; }
+      else { for(var k5=0;k5<surv.length;k5++) surv[k5].gems+=pool*0.9*(surv[k5].gems/tot); }
+    })();
+    b.phase='after'; b.timer=2.4;
     sfx('rock');
   }
   function brNextRound(){
     var b=BR;
-    if(b.dead){ b.phase='dead'; return; }
-    if(b.round>=b.rounds){ b.phase='end'; return; }
+    if(b.dead){ b.phase='dead'; if(!b._saved){ b._saved=true; setGem(b.gems); } return; }
+    if(b.round>=b.rounds){ b.phase='end'; if(!b._saved){ b._saved=true; setGem(b.gems); } return; }
     b.round++; b.target=-1; b.timer=b.interval; b.phase='run';
     for(var i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(v.alive&&Math.random()<0.5) v.room=brRand9(v.room); }
   }
@@ -3638,6 +3695,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       if(!spf){ ctx.fillStyle='rgba(143,163,204,.65)'; ctx.fillRect(spBtn.x+1,spBtn.y+spBtn.h-3,(spBtn.w-2)*Math.max(0,Math.min(1,S.sp||0)),3); }
     }
     drawBtn(pauseBtn, S.paused?'▶ 继续':'■ 暂停', true);
+    if(!S.techOpen) drawBtn(aidBtnRect(), '援军 30宝('+(2-(S.aidUsed||0))+')', GEM>=30 && (S.aidUsed||0)<2);
     drawBtn(techBtn, '科技', true);
     if(DESK) ctx.setTransform(scale,0,0,scale,ox+shx,oy+shy);
     // ===== 底部控制面板（木纹） =====
@@ -4039,6 +4097,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       else { toast('神力充能中 '+Math.floor((S.sp||0)*100)+'%'); sfx('hit'); }
       return;
     }
+    if(hit(aidBtnRect(),px,py)){ callAid(); return; }                      // v2.39 天降援军
     if(hit(selBtn,px,py)){ if(selCount()>0) clearSel(); else selAllArmy(); sndPlay('spawn'); return; }   // 全军/清选
     if(hit(formBtn,px,py)){ S.form=((S.form|0)+1)%4; if(S.tips)S.tips.form='done'; if(selCount()>0&&S.lastOrder) orderMove(S.lastOrder.x,S.lastOrder.y); else sfx('spawn'); return; }
     if(hit(stanceBtn,px,py)){ if(S.tips)S.tips.stance='done'; setStance(S.stance===1?0:1); return; }
