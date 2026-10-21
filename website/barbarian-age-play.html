@@ -2782,6 +2782,45 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.strokeStyle='#e0b0ff'; ctx.lineWidth=1.5; rr(b.x+.5,b.y+.5,b.w-1,b.h-1,10); ctx.stroke();
     ctx.fillStyle='#f4e3ff'; ctx.font='bold 16px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('∞ 开始试炼 ▶', b.x+b.w/2, b.y+b.h/2);
   }
+  // ===== v2.35「大游戏化」观感增强：落地阴影 / 漂浮尘埃 / 镜头暗角 =====
+  // 全部无状态（只依赖 S.t 与现有数据），逐帧开销极低；不改任何玩法逻辑。
+  function drawGroundShadows(){
+    ctx.save();
+    for(var i=0;i<S.buildings.length;i++){ var b=S.buildings[i]; if(b.dead)continue;
+      var hw=(HALFW[b.type]||18)*1.15;
+      ctx.fillStyle='rgba(0,0,0,.26)';
+      ctx.beginPath(); ctx.ellipse(b.x,b.y+3,hw,hw*0.5,0,0,7); ctx.fill();
+    }
+    for(var j=0;j<S.units.length;j++){ var u=S.units[j]; if(u.dead)continue;
+      var uw=(u.type==='boss'?15:(u.type==='hero'?11:(u.type==='cav'?10:8)))*(u.spirit?0.7:1);
+      ctx.fillStyle='rgba(0,0,0,.22)';
+      ctx.beginPath(); ctx.ellipse(u.x,u.y+2,uw,uw*0.44,0,0,7); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function drawAmbient(front){
+    var t=(S&&S.t)||0; ctx.save();
+    var N=front?16:30;
+    for(var i=0;i<N;i++){
+      var rx=((i*127.1)%97)/97, ry=((i*311.7+13)%53)/53, ph=i*(front?1.9:1.3);
+      var drift=(t*(front?10:5)*(0.5+rx*0.7))%(W+80);
+      var x=drift-40+Math.sin(t*0.4+ph)*(front?14:8);
+      var y=FIELD_TOP+ry*SPAN+Math.sin(t*0.5+ph*1.3)*(front?16:10);
+      var a=(front?0.05:0.08)+0.05*(0.5+0.5*Math.sin(t*(front?1.0:1.2)+ph));
+      var r=(front?1.8:0.7)+rx*(front?2.2:1.3);
+      ctx.fillStyle='rgba(255,236,196,'+a.toFixed(3)+')';
+      ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function drawScreenVignette(){
+    var vg=ctx.createRadialGradient(W/2,H*0.46,H*0.30,W/2,H*0.5,H*0.86);
+    vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(0.70,'rgba(10,5,2,.14)'); vg.addColorStop(1,'rgba(6,3,1,.44)');
+    ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+    var wl=ctx.createLinearGradient(0,0,W*0.5,H*0.55);
+    wl.addColorStop(0,'rgba(255,214,150,.07)'); wl.addColorStop(1,'rgba(255,214,150,0)');
+    ctx.fillStyle=wl; ctx.fillRect(0,0,W,H);
+  }
   function draw(){
     var shx=0,shy=0;
     if(S.shakeMag>0){ shx=(Math.random()*2-1)*S.shakeMag; shy=(Math.random()*2-1)*S.shakeMag; }
@@ -2794,6 +2833,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.clearRect(-24,-24,W+48,H+48);
     drawTerrain();
     drawTerritoryOverlay();
+    drawGroundShadows(); drawAmbient(false);
     for(var i=0;i<S.nodes.length;i++) drawNode(S.nodes[i]);
     var blds=S.buildings.slice().sort(function(a,b){return a.y-b.y;});
     for(i=0;i<blds.length;i++) if(!blds[i].dead) drawBuilding(blds[i]);
@@ -2829,6 +2869,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       fg.addColorStop(0,'rgba(96,124,158,.30)'); fg.addColorStop(1,'rgba(96,124,158,0)');
       ctx.fillStyle=fg; ctx.fillRect(-24,FIELD_TOP,W+48,SPAN*0.55);
     }
+    drawAmbient(true);
     if(S.flash>0){ ctx.fillStyle='rgba(255,236,200,'+Math.min(0.6,S.flash).toFixed(3)+')'; ctx.fillRect(-24,-24,W+48,H+48); }   // 攻城爆破白闪
     ctx.textAlign='center'; ctx.textBaseline='middle';
     for(var f2=0;f2<S.floats.length;f2++){ var f2i=S.floats[f2]; var fa=Math.min(1,f2i.life/f2i.max*1.6);
@@ -2843,6 +2884,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       ctx.strokeStyle='rgba(120,220,160,.85)'; ctx.lineWidth=1; ctx.setLineDash([4,3]); ctx.strokeRect(sx0+.5,sy0+.5,sw0,sh0); ctx.setLineDash([]);
       ctx.fillStyle='#a8e6c4'; ctx.font='bold 10px sans-serif'; ctx.fillText('框 选', sx0+sw0/2, sy0+sh0/2);
     }
+    ctx.save(); ctx.setTransform(scale,0,0,scale,ox,oy); drawScreenVignette(); ctx.restore();
     if(DESK) ctx.setTransform(scale,0,0,scale,ox+shx,oy+shy);   // HUD 在屏幕空间，不受相机影响
     // ===== 顶部状态栏：双行三区，资源(左) / 征程(中) / 敌情(右) 互不压字 =====
     ctx.fillStyle='rgba(32,22,12,.94)'; ctx.fillRect(0,0,W,FIELD_TOP);
