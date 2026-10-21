@@ -262,10 +262,10 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   var MTX=DESK?(W-LW*MS)/2:0, MTY=DESK?(H-LH*MS)/2:0, MPAD=DESK?50:0;
   var UH=DESK?1.5:1;                                                         // 顶栏 HUD 放大系数（桌面版字号一起变大）
   // v2.32 相机：默认整幅可见（z=1），滚轮以光标为锚点放大，右键/中键拖拽平移。竖屏恒为 1，等价无相机。
-  var CAM={cx:W/2,cy:H/2,z:1,ZMIN:1,ZMAX:2.4};
+  var CAM={cx:W/2,cy:H/2,z:1,ZMIN:0.62,ZMAX:2.4};   // v2.34.3：ZMIN 1→0.62，允许缩小退出整图（敌部族贴顶被 HUD 压住，桌面端尤其明显）
   function camApply(){ ctx.translate(W/2-CAM.cx*CAM.z, H/2-CAM.cy*CAM.z); ctx.scale(CAM.z,CAM.z); }
   function s2w(px,py){ return [(px-W/2)/CAM.z+CAM.cx, (py-H/2)/CAM.z+CAM.cy]; }
-  function camClamp(){ var hw=W/(2*CAM.z), hh=H/(2*CAM.z); CAM.cx=clamp(CAM.cx,hw,W-hw); CAM.cy=clamp(CAM.cy,hh,H-hh); }
+  function camClamp(){ var hw=W/(2*CAM.z), hh=H/(2*CAM.z); CAM.cx=(CAM.z<=1)?W/2:clamp(CAM.cx,hw,W-hw); CAM.cy=(CAM.z<=1)?H/2:clamp(CAM.cy,hh,H-hh); }   // z≤1 视口≥世界，强制居中（否则 hw>W-hw 区间反转）
   function camZoomAt(nz,ax,ay){ var w0=s2w(ax,ay); CAM.z=clamp(nz,CAM.ZMIN,CAM.ZMAX); var w1=s2w(ax,ay); CAM.cx+=w0[0]-w1[0]; CAM.cy+=w0[1]-w1[1]; camClamp(); }                          // 敌方箭塔横向展开：桌面版战场更宽，正面拉开
   var ebx=LANE_X;                                  // 当前敌方主城 X（经典=LANE_X；战役"新城"逐关变化）
   var eby=ENEMY_BASE_Y;                            // 当前敌方主城 Y（五城征战随激活城池变化）
@@ -2626,7 +2626,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       ctx.fillStyle=sel?'#ffd479':'rgba(255,205,130,.10)'; rr(db.x,db.y,db.w,db.h,6); ctx.fill();
       ctx.strokeStyle=sel?'#ffe7a8':'rgba(168,129,74,.6)'; ctx.lineWidth=sel?1.5:1; rr(db.x+.5,db.y+.5,db.w-1,db.h-1,6); ctx.stroke();
       ctx.fillStyle=sel?'#3a2410':'#ffb86b'; ctx.font='bold '+Math.round(13*FS)+'px sans-serif'; ctx.fillText(db.label,db.x+db.w/2,db.y+db.h/2); }
-    ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='bold '+Math.round(11*FS)+'px sans-serif'; ctx.fillText('蛮荒时代',W/2,DESK?682:612);
+    ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='bold '+Math.round(11*FS)+'px sans-serif'; ctx.fillText('蛮荒时代',W/2,DESK?682:532);
   }
   function drawMenuInfo(){
     ctx.fillStyle='rgba(6,10,20,.93)'; ctx.fillRect(0,0,W,H);
