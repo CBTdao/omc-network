@@ -102,6 +102,8 @@ img { max-width: 100%; display: block; }
   font-weight: 800;
   font-size: 17px;
   letter-spacing: 0.2px;
+  flex: none;
+  white-space: nowrap;
 }
 
 .brand:hover { color: var(--text); }
@@ -132,6 +134,8 @@ img { max-width: 100%; display: block; }
   padding: 8px 14px;
   border-radius: 10px;
   transition: all 0.2s;
+  white-space: nowrap;
+  flex: none;
 }
 
 .nav-links a:hover { color: var(--text); background: var(--panel); }
@@ -155,6 +159,8 @@ img { max-width: 100%; display: block; }
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
+  flex: none;
 }
 
 .nav-drop-btn:hover,
@@ -213,6 +219,8 @@ img { max-width: 100%; display: block; }
   padding: 9px 18px !important;
   border-radius: 11px;
   box-shadow: 0 6px 20px rgba(43, 107, 243, 0.4);
+  white-space: nowrap;
+  flex: none;
 }
 
 .nav-cta:hover { filter: brightness(1.12); transform: translateY(-1px); }
@@ -1002,6 +1010,7 @@ td b { color: var(--text); }
   cursor: pointer;
   font-family: inherit;
   outline: none;
+  flex: none;
 }
 
 .lang-select option { background: #0d1526; color: var(--text); }
@@ -1166,7 +1175,10 @@ footer {
   .arch-row { grid-template-columns: 1fr; gap: 8px; }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
+  .nav-inner { gap: 12px; }
+  /* brand left; CTA + burger grouped on the right */
+  .nav-cta { margin-left: auto; }
   .nav-links {
     display: none;
     position: absolute;
@@ -1179,10 +1191,12 @@ footer {
     border-bottom: 1px solid var(--border);
     padding: 14px 20px 20px;
     gap: 6px;
+    max-height: calc(100vh - 68px);
+    overflow-y: auto;
   }
   .nav-links.open { display: flex; }
   .nav-burger { display: block; }
-  /* mobile: dropdowns render inline & always open inside the panel */
+  /* panel: dropdowns render inline and always open */
   .nav-drop { position: static; }
   .nav-drop-btn { width: 100%; justify-content: space-between; padding: 10px 12px; }
   .nav-drop-btn .caret { transform: rotate(0); }
@@ -1196,6 +1210,13 @@ footer {
     box-shadow: none;
   }
   .nav-drop-menu a { padding: 9px 12px; }
+  .nav-links .nav-wallet { margin: 10px 0 0; width: 100%; }
+  .nav-links .lang-select { margin: 10px 0 0; width: 100%; }
+  .wl-nav-btn { width: 100%; justify-content: center; }
+  .wl-menu { right: auto; left: 0; width: 100%; }
+}
+
+@media (max-width: 720px) {
   .grid-2, .grid-3, .reward-grid, .dl-cards { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 64px 0; }
@@ -1203,7 +1224,12 @@ footer {
   .task { flex-wrap: wrap; }
   .task .t-reward { text-align: left; }
   .claim-stats { grid-template-columns: repeat(2, 1fr); }
-  .lang-select { margin: 6px 0 0; }
+}
+
+@media (max-width: 560px) {
+  .nav-inner { padding: 0 14px; gap: 8px; }
+  .brand span { display: none; }
+  .nav-cta { padding: 8px 12px !important; font-size: 13px; }
 }
 
 /* ============================================================
@@ -1211,7 +1237,11 @@ footer {
    ============================================================ */
 [hidden] { display: none !important; }
 
-.nav-wallet { display: flex; align-items: center; }
+.nav-wallet { display: flex; align-items: center; flex: none; }
+
+/* wallet + language live inside .nav-links so they can drop into the
+   mobile panel without a DOM move; on desktop they sit at the end of the row */
+.nav-links .nav-wallet { margin-left: 8px; }
 
 .wl-nav-btn {
   display: inline-flex;
@@ -1571,9 +1601,6 @@ footer {
   .ni-date { display: flex; align-items: baseline; gap: 8px; border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 10px; text-align: left; }
   .ni-date b { font-size: 22px; }
   .tk-metrics { grid-template-columns: 1fr 1fr; }
-  .nav-wallet { margin-top: 6px; }
-  .wl-nav-btn { width: 100%; justify-content: center; }
-  .wl-menu { right: auto; left: 0; width: 100%; }
 }
 
 /* ============================================================
