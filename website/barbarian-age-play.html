@@ -3248,16 +3248,17 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     (function(){
       var pool=0, inR=(b.travel>0?b.dest:b.at);
       if(inR===tgt) pool+=b.gems;
-      for(var k=0;k<b.rivals.length;k++){ var rv=b.rivals[k]; if(rv.alive&&rv.room===tgt) pool+=rv.gems; }
+      for(var k=0;k<b.rivals.length;k++){ var rv=b.rivals[k]; if(rv.room===tgt) pool+=rv.gems; }   // 出局者的押注也进池
       if(pool<=0) return;
       var surv=[], tot=0;
       if(inR!==tgt&&b.gems>0){ surv.push({o:b,s:b.gems}); tot+=b.gems; }
       for(var k2=0;k2<b.rivals.length;k2++){ var w=b.rivals[k2]; if(w.alive&&w.room!==tgt&&w.gems>0){ surv.push({o:w,s:w.gems}); tot+=w.gems; } }
+      var lostMine=(inR===tgt&&b.gems>0);
       if(inR===tgt) b.gems=0;
-      for(var k3=0;k3<b.rivals.length;k3++){ var x=b.rivals[k3]; if(x.alive&&x.room===tgt) x.gems=0; }
+      for(var k3=0;k3<b.rivals.length;k3++){ var x=b.rivals[k3]; if(x.room===tgt) x.gems=0; }   // 出局者押注一并清零
+      if(lostMine) b.floats.push({txt:'押注重归荒原',x:rm.x+rm.w/2,y:rm.y+rm.h/2,col:'#ff9b8c',life:1.4,max:1.4,sz:15});
       if(surv.length===0||tot<=0) return;   // 幸存者都没押注（今天只有 AI 陪跑）→ 90% 与 10% 一起重归荒原
       for(var i2=0;i2<surv.length;i2++) surv[i2].o.gems+=pool*0.9*(surv[i2].s/tot);
-      if(inR===tgt&&b.gems>0) b.floats.push({txt:'押注重归荒原',x:rm.x+rm.w/2,y:rm.y+rm.h/2,col:'#ff9b8c',life:1.4,max:1.4,sz:15});
     })();
     b.phase='after'; b.timer=2.4;
     sfx('rock');
