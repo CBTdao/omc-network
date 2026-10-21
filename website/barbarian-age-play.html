@@ -2598,8 +2598,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.setTransform(scale,0,0,scale,ox,oy);
     var i;   // v2.34：移除主菜单无序散布的装饰光点（用户反馈「不规则乱点点」）；过场夜空星点见 drawCut() 保留
     var GY=DESK?H-120:560, GS=DESK?1.5:1;                                    // v2.32：桌面版地平线下移、碎石放大
-    for(i=0;i<rocks.length;i++){ var rk=rocks[i]; ctx.fillStyle='rgba(70,46,22,.55)'; ctx.beginPath(); ctx.ellipse(rk.x,GY,rk.s*15*GS,rk.s*7*GS,0,0,7); ctx.fill(); }
-    for(i=0;i<tufts.length;i++){ var tf=tufts[i]; ctx.fillStyle='rgba(120,92,42,.45)'; ctx.fillRect(tf.x-1,GY,tf.s*3*GS,-tf.s*9*GS); }
+    /* v2.34.1：移除主菜单地平线处的碎石(rocks 扁椭圆)+草丛(tufts 竖短线)装饰带 —— 用户圈出的「不规则乱点点」。
+       rocks/tufts 数组仍保留供战场渲染（tuftOn/rockOn），此处仅删主菜单这处绘制。 */
     if(S.panel){ drawCodex(S.panel); return; }
     if(S.menuInfo){ drawMenuInfo(); return; }
     ctx.textAlign='center'; ctx.textBaseline='middle';
