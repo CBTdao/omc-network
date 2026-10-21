@@ -2910,7 +2910,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function b3Start(level){
     reset(); S.scene='bone3';
     var lv=clamp(level||1,1,3), L=b3Layout();
-    var _bspec=[[22,18,12,8, 6,3,2],[30,26,18,10, 7,2,1],[38,32,22,16, 8,1,1]][lv-1];   // L1 60 / L2 84 / L3 108 块（4 层）
+    var _bspec=[[16,12,6,2, 4,4,3],[24,20,12,4, 6,3,2],[52,42,34,22, 8,1,1]][lv-1];   // L1 36 / L2 60 / L3 150 块（4 层，撤/排最小非零）
     var quota=_bspec.slice(0,4), lay=[[9,7],[8,6],[7,5],[6,4]], pool=[];   // 63 / 48 / 35 / 24 格
     for(var l=0;l<lay.length;l++){
       var c=lay[l][0], rw=lay[l][1], arr=[];
