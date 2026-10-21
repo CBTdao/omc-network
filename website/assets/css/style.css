@@ -131,6 +131,7 @@ img { max-width: 100%; display: block; }
   color: var(--muted);
   font-size: 14.5px;
   font-weight: 600;
+  line-height: 1.45;
   padding: 8px 14px;
   border-radius: 10px;
   transition: all 0.2s;
@@ -152,6 +153,7 @@ img { max-width: 100%; display: block; }
   color: var(--muted);
   font-size: 14.5px;
   font-weight: 600;
+  line-height: 1.45;
   font-family: inherit;
   padding: 8px 14px;
   border: 0;
@@ -164,34 +166,33 @@ img { max-width: 100%; display: block; }
 }
 
 .nav-drop-btn:hover,
-.nav-drop-btn:focus-visible,
-.nav-drop-btn.active { color: var(--text); background: var(--panel); outline: none; }
+.nav-drop-btn:focus-visible { color: var(--text); background: var(--panel); outline: none; }
 
-.nav-drop-btn.active { color: #fff; background: var(--accent-soft); }
+/* the open state comes from the click handler (aria-expanded) — never from hover,
+   otherwise a hovered group and a clicked group can both stay open */
+.nav-drop-btn[aria-expanded="true"] { color: #fff; background: var(--accent-soft); }
 
 .nav-drop-btn .caret { font-size: 9px; line-height: 1; opacity: 0.65; transition: transform 0.2s; }
 
-.nav-drop:hover > .nav-drop-btn .caret,
 .nav-drop.open > .nav-drop-btn .caret { transform: rotate(180deg); }
 
 .nav-drop-menu {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 10px);
   left: 0;
-  min-width: 196px;
-  padding: 8px;
-  background: var(--panel);
+  min-width: 208px;
+  padding: 6px;
+  /* opaque on purpose: --panel is a 4% white wash and would let the hero bleed through */
+  background: #0e1729;
   border: 1px solid var(--border-strong);
-  border-radius: 12px;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
+  border-radius: 14px;
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.55);
   display: none;
   flex-direction: column;
   gap: 2px;
   z-index: 120;
 }
 
-.nav-drop:hover > .nav-drop-menu,
-.nav-drop:focus-within > .nav-drop-menu,
 .nav-drop.open > .nav-drop-menu { display: flex; }
 
 /* drop-menu links are styled independently of the flat nav links */
@@ -199,13 +200,13 @@ img { max-width: 100%; display: block; }
   color: var(--muted);
   font-size: 14px;
   font-weight: 600;
-  padding: 9px 12px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 9px;
   transition: all 0.15s;
   white-space: nowrap;
 }
 
-.nav-drop-menu a:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
+.nav-drop-menu a:hover { color: var(--text); background: rgba(255, 255, 255, 0.07); }
 
 .nav-drop-menu a.active { color: #fff; background: var(--accent-soft); }
 
@@ -1187,7 +1188,7 @@ footer {
     right: 0;
     flex-direction: column;
     align-items: stretch;
-    background: rgba(6, 11, 26, 0.97);
+    background: #070d1c;
     border-bottom: 1px solid var(--border);
     padding: 14px 20px 20px;
     gap: 6px;
@@ -1196,19 +1197,19 @@ footer {
   }
   .nav-links.open { display: flex; }
   .nav-burger { display: block; }
-  /* panel: dropdowns render inline and always open */
+  /* panel: dropdown groups collapse, tap to reveal their pages */
   .nav-drop { position: static; }
   .nav-drop-btn { width: 100%; justify-content: space-between; padding: 10px 12px; }
-  .nav-drop-btn .caret { transform: rotate(0); }
   .nav-drop-menu {
     position: static;
-    display: flex;
+    display: none;
     min-width: 0;
-    padding: 0 0 4px 14px;
+    padding: 4px 0 4px 14px;
     background: none;
     border: 0;
     box-shadow: none;
   }
+  .nav-drop.open > .nav-drop-menu { display: flex; }
   .nav-drop-menu a { padding: 9px 12px; }
   .nav-links .nav-wallet { margin: 10px 0 0; width: 100%; }
   .nav-links .lang-select { margin: 10px 0 0; width: 100%; }

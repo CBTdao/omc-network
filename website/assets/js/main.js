@@ -13,31 +13,37 @@ if (burger && navLinks) {
   );
 }
 
-/* ---------- Nav dropdowns (click/keyboard, touch has no hover) ---------- */
+/* ---------- Nav dropdowns ----------
+   Exactly one panel is open at a time. Hover does NOT open it: with hover AND
+   click both bound, a hovered group and a clicked group could stay open
+   together and two panels would overlap the hero. */
+function closeDrops(except) {
+  document.querySelectorAll(".nav-drop.open").forEach((d) => {
+    if (d === except) return;
+    d.classList.remove("open");
+    const b = d.querySelector(".nav-drop-btn");
+    if (b) b.setAttribute("aria-expanded", "false");
+  });
+}
 document.querySelectorAll(".nav-drop-btn").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     const drop = btn.closest(".nav-drop");
-    const open = drop.classList.toggle("open");
-    btn.setAttribute("aria-expanded", open ? "true" : "false");
-    document.querySelectorAll(".nav-drop.open").forEach((d) => {
-      if (d !== drop) {
-        d.classList.remove("open");
-        const b = d.querySelector(".nav-drop-btn");
-        if (b) b.setAttribute("aria-expanded", "false");
-      }
-    });
+    const willOpen = !drop.classList.contains("open");
+    closeDrops(drop);
+    drop.classList.toggle("open", willOpen);
+    btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
   });
 });
 document.addEventListener("click", (e) => {
-  if (!e.target.closest(".nav-drop")) {
-    document.querySelectorAll(".nav-drop.open").forEach((d) => {
-      d.classList.remove("open");
-      const b = d.querySelector(".nav-drop-btn");
-      if (b) b.setAttribute("aria-expanded", "false");
-    });
-  }
+  if (!e.target.closest(".nav-drop")) closeDrops();
 });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeDrops();
+});
+document.querySelectorAll(".nav-drop-menu a").forEach((a) =>
+  a.addEventListener("click", () => closeDrops())
+);
 
 /* ---------- Active nav link ----------
    Canonical URLs are extensionless ("/compute"), but location.pathname may
