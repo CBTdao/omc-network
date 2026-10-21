@@ -1131,7 +1131,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   }
 
   function update(dt){
-    if(S.scene!=='play') { if(S.scene==='cut') cutTick(dt); else if(S.scene==='bone3') b3Tick(dt); return; }   // v2.31：过场场景只推进打字机；v2.36：兽骨三消自走 tick
+    if(S.scene!=='play') { if(S.scene==='cut') cutTick(dt); else if(S.scene==='bone3') b3Tick(dt); else if(S.scene==='br') brTick(dt); return; }   // v2.31：过场场景只推进打字机；v2.36：兽骨三消自走 tick
     if(S.paused) return;   // 暂停：全部战斗/经济/AI 逻辑冻结（仅渲染继续，显示遮罩）
     S.t+=dt;
     if(S.horn>0)S.horn-=dt; if(S.hornCd>0)S.hornCd-=dt;   // 冲锋号角计时
@@ -2561,7 +2561,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     menuBtns=[
       {id:'start', label:'开始游戏', x:Math.round(W/2-200), y:242, w:400, h:64, big:true},
       {id:'camp',  label:'部落征程', x:_mx0, y:326, w:_mw, h:54},
-      {id:'endless',label:'无尽试炼',x:_mx0+_mw+_mg, y:326, w:_mw, h:54},
+      {id:'br', label:'荒原大逃杀', x:_mx0+_mw+_mg, y:326, w:_mw, h:54},   // v2.37 顶掉「无尽试炼」：潮玩大逃杀式房间躲杀手
       {id:'epic', label:'部落史诗', x:_mx0+2*(_mw+_mg), y:326, w:_mw, h:54},
       {id:'bone3', label:'兽骨三消', x:_mx0+3*(_mw+_mg), y:326, w:_mw, h:54},   // v2.36 桌面休闲：羊了个羊式三层堆叠三消
       {id:'info',  label:'玩法说明', x:Math.round(W/2-200), y:396, w:400, h:44},
@@ -2590,6 +2590,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       else if(b.id==='info'){ S.menuInfo=true; }
       else if(b.id==='epic'){ startEpic(); }   // v2.31 部落史诗（互动影游）
       else if(b.id==='bone3'){ b3StartMode(); }   // v2.36 兽骨三消（桌面休闲）
+      else if(b.id==='br'){ brStartMode(); }   // v2.37 荒原大逃杀（桌面休闲）
       else { S.panel=b.id; }
       return;
     } }
@@ -2616,10 +2617,10 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     var chh=Math.round(24*FS);
     for(i=0;i<chips.length;i++){ var rx=cx0+i*(cw+gap); ctx.fillStyle='rgba(255,212,121,.12)'; rr(rx,cy,cw,chh,12); ctx.fill(); ctx.strokeStyle='rgba(168,129,74,.7)'; ctx.lineWidth=1; rr(rx+.5,cy+.5,cw-1,chh-1,12); ctx.stroke(); ctx.fillStyle='#ffd479'; ctx.font=Math.round(12*FS)+'px sans-serif'; ctx.fillText(chips[i],rx+cw/2,cy+chh/2); }
     for(i=0;i<menuBtns.length;i++){ var b=menuBtns[i];
-      if(b.id==='camp'||b.id==='endless'||b.id==='epic'||b.id==='bone3'){
-        var _mFill=(b.id==='endless')?'#7a3ab8':((b.id==='epic')?'#6b4a1e':((b.id==='bone3')?'#1b5f54':'#b8472e'));
-        var _mEdge=(b.id==='endless')?'#e0b0ff':((b.id==='bone3')?'#8bf0d6':'#ffd479');
-        var _mText=(b.id==='endless')?'#f4e3ff':((b.id==='bone3')?'#dcfff7':'#ffe7a8');
+      if(b.id==='camp'||b.id==='endless'||b.id==='epic'||b.id==='bone3'||b.id==='br'){
+        var _mFill=(b.id==='endless')?'#7a3ab8':((b.id==='epic')?'#6b4a1e':((b.id==='bone3')?'#1b5f54':((b.id==='br')?'#8a1f4e':'#b8472e')));
+        var _mEdge=(b.id==='endless')?'#e0b0ff':((b.id==='bone3')?'#8bf0d6':((b.id==='br')?'#ff86c8':'#ffd479'));
+        var _mText=(b.id==='endless')?'#f4e3ff':((b.id==='bone3')?'#dcfff7':((b.id==='br')?'#ffd6ee':'#ffe7a8'));
         ctx.fillStyle=_mFill; rr(b.x,b.y,b.w,b.h,8); ctx.fill();
         ctx.strokeStyle=_mEdge; ctx.lineWidth=1.5; rr(b.x+.5,b.y+.5,b.w-1,b.h-1,8); ctx.stroke();
         ctx.fillStyle=_mText; ctx.font='bold '+Math.round(14*FS)+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(b.label,b.x+b.w/2,b.y+b.h/2);
@@ -2642,7 +2643,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     ctx.textAlign='left'; ctx.textBaseline='top';
     var blocks=[['场景','2.5D 等距荒漠战场，玩家与 AI 双阵营对抗；顶部资源栏、左下小地图、底部建造训练面板。'],
       ['玩法','村民自动采集粮/木/铁，建造兵营箭塔工坊，研究利刃盾墙急行农耕冶炼，晋升时代，推平敌方主城获胜。战斗中可吹「冲锋号角」全军加速，也可随时暂停思考策略。老兵连斩晋升精锐（攻+8%/阶，头顶金星）；深入敌腹却不交战会持续掉兵（贴近己方主城/哨站豁免）。中带三处富点可派兵占领，每占一处军力上限+3，敌军也会来抢。建造「图腾祭坛」可积蓄神力释放超级武器「神罚」——对阵何部族便驭其兽灵：野猪踏境/狼灵召唤/熊碎地裂/天羽箭雨/龙息烈焰。'],
-      ['模式','经典战（单局对决）· 部落征程（连征五大部族，攻克后自动进军下一部，战场重置再备战）· 无尽试炼（越往后敌军越强，挑战最高阵数）· 部落史诗（互动影游：剧情+抉择+多结局）· 兽骨三消（桌面专属：三层图腾石板三连消除）。'],
+      ['模式','经典战（单局对决）· 部落征程（连征五大部族，攻克后自动进军下一部，战场重置再备战）· 荒原大逃杀（房间躲杀手，十回合按宝石排行）· 部落史诗（互动影游：剧情+抉择+多结局）· 兽骨三消（桌面专属：三层图腾石板三连消除）。'],
       ['系统功能','货币系统（粮草/木材/玄铁，纯广告变现不充值）· 新手引导（分步提示）· 存档成就（本地记录最佳战绩）。']];
     var y=88;
     for(var b=0;b<blocks.length;b++){ ctx.fillStyle='#ffd479'; ctx.font='bold 14px sans-serif'; ctx.fillText(blocks[b][0],38,y);
@@ -3112,11 +3113,312 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       b3Btn(P.b1,(B3.state==='clear')?'下一关':'再来一局',true); b3Btn(P.b2,'返回菜单',true);
     }
   }
+  // ===== v2.37 桌面专属玩法：荒原大逃杀（潮玩大逃杀式 · 房间躲杀手）=====
+  // 参考：一座多房间营地，族人成堆在房里产宝石；每回合「荒原杀手」锁定一处房间，
+  // 待在/跑向那间房的族人会被清场。搬家躲杀 + 投入宝石扩编，十回合后按宝石排行。
+  // 只在桌面端主菜单出现入口（DESK 分支），竖屏/小程序不暴露；状态全挂在 BR 一个对象上。
+  var BR=null;
+  var BR_ROOMS=[
+    {n:'粮仓',r:1.0},{n:'兽栏',r:1.2},{n:'石作',r:1.4},
+    {n:'织坊',r:1.1},{n:'祭坛',r:1.9},{n:'铁铺',r:1.5},
+    {n:'酒窖',r:1.3},{n:'浴场',r:0.9},{n:'瞭望',r:1.6}
+  ];
+  var BR_RIVAL=['赤狼部','灰熊部','苍鹰部','毒蜥部','黑鸦部','白鹿部','铁角部','幽狐部'];
+  var BR_RCOL=['#d0705a','#a8823c','#6f93c8','#7bb36a','#8b7fb8','#cfd0c2','#c88a4a','#b06a9a'];
+  function brLayout(){
+    var panelW=Math.round(W*0.232), fx=24, fy=108;
+    var fw=W-48-panelW-20, fh=H-fy-124;
+    var gx=38, gy=32, rw=Math.round((fw-gx*2)/3), rh=Math.round((fh-gy*2)/3);
+    var rooms=[];
+    for(var i=0;i<9;i++){ var c=i%3, r=Math.floor(i/3);
+      rooms.push({x:fx+c*(rw+gx), y:fy+r*(rh+gy), w:rw, h:rh}); }
+    return { fx:fx, fy:fy, fw:fw, fh:fh, rw:rw, rh:rh, rooms:rooms,
+      panel:{x:fx+fw+20, y:fy, w:panelW, h:fh},
+      invest:{x:fx, y:H-108, w:300, h:64},
+      back:{x:W-118, y:26, w:92, h:36}, again:{x:W-222, y:26, w:92, h:36} };
+  }
+  function brPanelBox(){
+    var pw=500, ph=290;
+    return {pw:pw,ph:ph,px:Math.round(W/2-pw/2),py:Math.round(H/2-ph/2),
+      b1:{x:Math.round(W/2-pw/2)+56,y:Math.round(H/2-ph/2)+ph-82,w:180,h:50},
+      b2:{x:Math.round(W/2-pw/2)+pw-236,y:Math.round(H/2-ph/2)+ph-82,w:180,h:50}};
+  }
+  function brRoomCenter(i){ var rm=BR.L.rooms[i]; return {x:rm.x+rm.w/2, y:rm.y+rm.h/2}; }
+  function brStart(){
+    reset(); S.scene='br';
+    var L=brLayout(), rivals=[];
+    for(var i=0;i<8;i++) rivals.push({ name:BR_RIVAL[i], col:BR_RCOL[i], room:(i*4+2)%9,
+      swarm:10+Math.floor(Math.random()*7), gems:0, alive:true, bob:Math.random()*6 });
+    BR={ L:L, at:4, dest:-1, travel:0, t:0, swarm:12, gems:0, bought:0,
+         round:1, rounds:10, interval:15, phase:'run', timer:15, target:-1, last:-1,
+         killer:null, rivals:rivals, floats:[], dead:false, msg:null, msgT:0, shakeT:0, best:0 };
+    sfx('build');
+  }
+  function brStartMode(){ brStart(); }
+  function brRand9(ex){ var i; do { i=Math.floor(Math.random()*9); } while(i===ex); return i; }
+  function brPickTarget(){ var b=BR; b.target=brRand9(b.last);
+    for(var i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(!v.alive) continue;
+      if(Math.random()<0.65) v.room=brRand9(v.room); }   // 对手也会跑，但会犯错
+  }
+  function brMoveTo(i){
+    var b=BR; if(b.at===i&&b.travel<=0) return;
+    var a=brRoomCenter(b.at), c=brRoomCenter(i);
+    b.dest=i; b.travel=0.5+Math.min(0.95, Math.hypot(c.x-a.x,c.y-a.y)/1500);
+    sfx('spawn');
+  }
+  function brInvestCost(){ return Math.round(26+BR.bought*10); }
+  function brInvest(){
+    var b=BR; if(!b||b.phase==='end'||b.phase==='dead') return;
+    var c=brInvestCost();
+    if(b.gems<c){ b.msg='宝石不足（需 '+c+'）'; b.msgT=1.1; sfx('hit'); return; }
+    b.gems-=c; b.swarm+=2; b.bought++; sfx('build');
+    b.msg='投入宝石 → 族人 +2'; b.msgT=1.1;
+  }
+  function brStrike(){
+    var b=BR, tgt=b.target, i;
+    var rm=b.L.rooms[tgt];
+    b.killer={ t:0, from:{x:b.L.fx+b.L.fw*0.5, y:b.L.fy+b.L.fh+6}, to:{x:rm.x+rm.w/2, y:rm.y+rm.h-20}, room:tgt };
+    var inRoom=(b.travel>0)?b.dest:b.at;
+    if(inRoom===tgt){
+      var lost=Math.max(1, Math.round(b.swarm*0.7));
+      b.swarm-=lost; b.shakeT=0.5;
+      b.floats.push({txt:'-'+lost,x:rm.x+rm.w/2,y:rm.y+rm.h/2,col:'#ff7b8a',life:1.6,max:1.6,sz:22});
+      if(b.swarm<3){ b.swarm=Math.max(0,b.swarm); b.dead=true; }
+    }
+    for(i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(!v.alive) continue;
+      if(v.room===tgt){ v.swarm=Math.round(v.swarm*0.3);
+        if(v.swarm<4){ v.alive=false; } } }
+    b.last=tgt; b.phase='after'; b.timer=1.6;
+    sfx('rock');
+  }
+  function brNextRound(){
+    var b=BR;
+    if(b.dead){ b.phase='dead'; return; }
+    if(b.round>=b.rounds){ b.phase='end'; return; }
+    b.round++; b.target=-1; b.timer=b.interval; b.phase='run';
+    for(var i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(v.alive&&Math.random()<0.5) v.room=brRand9(v.room); }
+  }
+  function brTick(dt){
+    if(!BR) return;
+    var b=BR, i;
+    b.t+=dt; if(b.msgT>0){ b.msgT-=dt; if(b.msgT<=0) b.msg=null; }
+    if(b.shakeT>0) b.shakeT=Math.max(0,b.shakeT-dt);
+    for(i=b.floats.length-1;i>=0;i--){ var f=b.floats[i]; f.life-=dt; f.y-=26*dt; if(f.life<=0) b.floats.splice(i,1); }
+    if(b.killer){ b.killer.t+=dt; if(b.killer.t>2.2) b.killer=null; }
+    if(b.phase==='end'||b.phase==='dead') return;
+    if(b.travel>0){ b.travel-=dt; if(b.travel<=0){ b.at=b.dest; b.dest=-1; } }
+    var rate=BR_ROOMS[b.at]?BR_ROOMS[b.at].r:0.7;
+    b.gems+=(b.travel>0? b.swarm*0.35 : b.swarm*rate)*0.55*dt;
+    if(b.gems>b.best) b.best=b.gems;
+    for(i=0;i<b.rivals.length;i++){ var v=b.rivals[i]; if(!v.alive) continue;
+      var rr2=BR_ROOMS[v.room]?BR_ROOMS[v.room].r:1;
+      v.gems+=v.swarm*rr2*0.55*dt; }
+    if(b.phase==='run'){
+      b.timer-=dt;
+      if(b.timer<=5.5&&b.target<0) brPickTarget();
+      if(b.timer<=0) brStrike();
+    } else if(b.phase==='after'){
+      b.timer-=dt;
+      if(b.timer<=0) brNextRound();
+    }
+  }
+  function brRank(){
+    var b=BR, list=[], i;
+    for(i=0;i<b.rivals.length;i++){ var v=b.rivals[i];
+      if(v.alive) list.push({name:v.name, gems:v.gems, me:false, col:v.col}); }
+    list.push({name:'你的部落', gems:b.gems, me:true, col:'#ffd479'});
+    list.sort(function(a,c){ return c.gems-a.gems; });
+    return list;
+  }
+  function brDown(px,py){
+    if(!BR) return;
+    var b=BR, L=b.L;
+    if(b.phase==='end'||b.phase==='dead'){
+      var P=brPanelBox();
+      if(hit(P.b1,px,py)){ brStart(); return; }
+      if(hit(P.b2,px,py)){ toMenu(); return; }
+      return;
+    }
+    if(hit(L.back,px,py)){ toMenu(); return; }
+    if(hit(L.again,px,py)){ brStart(); return; }
+    if(hit(L.invest,px,py)){ brInvest(); return; }
+    for(var i=0;i<9;i++){ var rm=L.rooms[i];
+      if(px>=rm.x&&px<=rm.x+rm.w&&py>=rm.y&&py<=rm.y+rm.h){ brMoveTo(i); return; } }
+  }
+  function brChibi(x,y,s,col,skin,bob){
+    ctx.fillStyle='rgba(0,0,0,.34)'; ctx.beginPath(); ctx.ellipse(x,y+s*0.52,s*0.36,s*0.13,0,0,7); ctx.fill();
+    ctx.fillStyle=col; rr(x-s*0.33,y-s*0.12+bob,s*0.66,s*0.60,s*0.22); ctx.fill();
+    ctx.fillStyle=skin||'#e9cda8'; ctx.beginPath(); ctx.arc(x,y-s*0.44+bob,s*0.32,0,7); ctx.fill();
+    ctx.fillStyle='rgba(20,12,6,.85)'; ctx.beginPath(); ctx.arc(x-s*0.11,y-s*0.46+bob,s*0.045,0,7); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+s*0.11,y-s*0.46+bob,s*0.045,0,7); ctx.fill();
+  }
+  function brBtn(r,label,on,fs){
+    ctx.fillStyle=on?'#4a3a20':'#241a10'; rr(r.x,r.y,r.w,r.h,8); ctx.fill();
+    ctx.strokeStyle=on?'#a8814a':'#4a3820'; ctx.lineWidth=1; rr(r.x+.5,r.y+.5,r.w-1,r.h-1,8); ctx.stroke();
+    ctx.fillStyle=on?'#ffd479':'#6f6048'; ctx.font='bold '+(fs||15)+'px sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,r.x+r.w/2,r.y+r.h/2);
+  }
+  function drawBr(){
+    ctx.setTransform(1,0,0,1,0,0);
+    var bg=ctx.createLinearGradient(0,0,0,PH);
+    bg.addColorStop(0,'#0c0a12'); bg.addColorStop(0.55,'#170f0a'); bg.addColorStop(1,'#2a1608');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,PW,PH);
+    ctx.setTransform(scale,0,0,scale,ox,oy);
+    if(!BR) return;
+    var b=BR, L=b.L, i;
+    var sh=0,sv=0;
+    if(b.shakeT>0){ sh=(Math.random()*2-1)*4*b.shakeT*2; sv=(Math.random()*2-1)*3*b.shakeT*2; }
+    ctx.save(); ctx.translate(sh,sv);
+    // 地面
+    ctx.fillStyle='#1b120b'; rr(L.fx-14,L.fy-14,L.fw+28,L.fh+28,16); ctx.fill();
+    ctx.fillStyle='rgba(255,205,130,.05)'; rr(L.fx-6,L.fy-6,L.fw+12,L.fh+12,12); ctx.fill();
+    // 房间
+    for(i=0;i<9;i++){
+      var rm=L.rooms[i], R=BR_ROOMS[i], mine=(b.travel>0? b.dest===i : b.at===i);
+      var hot=(b.target===i);
+      ctx.fillStyle=hot?'rgba(122,42,42,.42)':'rgba(58,40,24,.92)'; rr(rm.x,rm.y,rm.w,rm.h,10); ctx.fill();
+      ctx.strokeStyle=mine?'#ffd479':(hot?'#ff8f7a':'rgba(255,205,130,.22)'); ctx.lineWidth=mine?2:1;
+      rr(rm.x+.6,rm.y+.6,rm.w-1.2,rm.h-1.2,10); ctx.stroke();
+      ctx.textAlign='left'; ctx.textBaseline='middle';
+      ctx.fillStyle=mine?'#ffe7a8':'#c9a97a'; ctx.font='bold 14px sans-serif';
+      ctx.fillText(R.n,rm.x+12,rm.y+16);
+      ctx.textAlign='right'; ctx.fillStyle='#8ba3cc'; ctx.font='11px sans-serif';
+      ctx.fillText('×'+R.r.toFixed(1),rm.x+rm.w-12,rm.y+16);
+      if(hot){ ctx.textAlign='left'; ctx.fillStyle='#ff8f7a'; ctx.font='bold 11px sans-serif';
+        ctx.fillText('杀手目标',rm.x+12,rm.y+rm.h-12); }
+    }
+    // 房内占用：对手一簇（房右），玩家族人（房左），标签统一压到底部一行
+    var occ=[[],[],[],[],[],[],[],[],[]], k3, m3;
+    for(i=0;i<b.rivals.length;i++){ var rv=b.rivals[i]; if(rv.alive) occ[rv.room].push(rv); }
+    for(i=0;i<9;i++){
+      var R3=L.rooms[i], os=occ[i];
+      for(k3=0;k3<os.length;k3++){
+        var ov=os[k3], on=Math.min(9,Math.max(2,Math.round(ov.swarm*0.5)));
+        for(m3=0;m3<on;m3++){
+          var ox2=R3.x+R3.w-18-k3*36-(m3%3)*13, oy2=R3.y+R3.h-46-Math.floor(m3/3)*13;
+          brChibi(ox2,oy2,9.5,ov.col,'#d9bfa0',Math.sin(b.t*3+ov.bob+m3)*1.0);
+        }
+      }
+    }
+    var yRoom=b.at, yr=L.rooms[yRoom], show=Math.min(18,b.swarm);
+    for(i=0;i<show;i++){
+      var px2=yr.x+22+(i%6)*25, py2=yr.y+58+Math.floor(i/6)*21;
+      brChibi(px2,py2,15,'#b8472e',null,Math.sin(b.t*4+i*0.7)*1.4);
+    }
+    if(b.swarm>show){
+      ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillStyle='#ffb347'; ctx.font='bold 11px sans-serif';
+      ctx.fillText('+'+(b.swarm-show),yr.x+22+6*25,yr.y+48);
+    }
+    if(b.travel>0){
+      var a2=brRoomCenter(b.at), c2=brRoomCenter(b.dest), p=1-Math.max(0,b.travel)/1.45;
+      p=Math.max(0,Math.min(1,p));
+      var mx=a2.x+(c2.x-a2.x)*p, my=a2.y+(c2.y-a2.y)*p;
+      brChibi(mx,my,15,'#b8472e',null,0);
+      ctx.fillStyle='rgba(255,212,121,.85)'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('迁徙中',mx,my-16);
+    }
+    for(i=0;i<9;i++){
+      var R4=L.rooms[i], lx=R4.x+12, ly=R4.y+R4.h-10;
+      ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.font='bold 10px sans-serif';
+      if(i===yRoom){ ctx.fillStyle='#ffd479'; ctx.fillText('你 '+b.swarm,lx,ly); lx+=52; }
+      for(k3=0;k3<occ[i].length;k3++){ var lv2=occ[i][k3];
+        ctx.fillStyle=lv2.col; ctx.fillText(lv2.name+' '+lv2.swarm,lx,ly); lx+=62; }
+    }
+    // 杀手
+    if(b.killer){
+      var kf=b.killer, pp=Math.min(1,kf.t/0.55);
+      var kx=kf.from.x+(kf.to.x-kf.from.x)*pp, ky=kf.from.y+(kf.to.y-kf.from.y)*pp;
+      if(kf.t>1.1) pp=1;
+      var fade=Math.max(0,Math.min(1,(2.2-kf.t)/0.8));
+      ctx.globalAlpha=fade;
+      ctx.fillStyle='rgba(200,40,40,.30)';
+      ctx.beginPath(); ctx.ellipse(kx,kf.to.y+16,42,14,0,0,7); ctx.fill();
+      ctx.fillStyle='#16101a'; rr(kx-11,ky-34,22,30,6); ctx.fill();
+      ctx.fillStyle='#241a22'; ctx.beginPath(); ctx.arc(kx,ky-40,10,0,7); ctx.fill();
+      ctx.fillStyle='#ff4d4d'; ctx.beginPath(); ctx.arc(kx-4,ky-41,1.8,0,7); ctx.fill();
+      ctx.beginPath(); ctx.arc(kx+4,ky-41,1.8,0,7); ctx.fill();
+      ctx.strokeStyle='#4a3a42'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(kx+12,ky-26); ctx.lineTo(kx+22,ky-4); ctx.stroke();
+      ctx.globalAlpha=1;
+    }
+    // 飘字
+    for(i=0;i<b.floats.length;i++){ var f=b.floats[i];
+      ctx.globalAlpha=Math.min(1,f.life/f.max*1.6); ctx.fillStyle=f.col;
+      ctx.font='bold '+(f.sz||16)+'px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(f.txt,f.x,f.y); }
+    ctx.globalAlpha=1;
+    ctx.restore();
+    // 顶栏
+    ctx.fillStyle='rgba(14,9,4,.94)'; ctx.fillRect(0,0,W,100);
+    ctx.fillStyle='rgba(255,205,130,.26)'; ctx.fillRect(0,99,W,1.5);
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillStyle='#ff7b6b'; ctx.font='bold 26px sans-serif'; ctx.fillText('荒原大逃杀',44,42);
+    ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif'; ctx.fillText('房间躲杀手 · 十回合决出最强部落',44,72);
+    // 回合 / 宝石 / 倒计时
+    ctx.textAlign='center';
+    ctx.fillStyle='#ffe7a8'; ctx.font='bold 19px sans-serif'; ctx.fillText('第 '+b.round+' / '+b.rounds+' 回合',Math.round(W*0.42),42);
+    ctx.fillStyle='#ffd479'; ctx.font='bold 17px sans-serif'; ctx.fillText('宝石 '+Math.floor(b.gems),Math.round(W*0.42),72);
+    var cd=Math.max(0,b.timer);
+    ctx.fillStyle=cd<=5?'#ff8f7a':'#9fb2e6'; ctx.font='bold 17px sans-serif';
+    ctx.fillText(cd<=5? ('杀手 '+cd.toFixed(1)+'s') : (cd.toFixed(1)+'s 后'),Math.round(W*0.58),42);
+    if(b.target>=0){
+      ctx.fillStyle='#ff8f7a'; ctx.font='bold 15px sans-serif';
+      ctx.fillText('锁定「'+BR_ROOMS[b.target].n+'」',Math.round(W*0.58),72);
+    }
+    brBtn(L.again,'重新开局',true,14); brBtn(L.back,'返回菜单',true,14);
+    // 右侧排行
+    var P2=L.panel;
+    ctx.fillStyle='rgba(10,7,4,.86)'; rr(P2.x,P2.y,P2.w,P2.h,14); ctx.fill();
+    ctx.strokeStyle='rgba(255,205,130,.24)'; ctx.lineWidth=1; rr(P2.x+.5,P2.y+.5,P2.w-1,P2.h-1,14); ctx.stroke();
+    ctx.textAlign='left'; ctx.fillStyle='#ffd479'; ctx.font='bold 15px sans-serif';
+    ctx.fillText('宝石排行',P2.x+16,P2.y+26);
+    var rank=brRank();
+    for(i=0;i<rank.length&&i<9;i++){
+      var row=rank[i], ry=P2.y+52+i*44;
+      if(row.me){ ctx.fillStyle='rgba(255,212,121,.14)'; rr(P2.x+8,ry-16,P2.w-16,38,8); ctx.fill(); }
+      ctx.textAlign='left'; ctx.fillStyle=row.me?'#ffe7a8':'#9c8a6a'; ctx.font='bold 13px sans-serif';
+      ctx.fillText((i+1)+'. '+row.name,P2.x+18,ry);
+      ctx.textAlign='right'; ctx.fillStyle=row.me?'#ffd479':'#c9b995'; ctx.font='bold 13px sans-serif';
+      ctx.fillText(String(Math.floor(row.gems)),P2.x+P2.w-18,ry);
+      ctx.fillStyle=row.col; ctx.beginPath(); ctx.arc(P2.x+10,ry,3,0,7); ctx.fill();
+    }
+    // 底栏
+    var IB=L.invest, cost=brInvestCost(), can=b.gems>=cost;
+    ctx.fillStyle=can?'#7a3a12':'#2a1d10'; rr(IB.x,IB.y,IB.w,IB.h,12); ctx.fill();
+    ctx.strokeStyle=can?'#ffb347':'#4a3820'; ctx.lineWidth=1.5; rr(IB.x+.75,IB.y+.75,IB.w-1.5,IB.h-1.5,12); ctx.stroke();
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle=can?'#ffe0a8':'#6f6048'; ctx.font='bold 20px sans-serif';
+    ctx.fillText('投入宝石 · '+cost,IB.x+IB.w/2,IB.y+26);
+    ctx.fillStyle=can?'#ffb347':'#6f6048'; ctx.font='12px sans-serif';
+    ctx.fillText('族人 +2',IB.x+IB.w/2,IB.y+48);
+    ctx.textAlign='left'; ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif';
+    ctx.fillText('点击任意房间即可整族迁徙 · 杀手锁定后快跑开 · 房里人越多宝石越快',IB.x+IB.w+26,IB.y+24);
+    if(b.msg){ ctx.fillStyle='#ffd479'; ctx.font='bold 14px sans-serif'; ctx.fillText(b.msg,IB.x+IB.w+26,IB.y+50); }
+    ctx.save(); ctx.setTransform(scale,0,0,scale,ox,oy); drawScreenVignette(); ctx.restore();
+    if(b.phase==='end'||b.phase==='dead'){
+      var PB=brPanelBox(), rk=brRank(), myRank=1;
+      for(i=0;i<rk.length;i++) if(rk[i].me){ myRank=i+1; }
+      ctx.fillStyle='rgba(4,6,12,.76)'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='rgba(26,17,8,.98)'; rr(PB.px,PB.py,PB.pw,PB.ph,18); ctx.fill();
+      ctx.strokeStyle='#8a6a3c'; ctx.lineWidth=1.5; rr(PB.px+.75,PB.py+.75,PB.pw-1.5,PB.ph-1.5,18); ctx.stroke();
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      var ttl, sub;
+      if(b.phase==='dead'){ ttl='族人散尽 · 出局'; sub='第 '+b.round+' 回合倒在了「'+BR_ROOMS[b.last>=0?b.last:0].n+'」'; }
+      else if(myRank===1){ ttl='荒原最强部落！'; sub='十回合后宝石第一，称霸荒原'; }
+      else { ttl='第 '+myRank+' 名 · 存活到最后'; sub='宝石 '+Math.floor(b.gems)+'，再练练还能更强'; }
+      ctx.fillStyle=(b.phase==='dead'||myRank>3)?'#ff9b8c':'#ffd479'; ctx.font='bold 31px sans-serif';
+      ctx.fillText(ttl,Math.round(W/2),PB.py+78);
+      ctx.fillStyle='#9fb2e6'; ctx.font='15px sans-serif'; ctx.fillText(sub,Math.round(W/2),PB.py+122);
+      ctx.fillStyle='#8ba3cc'; ctx.font='13px sans-serif';
+      ctx.fillText('宝石 '+Math.floor(b.gems)+' · 族人 '+b.swarm+' · 排名 '+myRank+'/'+rk.length,Math.round(W/2),PB.py+158);
+      brBtn(PB.b1,'再来一局',true,16); brBtn(PB.b2,'返回菜单',true,16);
+    }
+  }
   function draw(){
     var shx=0,shy=0;
     if(S.shakeMag>0){ shx=(Math.random()*2-1)*S.shakeMag; shy=(Math.random()*2-1)*S.shakeMag; }
     if(S.scene==='menu'){ drawMenu(); return; }
     if(S.scene==='cut'){ drawCut(); return; }   // v2.31：互动影游过场场景
+    if(S.scene==='br'){ drawBr(); return; }   // v2.37 荒原大逃杀（桌面休闲）
     if(S.scene==='bone3'){ drawBone3(); return; }   // v2.36 兽骨三消（桌面休闲）
     ctx.setTransform(1,0,0,1,0,0);
     ctx.fillStyle='#170f07'; ctx.fillRect(0,0,PW,PH);
@@ -3617,6 +3919,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(S.scene==='menu'){ if(DESK&&(S.panel||S.menuInfo)){ px=(px-MTX)/MS; py=(py-MTY)/MS; } menuDown(px,py); return; }
     if(S.scene==='cut'){ cutDown(px,py); return; }   // v2.31：过场输入（推进对话/选项/结局按钮）
     if(S.scene==='bone3'){ b3Down(px,py); return; }   // v2.36 兽骨三消：只认石板与道具
+    if(S.scene==='br'){ brDown(px,py); return; }   // v2.37 荒原大逃杀：房间/投入/面板
     if(S.over){
       if(S.epic){                                   // v2.31 部落史诗结算：胜利→继续征程；失败→重打本幕
         if(hit(overBtns.again,px,py)){ if(S.over===1&&S.epicDone) epicResume(); else epicRetry(); return; }
