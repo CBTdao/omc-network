@@ -934,7 +934,7 @@ window.I18N.en = {
   "ba.tag": "Community · Playable",
   "ba.h1": "🏛️ 蛮荒时代 Barbarian Age",
   "ba.sub": "A browser build of the community RTS — homage to the Ancient Age of Rise of Nations.",
-  "ba.badge": "v2.32 full build \u00b7 4 modes \u00b7 free, no wallet",
+  "ba.badge": "v2.32 full build \u00b7 4 modes",
   "ba.open": "⛶ Open the full desktop version (keyboard shortcuts + side guide)",
   "ba.open2": "Open the full build on this site (no subdomain redirect)",
   "ba.note": "The game runs entirely in your browser \u2014 no install, no account, no wallet. On a wide screen this embed is the <b>16:9 full-page battlefield</b> (scroll to zoom around the cursor, right-drag to pan); on a narrow screen it falls back to portrait. Open the desktop version for a bigger stage, keyboard shortcuts and a side guide.",
