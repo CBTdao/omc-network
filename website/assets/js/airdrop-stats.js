@@ -13,8 +13,8 @@
      preview data in the UI. It is NOT on-chain data.
 
    Two phases
-   - Before the airdrop opens: honest zero-state — countdown plus the
-     pool rules scrolling in the window.
+   - Before the claim window opens: honest zero-state — the pool rules
+     scroll in the window instead of fabricated claims.
    - After it opens: claims / participants / latest participations.
    - Add ?ticker=preview to the URL to preview the live layout early.
    ============================================================ */
@@ -24,11 +24,14 @@ window.OMC_STATS = {
   pool: 20000000,                                // OMC reserved for the airdrop
   perEntry: 20,                                  // OMC per entry
   totalEntries: 1000000,                         // pool ÷ perEntry
-  /* Participation opens together with mainnet, staking and the claim window on
-     the single announced date 2027-01-01 00:00 (UTC+8). The campaign then runs
-     three months, ending 2027-03-31 23:59:59 (UTC+8). Keeping both instants in
-     the +08:00 offset is deliberate: every page shows the date in UTC+8, so a
-     visitor in another timezone still sees the same opening day. */
+  /* These two instants gate the CLAIM window — which is what this ticker
+     reports — not participation. The claim window opens together with TGE,
+     mainnet and staking on 2027-01-01 00:00 (UTC+8) and runs three months,
+     ending 2027-03-31 23:59:59 (UTC+8). Participation (completing the tasks
+     and registering entries) is open earlier; see the two-gate note in
+     main.js. Keeping both instants in the +08:00 offset is deliberate: every
+     page shows the date in UTC+8, so a visitor in another timezone still sees
+     the same opening day. */
   startAt: "2027-01-01T00:00:00+08:00",
   endAt: "2027-03-31T23:59:59+08:00",
   refreshMs: 6000,                               // poll / advance cadence
@@ -162,9 +165,10 @@ window.OMC_STATS = {
     if (!box) return;
     var ph = phase();
 
-    /* Before launch the pool rules scroll instead of fabricated claims */
+    /* Before the claim window opens the pool rules scroll instead of
+       fabricated claims */
     if (ph === "pre" && !PREVIEW && state.source !== "chain") {
-      box.innerHTML = ["ad.chip_start", "ad.chip_per", "ad.chip_wallet", "ad.chip_daily", "ad.chip_tge"]
+      box.innerHTML = ["ad.chip_start", "ad.chip_claim", "ad.chip_per", "ad.chip_wallet", "ad.chip_daily"]
         .map(function (k) { return '<div class="tk-row rule">' + T(k) + "</div>"; })
         .join("");
       return;

@@ -134,6 +134,8 @@ function showToast(msg) {
      read from window.OMCReferral (assets/js/referral.js); the pool itself
      is unchanged — referral entries only redistribute slots inside it.
    - Daily cap: 1 entry / calendar day (resets 00:00 UTC+8)
+   - PARTICIPATION is open now (no calendar gate) — see the two-gate note
+     below for why participation and claim are separate dates
    - During the campaign: page only DISPLAYS accumulated OMC
    - Claim window OPENS AT TGE (mainnet launch), which the white paper
      defines as "100% at TGE" for the community airdrop:
@@ -154,11 +156,18 @@ const MAX_DAILY = 1;                                    // per UTC+8 calendar da
    never render them in the UI or in visible copy.
    ============================================================ */
 /* internal only — the UI never quotes a network-fee figure */
-/* Airdrop opens together with mainnet, staking and the claim window on
-   2027-01-01 (UTC+8); the campaign runs three months (see airdrop-stats.js,
-   which must carry the same two instants). */
-const AIRDROP_START = new Date("2027-01-01T00:00:00+08:00").getTime();
-const AIRDROP_END = new Date("2027-03-31T23:59:59+08:00").getTime();
+/* Airdrop has TWO independent gates — do not merge them:
+   1) PARTICIPATION (complete the three social tasks, connect a wallet,
+      register entries, invite friends) is open now. Early joiners accumulate
+      entries before the token exists; an entry is a reservation against the
+      pool, not a token.
+   2) CLAIM is tied to the token existing: the claim window opens with TGE,
+      mainnet and staking on 2027-01-01 (UTC+8) and closes 2027-03-31
+      23:59:59 (UTC+8), i.e. a three-month claim window.
+   airdrop-stats.js carries the same claim instants for the home-page ticker;
+   verify-site.js pins the two copies of these dates to each other. */
+const CLAIM_OPEN = new Date("2027-01-01T00:00:00+08:00").getTime();
+const CLAIM_CLOSE = new Date("2027-03-31T23:59:59+08:00").getTime();
 const TASK_IDS = ["follow", "retweet", "telegram"];
 
 function i18n(key, params) {
@@ -225,8 +234,7 @@ function renderAirdrop() {
   const total = entries.length;
   const today = todayCount(entries);
   const now = Date.now();
-  const notStarted = now < AIRDROP_START;   /* airdrop opens Jan 1, 2027 (UTC+8), same day as mainnet + staking */
-  const ended = now > AIRDROP_END;
+  const ended = now > CLAIM_CLOSE;   /* participation and the claim window both close here */
 
   /* Task verify buttons + progress */
   const tasks = document.querySelectorAll(".task[data-task]");
@@ -270,25 +278,27 @@ function renderAirdrop() {
   /* Participate button + hint */
   const p = document.getElementById("participateBtn");
   const hint = document.getElementById("claimHint");
+  /* Participation is calendar-independent: it is gated by wallet + tasks +
+     caps only. Claiming is the part that waits for TGE. */
   const ready =
-    !notStarted && !ended && connected &&
+    !ended && connected &&
     doneCount === TASK_IDS.length && total < maxTotal() && today < MAX_DAILY;
   if (p) p.disabled = !ready;
   if (hint) {
-    if (notStarted) hint.textContent = i18n("js.hint_not_started");
-    else if (ended) hint.textContent = i18n("js.hint_ended");
+    if (ended) hint.textContent = i18n("js.hint_ended");
     else if (!connected) hint.textContent = i18n("js.hint_step1");
     else if (doneCount < TASK_IDS.length) hint.textContent = i18n("js.hint_step2");
     else if (total >= maxTotal()) hint.textContent = i18n("js.hint_limit_total", { n: maxTotal() });
     else if (today >= MAX_DAILY) hint.textContent = i18n("js.hint_limit_daily");
+    else if (now < CLAIM_OPEN) hint.textContent = i18n("js.hint_claim_locked");
     else hint.textContent = i18n("js.hint_ready");
   }
 
-  /* Claim-all — claim-as-you-go: the claim window opens together with
-     participation at mainnet (2027-01-01, UTC+8), the same day staking opens. */
+  /* Claim-all — tokens only exist once mainnet is live, so the button stays
+     locked until the claim window opens at TGE (2027-01-01, UTC+8). */
   const cAll = document.getElementById("claimAllBtn");
   if (cAll) {
-    const claimOpen = now >= AIRDROP_START;
+    const claimOpen = now >= CLAIM_OPEN;
     cAll.disabled = !claimOpen;
     if (claimOpen) setLabeledBtn(cAll, "🏆", i18n("claim.btn_claim_all"));
     else setLabeledBtn(cAll, "🔒", i18n("claim.btn_claim_all_locked"));
@@ -325,14 +335,13 @@ if (connectBtn) {
 /* wallet.js owns the session and broadcasts every change */
 document.addEventListener("omc:wallet", renderAirdrop);
 
-/* ---------- Participate: +20 OMC ---------- */
+/* ---------- Participate: +20 OMC (open now — no calendar gate) ---------- */
 const participateBtn = document.getElementById("participateBtn");
 if (participateBtn) {
   participateBtn.addEventListener("click", () => {
     const state = loadState();
     const entries = state.entries || [];
-    if (Date.now() < AIRDROP_START) { showToast(i18n("js.toast_not_started")); return; }
-    if (Date.now() > AIRDROP_END) { showToast(i18n("js.hint_ended")); return; }
+    if (Date.now() > CLAIM_CLOSE) { showToast(i18n("js.hint_ended")); return; }
     if (!walletAddress()) { showToast(i18n("js.hint_step1")); return; }
     if (entries.length >= maxTotal()) { showToast(i18n("js.hint_limit_total", { n: maxTotal() })); return; }
     if (todayCount(entries) >= MAX_DAILY) { showToast(i18n("js.hint_limit_daily")); return; }
@@ -355,11 +364,11 @@ if (participateBtn) {
   });
 }
 
-/* ---------- Claim all (open from the day the airdrop starts) ---------- */
+/* ---------- Claim all (locked until the claim window opens at TGE) ---------- */
 const claimAllBtn = document.getElementById("claimAllBtn");
 if (claimAllBtn) {
   claimAllBtn.addEventListener("click", () => {
-    if (Date.now() < AIRDROP_START) return;
+    if (Date.now() < CLAIM_OPEN) { showToast(i18n("js.toast_claim_locked")); return; }
     const state = loadState();
     const amount = (state.entries || []).length * PER_ENTRY;
     if (!amount) return;
@@ -370,14 +379,14 @@ if (claimAllBtn) {
   });
 }
 
-/* ---------- Live countdown — counts down to start, then to end ---------- */
+/* ---------- Live countdown — counts down to the claim window, then to its close ---------- */
 function tickCountdown() {
   const box = document.getElementById("countdown");
   if (!box) return;
   const now = Date.now();
   let target, labelText;
-  if (now < AIRDROP_START) { target = AIRDROP_START; labelText = i18n("cd.label_start"); }
-  else if (now < AIRDROP_END) { target = AIRDROP_END; labelText = i18n("cd.label_end"); }
+  if (now < CLAIM_OPEN) { target = CLAIM_OPEN; labelText = i18n("cd.label_claim"); }
+  else if (now < CLAIM_CLOSE) { target = CLAIM_CLOSE; labelText = i18n("cd.label_end"); }
   else { box.hidden = true; return; }
 
   box.hidden = false;
