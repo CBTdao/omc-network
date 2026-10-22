@@ -220,6 +220,26 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function saveGem(){ try{ wx.setStorageSync(GEMKEY,GEM); }catch(e){} }
   var GEM=loadGem();
   function addGem(n){ GEM=Math.max(0,Math.floor((GEM||0)+n)); saveGem(); return GEM; }
+// v2.43 留存优化：每日任务 + 七日签到
+  var DAILY_KEY='mh_daily_v1', SEVEN_KEY='mh_seven_v1';
+  var DAILY_NOW=null;                                   // 测试可覆盖当前日期（_proof_daily 用）
+  var TASK_UI=null;
+  function dayKey(){ if(DAILY_NOW) return DAILY_NOW; try{ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }catch(e){ return '1970-1-1'; } }
+  function yKey(){ try{ var pp=DAILY_NOW?DAILY_NOW.split('-'):null, base=pp?new Date(+pp[0],+pp[1]-1,+pp[2]):new Date(); base.setDate(base.getDate()-1); return base.getFullYear()+'-'+(base.getMonth()+1)+'-'+base.getDate(); }catch(e){ return '1970-1-1'; } }
+  function _dj(k,def){ try{ var v=wx.getStorageSync(k); if(v) return v; }catch(e){} return def; }
+  function _djw(k,v){ try{ wx.setStorageSync(k,v); }catch(e){} }
+  var SEVEN_REWARD=[10,15,20,25,30,50,100];             // 第 1~7 天签到奖励（宝石）
+  function loadDaily(){ var v=_dj(DAILY_KEY,null); if(v&&v.date===dayKey()) return v; return {date:dayKey(),tasks:{},claimed:false}; }
+  function saveDaily(v){ v.date=dayKey(); _djw(DAILY_KEY,v); }
+  function markDaily(id){ var v=loadDaily(); if(!v.tasks)v.tasks={}; if(v.tasks[id])return false; v.tasks[id]=true; saveDaily(v); return true; }
+  function dailyAllDone(){ var v=loadDaily(); return !!(v.tasks&&v.tasks.sign&&v.tasks.battle&&v.tasks.view); }
+  function claimDaily(){ var v=loadDaily(); if(v.claimed)return 0; if(!dailyAllDone())return -1; v.claimed=true; saveDaily(v); addGem(50); return 50; }
+  function loadSeven(){ return _dj(SEVEN_KEY,{streak:0,last:''}); }
+  function saveSeven(v){ _djw(SEVEN_KEY,v); }
+  function doCheckin(){ var s=loadSeven(), k=dayKey(); if(s.last===k) return {ok:false,reason:'done',streak:s.streak};
+    var ns=(s.last===yKey())?(s.streak+1):1; if(ns>7)ns=1; var got=SEVEN_REWARD[ns-1];
+    s.streak=ns; s.last=k; saveSeven(s); addGem(got); markDaily('sign'); return {ok:true,streak:ns,got:got}; }
+
   function spendGem(n){ n=Math.floor(n||0); if((GEM||0)>=n){ GEM-=n; saveGem(); return true; } return false; }
   function setGem(n){ GEM=Math.max(0,Math.floor(n||0)); saveGem(); return GEM; }
   // ===== v2.42 OMC 兑换层：单向（OMC → 宝石）。1 OMC = 10 宝石；宝石是游戏内唯一使用积分，不可反向兑换 =====
@@ -325,6 +345,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function setDiff(v){ DIFF=(v===0||v===1||v===2)?v:1; }
   DIFF=loadDiff();
   function saveBest(){ try{
+    markDaily('battle');
     var sc=(S.over===1?100000:0)+S.kills, b=S.best||{sc:-1,campStage:0};
     if(sc>b.sc){ S.best={sc:sc,kills:S.kills,spawned:S.spawned,age:S.age,t:S.t,win:S.over===1}; var cs=(S.campaign&&!S.endless&&!S.epic)?(S.over===1?S.stage:S.stage-1):0; if(cs>(S.best.campStage||0))S.best.campStage=cs; if(S.endless&&S.stage>(S.best.endless||0))S.best.endless=S.stage; localStorage.setItem('mh_best',JSON.stringify(S.best)); }
   }catch(e){} }
@@ -2702,9 +2723,10 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     {id:'build', label:'建造图鉴', x:16,  y:362, w:104, h:32},
     {id:'unit',  label:'兵种图鉴', x:128, y:362, w:104, h:32},
     {id:'ages',  label:'时代征程', x:240, y:362, w:104, h:32},
-    {id:'sys',   label:'系统中心', x:16,  y:402, w:104, h:32},
-    {id:'achv',  label:'成就',     x:128, y:402, w:104, h:32},
-    {id:'set',   label:'设置',     x:240, y:402, w:104, h:32}
+    {id:'sys',   label:'系统中心', x:16,  y:402, w:78, h:32},
+    {id:'achv',  label:'成就',     x:99,  y:402, w:78, h:32},
+    {id:'set',   label:'设置',     x:182, y:402, w:78, h:32},
+    {id:'task',  label:'每日任务', x:265, y:402, w:78, h:32}
   ];
   var setSoundRect={x:38,y:392,w:284,h:40};
   var campStartBtn={x:W/2-80,y:492,w:160,h:40};
@@ -2712,7 +2734,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   var diffRects=[{id:0,label:'简单',x:40,y:470,w:86,h:32},{id:1,label:'普通',x:137,y:470,w:86,h:32},{id:2,label:'困难',x:234,y:470,w:86,h:32}];
   if(DESK){                                   // v2.32 桌面横屏主菜单：三列铺满整屏
     var _bw=220, _gp=24, _rw=_bw*3+_gp*2, _x0=Math.round(W/2-_rw/2);
-    var _mw=196, _mg=20, _mx0=Math.round(W/2-(_mw*4+_mg*3)/2);   // v2.36：玩法行四格（新增桌面休闲「兽骨三消」）
+    var _mw=196, _mg=20, _mx0=Math.round(W/2-(_mw*4+_mg*3)/2);
+    var _tw2=166, _tg2=20, _tx2=Math.round(W/2-(4*_tw2+3*_tg2)/2);   // v2.43 4 列系统行基准   // v2.36：玩法行四格（新增桌面休闲「兽骨三消」）
     menuBtns=[
       {id:'start', label:'开始游戏', x:Math.round(W/2-200), y:242, w:400, h:64, big:true},
       {id:'camp',  label:'部落征程', x:_mx0, y:326, w:_mw, h:54},
@@ -2723,9 +2746,10 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       {id:'build', label:'建造图鉴', x:_x0, y:456, w:_bw, h:46},
       {id:'unit',  label:'兵种图鉴', x:_x0+_bw+_gp, y:456, w:_bw, h:46},
       {id:'ages',  label:'时代征程', x:_x0+2*(_bw+_gp), y:456, w:_bw, h:46},
-      {id:'sys',   label:'系统中心', x:_x0, y:512, w:_bw, h:46},
-      {id:'achv',  label:'成就',     x:_x0+_bw+_gp, y:512, w:_bw, h:46},
-      {id:'set',   label:'设置',     x:_x0+2*(_bw+_gp), y:512, w:_bw, h:46}
+      {id:'sys',   label:'系统中心', x:_tx2, y:512, w:_tw2, h:46},
+      {id:'achv',  label:'成就',     x:_tx2+_tw2+_tg2, y:512, w:_tw2, h:46},
+      {id:'set',   label:'设置',     x:_tx2+2*(_tw2+_tg2), y:512, w:_tw2, h:46},
+      {id:'task',  label:'每日任务', x:_tx2+3*(_tw2+_tg2), y:512, w:_tw2, h:46}
     ];
     var _dw=180, _dg=24, _dr=_dw*3+_dg*2, _dx=Math.round(W/2-_dr/2);
     diffRects=[{id:0,label:'简单',x:_dx,y:608,w:_dw,h:44},{id:1,label:'普通',x:_dx+_dw+_dg,y:608,w:_dw,h:44},{id:2,label:'困难',x:_dx+2*(_dw+_dg),y:608,w:_dw,h:44}];
@@ -2738,7 +2762,9 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       if(S.panel==='camp'&&hit(campStartBtn,px,py)){ startCampaign(); return; }
       if(S.panel==='endless'&&hit(endlessStartBtn,px,py)){ startEndless(); return; }
       if(S.panel==='omc'&&omcDown(px,py)) return;
+      if(S.panel==='task'&&taskDown(px,py)) return;
       if(S.panel==='omc') OMCP=null;
+      if(S.panel==='task') TASK_UI=null;
       S.panel=null; return;
     }
     if(!DESK&&__AD_BTN&&hit(__AD_BTN,px,py)){ watchAdGem(); return; }
@@ -2750,7 +2776,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       else if(b.id==='epic'){ startEpic(); }   // v2.31 部落史诗（互动影游）
       else if(b.id==='bone3'){ b3StartMode(); }   // v2.36 兽骨三消（桌面休闲）
       else if(b.id==='br'){ brStartMode(); }   // v2.37 荒原大逃杀（桌面休闲）
-      else { S.panel=b.id; }
+      else { S.panel=b.id; markDaily('view'); }
       return;
     } }
   }
@@ -2818,7 +2844,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   }
   // ===== 资料库面板（建造/兵种/时代/系统/成就/设置，均带「蛮荒时代」游戏名） =====
   function codexTitle(name){
-    var titleMap={build:'建造图鉴',unit:'兵种图鉴',ages:'时代征程',sys:'系统中心',achv:'成就',set:'设置',camp:'部落征程',endless:'无尽试炼',omc:'OMC 兑换宝石'};
+    var titleMap={build:'建造图鉴',unit:'兵种图鉴',ages:'时代征程',sys:'系统中心',achv:'成就',set:'设置',camp:'部落征程',endless:'无尽试炼',task:'每日任务',omc:'OMC 兑换宝石'};
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillStyle='#ffd479'; ctx.font='bold 16px sans-serif'; ctx.fillText(titleMap[name]||'资料库',LW/2,96);
     ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='10px sans-serif'; ctx.fillText('蛮荒时代 · 资料库',LW/2,116);
@@ -2862,6 +2888,48 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(hit(R.ok,px,py)){ var got=buyGemWithOmc(omcAmt()); if(got>0){ OMCP=null; S.panel=null; } return true; }
     return false;
   }
+  // v2.43 每日任务面板（沿用面板 360x640 逻辑空间；DESK 由 drawCodex 统一放大居中）
+  function drawTaskPanel(y){
+    var v=loadDaily(), s=loadSeven(), i, done=v.tasks||{};
+    ctx.textAlign='left'; ctx.fillStyle='#ffd479'; ctx.font='bold 15px sans-serif'; ctx.fillText('七日签到', 40, y+10);
+    var n=7, bs=36, gp=6, totW=n*bs+(n-1)*gp, bx=40, by=y+24;
+    for(i=0;i<n;i++){ var x=bx+i*(bs+gp);
+      ctx.fillStyle=(i+1)<=s.streak?'rgba(255,212,121,.22)':'rgba(255,205,130,.08)'; rr(x,by,bs,bs,6); ctx.fill();
+      ctx.strokeStyle=(i+1)===s.streak?'#ffe7a8':'rgba(168,129,74,.55)'; ctx.lineWidth=1; rr(x+.5,by+.5,bs-1,bs-1,6); ctx.stroke();
+      ctx.textAlign='center'; ctx.fillStyle='#ffd479'; ctx.font='bold 11px sans-serif'; ctx.fillText('第N天'.replace('N',(i+1)), x+bs/2, by+13);
+      ctx.fillStyle='#cfe0ff'; ctx.font='10px sans-serif'; ctx.fillText('+'+SEVEN_REWARD[i]+' 宝石', x+bs/2, by+27);
+    }
+    var canSign=s.last!==dayKey();
+    var sgn={x:bx,y:by+bs+12,w:totW,h:34};
+    ctx.fillStyle=canSign?'#2f5c33':'rgba(90,90,90,.5)'; rr(sgn.x,sgn.y,sgn.w,sgn.h,8); ctx.fill();
+    ctx.strokeStyle=canSign?'#8bf0a0':'rgba(140,140,140,.5)'; ctx.lineWidth=1.2; rr(sgn.x+.5,sgn.y+.5,sgn.w-1,sgn.h-1,8); ctx.stroke();
+    ctx.fillStyle=canSign?'#eaffea':'#9a9a9a'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.fillText(canSign?'签到领取':'今日已签到', sgn.x+sgn.w/2, sgn.y+sgn.h/2);
+    var ty=sgn.y+sgn.h+22;
+    ctx.textAlign='left'; ctx.fillStyle='#ffd479'; ctx.font='bold 15px sans-serif'; ctx.fillText('今日任务', 40, ty);
+    var tasks=[['sign','每日签到一次'],['battle','完成任意一局对战'],['view','浏览任意图鉴面板']], tc=0;
+    for(i=0;i<tasks.length;i++){ var tk=tasks[i][0], nm=tasks[i][1], ok=!!done[tk]; if(ok)tc++;
+      var ry=ty+18+i*30;
+      ctx.fillStyle='rgba(255,205,130,.08)'; rr(40,ry,282,26,6); ctx.fill();
+      ctx.fillStyle=ok?'#5fe0a8':'#9fb2e6'; ctx.font='bold 14px sans-serif'; ctx.textAlign='left'; ctx.fillText(ok?'✓':'○', 50, ry+13);
+      ctx.fillStyle='#d6e4ff'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText(nm, 70, ry+13);
+    }
+    var ay=ty+18+3*30+16;
+    ctx.fillStyle='#9fb2e6'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText('进度 X/3'.replace('X',tc), 40, ay);
+    var chest={x:40,y:ay+14,w:282,h:38};
+    var canClaim=dailyAllDone()&&!v.claimed;
+    ctx.fillStyle=canClaim?'#5a3416':'rgba(90,90,90,.45)'; rr(chest.x,chest.y,chest.w,chest.h,8); ctx.fill();
+    ctx.strokeStyle=canClaim?'#ffb347':'rgba(140,140,140,.45)'; ctx.lineWidth=1.2; rr(chest.x+.5,chest.y+.5,chest.w-1,chest.h-1,8); ctx.stroke();
+    ctx.fillStyle=canClaim?'#ffe7a8':'#9a9a9a'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(v.claimed?'今日已领取':(dailyAllDone()?'领取活跃度宝箱（+50 宝石）':'任务未完成'), chest.x+chest.w/2, chest.y+chest.h/2);
+    ctx.fillStyle='#7f8fa8'; ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.fillText('完成任务得活跃度，满 100 领取 50 宝石', LW/2, chest.y+chest.h+18);
+    TASK_UI={sgn:sgn,chest:chest};
+  }
+  function taskDown(px,py){
+    var s=loadSeven();
+    if(s.last!==dayKey()){ var R=TASK_UI&&TASK_UI.sgn; if(R&&hit(R,px,py)){ var r=doCheckin(); if(r.ok) toast('签到成功 +'+r.got+' 宝石'); else toast('今日已签到'); sfx('build'); return true; } }
+    var C=TASK_UI&&TASK_UI.chest; if(C&&hit(C,px,py)){ var g=claimDaily(); if(g>0){ toast('领取成功 +'+g+' 宝石'); sfx('build'); } else if(g===0){ toast('今日已领取'); } else { toast('任务未完成'); } return true; }
+    return false;
+  }
   function drawCodex(name){
     ctx.fillStyle='rgba(6,10,20,.92)'; ctx.fillRect(0,0,W,H);
     ctx.save(); if(DESK){ ctx.translate(MTX,MTY); ctx.scale(MS,MS); }       // v2.32：桌面版面板整体放大居中
@@ -2871,6 +2939,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     codexTitle(name);
     var innerY=cy+62;
     if(name==='omc'){ drawOmcPanel(innerY); }
+    else if(name==='task') drawTaskPanel(innerY);
     else if(name==='build') codexBuild(innerY);
     else if(name==='unit') codexUnit(innerY);
     else if(name==='ages') codexAges(innerY);
@@ -4563,6 +4632,26 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function saveGem(){ try{ wx.setStorageSync(GEMKEY,GEM); }catch(e){} }
   var GEM=loadGem();
   function addGem(n){ GEM=Math.max(0,Math.floor((GEM||0)+n)); saveGem(); return GEM; }
+// v2.43 留存优化：每日任务 + 七日签到
+  var DAILY_KEY='mh_daily_v1', SEVEN_KEY='mh_seven_v1';
+  var DAILY_NOW=null;                                   // 测试可覆盖当前日期（_proof_daily 用）
+  var TASK_UI=null;
+  function dayKey(){ if(DAILY_NOW) return DAILY_NOW; try{ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }catch(e){ return '1970-1-1'; } }
+  function yKey(){ try{ var pp=DAILY_NOW?DAILY_NOW.split('-'):null, base=pp?new Date(+pp[0],+pp[1]-1,+pp[2]):new Date(); base.setDate(base.getDate()-1); return base.getFullYear()+'-'+(base.getMonth()+1)+'-'+base.getDate(); }catch(e){ return '1970-1-1'; } }
+  function _dj(k,def){ try{ var v=wx.getStorageSync(k); if(v) return v; }catch(e){} return def; }
+  function _djw(k,v){ try{ wx.setStorageSync(k,v); }catch(e){} }
+  var SEVEN_REWARD=[10,15,20,25,30,50,100];             // 第 1~7 天签到奖励（宝石）
+  function loadDaily(){ var v=_dj(DAILY_KEY,null); if(v&&v.date===dayKey()) return v; return {date:dayKey(),tasks:{},claimed:false}; }
+  function saveDaily(v){ v.date=dayKey(); _djw(DAILY_KEY,v); }
+  function markDaily(id){ var v=loadDaily(); if(!v.tasks)v.tasks={}; if(v.tasks[id])return false; v.tasks[id]=true; saveDaily(v); return true; }
+  function dailyAllDone(){ var v=loadDaily(); return !!(v.tasks&&v.tasks.sign&&v.tasks.battle&&v.tasks.view); }
+  function claimDaily(){ var v=loadDaily(); if(v.claimed)return 0; if(!dailyAllDone())return -1; v.claimed=true; saveDaily(v); addGem(50); return 50; }
+  function loadSeven(){ return _dj(SEVEN_KEY,{streak:0,last:''}); }
+  function saveSeven(v){ _djw(SEVEN_KEY,v); }
+  function doCheckin(){ var s=loadSeven(), k=dayKey(); if(s.last===k) return {ok:false,reason:'done',streak:s.streak};
+    var ns=(s.last===yKey())?(s.streak+1):1; if(ns>7)ns=1; var got=SEVEN_REWARD[ns-1];
+    s.streak=ns; s.last=k; saveSeven(s); addGem(got); markDaily('sign'); return {ok:true,streak:ns,got:got}; }
+
   function spendGem(n){ n=Math.floor(n||0); if((GEM||0)>=n){ GEM-=n; saveGem(); return true; } return false; }
   function setGem(n){ GEM=Math.max(0,Math.floor(n||0)); saveGem(); return GEM; }
   // ===== v2.42 OMC 兑换层：单向（OMC → 宝石）。1 OMC = 10 宝石；宝石是游戏内唯一使用积分，不可反向兑换 =====
@@ -4668,6 +4757,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   function setDiff(v){ DIFF=(v===0||v===1||v===2)?v:1; }
   DIFF=loadDiff();
   function saveBest(){ try{
+    markDaily('battle');
     var sc=(S.over===1?100000:0)+S.kills, b=S.best||{sc:-1,campStage:0};
     if(sc>b.sc){ S.best={sc:sc,kills:S.kills,spawned:S.spawned,age:S.age,t:S.t,win:S.over===1}; var cs=(S.campaign&&!S.endless&&!S.epic)?(S.over===1?S.stage:S.stage-1):0; if(cs>(S.best.campStage||0))S.best.campStage=cs; if(S.endless&&S.stage>(S.best.endless||0))S.best.endless=S.stage; localStorage.setItem('mh_best',JSON.stringify(S.best)); }
   }catch(e){} }
@@ -7045,9 +7135,10 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     {id:'build', label:'Building Codex', x:16,  y:362, w:104, h:32},
     {id:'unit',  label:'Unit Codex', x:128, y:362, w:104, h:32},
     {id:'ages',  label:'Age Campaign', x:240, y:362, w:104, h:32},
-    {id:'sys',   label:'System Center', x:16,  y:402, w:104, h:32},
-    {id:'achv',  label:'Achievements',     x:128, y:402, w:104, h:32},
-    {id:'set',   label:'Settings',     x:240, y:402, w:104, h:32}
+    {id:'sys',   label:'System Center', x:16,  y:402, w:78, h:32},
+    {id:'achv',  label:'Achievements',     x:99,  y:402, w:78, h:32},
+    {id:'set',   label:'Settings',     x:182, y:402, w:78, h:32},
+    {id:'task',  label:'Daily Tasks', x:265, y:402, w:78, h:32}
   ];
   var setSoundRect={x:38,y:392,w:284,h:40};
   var campStartBtn={x:W/2-80,y:492,w:160,h:40};
@@ -7055,7 +7146,8 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   var diffRects=[{id:0,label:'Easy',x:40,y:470,w:86,h:32},{id:1,label:'Normal',x:137,y:470,w:86,h:32},{id:2,label:'Hard',x:234,y:470,w:86,h:32}];
   if(DESK){                                   // v2.32 桌面横屏主菜单：三列铺满整屏
     var _bw=220, _gp=24, _rw=_bw*3+_gp*2, _x0=Math.round(W/2-_rw/2);
-    var _mw=196, _mg=20, _mx0=Math.round(W/2-(_mw*4+_mg*3)/2);   // v2.36：玩法行四格（新增桌面休闲「兽骨三消」）
+    var _mw=196, _mg=20, _mx0=Math.round(W/2-(_mw*4+_mg*3)/2);
+    var _tw2=166, _tg2=20, _tx2=Math.round(W/2-(4*_tw2+3*_tg2)/2);   // v2.43 4 列系统行基准   // v2.36：玩法行四格（新增桌面休闲「兽骨三消」）
     menuBtns=[
       {id:'start', label:'Start Game', x:Math.round(W/2-200), y:242, w:400, h:64, big:true},
       {id:'camp',  label:'Tribal Campaign', x:_mx0, y:326, w:_mw, h:54},
@@ -7066,9 +7158,10 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       {id:'build', label:'Building Codex', x:_x0, y:456, w:_bw, h:46},
       {id:'unit',  label:'Unit Codex', x:_x0+_bw+_gp, y:456, w:_bw, h:46},
       {id:'ages',  label:'Age Campaign', x:_x0+2*(_bw+_gp), y:456, w:_bw, h:46},
-      {id:'sys',   label:'System Center', x:_x0, y:512, w:_bw, h:46},
-      {id:'achv',  label:'Achievements',     x:_x0+_bw+_gp, y:512, w:_bw, h:46},
-      {id:'set',   label:'Settings',     x:_x0+2*(_bw+_gp), y:512, w:_bw, h:46}
+      {id:'sys',   label:'System Center', x:_tx2, y:512, w:_tw2, h:46},
+      {id:'achv',  label:'Achievements',     x:_tx2+_tw2+_tg2, y:512, w:_tw2, h:46},
+      {id:'set',   label:'Settings',     x:_tx2+2*(_tw2+_tg2), y:512, w:_tw2, h:46},
+      {id:'task',  label:'Daily Tasks', x:_tx2+3*(_tw2+_tg2), y:512, w:_tw2, h:46}
     ];
     var _dw=180, _dg=24, _dr=_dw*3+_dg*2, _dx=Math.round(W/2-_dr/2);
     diffRects=[{id:0,label:'Easy',x:_dx,y:608,w:_dw,h:44},{id:1,label:'Normal',x:_dx+_dw+_dg,y:608,w:_dw,h:44},{id:2,label:'Hard',x:_dx+2*(_dw+_dg),y:608,w:_dw,h:44}];
@@ -7081,7 +7174,9 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       if(S.panel==='camp'&&hit(campStartBtn,px,py)){ startCampaign(); return; }
       if(S.panel==='endless'&&hit(endlessStartBtn,px,py)){ startEndless(); return; }
       if(S.panel==='omc'&&omcDown(px,py)) return;
+      if(S.panel==='task'&&taskDown(px,py)) return;
       if(S.panel==='omc') OMCP=null;
+      if(S.panel==='task') TASK_UI=null;
       S.panel=null; return;
     }
     if(!DESK&&__AD_BTN&&hit(__AD_BTN,px,py)){ watchAdGem(); return; }
@@ -7093,7 +7188,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
       else if(b.id==='epic'){ startEpic(); }   // v2.31 部落史诗（互动影游）
       else if(b.id==='bone3'){ b3StartMode(); }   // v2.36 兽骨三消（桌面休闲）
       else if(b.id==='br'){ brStartMode(); }   // v2.37 荒原大逃杀（桌面休闲）
-      else { S.panel=b.id; }
+      else { S.panel=b.id; markDaily('view'); }
       return;
     } }
   }
@@ -7161,7 +7256,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
   }
   // ===== 资料库面板（建造/兵种/时代/系统/成就/设置，均带「蛮荒时代」游戏名） =====
   function codexTitle(name){
-    var titleMap={build:'Building Codex',unit:'Unit Codex',ages:'Age Campaign',sys:'System Center',achv:'Achievements',set:'Settings',camp:'Tribal Campaign',endless:'Endless Trial',omc:'OMC → Gems Exchange'};
+    var titleMap={build:'Building Codex',unit:'Unit Codex',ages:'Age Campaign',sys:'System Center',achv:'Achievements',set:'Settings',camp:'Tribal Campaign',endless:'Endless Trial',task:'Daily Tasks',omc:'OMC → Gems Exchange'};
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.fillStyle='#ffd479'; ctx.font='bold 16px sans-serif'; ctx.fillText(titleMap[name]||'Codex',LW/2,96);
     ctx.fillStyle='rgba(255,205,130,.6)'; ctx.font='10px sans-serif'; ctx.fillText('Barbarian Age · Codex',LW/2,116);
@@ -7205,6 +7300,48 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     if(hit(R.ok,px,py)){ var got=buyGemWithOmc(omcAmt()); if(got>0){ OMCP=null; S.panel=null; } return true; }
     return false;
   }
+  // v2.43 每日任务面板（沿用面板 360x640 逻辑空间；DESK 由 drawCodex 统一放大居中）
+  function drawTaskPanel(y){
+    var v=loadDaily(), s=loadSeven(), i, done=v.tasks||{};
+    ctx.textAlign='left'; ctx.fillStyle='#ffd479'; ctx.font='bold 15px sans-serif'; ctx.fillText('7-Day Check-in', 40, y+10);
+    var n=7, bs=36, gp=6, totW=n*bs+(n-1)*gp, bx=40, by=y+24;
+    for(i=0;i<n;i++){ var x=bx+i*(bs+gp);
+      ctx.fillStyle=(i+1)<=s.streak?'rgba(255,212,121,.22)':'rgba(255,205,130,.08)'; rr(x,by,bs,bs,6); ctx.fill();
+      ctx.strokeStyle=(i+1)===s.streak?'#ffe7a8':'rgba(168,129,74,.55)'; ctx.lineWidth=1; rr(x+.5,by+.5,bs-1,bs-1,6); ctx.stroke();
+      ctx.textAlign='center'; ctx.fillStyle='#ffd479'; ctx.font='bold 11px sans-serif'; ctx.fillText('Day N'.replace('N',(i+1)), x+bs/2, by+13);
+      ctx.fillStyle='#cfe0ff'; ctx.font='10px sans-serif'; ctx.fillText('+'+SEVEN_REWARD[i]+' Gems', x+bs/2, by+27);
+    }
+    var canSign=s.last!==dayKey();
+    var sgn={x:bx,y:by+bs+12,w:totW,h:34};
+    ctx.fillStyle=canSign?'#2f5c33':'rgba(90,90,90,.5)'; rr(sgn.x,sgn.y,sgn.w,sgn.h,8); ctx.fill();
+    ctx.strokeStyle=canSign?'#8bf0a0':'rgba(140,140,140,.5)'; ctx.lineWidth=1.2; rr(sgn.x+.5,sgn.y+.5,sgn.w-1,sgn.h-1,8); ctx.stroke();
+    ctx.fillStyle=canSign?'#eaffea':'#9a9a9a'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.fillText(canSign?'Check In':'Checked In Today', sgn.x+sgn.w/2, sgn.y+sgn.h/2);
+    var ty=sgn.y+sgn.h+22;
+    ctx.textAlign='left'; ctx.fillStyle='#ffd479'; ctx.font='bold 15px sans-serif'; ctx.fillText('Today\'s Tasks', 40, ty);
+    var tasks=[['sign','Check in once'],['battle','Finish any battle'],['view','Open any codex']], tc=0;
+    for(i=0;i<tasks.length;i++){ var tk=tasks[i][0], nm=tasks[i][1], ok=!!done[tk]; if(ok)tc++;
+      var ry=ty+18+i*30;
+      ctx.fillStyle='rgba(255,205,130,.08)'; rr(40,ry,282,26,6); ctx.fill();
+      ctx.fillStyle=ok?'#5fe0a8':'#9fb2e6'; ctx.font='bold 14px sans-serif'; ctx.textAlign='left'; ctx.fillText(ok?'✓':'○', 50, ry+13);
+      ctx.fillStyle='#d6e4ff'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText(nm, 70, ry+13);
+    }
+    var ay=ty+18+3*30+16;
+    ctx.fillStyle='#9fb2e6'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText('Progress X/3'.replace('X',tc), 40, ay);
+    var chest={x:40,y:ay+14,w:282,h:38};
+    var canClaim=dailyAllDone()&&!v.claimed;
+    ctx.fillStyle=canClaim?'#5a3416':'rgba(90,90,90,.45)'; rr(chest.x,chest.y,chest.w,chest.h,8); ctx.fill();
+    ctx.strokeStyle=canClaim?'#ffb347':'rgba(140,140,140,.45)'; ctx.lineWidth=1.2; rr(chest.x+.5,chest.y+.5,chest.w-1,chest.h-1,8); ctx.stroke();
+    ctx.fillStyle=canClaim?'#ffe7a8':'#9a9a9a'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(v.claimed?'Claimed Today':(dailyAllDone()?'Claim Activity Chest (+50 Gems)':'Tasks Incomplete'), chest.x+chest.w/2, chest.y+chest.h/2);
+    ctx.fillStyle='#7f8fa8'; ctx.font='10px sans-serif'; ctx.textAlign='center'; ctx.fillText('Finish tasks for activity; reach 100 to claim 50 gems', LW/2, chest.y+chest.h+18);
+    TASK_UI={sgn:sgn,chest:chest};
+  }
+  function taskDown(px,py){
+    var s=loadSeven();
+    if(s.last!==dayKey()){ var R=TASK_UI&&TASK_UI.sgn; if(R&&hit(R,px,py)){ var r=doCheckin(); if(r.ok) toast('Checked in +'+r.got+' Gems'); else toast('Checked In Today'); sfx('build'); return true; } }
+    var C=TASK_UI&&TASK_UI.chest; if(C&&hit(C,px,py)){ var g=claimDaily(); if(g>0){ toast('Claimed +'+g+' Gems'); sfx('build'); } else if(g===0){ toast('Claimed Today'); } else { toast('Tasks Incomplete'); } return true; }
+    return false;
+  }
   function drawCodex(name){
     ctx.fillStyle='rgba(6,10,20,.92)'; ctx.fillRect(0,0,W,H);
     ctx.save(); if(DESK){ ctx.translate(MTX,MTY); ctx.scale(MS,MS); }       // v2.32：桌面版面板整体放大居中
@@ -7214,6 +7351,7 @@ window.__BA_LAYOUT = (typeof matchMedia === 'function' && matchMedia('(min-aspec
     codexTitle(name);
     var innerY=cy+62;
     if(name==='omc'){ drawOmcPanel(innerY); }
+    else if(name==='task') drawTaskPanel(innerY);
     else if(name==='build') codexBuild(innerY);
     else if(name==='unit') codexUnit(innerY);
     else if(name==='ages') codexAges(innerY);
