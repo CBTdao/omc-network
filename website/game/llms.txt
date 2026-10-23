@@ -1,6 +1,0 @@
-# 蛮荒时代 Barbarian Age
-
-> A single-era tribal real-time strategy game from the OMC community — an homage to the Ancient Age of Rise of Nations. Playable in the browser, free, no wallet and no token.
-
-- [https://game.omc.network/](https://game.omc.network/): play the full build (desktop: side guide + keyboard shortcuts + fullscreen)
-- [https://omc.network/barbarian-age](https://omc.network/barbarian-age): game overview, modes and screenshots on OMC
