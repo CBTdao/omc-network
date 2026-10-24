@@ -20,8 +20,11 @@ import re
 import sys
 
 PAGES = ["index", "news", "whitepaper", "tokenomics", "calculator", "compute",
-         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy",
-         "barbarian-age"]
+         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy"]
+# /barbarian-age and /barbarian-age-play were retired from the web line
+# (commit e912c6d): the RTS no longer ships here, the game subdomain now runs
+# "Real or AI" instead. They are gone from disk, so auditing them would just
+# crash the tool — verify-site.js walks every HTML file on disk anyway.
 # /barbarian-age-play is deliberately not audited here: it is the standalone
 # playable game build (own chrome, no i18n engine, lang="zh-CN"), so it falls
 # outside this tool's "site-wide convention" comparison. It is still covered by

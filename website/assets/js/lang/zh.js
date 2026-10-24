@@ -49,6 +49,8 @@ window.I18N.zh = {
   "footer.h_ecosystem": "生态",
   "f.aitop": "AITop — AI 工具对比",
   "f.dcf": "DCF — 算力论坛",
+
+  "f.game": "真图还是 AI — 每日照片小游戏",
   "f.wp": "白皮书",
   "f.testnet": "测试网",
   "f.stake": "质押",
@@ -149,6 +151,26 @@ window.I18N.zh = {
   "util4.d": "每笔任务 3% 协议费中的 30% 直接销毁，罚没另销毁 20%。",
   "rd.eyebrow": "路线图",
   "rd.title": "从测试网到全球算力网格",
+
+  "game.tag": "浏览器小游戏 · 免费玩",
+
+
+  "game.title": "真图还是 AI — 每日照片挑战",
+
+
+
+  "game.sub": "每天五组图。一张是真实照片，另一张由模型生成。不用安装、不用注册，只有一张成绩单和一条连击记录。这也是我们整个网络想要回答的那个问题的一次小演示：哪一段算力产出的结果，你真的信？",
+
+
+
+
+  "game.cta": "开始今天的挑战",
+
+
+
+
+
+  "game.cta2": "怎么分辨 AI 照片",
   "ph1.tag": "第 1 阶段 · 2026 Q4 · 进行中",
   "ph1.title": "基础设施与测试网",
   "ph1.l1": "L2 智能合约部署",
@@ -446,6 +468,8 @@ window.I18N.zh = {
 
   "meta.title_calc": "GPU 云端成本计算器 — Omniverse Compute (OMC)",
   "nav.calc": "计算器",
+
+  "nav.game": "小游戏",
   "f.calculator": "GPU 成本计算器",
   "f.compute": "AI 算力服务站",
   "calc.badge": "公开标价 · 无需登录",

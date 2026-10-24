@@ -6,8 +6,9 @@ import re
 import sys
 
 PAGES = ["index", "news", "whitepaper", "tokenomics", "calculator", "compute",
-         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy",
-         "barbarian-age", "barbarian-age-play"]
+         "ai-tools", "testnet", "stake", "airdrop", "about", "aup", "privacy"]
+# barbarian-age / barbarian-age-play were retired from the web line (e912c6d)
+# and no longer exist on disk — keeping them here only crashes the tool.
 # default: the website/ directory this tools/ folder lives in
 ROOT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

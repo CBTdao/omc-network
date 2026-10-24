@@ -1113,6 +1113,18 @@ td b { color: var(--text); }
 
 .cta-band .hero-actions { justify-content: center; }
 
+.game-band {
+  text-align: center;
+  background: linear-gradient(160deg, rgba(16, 185, 129, 0.16), rgba(56, 189, 248, 0.1));
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 26px;
+  padding: 56px 34px;
+}
+.game-band h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 900; letter-spacing: -0.6px; margin-bottom: 12px; }
+.game-band p { color: var(--muted); max-width: 620px; margin: 0 auto 30px; }
+.game-band .hero-actions { justify-content: center; }
+.game-band .g-tag { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4); border-radius: 999px; padding: 5px 14px; margin-bottom: 16px; }
+
 /* ============ FOOTER ============ */
 footer {
   border-top: 1px solid var(--border);
