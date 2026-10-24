@@ -118,7 +118,7 @@ footer a{color:var(--tx3)}
 </div>
 
 <footer>
-  <a href="guide.html">How to spot an AI photo</a> · <a href="daily/">Daily archive</a><br>
+  <a href="guide">How to spot an AI photo</a> · <a href="daily/">Daily archive</a><br>
   Real photographs from Wikimedia Commons under CC / public-domain licences, credited in-game. AI images generated offline.<br>
   <span id="footnote"></span>
 </footer>
@@ -267,7 +267,7 @@ footer a{color:var(--tx3)}
       '<div class="row" style="margin-top:10px">'+
       '<button class="btn" id="copyBtn">Copy score</button>'+
       '<button class="btn ghost" id="moreBtn">Practice more</button></div>'+
-      '<div class="row" style="margin-top:10px"><a class="btn ghost" href="daily/'+today()+'.html">Today’s hints &amp; answers</a></div></div>';
+      '<div class="row" style="margin-top:10px"><a class="btn ghost" href="daily/'+today()+'">Today’s hints &amp; answers</a></div></div>';
     $('copyBtn').onclick = function(){ copy(txt); };
     $('moreBtn').onclick = function(){ switchTab('free'); };
     $('stat').textContent='';
