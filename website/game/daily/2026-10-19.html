@@ -37,9 +37,26 @@ figcaption{font-size:12px;color:#a9bcd8;margin-top:4px;text-align:center}
 .credit{font-size:11.5px;color:#7b91b5;margin:8px 0 0}
 .credit a{color:#7b91b5}
 nav{display:flex;justify-content:space-between;font-size:13px;margin-top:18px;border-top:1px solid #25385c;padding-top:12px}
+.pbar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0e1829;
+  border-bottom:1px solid #25385c;padding:5px 12px;font-size:11.5px;line-height:1.4}
+.pbar a{text-decoration:none;white-space:nowrap}
+.pbar-brand{font-weight:800;color:#e8eefb;letter-spacing:.3px}
+.pbar-links{display:flex;gap:2px}
+.pbar-links a{color:#7b91b5;padding:3px 6px;border-radius:6px}
+.pbar-links a:hover{color:#e8eefb;background:#15233c}
+.pbar-links .on{color:#4da3ff;background:#15233c;font-weight:700}
 </style>
 </head>
-<body><div class="wrap">
+<body><div class="pbar">
+  <a class="pbar-brand" href="https://omc.network">OMC</a>
+  <nav class="pbar-links">
+    <a href="https://omc.network">Network</a>
+    <a href="https://forum.omc.network">Forum</a>
+    <a href="https://top.omc.network">AI Top</a>
+    <a href="https://game.omc.network" class="on" aria-current="page">Game</a>
+  </nav>
+</div>
+<div class="wrap">
 <h1>Real or AI — October 19, 2026</h1>
 <p>Five pairs. In each pair one photograph is real and one was generated. Hints below; answers are folded away so you can play first.</p>
 <a class="cta" href="../">Play today’s challenge</a>
@@ -110,6 +127,7 @@ nav{display:flex;justify-content:space-between;font-size:13px;margin-top:18px;bo
   <a href="2026-10-20">October 20, 2026 &rarr;</a>
 </nav>
 <p style="margin-top:20px;font-size:14px"><a href="../guide">How to spot an AI-generated photo →</a></p>
+<p style="margin-top:14px;font-size:12.5px;color:#7b91b5">Part of OMC — <a href="https://omc.network">Network</a> · <a href="https://forum.omc.network">Compute Forum</a> · <a href="https://top.omc.network">AI Top</a></p>
 </div>
 <script>
 // Chrome 的懒加载把「闭合 <details> 里」的图判为远离视口，展开后不加载。

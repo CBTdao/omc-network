@@ -36,9 +36,27 @@ ul{margin:8px 0 8px 20px}
 .k{color:#38d6a8;font-weight:700}
 .cta{display:inline-block;background:#4da3ff;color:#041021;font-weight:700;border-radius:9px;padding:10px 16px;text-decoration:none;margin:14px 0}
 small{color:#7b91b5}
+/* OMC 产品导航条 —— 官网/论坛/工具站统一入口，当前站高亮 */
+.pbar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0e1829;
+  border-bottom:1px solid #25385c;padding:5px 12px;font-size:11.5px;line-height:1.4}
+.pbar a{text-decoration:none;white-space:nowrap}
+.pbar-brand{font-weight:800;color:#e8eefb;letter-spacing:.3px}
+.pbar-links{display:flex;gap:2px}
+.pbar-links a{color:#7b91b5;padding:3px 6px;border-radius:6px}
+.pbar-links a:hover{color:#e8eefb;background:#15233c}
+.pbar-links .on{color:#4da3ff;background:#15233c;font-weight:700}
 </style>
 </head>
-<body><div class="wrap">
+<body><div class="pbar">
+  <a class="pbar-brand" href="https://omc.network">OMC</a>
+  <nav class="pbar-links">
+    <a href="https://omc.network">Network</a>
+    <a href="https://forum.omc.network">Forum</a>
+    <a href="https://top.omc.network">AI Top</a>
+    <a href="https://game.omc.network" class="on" aria-current="page">Game</a>
+  </nav>
+</div>
+<div class="wrap">
 
 <h1>How to spot an AI-generated photo</h1>
 <p>Generative image models stopped making obvious mistakes a while ago. Six fingers and melted text were the tells of 2023. In 2026 the giveaways are subtler — and they are mostly about <b>physics</b>, not anatomy.</p>
@@ -76,6 +94,7 @@ small{color:#7b91b5}
 
 <hr style="border:0;border-top:1px solid #25385c;margin:26px 0">
 <small>Photographs used in the game come from Wikimedia Commons under CC or public-domain licences, with attribution shown in-game. AI counterparts are generated offline.</small>
+<p style="font-size:12.5px">Part of OMC — <a href="https://omc.network">Network</a> · <a href="https://forum.omc.network">Compute Forum</a> · <a href="https://top.omc.network">AI Top</a></p>
 
 </div></body>
 </html>

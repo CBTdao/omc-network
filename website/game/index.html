@@ -79,6 +79,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:6px
 .credits a{color:var(--tx3)}
 footer{text-align:center;color:var(--tx3);font-size:12px;padding:18px 12px 0;line-height:1.7}
 footer a{color:var(--tx3)}
+/* OMC 产品导航条 —— 官网/论坛/工具站统一入口，当前站高亮 */
+.pbar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0e1829;
+  border-bottom:1px solid var(--line);padding:5px 12px;font-size:11.5px;line-height:1.4}
+.pbar a{text-decoration:none;white-space:nowrap}
+.pbar-brand{font-weight:800;color:var(--tx);letter-spacing:.3px}
+.pbar-links{display:flex;gap:2px}
+.pbar-links a{color:var(--tx3);padding:3px 6px;border-radius:6px}
+.pbar-links a:hover{color:var(--tx);background:var(--card)}
+.pbar-links .on{color:var(--acc);background:var(--card);font-weight:700}
 #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(18px);background:var(--ok);
   color:#041021;padding:10px 18px;border-radius:24px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -88,6 +97,15 @@ footer a{color:var(--tx3)}
 </style>
 </head>
 <body>
+<div class="pbar">
+  <a class="pbar-brand" href="https://omc.network">OMC</a>
+  <nav class="pbar-links">
+    <a href="https://omc.network">Network</a>
+    <a href="https://forum.omc.network">Forum</a>
+    <a href="https://top.omc.network">AI Top</a>
+    <a href="https://game.omc.network" class="on" aria-current="page">Game</a>
+  </nav>
+</div>
 <div class="wrap">
   <header>
     <div class="logo">REAL<span>·</span>OR<span>·</span>AI</div>
@@ -119,6 +137,7 @@ footer a{color:var(--tx3)}
 
 <footer>
   <a href="guide">How to spot an AI photo</a> · <a href="daily/">Daily archive</a><br>
+  Part of OMC — <a href="https://omc.network">Network</a> · <a href="https://forum.omc.network">Compute Forum</a> · <a href="https://top.omc.network">AI Top</a><br>
   Real photographs from Wikimedia Commons under CC / public-domain licences, credited in-game. AI images generated offline.<br>
   <span id="footnote"></span>
 </footer>
