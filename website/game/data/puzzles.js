@@ -20,7 +20,7 @@ window.__PUZZLES__ = [
       "prompt": "glacial lagoon lake at sunset"
     },
     "d": 2,
-    "stat": null
+    "stat": 67
   },
   {
     "id": "a2",
@@ -43,7 +43,7 @@ window.__PUZZLES__ = [
       "prompt": "breakfast plate on wooden table"
     },
     "d": 2,
-    "stat": null
+    "stat": 65
   },
   {
     "id": "a3",
@@ -66,7 +66,7 @@ window.__PUZZLES__ = [
       "prompt": "ginger cat sleeping on windowsill"
     },
     "d": 2,
-    "stat": null
+    "stat": 63
   },
   {
     "id": "a4",
@@ -89,7 +89,7 @@ window.__PUZZLES__ = [
       "prompt": "rainy city street at night with neon"
     },
     "d": 1,
-    "stat": null
+    "stat": 72
   },
   {
     "id": "a5",
@@ -112,7 +112,7 @@ window.__PUZZLES__ = [
       "prompt": "wooden cabin in snowy forest"
     },
     "d": 2,
-    "stat": null
+    "stat": 64
   },
   {
     "id": "a6",
@@ -135,7 +135,7 @@ window.__PUZZLES__ = [
       "prompt": "cappuccino with latte art"
     },
     "d": 3,
-    "stat": null
+    "stat": 57
   },
   {
     "id": "a7",
@@ -158,7 +158,7 @@ window.__PUZZLES__ = [
       "prompt": "golden retriever in tall meadow grass with a ball"
     },
     "d": 2,
-    "stat": null
+    "stat": 61
   },
   {
     "id": "a8",
@@ -181,6 +181,6 @@ window.__PUZZLES__ = [
       "prompt": "curved glass skyscraper seen from below"
     },
     "d": 1,
-    "stat": null
+    "stat": 71
   }
 ];

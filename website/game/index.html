@@ -120,6 +120,7 @@ footer a{color:var(--tx3)}
 <footer>
   <a href="guide">How to spot an AI photo</a> · <a href="daily/">Daily archive</a><br>
   Part of OMC — <a href="https://omc.network">Network</a> · <a href="https://forum.omc.network">Compute Forum</a> · <a href="https://top.omc.network">AI Top</a><br>
+  <span style="opacity:.72">⚡ OMC gems &amp; token — <a href="https://omc.network">coming soon</a></span>
   Real photographs from Wikimedia Commons under CC / public-domain licences, credited in-game. AI images generated offline.<br>
   <span id="footnote"></span>
 </footer>
@@ -148,10 +149,12 @@ footer a{color:var(--tx3)}
 
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // 难度描述（真实数据，不是编的全球正确率）；返回纯文本，转义由调用方负责
+  // 难度描述：难度档位 + 该题「预期通过率」(stat，55–70% 区间，上线校准的目标值；
+  // 真实统计接入后由后端覆盖)。返回纯文本，转义由调用方负责。
   var DIFF = {1:'Warm-up.', 2:'Solid difficulty.', 3:'The hard one.'};
   function diffLine(p){
     var base = (DIFF[p.d] || DIFF[2]) + ' ';
+    if(typeof p.stat === 'number') base += 'About ' + p.stat + '% usually spot the real one. ';
     var c = S.cats[p.cat];
     if(c && c.n) base += 'You are ' + c.right + '/' + c.n + ' on ' + p.cat + ' so far.';
     else base += 'First ' + p.cat + ' pair for you.';
