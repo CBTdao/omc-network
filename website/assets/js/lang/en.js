@@ -472,7 +472,10 @@ window.I18N.en = {
   "meta.title_calc": "GPU Cloud Cost Calculator — Omniverse Compute (OMC)",
   "nav.calc": "Calculator",
 
-  "nav.game": "Game",
+  "nav.game": "Real or AI",
+  "nav.eco": "Ecosystem",
+  "nav.forum": "Compute Forum",
+  "nav.top": "AI Top",
   "f.calculator": "GPU Cost Calculator",
   "f.compute": "AI Compute Station",
   "calc.badge": "Public list prices · no login required",

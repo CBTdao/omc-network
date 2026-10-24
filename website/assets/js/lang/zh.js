@@ -469,7 +469,10 @@ window.I18N.zh = {
   "meta.title_calc": "GPU 云端成本计算器 — Omniverse Compute (OMC)",
   "nav.calc": "计算器",
 
-  "nav.game": "小游戏",
+  "nav.game": "真图还是 AI",
+  "nav.eco": "生态",
+  "nav.forum": "算力论坛",
+  "nav.top": "AI 工具站",
   "f.calculator": "GPU 成本计算器",
   "f.compute": "AI 算力服务站",
   "calc.badge": "公开标价 · 无需登录",
