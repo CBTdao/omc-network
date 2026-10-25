@@ -182,5 +182,68 @@ window.__PUZZLES__ = [
     },
     "d": 1,
     "stat": 71
+  },
+  {
+    "id": "a9",
+    "cat": "ocean",
+    "real": {
+      "file": "assets/real/r9.jpg",
+      "webp": "assets/real/r9.jpg",
+      "title": "Drone view of sand coastline (Unsplash).jpg",
+      "artist": "Tommy Lisbin tlisbin",
+      "license": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File%3ADrone_view_of_sand_coastline_(Unsplash).jpg"
+    },
+    "ai": {
+      "file": "assets/ai/a9.svg",
+      "webp": "assets/ai/a9.svg",
+      "w": 800,
+      "h": 600,
+      "prompt": "code-drawn ocean scene"
+    },
+    "d": 2,
+    "stat": 62
+  },
+  {
+    "id": "a10",
+    "cat": "forest",
+    "real": {
+      "file": "assets/real/r10.jpg",
+      "webp": "assets/real/r10.jpg",
+      "title": "Sunlight through the trees 021-1.jpg",
+      "artist": "Gardenkitty",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File%3ASunlight_through_the_trees_021-1.jpg"
+    },
+    "ai": {
+      "file": "assets/ai/a10.svg",
+      "webp": "assets/ai/a10.svg",
+      "w": 800,
+      "h": 600,
+      "prompt": "code-drawn forest scene"
+    },
+    "d": 2,
+    "stat": 60
+  },
+  {
+    "id": "a11",
+    "cat": "flower",
+    "real": {
+      "file": "assets/real/r11.jpg",
+      "webp": "assets/real/r11.jpg",
+      "title": "Flower Macro 4 12 18 (253382759).jpeg",
+      "artist": "Paul Zucker",
+      "license": "CC BY 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File%3AFlower_Macro_4_12_18_(253382759).jpeg"
+    },
+    "ai": {
+      "file": "assets/ai/a11.svg",
+      "webp": "assets/ai/a11.svg",
+      "w": 800,
+      "h": 600,
+      "prompt": "code-drawn flower scene"
+    },
+    "d": 1,
+    "stat": 70
   }
 ];
