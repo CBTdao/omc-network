@@ -459,6 +459,10 @@ window.I18N.en = {
   "nw12.d": "Our own review found that the two “burn” paths only moved tokens to a dead address, so totalSupply() never fell — a weak mechanism doing a different job from the one we had documented. Slashing and the settlement fee now call burn() on the token, and the whole set was redeployed in a cascade (the market stores the staking address, so both moved together). Verified on-chain: one 6.0 tOMC slash cut total supply by exactly 1.2, its 20% burn share. New addresses are in the site footer and on the Testnet page.",
   "nw13.t": "Self-review published — with reproducible bytecode verification",
   "nw13.d": "The full security self-review is public: one High-severity defect (the refund path could not execute at all) was found and fixed, and the fix is deployed. Bytecode verification confirms the contracts running on testnet match the reviewed source, and property-based tests run 2,762 assertions against a real EVM. Being precise about what this is: automated testing plus a manual read-through by the team, not a third-party audit.",
+  "nw14.t": "DCF forum: the 12x water multiplier — 92% of a data center's water footprint sits at the power plant",
+  "nw14.d": "New on forum.omc.network: a deep dive showing US data centers used 66B liters on site in 2023 vs ~800B generating their power — a 12x multiplier that rewrites the closed-loop cooling debate. Read the full breakdown →",
+  "nw15.t": "AITop glossary: quantization — the bits-per-weight dial that decides if a 70B model fits your GPU",
+  "nw15.d": "New on top.omc.network: a plain-English glossary entry on quantization, the one formula (VRAM ≈ params × bytes/weight) every local-LLM buyer needs, and why Q4_K_M is the default. Read the glossary →",
 
   "f.about": "About & Contact",
   "f.privacy": "Privacy Policy",

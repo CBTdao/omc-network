@@ -121,5 +121,23 @@ window.OMC_NEWS = [
     d: "nw13.d",
     href: "https://github.com/CBTdao/omc-network/blob/main/SECURITY.md",
     external: true
+  },
+  {
+    id: "n14",
+    date: "2026-10-25",
+    kind: "eco",
+    t: "nw14.t",
+    d: "nw14.d",
+    href: "https://forum.omc.network/posts/water-footprint-power-plant-2026?utm_source=site&utm_medium=news",
+    external: true
+  },
+  {
+    id: "n15",
+    date: "2026-10-26",
+    kind: "eco",
+    t: "nw15.t",
+    d: "nw15.d",
+    href: "https://top.omc.network/glossary/quantization?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
