@@ -33,9 +33,41 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
+    },
+    {
+      "source": "/assets/models/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "game.omc.network"
+        }
+      ],
+      "destination": "/game",
+      "permanent": true
+    },
+    {
+      "source": "/barbarian-age",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/barbarian-age-play",
+      "destination": "/",
+      "permanent": true
     }
   ]
 }
