@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Omniverse Compute (OMC) — Whitepaper Deck v3.1</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #060b1a; }
+  body {
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #e8edf7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .slide {
+    width: 1280px; height: 720px;
+    padding: 62px 72px 54px;
+    background: radial-gradient(900px 520px at 88% -12%, rgba(43,107,243,.22), transparent 62%),
+                radial-gradient(700px 460px at -8% 108%, rgba(94,162,255,.10), transparent 60%),
+                #0a1128;
+    position: relative;
+    page-break-after: always;
+    break-after: page;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide:last-child { page-break-after: auto; }
+  .eyebrow {
+    font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+    color: #5ea2ff; font-weight: 700; margin-bottom: 10px;
+  }
+  h1 { font-size: 33px; line-height: 1.2; font-weight: 800; letter-spacing: -.01em; margin-bottom: 8px; }
+  h1.small { font-size: 26px; }
+  .lede { color: #93a0b8; font-size: 17px; line-height: 1.55; max-width: 1000px; }
+  .body { margin-top: 28px; flex: 0 0 auto; }
+  .foot {
+    position: absolute; left: 72px; right: 72px; bottom: 20px;
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: #6b7893; letter-spacing: .06em;
+  }
+  /* cover */
+  .cover { justify-content: center; }
+  .cover .mark {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+    color: #93a0b8; margin-bottom: 26px;
+  }
+  .cover .mark i { width: 9px; height: 9px; border-radius: 3px; background: #2b6bf3; display: inline-block; }
+  .cover h1 { font-size: 52px; line-height: 1.08; margin-bottom: 16px; }
+  .cover h2 { font-size: 21px; font-weight: 500; color: #93a0b8; margin-bottom: 34px; }
+  .cover .meta { font-size: 14px; color: #6b7893; line-height: 1.8; }
+  .cover .meta b { color: #e8edf7; font-weight: 600; }
+  /* cards */
+  .grid { display: grid; gap: 16px; }
+  .grid.c2 { grid-template-columns: 1fr 1fr; }
+  .grid.c3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.c4 { grid-template-columns: repeat(4, 1fr); }
+  .card {
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 14px; padding: 18px 20px;
+  }
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #e8edf7; }
+  .card p { font-size: 14.5px; line-height: 1.62; color: #93a0b8; }
+  .card .num { font-size: 11px; letter-spacing: .14em; color: #5ea2ff; font-weight: 700; margin-bottom: 6px; }
+  /* tables */
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th {
+    text-align: left; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: #6b7893; font-weight: 700; padding: 0 12px 9px; border-bottom: 1px solid rgba(255,255,255,.16);
+  }
+  td { padding: 11px 12px; border-bottom: 1px solid rgba(255,255,255,.07); color: #c3cddd; line-height: 1.45; }
+  td:first-child { color: #e8edf7; font-weight: 600; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:last-child td { border-bottom: none; }
+  tr.total td { border-top: 1px solid rgba(255,255,255,.16); font-weight: 700; color: #e8edf7; }
+  .up { color: #2fbf71; }
+  .warn { color: #f0a13c; }
+  .dim { color: #6b7893; }
+  .note {
+    margin-top: 18px; font-size: 13.5px; line-height: 1.62; color: #93a0b8;
+    border-left: 2px solid #2b6bf3; padding-left: 14px; max-width: 1060px;
+  }
+  .note b { color: #e8edf7; }
+  code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; color: #5ea2ff; }
+  .big { font-size: 40px; font-weight: 800; letter-spacing: -.02em; }
+  .kpi { font-size: 30px; font-weight: 800; letter-spacing: -.02em; color: #e8edf7; }
+  .kpi small { display: block; font-size: 12px; font-weight: 500; color: #6b7893; letter-spacing: 0; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide cover">
+  <div class="mark"><i></i> BNB Chain · BEP-20</div>
+  <h1>Omniverse Compute<br>(OMC)</h1>
+  <h2>Decentralized GPU computing network — inference, fine-tuning and batch rendering on hardware strangers own.</h2>
+  <div class="meta">
+    <b>Whitepaper Deck v3.1</b> · omc.network · October 2026<br>
+    Informational only — not an offer to sell or buy any token.
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>1 / 13</span></div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="eyebrow">Executive summary</div>
+  <h1>Three ideas behind OMC</h1>
+  <div class="body">
+    <div class="grid c3" style="margin-bottom:18px">
+      <div class="card">
+        <div class="num">01</div>
+        <h3>Honest scope</h3>
+        <p>Inference, single-node fine-tuning, batch rendering and other embarrassingly parallel jobs — not frontier-scale cluster training.</p>
+      </div>
+      <div class="card">
+        <div class="num">02</div>
+        <h3>Verification you can price</h3>
+        <p>A per-job policy: spot-check re-execution, optional full redundancy, TEE where available, staking and slashing. The buyer chooses the cost of certainty.</p>
+      </div>
+      <div class="card">
+        <div class="num">03</div>
+        <h3>Demand tied to usage</h3>
+        <p>Fees are paid per job: <b>50% burned, 30% to stakers, 20% to the treasury</b>. Emission is capped by trailing fee revenue, so supply growth is a function of demand.</p>
+      </div>
+    </div>
+    <table>
+      <tr><th>What an investor should be able to check</th><th>Where</th></tr>
+      <tr><td>Protocol fee and its split</td><td>8% at settlement · 50 / 30 / 20 — <code>contracts/params.json → fees</code></td></tr>
+      <tr><td>Emission ceiling and the gate that binds it</td><td><code>min(ceiling, k × 30-day fee revenue)</code> — <code>params.json → emission.revenueGate</code></td></tr>
+      <tr><td>Circulating supply at TGE</td><td>50,500,000 OMC · 5.05% — no team unlock at TGE</td></tr>
+      <tr><td>Cost to take part in the airdrop</td><td>0.01 BNB at claim, not refunded — published, not discovered</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>2 / 13</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="eyebrow">Problem</div>
+  <h1>Compute is scarce, expensive and centralized</h1>
+  <div class="body">
+    <div class="grid c2">
+      <div class="card"><h3>Demand</h3><p>AI developers face high hourly prices, regional quota limits and vendor lock-in. Studios face sharp render peaks they cannot size hardware for.</p></div>
+      <div class="card"><h3>Supply</h3><p>Consumer GPUs, small data-center idle capacity and post-PoW hardware sit underused — most of it for most of the day.</p></div>
+      <div class="card"><h3>The gap</h3><p>There is no widely trusted way for strangers to rent GPU time with enforceable guarantees about correctness, privacy and payment.</p></div>
+      <div class="card"><h3>The answer</h3><p>OMC matches a job to a staked node, holds the payment in escrow, verifies the result by policy, and pays only on settlement. The stake is what the buyer gets back if the result is wrong.</p></div>
+    </div>
+    <div class="note"><b>Why it is not just a marketplace.</b> A marketplace without staking is a forum with a wallet: the default is a dispute nobody can price. Every node posts a bond in USD terms, and slashing pays the wronged party, so a bad result has a cost that is known before the job is submitted.</div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>3 / 13</span></div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="eyebrow">Target users</div>
+  <h1>Who runs what on OMC</h1>
+  <div class="body">
+    <div class="grid c4">
+      <div class="card"><h3>AI startups &amp; developers</h3><p>Inference, LoRA/QLoRA fine-tuning, batch embeddings — lower cost, no quota waiting.</p></div>
+      <div class="card"><h3>Web3 &amp; DeAI projects</h3><p>Agent inference and batch workloads with crypto-native payment and no account.</p></div>
+      <div class="card"><h3>Rendering &amp; 3D studios</h3><p>Blender and UE offline rendering with per-job pricing and burst capacity.</p></div>
+      <div class="card"><h3>GPU owners &amp; small DCs</h3><p>Monetize idle hardware with earnings that depend on work actually delivered.</p></div>
+    </div>
+    <div class="note">The first three are the demand side and the last is supply. <b>A network that only has the fourth is a token with a dashboard</b>, which is why the fee split pays stakers only from settled volume.</div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>4 / 13</span></div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="eyebrow">Architecture</div>
+  <h1>Scheduling in two stages</h1>
+  <div class="body">
+    <div class="grid c2">
+      <div class="card"><h3>Stage 1 — hard filters</h3><p>VRAM, driver and CUDA/ROCm version, region, confidential-computing requirement, minimum stake and reputation. A node that cannot run the job is not a candidate.</p></div>
+      <div class="card"><h3>Stage 2 — weighted scoring</h3><p>Each metric becomes a percentile rank among eligible nodes. A weighted matching problem maximizes total score, and the final pick is drawn at random from the top-k.</p></div>
+    </div>
+    <table style="margin-top:20px">
+      <tr><th>Design choice</th><th>Why</th></tr>
+      <tr><td>Random pick from top-k, not the single best</td><td>A deterministic winner is a target for capture and a fixed job history for its owner.</td></tr>
+      <tr><td>Percentile ranks, not raw scores</td><td>One node with an unusual GPU cannot dominate every category.</td></tr>
+      <tr><td>Reputation is earned from settled jobs</td><td>It cannot be bought, and it is slashed with the stake.</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>5 / 13</span></div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="eyebrow">Verification and trust</div>
+  <h1>No single technique verifies every workload</h1>
+  <div class="body">
+    <table>
+      <tr><th>Mechanism</th><th>How it works</th><th class="n">Cost to requester</th></tr>
+      <tr><td>Spot-check re-execution</td><td>A random share of jobs is silently re-run on an independent node; a mismatch triggers slashing</td><td class="n">+5–10%</td></tr>
+      <tr><td>Full redundancy</td><td>The job runs on 2–3 independent nodes and outputs are compared</td><td class="n">2× – 3×</td></tr>
+      <tr><td>Confidential computing (TEE)</td><td>Hardware-protected execution with remote attestation, for inputs that cannot be re-run</td><td class="n">Tier-dependent</td></tr>
+      <tr><td>Stake and slashing</td><td>The floor under all of the above: a wrong answer costs the node its bond</td><td class="n">Included</td></tr>
+    </table>
+    <div class="note"><b>What this does not claim.</b> Deterministic proof of arbitrary GPU work is an open problem, and this deck does not say otherwise. The product is a priced probability of correctness, chosen per job — not a claim that every result is provably right.</div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>6 / 13</span></div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="eyebrow">Security and privacy</div>
+  <h1>Explicit about what cannot be guaranteed</h1>
+  <div class="body">
+    <div class="grid c3">
+      <div class="card"><h3>Isolation</h3><p>Hardened sandboxes — gVisor by default, Kata microVM tiers for sensitive workloads. No host access, no outbound network by default.</p></div>
+      <div class="card"><h3>Encryption</h3><p>Inputs, outputs and images encrypted in transit and at rest. Keys are released only after assignment.</p></div>
+      <div class="card"><h3>Three protection levels</h3><p><b>Standard</b>, <b>Protected</b> (ephemeral, wiped after the job) and <b>Confidential</b> (TEE-only nodes).</p></div>
+    </div>
+    <div class="note">On a node the operator physically controls, isolation is a mitigation, not a proof. That is why the protection level is the buyer's choice and is priced: a workload that cannot tolerate the residual risk should select Confidential and pay for it.</div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>7 / 13</span></div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="eyebrow">Economics</div>
+  <h1>Fee flows tied to real usage</h1>
+  <div class="body">
+    <div class="grid c2" style="align-items:start">
+      <div>
+        <table>
+          <tr><th>Flow</th><th class="n">Split of the 8% fee</th></tr>
+          <tr><td>Burn at settlement</td><td class="n">50% → 4.0% of GMV destroyed</td></tr>
+          <tr><td>Stakers, pro rata to stake</td><td class="n">30% → 2.4% of GMV</td></tr>
+          <tr><td>Treasury</td><td class="n">20% → 1.6% of GMV</td></tr>
+        </table>
+        <div class="note" style="margin-top:14px">Payments in OMC carry a <b>10% fee discount</b> (8% → 7.2%). Unstaking has a <b>14-day cooldown</b>: a bond that can leave in the same block as a bad job is not a bond.</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>Emission control</th><th>Rule</th></tr>
+          <tr><td>Daily emission</td><td><code>min(annualCeiling ÷ 365, k × trailing30dFeeRevenue ÷ 30)</code></td></tr>
+          <tr><td>k, year 1 → 6</td><td>3 · 2 · 1.5 · 1 · 0.75 · 0.5</td></tr>
+          <tr><td>Burn ÷ emission</td><td>17% → 25% → 33% → 50% → 67% → <b>100%</b></td></tr>
+        </table>
+        <div class="note" style="margin-top:14px">No revenue means no emission. The schedule is a ceiling that only binds when the network is earning, and the ratio of burn to emission is <b>independent of GMV and price</b> inside the gate.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>8 / 13</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="eyebrow">Token distribution</div>
+  <h1>1,000,000,000 OMC fixed supply (BEP-20)</h1>
+  <div class="body">
+    <table>
+      <tr><th>Category</th><th class="n">Share</th><th class="n">Amount</th><th>Vesting</th></tr>
+      <tr><td>Compute mining &amp; node rewards</td><td class="n">50%</td><td class="n">500,000,000</td><td>0% at TGE — 400M scheduled, 100M DAO reserve locked until 2037</td></tr>
+      <tr><td>Ecosystem &amp; grants</td><td class="n">15%</td><td class="n">150,000,000</td><td>5% at TGE, 6m lock, then 36m monthly</td></tr>
+      <tr><td>Institutional investors</td><td class="n">10%</td><td class="n">100,000,000</td><td>5% at TGE, 6m cliff, then 24m monthly</td></tr>
+      <tr><td>Team &amp; core contributors</td><td class="n">10%</td><td class="n">100,000,000</td><td>0% at TGE, 12m cliff, then 24m monthly</td></tr>
+      <tr><td>Private investors</td><td class="n">8%</td><td class="n">80,000,000</td><td>10% at TGE, 3m cliff, then 18m monthly</td></tr>
+      <tr><td>Treasury &amp; liquidity</td><td class="n">5%</td><td class="n">50,000,000</td><td>50% at TGE for DEX/CEX liquidity</td></tr>
+      <tr><td>Community airdrop</td><td class="n">2%</td><td class="n">20,000,000</td><td>25% at claim, 75% over 180 days · 500,000 entries × 40 OMC · 0.01 BNB claim fee</td></tr>
+      <tr class="total"><td>Circulating at TGE</td><td class="n">5.05%</td><td class="n">50,500,000</td><td>No team tokens. No node rewards.</td></tr>
+    </table>
+    <div class="note">The TGE float is 25M treasury liquidity + 5M airdrop (25% of the pool, the rest vests) + 8M private + 7.5M ecosystem + 5M institutional. Counting only a quarter of the airdrop on day one is what keeps the float under 5.05% — a fully liquid airdrop would have put 20M more tokens on the market on the same day as the listing.</div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>9 / 13</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="eyebrow">Emission</div>
+  <h1>A ceiling, not an entitlement</h1>
+  <div class="body">
+    <table>
+      <tr><th>Year</th><th class="n">1</th><th class="n">2</th><th class="n">3</th><th class="n">4</th><th class="n">5</th><th class="n">6–10</th></tr>
+      <tr><td>Annual ceiling (OMC)</td><td class="n">10M</td><td class="n">20M</td><td class="n">30M</td><td class="n">40M</td><td class="n">50M</td><td class="n">50M</td></tr>
+      <tr><td>Gate multiplier k</td><td class="n">3</td><td class="n">2</td><td class="n">1.5</td><td class="n">1</td><td class="n">0.75</td><td class="n">0.5</td></tr>
+      <tr><td>Burn ÷ emission at the gate</td><td class="n">17%</td><td class="n">25%</td><td class="n">33%</td><td class="n">50%</td><td class="n">67%</td><td class="n">100%</td></tr>
+    </table>
+    <div class="grid c3" style="margin-top:20px">
+      <div class="card"><div class="kpi">400M<small>scheduled over 10 years, linear by day</small></div></div>
+      <div class="card"><div class="kpi">100M<small>DAO reserve, unmintable before 2037-01-01</small></div></div>
+      <div class="card"><div class="kpi">100%<small>burn ÷ emission from year 6 — supply stops growing</small></div></div>
+    </div>
+    <div class="note">Scheduling the whole 500M pool would have forced late-year ceilings up to 60M purely to make the arithmetic balance. The reserve is a governance decision in 2037, not a line in a spreadsheet.</div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>10 / 13</span></div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="eyebrow">Staking and slashing</div>
+  <h1>Five hardware tiers, priced in USD</h1>
+  <div class="body">
+    <div class="grid c2" style="align-items:start">
+      <div>
+        <table>
+          <tr><th>Tier</th><th>Hardware</th><th class="n">Min. stake</th></tr>
+          <tr><td>1</td><td>Consumer GPU, up to 24 GB (3090 / 4090)</td><td class="n">$250</td></tr>
+          <tr><td>2</td><td>Workstation GPU (A6000, L40S)</td><td class="n">$1,000</td></tr>
+          <tr><td>3</td><td>Data-center GPU, 80 GB (A100 / H100)</td><td class="n">$5,000</td></tr>
+          <tr><td>4</td><td>Multi-GPU node (2–8 accelerators)</td><td class="n">$15,000</td></tr>
+          <tr><td>5</td><td>Cluster-scale deployment</td><td class="n">$50,000</td></tr>
+        </table>
+        <div class="note" style="margin-top:14px">The bond is quoted in USD and converted at stake time, so a falling token price does not quietly reduce the collateral behind a job.</div>
+      </div>
+      <div>
+        <table>
+          <tr><th>Offence</th><th class="n">Penalty</th></tr>
+          <tr><td>Job timeout</td><td class="n">2%</td></tr>
+          <tr><td>Offline during a job</td><td class="n">5%</td></tr>
+          <tr><td>Incorrect output</td><td class="n">30%</td></tr>
+          <tr><td>Proven fraud</td><td class="n">100%</td></tr>
+        </table>
+        <div class="note" style="margin-top:14px">Slashing is split <b>50% to the wronged requester, 30% to the treasury, 20% burned</b>. Unstaking has a 14-day cooldown.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>11 / 13</span></div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <div class="eyebrow">Governance and roadmap</div>
+  <h1>From team-led to community-led</h1>
+  <div class="body">
+    <div class="grid c3" style="margin-bottom:18px">
+      <div class="card"><h3>Launch</h3><p>4-of-7 multisig of core contributors with a 3-day timelock. Signers not disclosed at this stage.</p></div>
+      <div class="card"><h3>Transition</h3><p>Holder votes on parameters and treasury spending: 100,000 OMC threshold, 10% quorum, 7-day voting, 2-day delay.</p></div>
+      <div class="card"><h3>Full DAO</h3><p>2027 or later. The multisig is removed or limited to emergency actions.</p></div>
+    </div>
+    <table>
+      <tr><th>Phase</th><th>Target</th><th>Scope</th></tr>
+      <tr><td>Phase 1</td><td>Q4 2026 · in progress</td><td>Testnet: BEP-20 tOMC, staking, compute market, node client, airdrop campaign</td></tr>
+      <tr><td>Phase 2</td><td>1 January 2027</td><td>Mainnet, TGE, staking and the airdrop claim window open on the same date</td></tr>
+      <tr><td>Phase 3</td><td>2027 Q4 and later</td><td>TEE production, ZK research, full DAO; the L2 path stays a plan until it has a deployment</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>12 / 13</span></div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <div class="eyebrow">Learn more</div>
+  <h1>Where to verify everything</h1>
+  <div class="body">
+    <table>
+      <tr><th>Resource</th><th>What it is</th></tr>
+      <tr><td>omc.network</td><td>Whitepaper v3.0, tokenomics, testnet, airdrop campaign</td></tr>
+      <tr><td>forum.omc.network</td><td>DCF — GPU market research, a 12-network comparison tracker, the run-a-node guide</td></tr>
+      <tr><td>top.omc.network</td><td>AITop — tool comparisons and rankings for buyers of compute</td></tr>
+      <tr><td>github.com/CBTdao/omc-network</td><td>Node client, contracts, parameters, and the models that produce every number in this deck</td></tr>
+      <tr><td>support@omc.network · security@omc.network</td><td>Questions, and vulnerabilities</td></tr>
+    </table>
+    <div class="note">Every figure here is generated by <code>models/economics.mjs</code> and <code>models/claim.mjs</code> from <code>contracts/params.json</code>, and checked by the tests in the repository. If a number in this deck disagrees with the repository, the repository is right — that is a build error, not a version difference.</div>
+  </div>
+  <div class="foot"><span>OMC — Whitepaper Deck v3.1</span><span>13 / 13</span></div>
+</section>
+
+</body>
+</html>

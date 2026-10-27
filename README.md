@@ -103,7 +103,7 @@ Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20
 | Team & Core Contributors | 10% | 100,000,000 | 0% at TGE, 12m cliff, then 24m monthly linear |
 | Private Investors | 8% | 80,000,000 | 10% at TGE, 3m cliff, then 18m monthly linear |
 | Treasury & Liquidity | 5% | 50,000,000 | 50% at TGE for DEX/CEX liquidity |
-| Community Airdrop | 2% | 20,000,000 | 25% at claim + 75% linear over 180 days — no purchase required |
+| Community Airdrop | 2% | 20,000,000 | 25% at claim + 75% linear over 180 days — 0.01 BNB claim fee, not refunded |
 | **Total** | **100%** | **1,000,000,000** | Circulating at TGE ≈ 50,500,000 OMC (5.05%) |
 
 ### Deflationary Mechanics
