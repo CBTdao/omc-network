@@ -18,6 +18,8 @@ import { createDb } from "./helpers.mjs";
 const require = createRequire(import.meta.url);
 const msg = require("../../website/api/_lib/entry-message.js");
 const store = require("../../website/api/_lib/store.js");
+const PARAMS = require("../../contracts/params.json");
+const PER_ENTRY = PARAMS.airdrop.perEntry;
 
 const DAY1 = new Date("2026-10-27T04:00:00Z"); // 12:00 UTC+8 on 2026-10-27
 const DAY2 = new Date("2026-10-28T04:00:00Z");
@@ -100,7 +102,7 @@ test("first entry is recorded, a second one on the same day is refused", async (
   assert.equal(first.base, 1);
   assert.equal(first.today, 1);
   assert.equal(first.total, 1);
-  assert.equal(first.amount, 20);
+  assert.equal(first.amount, PER_ENTRY);
 
   const again = await store.registerEntry(db, {
     address: alice.address, message, signature, now: DAY1,
@@ -133,7 +135,7 @@ test("one entry per day across days, capped at five total", async () => {
   });
   assert.equal(sixth.code, "LIMIT_TOTAL");
   assert.equal(sixth.base, 5);
-  assert.equal(sixth.amount, 100); // 5 × 20 — the tier-2 staking minimum
+  assert.equal(sixth.amount, 5 * PER_ENTRY);
   await db.close();
 });
 
@@ -159,7 +161,7 @@ test("an invite credits the inviter once, and only for a first entry", async () 
   assert.equal(aStatus.base, 1);
   assert.equal(aStatus.referral, 1);
   assert.equal(aStatus.total, 2);
-  assert.equal(aStatus.amount, 40);
+  assert.equal(aStatus.amount, 2 * PER_ENTRY);
 
   // Bob joining again later must not re-credit the same invite.
   const day2 = msg.dayKeyUTC8(DAY2);

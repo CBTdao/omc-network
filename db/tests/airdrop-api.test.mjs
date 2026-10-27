@@ -17,9 +17,14 @@ const require = createRequire(import.meta.url);
 
 const msgLib = require("../../website/api/_lib/entry-message.js");
 const dbLib = require("../../website/api/_lib/db.js");
+const store = require("../../website/api/_lib/store.js");
 const migrateLib = require("../../website/api/_lib/migrate.js");
 const entryHandler = require("../../website/api/airdrop/entry.js");
 const summaryHandler = require("../../website/api/airdrop/summary.js");
+/* Derived, not hardcoded: the API caps and the published parameters must agree,
+   and a literal in a test is exactly how they stop agreeing. */
+const PARAMS = require("../../contracts/params.json");
+const PER_ENTRY = PARAMS.airdrop.perEntry;
 
 async function withDb() {
   const db = await createDb();
@@ -61,7 +66,7 @@ test("a valid entry is accepted and shows up in the summary", async () => {
   assert.equal(r.status, 200);
   assert.equal(r.body.ok, true);
   assert.equal(r.body.entries.total, 1);
-  assert.equal(r.body.entries.amount, 20);
+  assert.equal(r.body.entries.amount, PER_ENTRY);
 
   const s = await call(summaryHandler, {
     method: "GET",
@@ -133,7 +138,7 @@ test("the service reports its caps when called without an address", async () => 
   assert.equal(r.body.ok, true);
   assert.equal(r.body.caps.base, 5);
   assert.equal(r.body.caps.referral, 5);
-  assert.equal(r.body.caps.perEntry, 20);
+  assert.equal(r.body.caps.perEntry, PER_ENTRY);
   await db.close();
 });
 
@@ -146,4 +151,19 @@ test("with no database configured the API refuses instead of pretending", async 
   assert.equal(r.status, 503);
   assert.equal(r.body.code, "UNAVAILABLE");
   if (saved) process.env.DATABASE_URL = saved;
+});
+
+test("the API caps and contracts/params.json cannot drift apart", () => {
+  /* The caps live in two places for one reason: a Vercel function cannot read
+     contracts/params.json at runtime. That is acceptable only while something
+     fails when they disagree — this. */
+  assert.deepEqual(store.CAPS, {
+    base: PARAMS.airdrop.baseEntries,
+    referral: PARAMS.airdrop.referralEntries,
+    perEntry: PARAMS.airdrop.perEntry,
+  });
+  assert.equal(PARAMS.airdrop.baseEntries * PARAMS.airdrop.perEntry, 200,
+    "a base claim is 200 OMC — the number the 0.01 BNB fee is sized against");
+  assert.equal(PARAMS.airdrop.claimCost.mode, "fee");
+  assert.equal(PARAMS.airdrop.claimCost.refundable, false);
 });

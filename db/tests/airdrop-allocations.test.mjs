@@ -16,6 +16,12 @@ import { createDb } from "./helpers.mjs";
 const require = createRequire(import.meta.url);
 const msg = require("../../website/api/_lib/entry-message.js");
 const store = require("../../website/api/_lib/store.js");
+/* Everything below derives from the published parameters, so changing
+   perEntry in contracts/params.json fails this suite until the SQL, the
+   API and the tests agree — the class of bug that made these numbers rot
+   the first time. */
+const PARAMS = require("../../contracts/params.json");
+const PER_ENTRY = PARAMS.airdrop.perEntry;
 
 const DAY1 = new Date("2026-10-27T04:00:00Z");
 const DAY2 = new Date("2026-10-28T04:00:00Z");
@@ -45,7 +51,13 @@ async function allocation(db, address) {
 
 test("002 applies on top of 001 and creates its objects", async () => {
   const db = await createDb();
-  assert.deepEqual(db.appliedMigrations, ["001_airdrop_entries.sql", "002_airdrop_allocations.sql"]);
+  /* Whole list rather than a subset: a new migration that fails to run has to
+     break a test, not slip through. */
+  assert.deepEqual(db.appliedMigrations, [
+    "001_airdrop_entries.sql",
+    "002_airdrop_allocations.sql",
+    "003_airdrop_per_entry_40.sql",
+  ]);
   const t = await db.query("select to_regclass('public.airdrop_allocations') as t, to_regclass('public.airdrop_totals') as v");
   assert.equal(t.rows[0].t, "airdrop_allocations");
   assert.equal(t.rows[0].v, "airdrop_totals");
@@ -58,17 +70,17 @@ test("a registration writes a credit row with the split already resolved", async
 
   const r = await register(db, w, DAY1);
   assert.equal(r.code, "OK");
-  assert.equal(r.allocation.total, 20);
+  assert.equal(r.allocation.total, PER_ENTRY);
   assert.equal(r.allocation.baseEntries, 1);
 
   await register(db, w, DAY2);
   const row = await allocation(db, w.address);
   assert.equal(Number(row.base_entries), 2);
   assert.equal(Number(row.referral_entries), 0);
-  assert.equal(Number(row.base_amount), 40);
+  assert.equal(Number(row.base_amount), 2 * PER_ENTRY);
   assert.equal(Number(row.bonus_amount), 0);
-  assert.equal(Number(row.total_amount), 40);
-  assert.equal(Number(row.per_entry), 20);
+  assert.equal(Number(row.total_amount), 2 * PER_ENTRY);
+  assert.equal(Number(row.per_entry), PER_ENTRY);
   assert.equal(row.status, "accruing");
   assert.equal(row.frozen_at, null);
   await db.close();
@@ -86,12 +98,12 @@ test("the inviter's credit row picks up the bonus, the invitee's does not", asyn
   const a = await allocation(db, alice.address);
   assert.equal(Number(a.base_entries), 1, "alice's own entry");
   assert.equal(Number(a.referral_entries), 1, "plus the invite");
-  assert.equal(Number(a.total_amount), 40);
+  assert.equal(Number(a.total_amount), 2 * PER_ENTRY);
 
   const b = await allocation(db, bob.address);
   assert.equal(Number(b.base_entries), 1);
   assert.equal(Number(b.referral_entries), 0, "being invited pays nothing by itself");
-  assert.equal(Number(b.total_amount), 20);
+  assert.equal(Number(b.total_amount), PER_ENTRY);
   await db.close();
 });
 
@@ -148,7 +160,7 @@ test("freezing closes the books, and later entries do not move the number", asyn
   const r = await register(db, w, DAY2);
   assert.equal(r.code, "OK");
   assert.equal(r.allocation.status, "frozen");
-  assert.equal(r.allocation.total, 20, "the frozen amount is what the claim will pay");
+  assert.equal(r.allocation.total, PER_ENTRY, "the frozen amount is what the claim will pay");
 
   const after = await allocation(db, w.address);
   assert.equal(Number(after.total_amount), Number(before.total_amount));
@@ -173,10 +185,10 @@ test("the public totals view reports wallets, entries and OMC owed", async () =>
   const t = rows[0];
   assert.equal(Number(t.wallets), 2);
   // Alice: two own entries + one referral credit. Bob: one own entry. The
-  // referral credit is money owed, so it counts here — 4 rows, 80 OMC, not the
-  // three signed entries that produced them.
+  // referral credit is money owed, so it counts here — 4 rows, not the three
+  // signed entries that produced them.
   assert.equal(Number(t.entries), 4);
-  assert.equal(Number(t.amount), 80);
+  assert.equal(Number(t.amount), 4 * PER_ENTRY);
   assert.equal(t.is_frozen, false);
   await db.close();
 });
@@ -200,6 +212,6 @@ test("status carries the allocation, so the page can show what is owed", async (
   const s = await store.getStatus(db, w.address, DAY3);
   assert.ok(s.allocation, "allocation should be present once 002 is applied");
   assert.equal(s.allocation.totalEntries, 3);
-  assert.equal(s.allocation.total, 60);
+  assert.equal(s.allocation.total, 3 * PER_ENTRY);
   await db.close();
 });

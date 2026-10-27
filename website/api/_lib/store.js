@@ -8,10 +8,14 @@
 
 const { dayKeyUTC8, normalizeAddress } = require("./entry-message");
 
+/* Must match contracts/params.json → airdrop.{baseEntries,referralEntries,perEntry}.
+   These cannot be read from that file at runtime: a Vercel function cannot reach
+   outside its own deployment root. db/tests/airdrop-api.test.mjs asserts the two
+   stay equal, which is the only reason a literal is acceptable here. */
 const CAPS = {
   base: 5,        // own entries per wallet, lifetime
   referral: 5,    // bonus entries an inviter can earn, lifetime
-  perEntry: 20,   // OMC per entry
+  perEntry: 40,   // OMC per entry — sized against the 0.01 BNB claim fee
 };
 
 /* A pg Pool hands out dedicated clients; PGlite is a single connection. Both

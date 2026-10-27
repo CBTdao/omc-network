@@ -126,11 +126,11 @@ function showToast(msg) {
 /* ============================================================
    AIRDROP — participate & accumulate (frontend demo)
    Rules:
-   - Pool: 20,000,000 OMC = 1,000,000 entries × 20 OMC
-   - Per wallet: base 5 entries (lifetime) = 100 OMC, which is exactly the
-     tier-2 staking minimum, so a maxed-out airdrop reaches tier 2
+   - Pool: 20,000,000 OMC = 500,000 entries × 40 OMC
+   - Per wallet: base 5 entries (lifetime) = 200 OMC; with referrals the cap
+     is 10 entries = 400 OMC
    - Referral bonus: each friend who joins through your link adds +1 entry,
-     up to +5, so the cap can reach 10 entries = 200 OMC. The bonus is
+     up to +5, so the cap can reach 10 entries = 400 OMC. The bonus is
      read from window.OMCReferral (assets/js/referral.js); the pool itself
      is unchanged — referral entries only redistribute slots inside it.
    - Daily cap: 1 entry / calendar day (resets 00:00 UTC+8)
@@ -139,11 +139,11 @@ function showToast(msg) {
    - During the campaign: page only DISPLAYS accumulated OMC
    - Claim window OPENS AT TGE (mainnet launch). The whitepaper releases
      25% at claim and 75% linearly over 180 days, in a single claim on this
-     page; the claim contract escrows a 0.01 BNB deposit refundable after
-     30 days (see ECONOMICS.md §5 and models/claim.mjs).
+     page; the claim transaction carries a 0.01 BNB fee the treasury keeps
+     (see ECONOMICS.md §5 and models/claim.mjs).
    ============================================================ */
 const AIRDROP_KEY = "omc_airdrop_v1";
-const PER_ENTRY = 20;                                   // OMC per entry
+const PER_ENTRY = 40;                                   // OMC per entry
 const MAX_TOTAL = 5;                                    // base per wallet, lifetime
 const MAX_DAILY = 1;                                    // per UTC+8 calendar day
 /* ============================================================
@@ -393,7 +393,7 @@ if (connectBtn) {
 /* wallet.js owns the session and broadcasts every change */
 document.addEventListener("omc:wallet", renderAirdrop);
 
-/* ---------- Participate: +20 OMC (open now — no calendar gate) ---------- */
+/* ---------- Participate: +40 OMC (open now — no calendar gate) ---------- */
 const ERR_KEY = {
   LIMIT_DAILY: "js.err_daily",
   LIMIT_TOTAL: "js.err_total",

@@ -10,7 +10,8 @@ the GMV paths are scenarios, and running the model prints the same tables.
 ```bash
 node models/economics.mjs                    # both designs, three scenarios
 node models/economics.mjs --breakeven        # GMV needed for net-zero, by price
-node models/claim.mjs                        # airdrop claim cost, three modes
+node models/claim.mjs                        # claim fee: ratio, revenue, sybil cost
+node models/claim.mjs --revenue              # what 0.01 BNB raises, by claimer count
 node models/claim.mjs --sybil                # what a sybil farm has to fund
 ```
 
@@ -178,67 +179,113 @@ the remaining ones are the honest kind: does this team ship, and will anyone pay
 
 ## 5. Airdrop claim: what 0.01 BNB actually costs
 
-The campaign charges nothing to participate. The open question is what a wallet
-pays to **claim**, and the answer is a parameter, not a detail:
-[`models/claim.mjs`](models/claim.mjs) prices the three ways of placing that cost
-at any BNB or OMC price.
+Registering an entry is free — a signature, not a transaction. **Claiming is not.**
+The claim transaction carries a **0.01 BNB fee that the treasury keeps**, split 60%
+to ecosystem development and 40% to team operations. At the BNB reference of **$742**
+(27 Oct 2026) that is **$7.42 per wallet**, and unlike a deposit it is spent.
+
+There are two reasons for it, and only one of them is about sybils:
+
+1. **Funding.** There is no private round. Audit, testnet incentives, RPC and indexer
+   costs, the node client, the sub-sites and the people building them all cost money,
+   and the fee is the revenue line that pays for them before the compute market has
+   any volume.
+2. **Filtering.** A free claim is farmed by wallets that will never run a GPU. Money
+   that does not come back is a different decision from money that does.
+
+`models/claim.mjs` prices the whole thing, including the two designs that were
+rejected, so the choice is a parameter and not a rewrite:
 
 ```bash
-node models/claim.mjs                 # all three modes, five reference prices
-node models/claim.mjs --sybil         # cost of farming the pool, by farm size
-node models/claim.mjs --mode fee --bnb 900
+node models/claim.mjs              # shipped design: ratio, revenue, sybil cost
+node models/claim.mjs --revenue    # what the fee raises, by claimer count
+node models/claim.mjs --sybil      # cost of a farm, and where it turns profitable
+node models/claim.mjs --all        # fee / deposit / gas-only side by side
 ```
 
-At a BNB reference of **$742** (27 Oct 2026), 0.01 BNB is **$7.42**. Against a
-100 OMC allocation that is not a rounding error:
+### 5.1 A fee is a distribution price, so the allocation has to carry it
 
-| Mode | Breakeven OMC price | Cost as % of value @ $0.10 | Protocol revenue per claim | Cash a 100k-wallet farm must find |
-|---|---:|---:|---:|---:|
-| Gas only (~0.0004 BNB) | $0.0030 | 3% | $0.00 | $30k |
-| Refundable 0.01 BNB deposit | $0.0030 | 3% | $0.00 | $742k locked 30 days |
-| 0.01 BNB fee, kept | **$0.0772** | **77%** | $7.42 | $772k |
+This is the part that had to change with the fee. `fee ÷ allocation` is the price at
+which a claim stops making sense, and it is fixed by `perEntry` rather than by the fee:
 
-Net value to a claimant of 100 OMC, after the claim:
+| perEntry | Base claim | Pool slots | Fee ÷ claim @ $0.05 | Breakeven OMC price |
+|---:|---:|---:|---:|---:|
+| 20 OMC | 100 OMC | 1,000,000 | **148%** | $0.0742 |
+| **40 OMC** | **200 OMC** | **500,000** | **74%** | **$0.0371** |
+| 50 OMC | 250 OMC | 400,000 | 59% | $0.0297 |
+| 100 OMC | 500 OMC | 200,000 | 30% | $0.0148 |
 
-| Mode | $0.02 | $0.05 | $0.075 | $0.10 | $0.20 |
-|---|---:|---:|---:|---:|---:|
-| Gas only | $1.70 | $4.70 | $7.20 | $9.70 | $19.70 |
-| Refundable deposit | $1.70 | $4.70 | $7.20 | $9.70 | $19.70 |
-| 0.01 BNB fee | **−$5.72** | **−$2.72** | −$0.22 | $2.28 | $12.28 |
+At 20 OMC per entry a base claim was 100 OMC — worth $5.00 at a $0.05 listing against
+a $7.72 charge. The campaign would have reported a successful claim window while
+nobody claimed. 40 OMC per entry is the point where the pool still covers 100,000
+claimers, the honest ambition ceiling for a project with no product yet, and the fee
+is 74% of a base claim rather than 148%.
 
-### The problem with a fee
+The trade-off is revenue, and it should be stated rather than discovered: **one fee
+per claim means bigger allocations raise less.** At 40 OMC the pool can produce at
+most 1,000 BNB ($742k) if every slot is claimed; at 20 OMC it was 2,000 BNB. That is
+the price of a claim people actually make.
 
-A per-claim charge is a **strike price on the airdrop**. Below $0.0772 the rational
-move is not to claim, and no amount of campaign spending changes that. Two
-consequences follow, and both are worse than the lost revenue:
+### 5.2 What it raises
 
-1. **It is a sale at a price nobody agreed to.** $7.42 for 100 OMC is a $0.074
-   token; if the token opens at $0.02–0.05, the project has sold its community
-   allocation at a 40–70% premium to the market. That is the characterisation that
-   turns an airdrop into an unregistered offering, and booking the proceeds as
-   revenue makes it harder to argue otherwise.
-2. **It inverts the sybil incentive.** The fee mode is the only mode where a sybil
-   farm is a *revenue event*: 100,000 wallets pay $772k and the pool is drained by
-   the one participant the filter was supposed to stop.
+| Claimants | Fee raised (BNB) | Fee raised (USD) | Ecosystem 60% | Team 40% | runway @ $15k/mo |
+|---:|---:|---:|---:|---:|---:|
+| 5,000 | 50 | $37.1k | $22.3k | $14.8k | 2.5 mo |
+| 10,000 | 100 | $74.2k | $44.5k | $29.7k | 4.9 mo |
+| 25,000 | 250 | $185.5k | $111.3k | $74.2k | 12.4 mo |
+| 50,000 | 500 | $371k | $222.6k | $148.4k | 24.7 mo |
+| 100,000 | 1,000 | $742k | $445.2k | $296.8k | 49.5 mo |
 
-### What the deposit keeps
+The last row is also the ceiling, not a target: 500,000 entries ÷ 5 per base claim is
+100,000 claim transactions, so the airdrop cannot raise more than **1,000 BNB**
+however popular it becomes. It funds a build; it does not fund a company. Everything
+past that has to come from the compute margin, which is why §1.2's revenue gate
+matters more than the fee does.
 
-Escrowing 0.01 BNB and returning it in full after 30 days preserves the number
-that made the charge attractive — **100,000 wallets must lock $742k for a month**
-— while leaving net value at gas-only at every price, because the escrow comes
-back. There is no floor, so there is no non-claiming region, so the campaign still
-distributes tokens.
+### 5.3 The sybil question, answered in dollars
 
-It is also the only version that survives scrutiny: the refund is unconditional,
-no committee decides retroactively who was a sybil, and the balance is carried as
-a liability rather than income. A discretionary forfeiture rule would be both
-unenforceable and the exact mechanism used by the "pay gas to claim" scams the
-airdrop page warns about.
+| Wallets | Sunk cost per wallet | Total burned | Pool consumed at the cap |
+|---:|---:|---:|---:|
+| 1,000 | $7.72 | **$7.7k** | 2% |
+| 10,000 | $7.72 | **$77.2k** | 20% |
+| 50,000 | $7.72 | **$385.8k** | 100% |
+| 100,000 | $7.72 | **$771.7k** | 200% |
 
-`params.json → airdrop.claimCost.mode` is set to `refundable-deposit` for those
-reasons. Switching to `fee` is a one-word change and `models/claim.test.mjs`
-will keep reporting the floor it creates — the model is deliberately not allowed
-to hide it.
+Above **$0.0193/OMC** — the fee spread over the 400 OMC a wallet can hold — farming
+pays for itself, and the fee stops being a wall. That is the design, not a leak: a
+farm that pays the toll is revenue, and the pool is never drained for free either
+way. It is strictly stronger than the refundable deposit it replaced, because
+recoverable capital is a timing cost a funded farm can rotate, while spent capital is
+a budget.
+
+### 5.4 Two things this fee is, that the docs have to say out loud
+
+**It is a sale of tokens for consideration.** $7.42 for 200 OMC is $0.037 per token;
+the cap allocation is $0.019. Whether it is called a fee or a price, a regulator and
+an exchange will both characterise it as tokens issued against payment, and booking
+the proceeds as revenue makes that harder to argue with. That is why nothing in the
+repository or on the site says the airdrop is "100% free" any more, and why the
+distribution price is published in `params.json → airdrop.claimCost.priceAnchor`
+instead of being left for a reader to work out.
+
+**It has to be disclosed before a wallet signs, not at the moment it claims.** The
+rule sits on the airdrop page next to the balance, in both languages, with the split
+and the amount. An undisclosed charge on a free-looking page is the pattern the page's
+own anti-scam notice warns about.
+
+### 5.5 What the claim contract has to enforce
+
+1. `0.01 BNB` transferred to the treasury address in the claim transaction, reverting
+   if the value is short — no "pay what you like" path.
+2. Allocation paid **25% at claim, 75% linear over 180 days** from the claim instant.
+3. Merkle root built from `airdrop_allocations` after `freeze_airdrop_allocations()`,
+   so the amount a claimant is owed cannot move after 2027-01-01.
+4. No owner function that can raise the fee for a claim already in flight; the fee is
+   read at claim time from a parameter that is bounded in code.
+
+`params.json → airdrop.claimCost` holds the shipped values; the two rejected designs
+(`refundable-deposit`, `gas-only`) remain in `models/claim.mjs` because the next
+person to reopen this question should have the arithmetic rather than the argument.
 
 ## 6. Implementation checklist
 
@@ -265,10 +312,11 @@ to hide it.
 Airdrop claim — three changes, all in the claim contract rather than in the caps:
 
 - 25% immediate, 75% linear over 180 days.
-- A `claim()` that takes `msg.value == depositBnb` (0.01 BNB) and records it as an
-  escrow, plus an unconditional `withdrawDeposit()` after 30 days. The escrow is a
-  liability: it must never be spendable by the treasury, and the balance must be
-  readable so the disclosure is checkable on chain.
+- A `claim()` that requires `msg.value == claimFeeBnb` (0.01 BNB) plus gas and
+  forwards the fee to the treasury in the same transaction, reverting if it is short.
+  There is no refund path, so there is no escrow balance to argue about — the fee is
+  income on receipt, and the treasury split (60/40) is a transfer, not an accounting
+  entry anyone has to trust.
 - A Merkle root published before the window opens, so the allocation is auditable
   independently of this repository.
 

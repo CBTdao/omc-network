@@ -222,31 +222,46 @@ Step-by-step walkthrough: [Run a GPU node on the testnet](https://forum.omc.netw
 
 ## 🎁 Airdrop
 
-**2% of total supply (20,000,000 OMC) reserved for the community — 1,000,000 entries × 20 OMC each.**
+**2% of total supply (20,000,000 OMC) reserved for the community — 500,000 entries × 40 OMC each.**
 
-> ⚠️ **There is nothing to buy and nothing to send us.** Participation is free, and
-> we will **never** ask for your seed phrase or private key. At claim time only, and
-> inside the claim contract, a **0.01 BNB deposit** is escrowed and returned in full
-> after 30 days — any message that asks you to send BNB to a wallet address "for gas"
-> is not us. Only trust links published here and on our verified social accounts.
+> ⚠️ **Registering is free. Claiming costs 0.01 BNB, and it is not refunded.**
+> We will **never** ask for your seed phrase or private key. That 0.01 BNB is paid
+> inside the claim transaction and goes to the treasury; any message asking you to
+> send BNB to a wallet address "for gas" is not us. Only trust links published here
+> and on our verified social accounts.
 
 | Rule | Detail |
 |---|---|
-| Per entry | **20 OMC** |
-| Per wallet | up to **10 entries** |
+| Per entry | **40 OMC** |
+| Per wallet | up to **10 entries = 400 OMC**; a base claim is **5 entries = 200 OMC** |
 | Daily limit | **1 entry / calendar day** (resets 00:00 UTC+8) |
-| Cost to participate | **Zero.** Registering an entry is a `personal_sign` challenge — no gas, no transaction, no payment |
-| Cost to claim | One BSC transaction. A **0.01 BNB deposit** is escrowed by the claim contract and **returned in full after 30 days** — it is not a fee and the treasury cannot spend it. Network gas (~0.0004 BNB) is not refundable |
-| Withdrawal | accumulated amount is **displayed** during the airdrop; claimable in **one claim** after the airdrop ends — **25% immediately, 75% linear over 180 days** |
+| Cost to register | **Zero.** Registering an entry is a `personal_sign` challenge — no gas, no transaction, no payment |
+| Cost to claim | **0.01 BNB, kept** (about $7.42 at $742/BNB) paid to the treasury in the claim transaction, plus network gas (~0.0004 BNB). Split **60% ecosystem development / 40% team operations** |
+| Withdrawal | accumulated amount is **displayed** during the airdrop; claimed in **one transaction** after the airdrop ends — **25% immediately, 75% linear over 180 days** |
 
-Why a refundable deposit rather than a fee: 0.01 BNB is $7.42 at the BNB reference
-price, and the maximum allocation is 100 OMC. A fee of that size would put a floor
-of **$0.0772** under the token — below it, claiming costs more than it pays, and a
-rational holder simply does not claim. It also makes a sybil farm a revenue event.
-The deposit keeps the barrier a farm has to fund ($742k for 100,000 wallets, locked
-30 days) while leaving the claimant's net value at gross-minus-gas at any price.
-Full arithmetic, including the case against a fee: [`ECONOMICS.md` §5](ECONOMICS.md#5-airdrop-claim-what-001-bnb-actually-costs),
-reproducible with `node models/claim.mjs`.
+Why the claim is not free — two reasons, and they are the whole argument:
+
+1. **It is the funding path, because there is no private round.** 60% of the fee goes
+   to development (audits, testnet incentives, RPC and indexer costs, the node client,
+   the sub-sites) and 40% to team operations. At 25,000 claimers that is **$185.5k**;
+   at 50,000, **$371k**. The pool is the ceiling: 500,000 entries ÷ 5 per base claim
+   is 100,000 claims, so the airdrop can raise at most **1,000 BNB ($742k)** — enough
+   to build, not enough to run a company, which is why the emission is revenue-gated.
+2. **It filters the wallets that will never run a GPU.** 100,000 wallets must spend
+   **$771.7k** before holding a token, and unlike a deposit that money cannot be
+   rotated back out. Free tokens get farmed; $7.42 is a decision.
+
+A fee is a *distribution price*, so the allocation has to be big enough to carry it.
+At 40 OMC per entry a base claim is 200 OMC, which puts the fee at roughly **$0.037
+per OMC** and at the 400 OMC cap **$0.019**. The previous 20 OMC per entry would have
+made the same fee **148%** of a base claim at a $0.05 listing — nobody claims at that
+price, and the pool stays full. Above about **$0.019** the fee stops being a wall and
+becomes a toll, which is intended: a farm that pays the toll is revenue, and it is
+never free.
+
+Full arithmetic, including what the fee raises, where it stops filtering, and how the
+allocation was sized: [`ECONOMICS.md` §5](ECONOMICS.md#5-airdrop-claim-what-001-bnb-actually-costs),
+reproducible with `node models/claim.mjs`, `--revenue` and `--sybil`.
 
 **How to qualify** — complete all three social tasks:
 
@@ -317,7 +332,7 @@ omc-network/
 │   └── tests/                ← 24 tests against a real Postgres (PGlite)
 ├── models/
 │   ├── economics.mjs         ← supply/sink model (scenarios, break-even, JSON)
-│   ├── claim.mjs             ← airdrop claim cost: gas / refundable deposit / fee
+│   ├── claim.mjs             ← claim fee: ratio, revenue, sybil cost
 │   ├── economics.test.mjs    ← asserts the identities the docs quote
 │   └── claim.test.mjs        ← asserts the claim model matches params.json
 ├── scripts/

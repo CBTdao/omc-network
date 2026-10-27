@@ -7,7 +7,7 @@
     "if you change it on chain and nowhere else, this file is wrong. Both are",
     "checked by scripts/params.test.mjs and models/economics.test.mjs."
   ],
-  "version": 3,
+  "version": 4,
   "updatedAt": "2026-10-27",
   "fees": {
     "protocolFeeBps": 800,
@@ -35,7 +35,11 @@
     "onChain": {
       "contract": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
       "appliedFeeBps": 300,
-      "appliedSplit": { "burnBps": 3000, "stakersBps": 0, "treasuryBps": 7000 },
+      "appliedSplit": {
+        "burnBps": 3000,
+        "stakersBps": 0,
+        "treasuryBps": 7000
+      },
       "status": "requires redeploy",
       "note": "PROTOCOL_FEE_BPS, FEE_BURN_BPS and FEE_REWARD_BPS are compile-time constants in OMCComputeMarket, so unlike the staking ladder these cannot be changed by an owner transaction. They change at the next deployment."
     }
@@ -59,7 +63,18 @@
       50000000
     ],
     "revenueGate": {
-      "k": [3, 2, 1.5, 1, 0.75, 0.5, 0.5, 0.5, 0.5, 0.5],
+      "k": [
+        3,
+        2,
+        1.5,
+        1,
+        0.75,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
       "formula": "dailyEmission = min(annualCeiling / 365, k x trailing30dFeeRevenue / 30)",
       "source": "trailing 30-day protocol fee revenue, denominated in OMC, read from OMCComputeMarket",
       "rationale": [
@@ -126,14 +141,20 @@
       "chainId": 97,
       "contract": "0xa70B8506a1a614Fd83D0c70d73Da1E21fdcf1fB6",
       "appliedAt": "2026-10-11",
-      "amountsOMC": [20, 100, 500, 1000, 5000],
+      "amountsOMC": [
+        20,
+        100,
+        500,
+        1000,
+        5000
+      ],
       "status": "placeholder",
       "note": "The deployed testnet contract runs placeholder amounts because tOMC has no price to anchor to. They are not the published ladder; the USD targets above are. contracts/tools/set-params.js ladder --apply replaces them."
     }
   },
   "airdrop": {
     "pool": 20000000,
-    "perEntry": 20,
+    "perEntry": 40,
     "baseEntries": 5,
     "referralEntries": 5,
     "claimOpens": "2027-01-01",
@@ -142,31 +163,42 @@
     "vestingRationale": "2% of supply released to whoever claims first is a day-one sell wall built by the project itself, and the wallets that dump are the ones least likely to ever run a GPU. A 25/75 split keeps the claim meaningful — you can do something with it immediately — while removing the cliff that market makers price in.",
     "note": "100 OMC is the maximum a single wallet can register through the campaign itself. Against a $250 tier-1 bond that is worth 40% of a tier-1 stake only if OMC trades at $2.50; the free-stake loop that a fixed 20/100/500/1000/5000 ladder produced therefore closes as a side effect of USD pricing, without a separate lock.",
     "claimCost": {
-      "mode": "refundable-deposit",
-      "depositBnb": 0.01,
-      "refundBps": 10000,
-      "refundAfterDays": 30,
+      "mode": "fee",
+      "feeBnb": 0.01,
+      "refundable": false,
+      "chargeWhen": "claim",
+      "chargePer": "wallet",
       "gasBudgetBnb": 0.0004,
       "bnbReferenceUsd": 742,
       "bnbReferenceAt": "2026-10-27",
-      "model": "models/claim.mjs",
-      "modes": {
-        "gas-only": "The claimant pays BNB Chain gas (about 0.0004 BNB, $0.30 at the reference price) and nothing else. Cheapest for the user, and the weakest sybil filter: a farm of 100,000 wallets costs $30k.",
-        "refundable-deposit": "The claimant escrows 0.01 BNB with the distributor at claim time and can withdraw it in full after 30 days. Same up-front cost to a sybil farm as the fee, but it is a liability on the protocol's books rather than revenue.",
-        "fee": "The claimant pays 0.01 BNB to the treasury and it is not returned. This is the only mode that produces revenue, and the only one that cannot honestly be called an airdrop."
+      "treasurySplit": {
+        "ecosystemDevelopmentBps": 6000,
+        "teamOperationsBps": 4000
       },
-      "whyNotFee": [
-        "0.01 BNB is $7.42 at the reference price. The maximum campaign allocation is 100 OMC, so a fee of that size puts a floor of $0.0772 under the token: below it, claiming is a loss and a rational holder does not claim.",
-        "At an OMC price of $0.10 the fee takes 77% of the airdrop's dollar value before the claimant sees it. At $0.05 the claim is net negative by $2.72. An airdrop that is negative at the price the project is likely to launch at does not distribute tokens; it distributes nothing and burns the campaign's goodwill.",
-        "A per-claim charge converts a giveaway into a sale at a price nobody agreed to. In most jurisdictions that is the characterisation that turns an airdrop into an unregistered token offering, and the accounting treatment (revenue) makes the characterisation harder to argue against.",
-        "It also inverts the sybil incentive: the fee mode is the only mode where a sybil farm is a revenue event for the protocol, so the team has no reason to filter hard."
+      "model": "models/claim.mjs",
+      "whyFee": [
+        "The fee is not a deposit. It is revenue: 60% to ecosystem development (audits, testnet incentives, RPC and indexer costs, the node client, the sub-sites) and 40% to team operations. The project is not running a private round, so this is the funding path that does not dilute anyone who does not choose to pay.",
+        "Free tokens are not valued and are farmed by wallets with no GPU and no intention of running one. A wallet that will not spend $7.42 on an allocation it can see does not intend to use the network; a wallet that will has already priced its own interest.",
+        "The cost is sunk, not escrowed. A refundable deposit is recoverable capital around the pool, which a farm with a credit line can rotate: it is a timing cost, not a filter. A fee is spent, so the farm's budget is the ceiling and the ceiling is revenue.",
+        "Every wallet that pays the fee is a real counterparty: it has a funded BSC address, it has executed a transaction, and it has an entry in the ledger tied to that address. That is a materially better user table than a signed message."
       ],
-      "whyDeposit": [
-        "The deposit preserves the sybil number that makes 0.01 BNB attractive. 100,000 wallets must lock $742k for 30 days to farm the pool, which is the same capital barrier as the fee with none of the revenue.",
-        "Because it is returned in full, the claimant's net value is gross minus gas at any price, so no price floor is introduced: breakeven stays at $0.0030 for 100 OMC.",
-        "It is recorded as a liability, and the refund path is unconditional — no committee decides who is a sybil after the fact, which matters because an unilateral forfeiture rule is both unenforceable and the exact mechanism used by the airdrop scams this page warns about.",
-        "Residual revenue is zero by design. If the team wants the 0.01 BNB as income, that is a business decision that should be made explicitly and disclosed, not a side effect of a participation rule."
-      ]
+      "whyNotRefundable": [
+        "A 30-day refund makes the barrier a liquidity test rather than a willingness-to-pay test: 100,000 wallets would have to find $742k for a month, which a professional farm does routinely and a curious user cannot. It filters the wrong side.",
+        "It also books a liability, not budget. The treasury cannot hire an auditor with money it owes back.",
+        "The refund path in the earlier draft existed to avoid a price floor. The fix for a price floor is the ratio below, not the refund."
+      ],
+      "priceAnchor": {
+        "baseClaimOmc": 200,
+        "capClaimOmc": 400,
+        "impliedPriceUsdBase": 0.0371,
+        "impliedPriceUsdCap": 0.0186,
+        "note": "0.01 BNB buys 200 OMC (base) or 400 OMC (cap), so the claim is a purchase at $0.019-$0.039 per token whichever way it is described. Publish the number instead of letting a reader discover it. If OMC lists below the base-claim figure, most wallets decline to claim; the fee is a parameter and models/claim.mjs prints the sensitivity table."
+      },
+      "ratioRationale": "The previous perEntry of 20 made a 100 OMC base claim worth $5.00 at a $0.05 listing, so a $7.42 fee would have taken 148% of it and the pool would have stayed full. 40 OMC per entry puts the fee at 74% of a 200 OMC claim and 37% of a 400 OMC claim, and still leaves the pool able to serve 100,000 claimers, which is the honest ambition ceiling for this project. The trade-off is revenue: one fee per claim means bigger allocations raise less. At 40 OMC the pool can produce at most 1,000 BNB ($742k) if every slot is claimed; at 20 OMC it was 2,000 BNB. That is the price of a claim that people actually make.",
+      "sybilBreakeven": {
+        "priceUsd": 0.0193,
+        "note": "Above this price the fee is a toll rather than a wall. That is intended: a toll on a farm is income, and the pool is not drained for free either way. 100,000 wallets still cost $771.7k before they hold a token."
+      }
     }
   },
   "capital": {

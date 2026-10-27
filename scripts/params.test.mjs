@@ -135,15 +135,21 @@ test("a tier-1 bond is worth more than the hardware it vouches for", () => {
 });
 
 test("the airdrop cannot reach a tier-1 bond at any plausible price", () => {
-  const maxAirdrop = params.airdrop.perEntry * (params.airdrop.baseEntries + params.airdrop.referralEntries);
+  const a = params.airdrop;
+  const maxAirdrop = a.perEntry * (a.baseEntries + a.referralEntries);
   const t1 = params.staking.tiers[0].usdTarget;
-  // The free-stake loop needs the airdrop to buy a bond. For that, one OMC
-  // would have to be worth maxAirdrop -> tier-1 USD, i.e. $2.50 at these
-  // numbers. Recorded here so a later parameter change that reopens the loop
-  // fails this test instead of shipping.
+  /* The free-stake loop needs the airdrop to buy a bond. For that, one OMC would
+     have to be worth tier-1 USD ÷ maxAirdrop. Asserting the number rather than a
+     literal keeps the check meaningful when the allocation changes: the loop
+     reopens if this falls to the price the claim fee already implies. */
   const impliedPrice = t1 / maxAirdrop;
-  assert.ok(impliedPrice > 0, "sanity");
-  assert.equal(maxAirdrop, 200);
+  const claimPrice = (a.claimCost.feeBnb * a.claimCost.bnbReferenceUsd) / (a.perEntry * a.baseEntries);
+  assert.ok(
+    impliedPrice > claimPrice * 10,
+    `a max airdrop buys a tier-1 bond at $${impliedPrice.toFixed(2)}/OMC, only ${(impliedPrice / claimPrice).toFixed(1)}x the ` +
+      `$${claimPrice.toFixed(4)} the claim fee implies — the free-stake loop is closing`
+  );
+  assert.equal(a.perEntry * a.baseEntries, 200, "a base claim is 200 OMC; the fee is sized against it");
 });
 
 test("published on-chain state matches the deployment manifest", () => {
