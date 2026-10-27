@@ -12,19 +12,24 @@ const crypto = require("crypto");
 let pool = null;
 
 function getPool() {
+  if (pool) return pool;              /* already created, or injected by a test */
   const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
   if (!url) return null;
-  if (!pool) {
-    const { Pool } = require("pg");
-    const local = /localhost|127\.0\.0\.1/.test(url);
-    pool = new Pool({
-      connectionString: url,
-      ssl: local || process.env.PGSSL === "disable" ? false : { rejectUnauthorized: false },
-      max: 3,
-      idleTimeoutMillis: 10_000,
-    });
-  }
+  const { Pool } = require("pg");
+  const local = /localhost|127\.0\.0\.1/.test(url);
+  pool = new Pool({
+    connectionString: url,
+    ssl: local || process.env.PGSSL === "disable" ? false : { rejectUnauthorized: false },
+    max: 3,
+    idleTimeoutMillis: 10_000,
+  });
   return pool;
+}
+
+/* Test seam: lets the handler tests run against an in-process Postgres
+   (PGlite) without pretending a connection string exists. */
+function setPool(p) {
+  pool = p;
 }
 
 function clientIp(req) {
@@ -50,4 +55,4 @@ function send(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
-module.exports = { getPool, hashIp, send };
+module.exports = { getPool, setPool, hashIp, send };
