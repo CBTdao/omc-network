@@ -20,7 +20,13 @@
    ============================================================ */
 
 window.OMC_STATS = {
-  endpoint: "",                                  // ← real data feed (optional)
+  /* The ledger the campaign writes to. It returns running totals — entries and
+     wallets — which is everything this ticker claims to show.
+     An empty endpoint used to mean "generate a preview". It now means "say the
+     ledger is not connected", because invented progress on a campaign with a hard
+     1,000,000-slot ceiling is a number a visitor will act on: it makes a pool look
+     nearly full when nobody has registered. */
+  endpoint: "/api/airdrop/summary",
   pool: 20000000,                                // OMC reserved for the airdrop
   perEntry: 20,                                  // OMC per entry
   totalEntries: 1000000,                         // pool ÷ perEntry
@@ -100,14 +106,31 @@ window.OMC_STATS = {
     fetch(CFG.endpoint, { cache: "no-store" })
       .then(function (r) { return r.json(); })
       .then(function (j) {
+        /* Field names are the API's, not this file's: the ledger reports `entries`
+           and `wallets`, because "entries" is the unit the pool is denominated in.
+           A response without them means the ledger is not connected — a state to
+           show, not one to paper over with generated numbers. */
+        var t = j && j.totals;
+        if (!t || typeof t.entries !== "number") { cb(false); return; }
         state.source = "chain";
-        state.claimed = Number(j.claimed || 0);
-        state.participants = Number(j.participants || state.claimed);
-        state.updatedAt = Number(j.updatedAt || Math.floor(Date.now() / 1000)) * (String(j.updatedAt).length > 10 ? 1 : 1000);
-        state.events = (j.events || []).slice(0, CFG.maxRows);
+        state.claimed = Number(t.entries || 0);
+        state.participants = Number(t.wallets || 0);
+        state.updatedAt = Date.now();
+        /* There is no public per-claim feed. An empty list renders as an empty
+           list; it must not be filled with addresses nobody claimed from. */
+        state.events = [];
         cb(true);
       })
       .catch(function () { cb(false); });
+  }
+
+  /* Nothing to show, and saying so. */
+  function offline() {
+    state.source = "unavailable";
+    state.claimed = 0;
+    state.participants = 0;
+    state.events = [];
+    render();
   }
 
   /* ---------- time rendering ---------- */
@@ -130,13 +153,14 @@ window.OMC_STATS = {
 
   function renderNumbers() {
     var pct = state.claimed / CFG.totalEntries * 100;
+    var connected = state.source !== "unavailable";
     var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
-    set("tkClaimed", nf(state.claimed));
-    set("tkParts", nf(state.participants));
-    set("tkLeft", nf(Math.max(0, CFG.totalEntries - state.claimed)));
-    set("tkPct", pct.toFixed(pct >= 1 ? 2 : 3) + "%");
+    set("tkClaimed", connected ? nf(state.claimed) : "—");
+    set("tkParts", connected ? nf(state.participants) : "—");
+    set("tkLeft", connected ? nf(Math.max(0, CFG.totalEntries - state.claimed)) : "—");
+    set("tkPct", connected ? pct.toFixed(pct >= 1 ? 2 : 3) + "%" : "—");
     var fill = document.getElementById("tkFill");
-    if (fill) fill.style.width = Math.min(100, pct).toFixed(3) + "%";
+    if (fill) fill.style.width = (connected ? Math.min(100, pct) : 0).toFixed(3) + "%";
 
     /* the visitor's own progress, from the local airdrop state */
     var mine = "—";
@@ -151,10 +175,17 @@ window.OMC_STATS = {
     var live = root.querySelector(".tk-live");
     if (live) {
       if (state.source === "chain") live.textContent = T("tk.live");
-      else live.textContent = T("tk.demo");
+      else if (state.source === "preview") live.textContent = T("tk.demo");
+      else live.textContent = T("tk.offline");
     }
     var note = document.getElementById("tkNote");
-    if (note) note.hidden = state.source !== "preview";
+    if (note) {
+      /* The note is the only place that says the figures above are not coming
+         from the ledger, so it has to appear whenever that is true. */
+      var warn = state.source === "preview" || state.source === "unavailable";
+      note.hidden = !warn;
+      if (warn) note.textContent = T(state.source === "preview" ? "tk.demo_note" : "tk.offline_note");
+    }
 
     var before = document.getElementById("tkBefore");
     if (before) before.hidden = phase() !== "pre";
@@ -171,6 +202,19 @@ window.OMC_STATS = {
       box.innerHTML = ["ad.chip_start", "ad.chip_claim", "ad.chip_per", "ad.chip_wallet", "ad.chip_daily"]
         .map(function (k) { return '<div class="tk-row rule">' + T(k) + "</div>"; })
         .join("");
+      return;
+    }
+
+    /* Nothing from the ledger: say so, and say nothing else. */
+    if (state.source === "unavailable") {
+      box.innerHTML = '<div class="tk-row rule">' + T("tk.offline_note") + "</div>";
+      return;
+    }
+
+    /* Connected but no rows: the ledger publishes totals, not a per-claim feed, so
+       this is the normal live state rather than an error. */
+    if (!state.events.length) {
+      box.innerHTML = '<div class="tk-row rule">' + T("tk.no_feed") + "</div>";
       return;
     }
 
@@ -199,12 +243,12 @@ window.OMC_STATS = {
   function advance() {
     var p = phase();
     if (p === "pre") { state.claimed = 0; state.participants = 0; state.events = []; state.source = "pre"; render(); return; }
-    if (CFG.endpoint) {
-      loadRemote(function (ok) { if (!ok) { buildPreview(); } render(); });
-      return;
-    }
-    buildPreview();
-    render();
+    /* Demonstration mode is opt-in, by URL, and labelled as such in the UI. It is
+       never the fallback: a fallback that invents numbers is a fallback that lies
+       exactly when the ledger is broken. */
+    if (PREVIEW) { buildPreview(); render(); return; }
+    if (!CFG.endpoint) { offline(); return; }
+    loadRemote(function (ok) { if (ok) render(); else offline(); });
   }
 
   function boot() {
