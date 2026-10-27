@@ -2,15 +2,16 @@
    Omniverse Compute (OMC) — Airdrop progress ticker (home page)
 
    Data source
-   - OMC_STATS.endpoint: leave "" for the built-in preview feed.
-     Set it to a JSON URL returning
-       { claimed: 12345, participants: 9000, updatedAt: 1700000000,
-         events: [{ addr: "0x…", amount: 20, ts: 1700000000000 }] }
-     and the ticker switches to real data automatically (the
-     "preview data" chip hides itself).
-   - With no endpoint the feed is generated locally from a
-     deterministic pseudo-random source and is clearly marked as
-     preview data in the UI. It is NOT on-chain data.
+   - OMC_STATS.endpoint: the ledger this widget reads. It defaults to
+     /api/airdrop/summary, which returns { totals: { entries, wallets } }.
+     Entries are the unit the pool is denominated in, so `entries` is what
+     "claimed" means here.
+   - If the ledger cannot be reached the numbers render blank and labelled
+     ("Not connected"). They are never estimated: inventing progress on a
+     campaign with a hard 1,000,000-slot ceiling tells a visitor the pool is
+     fuller than it is, which is the opposite of first-come-first-served.
+   - Demonstration data still exists, but only at ?ticker=preview, and the UI
+     marks it as preview. It is NOT on-chain data and is never a fallback.
 
    Two phases
    - Before the claim window opens: honest zero-state — the pool rules
