@@ -103,8 +103,8 @@ Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20
 | Team & Core Contributors | 10% | 100,000,000 | 0% at TGE, 12m cliff, then 24m monthly linear |
 | Private Investors | 8% | 80,000,000 | 10% at TGE, 3m cliff, then 18m monthly linear |
 | Treasury & Liquidity | 5% | 50,000,000 | 50% at TGE for DEX/CEX liquidity |
-| Community Airdrop | 2% | 20,000,000 | 100% at TGE — free to claim, no purchase required |
-| **Total** | **100%** | **1,000,000,000** | Circulating at TGE ≈ 65,500,000 OMC (6.55%) |
+| Community Airdrop | 2% | 20,000,000 | 25% at claim + 75% linear over 180 days — no purchase required |
+| **Total** | **100%** | **1,000,000,000** | Circulating at TGE ≈ 50,500,000 OMC (5.05%) |
 
 ### Deflationary Mechanics
 
@@ -224,15 +224,29 @@ Step-by-step walkthrough: [Run a GPU node on the testnet](https://forum.omc.netw
 
 **2% of total supply (20,000,000 OMC) reserved for the community — 1,000,000 entries × 20 OMC each.**
 
-> ⚠️ The OMC airdrop is **100% FREE**. We will **never** ask for your seed phrase, private key, or any payment beyond the network gas fee. Only trust links published here and on our verified social accounts.
+> ⚠️ **There is nothing to buy and nothing to send us.** Participation is free, and
+> we will **never** ask for your seed phrase or private key. At claim time only, and
+> inside the claim contract, a **0.01 BNB deposit** is escrowed and returned in full
+> after 30 days — any message that asks you to send BNB to a wallet address "for gas"
+> is not us. Only trust links published here and on our verified social accounts.
 
 | Rule | Detail |
 |---|---|
 | Per entry | **20 OMC** |
 | Per wallet | up to **10 entries** |
-| Daily limit | **2 entries / calendar day** (resets 00:00 UTC+8) |
-| Fee | a small amount of network gas fee, per entry |
-| Withdrawal | accumulated amount is **displayed** during the airdrop; claimable in **one claim** after the airdrop ends |
+| Daily limit | **1 entry / calendar day** (resets 00:00 UTC+8) |
+| Cost to participate | **Zero.** Registering an entry is a `personal_sign` challenge — no gas, no transaction, no payment |
+| Cost to claim | One BSC transaction. A **0.01 BNB deposit** is escrowed by the claim contract and **returned in full after 30 days** — it is not a fee and the treasury cannot spend it. Network gas (~0.0004 BNB) is not refundable |
+| Withdrawal | accumulated amount is **displayed** during the airdrop; claimable in **one claim** after the airdrop ends — **25% immediately, 75% linear over 180 days** |
+
+Why a refundable deposit rather than a fee: 0.01 BNB is $7.42 at the BNB reference
+price, and the maximum allocation is 100 OMC. A fee of that size would put a floor
+of **$0.0772** under the token — below it, claiming costs more than it pays, and a
+rational holder simply does not claim. It also makes a sybil farm a revenue event.
+The deposit keeps the barrier a farm has to fund ($742k for 100,000 wallets, locked
+30 days) while leaving the claimant's net value at gross-minus-gas at any price.
+Full arithmetic, including the case against a fee: [`ECONOMICS.md` §5](ECONOMICS.md#5-airdrop-claim-what-001-bnb-actually-costs),
+reproducible with `node models/claim.mjs`.
 
 **How to qualify** — complete all three social tasks:
 
@@ -303,7 +317,9 @@ omc-network/
 │   └── tests/                ← 24 tests against a real Postgres (PGlite)
 ├── models/
 │   ├── economics.mjs         ← supply/sink model (scenarios, break-even, JSON)
-│   └── economics.test.mjs    ← asserts the identities the docs quote
+│   ├── claim.mjs             ← airdrop claim cost: gas / refundable deposit / fee
+│   ├── economics.test.mjs    ← asserts the identities the docs quote
+│   └── claim.test.mjs        ← asserts the claim model matches params.json
 ├── scripts/
 │   └── params.test.mjs       ← asserts contracts/params.json invariants
 ├── contracts/                ← Testnet contracts + deploy tooling
@@ -354,12 +370,36 @@ python -m http.server 8080
 
 ## 🧩 Ecosystem
 
-OMC runs a small editorial network alongside the protocol site — independent in voice, disclosed in writing on every page:
+OMC is not one page with a token attached. Three properties run alongside the
+protocol site, each doing a different job in the same funnel:
 
-| Property | URL | What it is |
-|---|---|---|
-| **AITop** | [top.omc.network](https://top.omc.network) | AI tool comparisons and rankings — one table per question, 37 pages |
-| **DCF** | [forum.omc.network](https://forum.omc.network) | Decentralized Compute Forum — GPU market analysis, a 12-network comparison tracker, and hands-on testnet guides |
+| Property | URL | Job it does | Depth today |
+|---|---|---|---|
+| **AITop** | [top.omc.network](https://top.omc.network) | Buyer-side entry point: AI tool comparisons and rankings. Someone shopping for inference lands here before they have heard of OMC | 37 comparison pages, one table per question |
+| **DCF** | [forum.omc.network](https://forum.omc.network) | Supply-side and research: GPU market analysis, a 12-network comparison tracker, and the canonical [run-a-GPU-node guide](https://forum.omc.network/guides/run-a-gpu-node-on-the-testnet) | The onboarding path a node operator actually follows |
+| **Real or AI** | [game.omc.network](https://game.omc.network) | Consumer entry point: a daily photo game about spotting generated images. No wallet, no token, no signup | Daily challenge plus a guide |
+
+Why this counts as depth rather than as content marketing: each property answers a
+question the protocol itself cannot answer without sounding like a pitch. AITop
+answers "what should I use" for a buyer who does not care about DePIN. DCF answers
+"is this hardware worth running" for an operator who does not trust a project's own
+benchmarks. Real or AI answers "why would I care" for someone who will never run a
+GPU — and it is the only one of the four properties that works without a wallet.
+
+All three sit on `omc.network` subdomains, so domain authority accumulates in one
+place instead of splitting across throwaway sites.
+
+**Disclosure, stated once and linked from every page:** all three are operated by
+the OMC team, not by third parties. They are editorially independent of the
+protocol narrative — DCF publishes comparisons that do not flatter OMC — but
+"independent" here means editorial, not corporate. A reader who mistakes one for a
+neutral third party has been misled, so every page carries the disclosure.
+
+| | |
+|---|---|
+| AITop | [top.omc.network](https://top.omc.network) |
+| DCF (compute forum) | [forum.omc.network](https://forum.omc.network) |
+| Real or AI (game) | [game.omc.network](https://game.omc.network) |
 
 ---
 
@@ -375,6 +415,7 @@ We welcome contributions. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before 
 | Testnet & node onboarding | [omc.network/testnet](https://omc.network/testnet) |
 | AI tool comparisons (AITop) | [top.omc.network](https://top.omc.network) |
 | Compute research forum (DCF) | [forum.omc.network](https://forum.omc.network) |
+| Real or AI (daily photo game) | [game.omc.network](https://game.omc.network) |
 | X / Twitter | [@Omniverse_Depin](https://x.com/Omniverse_Depin) |
 | Telegram | [t.me/OmniverseCompute](https://t.me/OmniverseCompute) |
 | tOMC test token | [`0xBEB21E40...450671`](https://testnet.bscscan.com/token/0xbeb21e40fb50a0f4ba9287c2058dc7851e450671) |

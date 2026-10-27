@@ -23,7 +23,13 @@
 
 const BPS = 10_000;
 
-export const FLOAT_TGE = 65_500_000; // 6.55% of 1B, per whitepaper 7.2
+/* 50.5M = 5.05% of 1B: treasury 25M + airdrop 5M (25% of the 20M pool is
+   claimable at TGE, the other 75% vests over 180 days) + private 8M +
+   ecosystem 7.5M + institutional 5M. The airdrop used to be counted at 100%,
+   which made the float 65.5M; releasing 25% at claim removes 15M from day one,
+   and a smaller float raises the same emission by more percentage points —
+   which is why the inflation figures below moved up, not down. */
+export const FLOAT_TGE = 50_500_000;
 export const MAX_SUPPLY = 1_000_000_000;
 
 /* ---------- the two designs ---------- */

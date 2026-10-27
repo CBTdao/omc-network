@@ -137,9 +137,10 @@ function showToast(msg) {
    - PARTICIPATION is open now (no calendar gate) — see the two-gate note
      below for why participation and claim are separate dates
    - During the campaign: page only DISPLAYS accumulated OMC
-   - Claim window OPENS AT TGE (mainnet launch), which the white paper
-     defines as "100% at TGE" for the community airdrop:
-     single claim of the whole amount on this page
+   - Claim window OPENS AT TGE (mainnet launch). The whitepaper releases
+     25% at claim and 75% linearly over 180 days, in a single claim on this
+     page; the claim contract escrows a 0.01 BNB deposit refundable after
+     30 days (see ECONOMICS.md §5 and models/claim.mjs).
    ============================================================ */
 const AIRDROP_KEY = "omc_airdrop_v1";
 const PER_ENTRY = 20;                                   // OMC per entry

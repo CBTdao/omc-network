@@ -111,8 +111,9 @@ test("a token round cannot be run without the disclosures an investor needs", ()
 });
 
 test("year one emission stays under a third of the TGE float", () => {
-  // TGE float: airdrop 2% at 100% + the ecosystem and liquidity slices.
-  const tgeFloat = 65_500_000;
+  // TGE float: airdrop 2% at 25% claimed + ecosystem, private, institutional and
+  // half the treasury. Must match FLOAT_TGE in models/economics.mjs.
+  const tgeFloat = 50_500_000;
   const ratio = params.emission.scheduleOMC[0] / tgeFloat;
   assert.ok(ratio < 0.35, `year 1 emission is ${(ratio * 100).toFixed(0)}% of the TGE float; the reason for changing the curve was to get this below a third`);
 });

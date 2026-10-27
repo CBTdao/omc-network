@@ -1,13 +1,17 @@
 # OMC economic model
 
 Every number in this document is produced by [`models/economics.mjs`](models/economics.mjs)
-and checked by [`models/economics.test.mjs`](models/economics.test.mjs) plus
+or [`models/claim.mjs`](models/claim.mjs), and checked by
+[`models/economics.test.mjs`](models/economics.test.mjs),
+[`models/claim.test.mjs`](models/claim.test.mjs) and
 [`scripts/params.test.mjs`](scripts/params.test.mjs). Nothing here is a forecast:
 the GMV paths are scenarios, and running the model prints the same tables.
 
 ```bash
 node models/economics.mjs                    # both designs, three scenarios
 node models/economics.mjs --breakeven        # GMV needed for net-zero, by price
+node models/claim.mjs                        # airdrop claim cost, three modes
+node models/claim.mjs --sybil                # what a sybil farm has to fund
 ```
 
 ## Verdict, up front
@@ -108,26 +112,33 @@ it cannot be gamed by picking a friendly GMV assumption.
 
 ### 3.2 Conservative scenario, $0.02 reference price
 
-Old design — never deflationary, peaks at 39.9% annual inflation:
+TGE float is **50.5M** (5.05% of supply): 25M treasury, 5M of the airdrop (25%
+is claimable at TGE, the rest vests over 180 days), 8M private, 7.5M ecosystem,
+5M institutional. Counting only a quarter of the airdrop on day one removes 15M
+from the float, and a smaller float makes the same emission a larger percentage
+— so the peak inflation below is *higher* than it was when the model counted the
+whole airdrop at TGE. That is the honest direction of the change.
+
+Old design — never deflationary, peaks at 46.1% annual inflation:
 
 | Yr | GMV | Fee (OMC) | Burn | Emission | Net | Circulating | Inflation | Burn÷Emit |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | $150k | 0.23M | 0.07M | 15.00M | +14.93M | 80.43M | 22.8% | 0% |
-| 3 | $2.50M | 3.75M | 1.13M | 45.00M | +43.88M | 153.95M | 39.9% | 3% |
-| 5 | $12.00M | 18.00M | 5.40M | 60.00M | +54.60M | 255.85M | 27.1% | 9% |
-| 10 | $30.00M | 45.00M | 13.50M | 60.00M | +46.50M | 500.50M | 10.2% | 23% |
+| 1 | $150k | 0.23M | 0.07M | 15.00M | +14.93M | 65.43M | 29.6% | 0% |
+| 3 | $2.50M | 3.75M | 1.13M | 45.00M | +43.88M | 138.95M | 46.1% | 3% |
+| 5 | $12.00M | 18.00M | 5.40M | 60.00M | +54.60M | 240.85M | 29.3% | 9% |
+| 10 | $30.00M | 45.00M | 13.50M | 60.00M | +46.50M | 485.50M | 10.6% | 23% |
 
-New design — peaks at 14.7%, flat by year 6, deflationary by year 9:
+New design — peaks at 18.0%, flat by year 6, deflationary by year 9:
 
 | Yr | GMV | Fee (OMC) | Burn | Emission | Net | Circulating | Inflation | Burn÷Emit |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | $150k | 0.60M | 0.30M | 1.80M | +1.50M | 67.00M | 2.3% | 17% |
-| 3 | $2.50M | 10.00M | 5.00M | 15.00M | +10.00M | 81.80M | 13.9% | 33% |
-| 5 | $12.00M | 48.00M | 24.00M | 36.00M | +12.00M | 105.80M | 12.8% | 67% |
-| 6 | $18.00M | 72.00M | 36.00M | 36.00M | **0** | 105.80M | **0.0%** | 100% |
-| 9 | $28.00M | 112.00M | 56.00M | 50.00M | −6.00M | 99.80M | −5.7% | 112% |
+| 1 | $150k | 0.60M | 0.30M | 1.80M | +1.50M | 52.00M | 3.0% | 17% |
+| 3 | $2.50M | 10.00M | 5.00M | 15.00M | +10.00M | 66.80M | 17.6% | 33% |
+| 5 | $12.00M | 48.00M | 24.00M | 36.00M | +12.00M | 90.80M | 15.2% | 67% |
+| 6 | $18.00M | 72.00M | 36.00M | 36.00M | **0** | 90.80M | **0.0%** | 100% |
+| 9 | $28.00M | 112.00M | 56.00M | 50.00M | −6.00M | 84.80M | −6.6% | 112% |
 
-Same GMV, same decade: **500M circulating vs 90-106M**, and the point at which
+Same GMV, same decade: **485M circulating vs 75-91M**, and the point at which
 dilution stops is a date rather than a hope.
 
 ### 3.3 Model limitation, stated
@@ -165,7 +176,71 @@ raises are not addressable in this file:
 What the changes do is remove the four objections that *were* arithmetic, so that
 the remaining ones are the honest kind: does this team ship, and will anyone pay.
 
-## 5. Implementation checklist
+## 5. Airdrop claim: what 0.01 BNB actually costs
+
+The campaign charges nothing to participate. The open question is what a wallet
+pays to **claim**, and the answer is a parameter, not a detail:
+[`models/claim.mjs`](models/claim.mjs) prices the three ways of placing that cost
+at any BNB or OMC price.
+
+```bash
+node models/claim.mjs                 # all three modes, five reference prices
+node models/claim.mjs --sybil         # cost of farming the pool, by farm size
+node models/claim.mjs --mode fee --bnb 900
+```
+
+At a BNB reference of **$742** (27 Oct 2026), 0.01 BNB is **$7.42**. Against a
+100 OMC allocation that is not a rounding error:
+
+| Mode | Breakeven OMC price | Cost as % of value @ $0.10 | Protocol revenue per claim | Cash a 100k-wallet farm must find |
+|---|---:|---:|---:|---:|
+| Gas only (~0.0004 BNB) | $0.0030 | 3% | $0.00 | $30k |
+| Refundable 0.01 BNB deposit | $0.0030 | 3% | $0.00 | $742k locked 30 days |
+| 0.01 BNB fee, kept | **$0.0772** | **77%** | $7.42 | $772k |
+
+Net value to a claimant of 100 OMC, after the claim:
+
+| Mode | $0.02 | $0.05 | $0.075 | $0.10 | $0.20 |
+|---|---:|---:|---:|---:|---:|
+| Gas only | $1.70 | $4.70 | $7.20 | $9.70 | $19.70 |
+| Refundable deposit | $1.70 | $4.70 | $7.20 | $9.70 | $19.70 |
+| 0.01 BNB fee | **−$5.72** | **−$2.72** | −$0.22 | $2.28 | $12.28 |
+
+### The problem with a fee
+
+A per-claim charge is a **strike price on the airdrop**. Below $0.0772 the rational
+move is not to claim, and no amount of campaign spending changes that. Two
+consequences follow, and both are worse than the lost revenue:
+
+1. **It is a sale at a price nobody agreed to.** $7.42 for 100 OMC is a $0.074
+   token; if the token opens at $0.02–0.05, the project has sold its community
+   allocation at a 40–70% premium to the market. That is the characterisation that
+   turns an airdrop into an unregistered offering, and booking the proceeds as
+   revenue makes it harder to argue otherwise.
+2. **It inverts the sybil incentive.** The fee mode is the only mode where a sybil
+   farm is a *revenue event*: 100,000 wallets pay $772k and the pool is drained by
+   the one participant the filter was supposed to stop.
+
+### What the deposit keeps
+
+Escrowing 0.01 BNB and returning it in full after 30 days preserves the number
+that made the charge attractive — **100,000 wallets must lock $742k for a month**
+— while leaving net value at gas-only at every price, because the escrow comes
+back. There is no floor, so there is no non-claiming region, so the campaign still
+distributes tokens.
+
+It is also the only version that survives scrutiny: the refund is unconditional,
+no committee decides retroactively who was a sybil, and the balance is carried as
+a liability rather than income. A discretionary forfeiture rule would be both
+unenforceable and the exact mechanism used by the "pay gas to claim" scams the
+airdrop page warns about.
+
+`params.json → airdrop.claimCost.mode` is set to `refundable-deposit` for those
+reasons. Switching to `fee` is a one-word change and `models/claim.test.mjs`
+will keep reporting the floor it creates — the model is deliberately not allowed
+to hide it.
+
+## 6. Implementation checklist
 
 `OMCComputeMarket` — constants, so a redeploy rather than an owner transaction:
 
@@ -187,8 +262,15 @@ the remaining ones are the honest kind: does this team ship, and will anyone pay
   constraint — otherwise a $5M stake base silently caps emission at $1M/year and the
   schedule in `params.json` is fiction.
 
-Airdrop claim — split into 25% immediate and 75% vested over 180 days, which is a
-change to the claim contract, not to the caps.
+Airdrop claim — three changes, all in the claim contract rather than in the caps:
+
+- 25% immediate, 75% linear over 180 days.
+- A `claim()` that takes `msg.value == depositBnb` (0.01 BNB) and records it as an
+  escrow, plus an unconditional `withdrawDeposit()` after 30 days. The escrow is a
+  liability: it must never be spendable by the treasury, and the balance must be
+  readable so the disclosure is checkable on chain.
+- A Merkle root published before the window opens, so the allocation is auditable
+  independently of this repository.
 
 Until those ship, the deployed testnet keeps its old constants and every document
 labels the live values as placeholders. `/tokenomics` reads the published targets,

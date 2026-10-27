@@ -137,9 +137,37 @@
     "baseEntries": 5,
     "referralEntries": 5,
     "claimOpens": "2027-01-01",
+    "claimCloses": "2027-03-31",
     "vesting": "25% at claim + 75% linear over 180 days",
     "vestingRationale": "2% of supply released to whoever claims first is a day-one sell wall built by the project itself, and the wallets that dump are the ones least likely to ever run a GPU. A 25/75 split keeps the claim meaningful — you can do something with it immediately — while removing the cliff that market makers price in.",
-    "note": "100 OMC is the maximum a single wallet can register. Against a $250 tier-1 bond that is worth 40% of a tier-1 stake only if OMC trades at $2.50; the free-stake loop that a fixed 20/100/500/1000/5000 ladder produced therefore closes as a side effect of USD pricing, without a separate lock."
+    "note": "100 OMC is the maximum a single wallet can register through the campaign itself. Against a $250 tier-1 bond that is worth 40% of a tier-1 stake only if OMC trades at $2.50; the free-stake loop that a fixed 20/100/500/1000/5000 ladder produced therefore closes as a side effect of USD pricing, without a separate lock.",
+    "claimCost": {
+      "mode": "refundable-deposit",
+      "depositBnb": 0.01,
+      "refundBps": 10000,
+      "refundAfterDays": 30,
+      "gasBudgetBnb": 0.0004,
+      "bnbReferenceUsd": 742,
+      "bnbReferenceAt": "2026-10-27",
+      "model": "models/claim.mjs",
+      "modes": {
+        "gas-only": "The claimant pays BNB Chain gas (about 0.0004 BNB, $0.30 at the reference price) and nothing else. Cheapest for the user, and the weakest sybil filter: a farm of 100,000 wallets costs $30k.",
+        "refundable-deposit": "The claimant escrows 0.01 BNB with the distributor at claim time and can withdraw it in full after 30 days. Same up-front cost to a sybil farm as the fee, but it is a liability on the protocol's books rather than revenue.",
+        "fee": "The claimant pays 0.01 BNB to the treasury and it is not returned. This is the only mode that produces revenue, and the only one that cannot honestly be called an airdrop."
+      },
+      "whyNotFee": [
+        "0.01 BNB is $7.42 at the reference price. The maximum campaign allocation is 100 OMC, so a fee of that size puts a floor of $0.0772 under the token: below it, claiming is a loss and a rational holder does not claim.",
+        "At an OMC price of $0.10 the fee takes 77% of the airdrop's dollar value before the claimant sees it. At $0.05 the claim is net negative by $2.72. An airdrop that is negative at the price the project is likely to launch at does not distribute tokens; it distributes nothing and burns the campaign's goodwill.",
+        "A per-claim charge converts a giveaway into a sale at a price nobody agreed to. In most jurisdictions that is the characterisation that turns an airdrop into an unregistered token offering, and the accounting treatment (revenue) makes the characterisation harder to argue against.",
+        "It also inverts the sybil incentive: the fee mode is the only mode where a sybil farm is a revenue event for the protocol, so the team has no reason to filter hard."
+      ],
+      "whyDeposit": [
+        "The deposit preserves the sybil number that makes 0.01 BNB attractive. 100,000 wallets must lock $742k for 30 days to farm the pool, which is the same capital barrier as the fee with none of the revenue.",
+        "Because it is returned in full, the claimant's net value is gross minus gas at any price, so no price floor is introduced: breakeven stays at $0.0030 for 100 OMC.",
+        "It is recorded as a liability, and the refund path is unconditional — no committee decides who is a sybil after the fact, which matters because an unilateral forfeiture rule is both unenforceable and the exact mechanism used by the airdrop scams this page warns about.",
+        "Residual revenue is zero by design. If the team wants the 0.01 BNB as income, that is a business decision that should be made explicitly and disclosed, not a side effect of a participation rule."
+      ]
+    }
   },
   "capital": {
     "status": "no round closed",
