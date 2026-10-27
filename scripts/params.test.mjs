@@ -96,9 +96,14 @@ test("a node cannot stake and exit in the same block", () => {
   );
 });
 
-test("the airdrop is not a day-one sell wall", () => {
-  assert.ok(/25% at claim/.test(params.airdrop.vesting), "the claim must not release the whole allocation at once");
-  assert.ok(/180 days/.test(params.airdrop.vesting));
+test("the airdrop delivers the whole entry at claim", () => {
+  assert.match(params.airdrop.vesting, /^100% at claim$/, "the claim is paid for per entry; vesting it would make the published 20 OMC a number the claimer never sees");
+  assert.equal(params.airdrop.perEntry, 20);
+});
+
+test("nothing reintroduces a vesting tail on the airdrop by the back door", () => {
+  const quiet = Object.keys(params.airdrop).filter((k) => /cliff|vesting(days|months|pct)|releasePct|unlockPct/i.test(k));
+  assert.deepEqual(quiet, [], `an airdrop entry is paid for; a ${quiet.join(", ")} field would silently withhold part of it`);
 });
 
 test("a token round cannot be run without the disclosures an investor needs", () => {
@@ -111,9 +116,9 @@ test("a token round cannot be run without the disclosures an investor needs", ()
 });
 
 test("year one emission stays under a third of the TGE float", () => {
-  // TGE float: airdrop 2% at 25% claimed + ecosystem, private, institutional and
-  // half the treasury. Must match FLOAT_TGE in models/economics.mjs.
-  const tgeFloat = 50_500_000;
+  // TGE float: the whole airdrop + ecosystem, private, institutional and half the
+  // treasury. Must match FLOAT_TGE in models/economics.mjs.
+  const tgeFloat = 65_500_000;
   const ratio = params.emission.scheduleOMC[0] / tgeFloat;
   assert.ok(ratio < 0.35, `year 1 emission is ${(ratio * 100).toFixed(0)}% of the TGE float; the reason for changing the curve was to get this below a third`);
 });

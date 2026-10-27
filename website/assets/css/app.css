@@ -1804,3 +1804,15 @@ footer {
   .cc-month { font-size: 23px; }
   .calc-spread { flex-direction: column; align-items: flex-start; gap: 6px; }
 }
+
+/* ---------- print ----------
+   .reveal starts at opacity 0 and is revealed by an IntersectionObserver as it
+   scrolls into view. A printed page has no scroll, so every section below the
+   first screen stayed invisible: printing /whitepaper produced 21 pages with
+   20 of them blank. Printing is a legitimate way to read this site, so the
+   reveal animation is switched off for it. */
+@media print {
+  .reveal { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .nav, .site-nav, .to-top, .cookie-bar, .wl-backdrop { display: none !important; }
+}

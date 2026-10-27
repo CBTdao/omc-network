@@ -23,13 +23,13 @@
 
 const BPS = 10_000;
 
-/* 50.5M = 5.05% of 1B: treasury 25M + airdrop 5M (25% of the 20M pool is
-   claimable at TGE, the other 75% vests over 180 days) + private 8M +
-   ecosystem 7.5M + institutional 5M. The airdrop used to be counted at 100%,
-   which made the float 65.5M; releasing 25% at claim removes 15M from day one,
-   and a smaller float raises the same emission by more percentage points —
-   which is why the inflation figures below moved up, not down. */
-export const FLOAT_TGE = 50_500_000;
+/* 65.5M = 6.55% of 1B: treasury 25M + the whole 20M airdrop + private 8M +
+   ecosystem 7.5M + institutional 5M. The airdrop counts at 100% because it is
+   paid out in full at claim — that is the term, and a page that says 20 OMC
+   must deliver 20. Counting it at 25% (which this constant did for a while)
+   understated the float by 15M and flattered every inflation figure below by
+   about three points; the honest direction is the larger number. */
+export const FLOAT_TGE = 65_500_000;
 export const MAX_SUPPLY = 1_000_000_000;
 
 /* ---------- the two designs ---------- */
@@ -61,7 +61,7 @@ export const PROPOSED = {
      emission equals burn and circulating supply stops growing. */
   revenueGateK: [3, 2, 1.5, 1, 0.75, 0.5, 0.5, 0.5, 0.5, 0.5],
   unstakeCooldownDays: 14,
-  airdropVesting: "25% at claim + 75% linear over 180 days",
+  airdropVesting: "100% at claim",
 };
 
 export const SCENARIOS = {

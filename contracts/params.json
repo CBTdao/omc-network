@@ -7,7 +7,7 @@
     "if you change it on chain and nowhere else, this file is wrong. Both are",
     "checked by scripts/params.test.mjs and models/economics.test.mjs."
   ],
-  "version": 6,
+  "version": 7,
   "updatedAt": "2026-10-27",
   "fees": {
     "protocolFeeBps": 800,
@@ -161,8 +161,8 @@
     "referralEntries": 5,
     "claimOpens": "2027-01-01",
     "claimCloses": "2027-03-31",
-    "vesting": "25% at claim + 75% linear over 180 days",
-    "vestingRationale": "2% of supply released to whoever claims first is a day-one sell wall built by the project itself, and the wallets that dump are the ones least likely to ever run a GPU. A 25/75 split keeps the claim meaningful — you can do something with it immediately — while removing the cliff that market makers price in.",
+    "vesting": "100% at claim",
+    "vestingRationale": "An entry is paid for: 0.01 BNB per entry, non-refundable, charged in the claim transaction. Withholding 75% of what someone has already paid for is a second lock on the same thing, and it makes the headline number false — a page that says 20 OMC and delivers 5 is a page nobody trusts. The investor allocations carry the lock-ups instead: private 10% at TGE then 18 months, institutional 5% at TGE then 24 months. The airdrop is the one allocation that is fully delivered, because it is the one allocation that was paid for at the claim window rather than bought at a discount.",
     "note": "A base claim is 5 entries = 100 OMC; with five referral entries the cap is 10 entries = 200 OMC. 1,000,000 slots at 20 OMC each, first come first served: the per-wallet cap does not reserve anything, and a wallet that arrives after the pool is empty gets nothing. Against a $250 tier-1 bond the cap is worth a tier-1 stake only if OMC trades at $1.25; the free-stake loop that a fixed 20/100/500/1000/5000 ladder produced therefore closes as a side effect of USD pricing, without a separate lock.",
     "claimCost": {
       "mode": "fee",

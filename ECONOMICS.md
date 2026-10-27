@@ -86,7 +86,7 @@ that is not there.
 | Fee split | 30% burn / 0% stakers / 70% reward pool | **50% burn / 30% stakers / 20% treasury** | A burn that scales, and a yield that is revenue rather than dilution |
 | Emission | `min(schedule, APR cap)` | **`min(schedule, k × trailing 30d fee revenue)`**, k: 3 → 0.5 | No revenue means no emission; dilution becomes a business metric |
 | Stake exit | instant | **14-day cooldown** | Farming becomes a real risk instead of a free option |
-| Airdrop | 100% at claim | **25% at claim + 180 days linear** | Removes the day-one cliff without making the claim useless |
+| Airdrop | 100% at claim | **100% at claim** | Unchanged, deliberately: the claim is paid for per entry, so withholding part of it would be a second lock on the same thing |
 
 One further change belongs to the same redeploy: **the fee should be charged to the
 requester on top of the provider's quoted price, not deducted from it.** Today
@@ -113,33 +113,35 @@ it cannot be gamed by picking a friendly GMV assumption.
 
 ### 3.2 Conservative scenario, $0.02 reference price
 
-TGE float is **50.5M** (5.05% of supply): 25M treasury, 5M of the airdrop (25%
-is claimable at TGE, the rest vests over 180 days), 8M private, 7.5M ecosystem,
-5M institutional. Counting only a quarter of the airdrop on day one removes 15M
-from the float, and a smaller float makes the same emission a larger percentage
-— so the peak inflation below is *higher* than it was when the model counted the
-whole airdrop at TGE. That is the honest direction of the change.
+TGE float is **65.5M** (6.55% of supply): 25M treasury, the whole 20M airdrop,
+8M private, 7.5M ecosystem, 5M institutional. The airdrop counts at 100% because
+it is delivered in full at claim — the claim window opens at TGE, so on day one
+the pool is either liquid or the page is lying about what an entry is worth. The
+investor allocations are the ones carrying lock-ups (private 10% at TGE then 18
+months, institutional 5% then 24 months), and none of them unlock a token at TGE
+for the team.
 
-Old design — never deflationary, peaks at 46.1% annual inflation:
-
-| Yr | GMV | Fee (OMC) | Burn | Emission | Net | Circulating | Inflation | Burn÷Emit |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | $150k | 0.23M | 0.07M | 15.00M | +14.93M | 65.43M | 29.6% | 0% |
-| 3 | $2.50M | 3.75M | 1.13M | 45.00M | +43.88M | 138.95M | 46.1% | 3% |
-| 5 | $12.00M | 18.00M | 5.40M | 60.00M | +54.60M | 240.85M | 29.3% | 9% |
-| 10 | $30.00M | 45.00M | 13.50M | 60.00M | +46.50M | 485.50M | 10.6% | 23% |
-
-New design — peaks at 18.0%, flat by year 6, deflationary by year 9:
+Old design — never deflationary, peaks at 39.9% annual inflation:
 
 | Yr | GMV | Fee (OMC) | Burn | Emission | Net | Circulating | Inflation | Burn÷Emit |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | $150k | 0.60M | 0.30M | 1.80M | +1.50M | 52.00M | 3.0% | 17% |
-| 3 | $2.50M | 10.00M | 5.00M | 15.00M | +10.00M | 66.80M | 17.6% | 33% |
-| 5 | $12.00M | 48.00M | 24.00M | 36.00M | +12.00M | 90.80M | 15.2% | 67% |
-| 6 | $18.00M | 72.00M | 36.00M | 36.00M | **0** | 90.80M | **0.0%** | 100% |
-| 9 | $28.00M | 112.00M | 56.00M | 50.00M | −6.00M | 84.80M | −6.6% | 112% |
+| 1 | $150k | 0.23M | 0.07M | 15.00M | +14.93M | 80.43M | 22.8% | 0% |
+| 3 | $2.50M | 3.75M | 1.13M | 45.00M | +43.88M | 153.95M | 39.9% | 3% |
+| 5 | $12.00M | 18.00M | 5.40M | 60.00M | +54.60M | 255.85M | 27.1% | 9% |
+| 10 | $30.00M | 45.00M | 13.50M | 60.00M | +46.50M | 500.50M | 10.2% | 23% |
 
-Same GMV, same decade: **485M circulating vs 75-91M**, and the point at which
+New design — peaks at 14.7%, flat by year 6, deflationary by year 9:
+
+| Yr | GMV | Fee (OMC) | Burn | Emission | Net | Circulating | Inflation | Burn÷Emit |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | $150k | 0.60M | 0.30M | 1.80M | +1.50M | 67.00M | 2.3% | 17% |
+| 3 | $2.50M | 10.00M | 5.00M | 15.00M | +10.00M | 81.80M | 13.9% | 33% |
+| 4 | $6.00M | 24.00M | 12.00M | 24.00M | +12.00M | 93.80M | **14.7%** | 50% |
+| 5 | $12.00M | 48.00M | 24.00M | 36.00M | +12.00M | 105.80M | 12.8% | 67% |
+| 6 | $18.00M | 72.00M | 36.00M | 36.00M | **0** | 105.80M | **0.0%** | 100% |
+| 9 | $28.00M | 112.00M | 56.00M | 50.00M | −6.00M | 99.80M | −5.7% | 112% |
+
+Same GMV, same decade: **500M circulating vs 90-106M**, and the point at which
 dilution stops is a date rather than a hope.
 
 ### 3.3 Model limitation, stated
@@ -308,9 +310,11 @@ arithmetic. Counsel should read this section before the window opens.
   constraint — otherwise a $5M stake base silently caps emission at $1M/year and the
   schedule in `params.json` is fiction.
 
-Airdrop claim — three changes, all in the claim contract rather than in the caps:
+Airdrop claim — two changes, both in the claim contract rather than in the caps:
 
-- 25% immediate, 75% linear over 180 days.
+- 100% of the entry is delivered at claim. No cliff, no linear tail: the entry was
+  paid for (0.01 BNB, non-refundable) and vesting it would make the published 20
+  OMC a number the claimer never sees. The lock-ups live on the investor side.
 - A `claim(entryCount)` that requires `msg.value == entryCount × 0.01 BNB` plus gas and
   forwards the fee to the treasury in the same transaction, reverting if it is short. The
   fee is per entry: a five-entry claim pays five times what a one-entry claim pays, and a

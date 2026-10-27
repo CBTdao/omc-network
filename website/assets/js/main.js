@@ -138,7 +138,7 @@ function showToast(msg) {
      below for why participation and claim are separate dates
    - During the campaign: page only DISPLAYS accumulated OMC
    - Claim window OPENS AT TGE (mainnet launch). The whitepaper releases
-     25% at claim and 75% linearly over 180 days, in a single claim on this
+     the whole entry at claim (no cliff, no tail), in a single claim on this
      page; the claim transaction carries a 0.01 BNB fee per entry that the treasury keeps
      (see ECONOMICS.md §5 and models/claim.mjs).
    ============================================================ */

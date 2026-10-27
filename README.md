@@ -103,8 +103,8 @@ Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20
 | Team & Core Contributors | 10% | 100,000,000 | 0% at TGE, 12m cliff, then 24m monthly linear |
 | Private Investors | 8% | 80,000,000 | 10% at TGE, 3m cliff, then 18m monthly linear |
 | Treasury & Liquidity | 5% | 50,000,000 | 50% at TGE for DEX/CEX liquidity |
-| Community Airdrop | 2% | 20,000,000 | 25% at claim + 75% linear over 180 days — 0.01 BNB per entry claim fee, not refunded |
-| **Total** | **100%** | **1,000,000,000** | Circulating at TGE ≈ 50,500,000 OMC (5.05%) |
+| Community Airdrop | 2% | 20,000,000 | 100% at claim, no vesting tail — 0.01 BNB per entry claim fee, not refunded |
+| **Total** | **100%** | **1,000,000,000** | Circulating at TGE ≈ 65,500,000 OMC (6.55%) |
 
 ### Deflationary Mechanics
 
@@ -238,7 +238,7 @@ Step-by-step walkthrough: [Run a GPU node on the testnet](https://forum.omc.netw
 | Daily limit | **1 entry / calendar day** (resets 00:00 UTC+8) |
 | Cost to register | **Zero.** Registering an entry is a `personal_sign` challenge — no gas, no transaction, no payment |
 | Cost to claim | **0.01 BNB per entry, kept** (about $7.42 at $742/BNB) — **0.05 BNB** for a base claim of five entries, **0.1 BNB** at the ten-entry cap — paid to the treasury in the claim transaction, plus network gas (~0.0004 BNB). Split **60% ecosystem development / 40% team operations** |
-| Withdrawal | accumulated amount is **displayed** during the airdrop; claimed in **one transaction** after the airdrop ends — **25% immediately, 75% linear over 180 days** |
+| Withdrawal | accumulated amount is **displayed** during the airdrop; claimed in **one transaction** after the airdrop ends — **the whole entry, immediately** |
 
 Why the claim is not free — two reasons, and they are the whole argument:
 
