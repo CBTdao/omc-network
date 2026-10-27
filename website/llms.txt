@@ -19,3 +19,17 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://omc.network/testnet](https://omc.network/testnet): Testnet — Omniverse Compute (OMC)
 - [https://omc.network/tokenomics](https://omc.network/tokenomics): Tokenomics — OMC Supply, Distribution and Emission | Omniverse Compute (OMC)
 - [https://omc.network/whitepaper](https://omc.network/whitepaper): Whitepaper — Omniverse Compute (OMC)
+
+## Companion sites
+
+- [https://game.omc.network](https://game.omc.network): Real or AI — a daily photo challenge. Five pairs a day; in each pair one photograph is real and one is AI-generated. Daily hints and answers at https://game.omc.network/daily, and a field guide to spotting generated images at https://game.omc.network/guide
+- [https://top.omc.network](https://top.omc.network): AITop — head-to-head comparisons of AI tools (chat assistants, image generators, coding assistants), published with criteria and dates.
+- [https://forum.omc.network](https://forum.omc.network): DCF — an editorial forum on decentralized compute: GPU market numbers, DePIN economics and long-form research.
+
+## Key facts
+
+- Token: OMC, BEP-20 on BNB Smart Chain, fixed maximum supply 1,000,000,000. No inflation parameter.
+- Community airdrop: 20,000,000 OMC (2% of supply) as 1,000,000 entries of 20 OMC. Registering is free; claiming costs a 0.01 BNB claim fee per entry, not refunded. 25% released at claim, 75% linear over 180 days.
+- Protocol fee: 8% of settled job volume, charged to the requester: 50% burned, 30% to staked nodes, 20% to the treasury.
+- Status: public testnet. Mainnet, staking and the airdrop claim window open on 1 January 2027.
+- The repository is https://github.com/CBTdao/omc-network, MIT licensed.

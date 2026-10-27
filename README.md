@@ -387,6 +387,20 @@ python -m http.server 8080
 # open http://localhost:8080
 ```
 
+SEO is checked mechanically rather than remembered. Both tools are read-only:
+
+```bash
+node scripts/seo-audit.mjs        # every page: canonical vs real URL, og/twitter, h1,
+                                  # JSON-LD, image alts, sitemap coverage, robots, internal links
+node scripts/seo-audit.mjs --all  # one line per page, to see drift at a glance
+node scripts/seo-audit.mjs --json # machine readable; exits non-zero on any problem
+python website/tools/seo_audit.py # the 13 root pages, site-wide conventions only
+```
+
+The game sub-site (`website/game/`) is deployed twice — at `game.omc.network/` (its own
+project, which every canonical points at) and under `omc.network/game/`; the redirect rules in
+`vercel.json` send the second one to the first, so the two copies do not compete.
+
 ---
 
 ## 🤝 Contributing

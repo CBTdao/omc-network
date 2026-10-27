@@ -24,14 +24,13 @@
   ],
   "redirects": [
     {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "game.omc.network"
-        }
-      ],
-      "destination": "/game",
+      "source": "/game",
+      "destination": "https://game.omc.network/",
+      "permanent": true
+    },
+    {
+      "source": "/game/:path*",
+      "destination": "https://game.omc.network/:path*",
       "permanent": true
     },
     {
