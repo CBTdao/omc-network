@@ -196,7 +196,7 @@ Step-by-step walkthrough: [Run a GPU node on the testnet](https://forum.omc.netw
 - [x] Smart contract deployment (BNB Smart Chain Testnet)
 - [x] Open-source node client release
 - [x] Public testnet launch
-- [ ] 2% community airdrop campaign
+- [x] 2% community airdrop campaign — participation open; claiming opens 1 January 2027
 
 **Phase 2 · 2027 Q1 (1 January) — Mainnet, TGE & Staking**
 - [ ] Mainnet launch and TGE — **1 January 2027**
