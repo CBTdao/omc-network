@@ -119,7 +119,7 @@ COPY = {
   "cst.m_burned": "Fees burned",
   "cst.m_liquidity": "Reward pool left",
   "cst.m_slashed": "Slashed so far",
-  "cst.m_note": "Every settled job pays a 3% protocol fee: 30% of the fee is bought back and burned, 70% goes to the reputation reward pool. The burn is 0.9% of settled volume.",
+  "cst.m_note": "Every settled job pays a 3% protocol fee: 30% of the fee is burned by the contract at settlement (no market buyback), 70% goes to the reputation reward pool. The burn is 0.9% of settled volume.",
   "cst.k_market": "OMCComputeMarket",
 
   "cst.lc_eyebrow": "Lifecycle",
@@ -260,7 +260,7 @@ COPY = {
   "cst.m_burned": "已销毁手续费",
   "cst.m_liquidity": "奖励池余额",
   "cst.m_slashed": "累计罚没",
-  "cst.m_note": "每笔结算的作业支付 3% 协议费：其中 30% 回购销毁，70% 进入声誉奖励池。销毁量等于结算金额的 0.9%。",
+  "cst.m_note": "每笔结算的作业支付 3% 协议费：其中 30% 由合约在结算时直接销毁（不存在市场回购），70% 进入声誉奖励池。销毁量等于结算金额的 0.9%。",
   "cst.k_market": "OMCComputeMarket",
 
   "cst.lc_eyebrow": "作业流程",
