@@ -103,7 +103,7 @@ Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20
 | Team & Core Contributors | 10% | 100,000,000 | 0% at TGE, 12m cliff, then 24m monthly linear |
 | Private Investors | 8% | 80,000,000 | 10% at TGE, 3m cliff, then 18m monthly linear |
 | Treasury & Liquidity | 5% | 50,000,000 | 50% at TGE for DEX/CEX liquidity |
-| Community Airdrop | 2% | 20,000,000 | 25% at claim + 75% linear over 180 days — 0.01 BNB claim fee, not refunded |
+| Community Airdrop | 2% | 20,000,000 | 25% at claim + 75% linear over 180 days — 0.01 BNB per entry claim fee, not refunded |
 | **Total** | **100%** | **1,000,000,000** | Circulating at TGE ≈ 50,500,000 OMC (5.05%) |
 
 ### Deflationary Mechanics
@@ -222,42 +222,42 @@ Step-by-step walkthrough: [Run a GPU node on the testnet](https://forum.omc.netw
 
 ## 🎁 Airdrop
 
-**2% of total supply (20,000,000 OMC) reserved for the community — 500,000 entries × 40 OMC each.**
+**2% of total supply (20,000,000 OMC) reserved for the community — 1,000,000 entries × 20 OMC each.**
 
-> ⚠️ **Registering is free. Claiming costs 0.01 BNB, and it is not refunded.**
-> We will **never** ask for your seed phrase or private key. That 0.01 BNB is paid
+> ⚠️ **Registering is free. Claiming costs 0.01 BNB per entry, and it is not refunded.**
+> A base claim of five entries is **0.05 BNB**; a full ten-entry claim is **0.1 BNB**.
+> We will **never** ask for your seed phrase or private key. That fee is paid
 > inside the claim transaction and goes to the treasury; any message asking you to
 > send BNB to a wallet address "for gas" is not us. Only trust links published here
 > and on our verified social accounts.
 
 | Rule | Detail |
 |---|---|
-| Per entry | **40 OMC** |
-| Per wallet | up to **10 entries = 400 OMC**; a base claim is **5 entries = 200 OMC** |
+| Per entry | **20 OMC** |
+| Per wallet | up to **10 entries = 200 OMC**; a base claim is **5 entries = 100 OMC** |
 | Daily limit | **1 entry / calendar day** (resets 00:00 UTC+8) |
 | Cost to register | **Zero.** Registering an entry is a `personal_sign` challenge — no gas, no transaction, no payment |
-| Cost to claim | **0.01 BNB, kept** (about $7.42 at $742/BNB) paid to the treasury in the claim transaction, plus network gas (~0.0004 BNB). Split **60% ecosystem development / 40% team operations** |
+| Cost to claim | **0.01 BNB per entry, kept** (about $7.42 at $742/BNB) — **0.05 BNB** for a base claim of five entries, **0.1 BNB** at the ten-entry cap — paid to the treasury in the claim transaction, plus network gas (~0.0004 BNB). Split **60% ecosystem development / 40% team operations** |
 | Withdrawal | accumulated amount is **displayed** during the airdrop; claimed in **one transaction** after the airdrop ends — **25% immediately, 75% linear over 180 days** |
 
 Why the claim is not free — two reasons, and they are the whole argument:
 
 1. **It is the funding path, because there is no private round.** 60% of the fee goes
    to development (audits, testnet incentives, RPC and indexer costs, the node client,
-   the sub-sites) and 40% to team operations. At 25,000 claimers that is **$185.5k**;
-   at 50,000, **$371k**. The pool is the ceiling: 500,000 entries ÷ 5 per base claim
-   is 100,000 claims, so the airdrop can raise at most **1,000 BNB ($742k)** — enough
-   to build, not enough to run a company, which is why the emission is revenue-gated.
-2. **It filters the wallets that will never run a GPU.** 100,000 wallets must spend
-   **$771.7k** before holding a token, and unlike a deposit that money cannot be
-   rotated back out. Free tokens get farmed; $7.42 is a decision.
+   the sub-sites) and 40% to team operations. 100,000 entries raises **1,000 BNB
+   ($742k)**; the pool — 1,000,000 slots — is the ceiling at **10,000 BNB ($7.4M)**.
+   That is years of runway for a small team, and still not enough to build a GPU
+   network, which is why the emission is revenue-gated and compute margin carries the rest.
+2. **It filters the wallets that will never run a GPU.** A farm taking five entries per
+   wallet spends **$37.40** per wallet before holding a token, and unlike a deposit that
+   money cannot be rotated back out — 100,000 such wallets is **$3.74M**. Free tokens get
+   farmed; $37 is a decision.
 
-A fee is a *distribution price*, so the allocation has to be big enough to carry it.
-At 40 OMC per entry a base claim is 200 OMC, which puts the fee at roughly **$0.037
-per OMC** and at the 400 OMC cap **$0.019**. The previous 20 OMC per entry would have
-made the same fee **148%** of a base claim at a $0.05 listing — nobody claims at that
-price, and the pool stays full. Above about **$0.019** the fee stops being a wall and
-becomes a toll, which is intended: a farm that pays the toll is revenue, and it is
-never free.
+The charge is **per entry**, and it is not indexed to the token price: five entries cost
+0.05 BNB whether OMC lists at $0.01 or at $1. What changes is whether the claim is worth
+making, and the docs do not pretend otherwise — below about **$0.37/OMC** a five-entry
+claim is a net cash cost. The campaign asks people to claim because they intend to use the
+network, not because the arithmetic promises a profit.
 
 Full arithmetic, including what the fee raises, where it stops filtering, and how the
 allocation was sized: [`ECONOMICS.md` §5](ECONOMICS.md#5-airdrop-claim-what-001-bnb-actually-costs),

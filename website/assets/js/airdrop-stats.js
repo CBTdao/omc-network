@@ -22,8 +22,8 @@
 window.OMC_STATS = {
   endpoint: "",                                  // ← real data feed (optional)
   pool: 20000000,                                // OMC reserved for the airdrop
-  perEntry: 40,                                  // OMC per entry
-  totalEntries: 500000,                          // pool ÷ perEntry
+  perEntry: 20,                                  // OMC per entry
+  totalEntries: 1000000,                         // pool ÷ perEntry
   /* These two instants gate the CLAIM window — which is what this ticker
      reports — not participation. The claim window opens together with TGE,
      mainnet and staking on 2027-01-01 00:00 (UTC+8) and runs three months,

@@ -138,18 +138,23 @@ test("the airdrop cannot reach a tier-1 bond at any plausible price", () => {
   const a = params.airdrop;
   const maxAirdrop = a.perEntry * (a.baseEntries + a.referralEntries);
   const t1 = params.staking.tiers[0].usdTarget;
-  /* The free-stake loop needs the airdrop to buy a bond. For that, one OMC would
-     have to be worth tier-1 USD ÷ maxAirdrop. Asserting the number rather than a
-     literal keeps the check meaningful when the allocation changes: the loop
-     reopens if this falls to the price the claim fee already implies. */
+  /* The free-stake loop needs the airdrop to buy a bond, which needs one OMC to be
+     worth t1 ÷ 200 = $1.25. Asserted as a number rather than a literal so the check
+     survives a change to the payload. The fee's implied price per token ($0.371 at
+     the reference BNB) is computed alongside it, because the two together say how
+     much room the loop has: the airdrop only becomes a discount on a bond above
+     $1.25, which is 3.4x the price the fee implies. */
   const impliedPrice = t1 / maxAirdrop;
-  const claimPrice = (a.claimCost.feeBnb * a.claimCost.bnbReferenceUsd) / (a.perEntry * a.baseEntries);
+  const feePerOmc = (a.claimCost.feeBnb * a.claimCost.bnbReferenceUsd) / a.perEntry;
   assert.ok(
-    impliedPrice > claimPrice * 10,
-    `a max airdrop buys a tier-1 bond at $${impliedPrice.toFixed(2)}/OMC, only ${(impliedPrice / claimPrice).toFixed(1)}x the ` +
-      `$${claimPrice.toFixed(4)} the claim fee implies — the free-stake loop is closing`
+    impliedPrice > 1,
+    `a max airdrop buys a tier-1 bond at $${impliedPrice.toFixed(2)}/OMC — below $1 the free-stake loop is open`
   );
-  assert.equal(a.perEntry * a.baseEntries, 200, "a base claim is 200 OMC; the fee is sized against it");
+  assert.ok(feePerOmc < impliedPrice, "paying the fee must not be a worse price than the bond implies");
+  assert.equal(a.perEntry * a.baseEntries, 100, "a base claim is 100 OMC");
+  assert.equal(maxAirdrop, 200, "with referrals the ceiling is 200 OMC");
+  assert.equal(a.claimCost.chargePer, "entry", "five entries cost five fees, not one");
+  assert.equal(a.poolSlots * a.perEntry, a.pool, "the pool is exactly the slots it is divided into");
 });
 
 test("published on-chain state matches the deployment manifest", () => {

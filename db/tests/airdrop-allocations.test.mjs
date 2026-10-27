@@ -57,6 +57,7 @@ test("002 applies on top of 001 and creates its objects", async () => {
     "001_airdrop_entries.sql",
     "002_airdrop_allocations.sql",
     "003_airdrop_per_entry_40.sql",
+    "004_airdrop_per_entry_20.sql",
   ]);
   const t = await db.query("select to_regclass('public.airdrop_allocations') as t, to_regclass('public.airdrop_totals') as v");
   assert.equal(t.rows[0].t, "airdrop_allocations");

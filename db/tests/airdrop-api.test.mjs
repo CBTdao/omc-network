@@ -162,8 +162,11 @@ test("the API caps and contracts/params.json cannot drift apart", () => {
     referral: PARAMS.airdrop.referralEntries,
     perEntry: PARAMS.airdrop.perEntry,
   });
-  assert.equal(PARAMS.airdrop.baseEntries * PARAMS.airdrop.perEntry, 200,
-    "a base claim is 200 OMC — the number the 0.01 BNB fee is sized against");
+  assert.equal(PARAMS.airdrop.baseEntries * PARAMS.airdrop.perEntry, 100,
+    "a base claim is 100 OMC — 2% of supply spread over 1,000,000 slots");
+  assert.equal(PARAMS.airdrop.poolSlots, PARAMS.airdrop.pool / PARAMS.airdrop.perEntry);
   assert.equal(PARAMS.airdrop.claimCost.mode, "fee");
   assert.equal(PARAMS.airdrop.claimCost.refundable, false);
+  assert.equal(PARAMS.airdrop.claimCost.chargePer, "entry",
+    "the fee is per entry: five entries cost five times one entry");
 });

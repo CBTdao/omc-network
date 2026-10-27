@@ -9,7 +9,7 @@
    - Attributes the invitee on arrival (?ref=) and credits the inviter when
      the invitee registers their FIRST entry.
    - The reward is EXTRA ENTRY SLOTS, never tokens:
-       base 5 entries/wallet + up to 5 referral entries = max 10 (400 OMC).
+       base 5 entries/wallet + up to 5 referral entries = max 10 (200 OMC).
      The pool (20,000,000 OMC = 1,000,000 × 20) is unchanged — referrals
      only redistribute slots inside it, so the token budget is zero.
    - STRICTLY ONE LAYER: only direct invites count. No recursion, no
@@ -28,7 +28,7 @@ window.OMC_REFERRAL = {
   endpoint: "",                                  // ← real referral API (optional)
   baseMax: 5,                                    // base entries per wallet (public promise)
   bonusMax: 5,                                   // max extra entries earned by inviting
-  perEntry: 40,                                  // OMC per entry
+  perEntry: 20,                                  // OMC per entry
   shareUrl: "https://omc.network/airdrop",
   utm: "utm_source=referral&utm_medium=social&utm_campaign=airdrop_invite"
 };

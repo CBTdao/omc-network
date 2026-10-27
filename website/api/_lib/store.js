@@ -15,8 +15,25 @@ const { dayKeyUTC8, normalizeAddress } = require("./entry-message");
 const CAPS = {
   base: 5,        // own entries per wallet, lifetime
   referral: 5,    // bonus entries an inviter can earn, lifetime
-  perEntry: 40,   // OMC per entry — sized against the 0.01 BNB claim fee
+  perEntry: 20,   // OMC per entry — 2% of supply spread over 1,000,000 slots
 };
+
+/* Slots in the pool: 20,000,000 ÷ 20. Mirrors contracts/params.json airdrop.poolSlots.
+   Once they are gone the campaign is over whatever a wallet's remaining cap says —
+   "first come, first served" is not a slogan if the ledger does not enforce it. */
+const POOL_SLOTS = 1_000_000;
+
+/**
+ * Slots already taken, counted from the ledger rather than from a counter.
+ *
+ * count(*) over a million rows costs tens of milliseconds and that is the right
+ * trade: a cached counter that drifts turns first-come-first-served into "whoever
+ * the cache remembered", and the failure is invisible until the pool is overdrawn.
+ */
+async function readPoolUsage(client) {
+  const { rows } = await client.query("select count(*)::int as used from airdrop_entries");
+  return Number((rows[0] && rows[0].used) || 0);
+}
 
 /* A pg Pool hands out dedicated clients; PGlite is a single connection. Both
    are treated the same way here so the transactional code has one shape. */
@@ -101,13 +118,16 @@ async function getStatus(pool, address, now) {
   const day = dayKeyUTC8(now || new Date());
   return withClient(pool, async (client) => {
     const counts = await readCounts(client, addr, day);
+    const used = await readPoolUsage(client);
+    const remaining = Math.max(0, POOL_SLOTS - used);
     return {
       address: addr,
       ...counts,
       day,
       allocation: await readAllocation(client, addr),
+      pool: { slots: POOL_SLOTS, used, remaining },
       canParticipate:
-        counts.today === 0 && counts.base < CAPS.base,
+        remaining > 0 && counts.today === 0 && counts.base < CAPS.base,
       caps: { ...CAPS, total: CAPS.base + CAPS.referral },
     };
   });
@@ -132,6 +152,12 @@ async function registerEntry(pool, { address, referrer, refCode, message, signat
          same instant cannot both pass the "one per day" check. */
       await client.query("select pg_advisory_xact_lock(hashtext($1))", [addr]);
 
+      /* The pool is global, so it needs a global lock too: two wallets on two
+         connections would otherwise both read "one slot left" and both take it.
+         Lock order is fixed (address, then pool) so two transactions cannot
+         deadlock by taking them in opposite orders. */
+      await client.query("select pg_advisory_xact_lock(hashtext($1))", ["omc-airdrop-pool"]);
+
       const before = await readCounts(client, addr, day);
       if (before.today >= 1) {
         await client.query("rollback");
@@ -140,6 +166,18 @@ async function registerEntry(pool, { address, referrer, refCode, message, signat
       if (before.base >= CAPS.base) {
         await client.query("rollback");
         return { code: "LIMIT_TOTAL", ...before };
+      }
+
+      /* First come, first served. Checked after the per-wallet caps because the
+         caps are free and this is a count, and checked before the insert because
+         the alternative is a pool that overdraws quietly. A referral credit in the
+         same transaction can take one slot beyond the limit — the campaign ends
+         with 1,000,001 entries at worst, which is a rounding error against 2% of
+         supply and not worth a second lock to prevent. */
+      const used = await readPoolUsage(client);
+      if (used >= POOL_SLOTS) {
+        await client.query("rollback");
+        return { code: "POOL_EXHAUSTED", used, slots: POOL_SLOTS, ...before };
       }
 
       await client.query(
@@ -190,4 +228,4 @@ async function registerEntry(pool, { address, referrer, refCode, message, signat
   });
 }
 
-module.exports = { CAPS, getStatus, registerEntry, withClient };
+module.exports = { CAPS, POOL_SLOTS, getStatus, registerEntry, withClient, readPoolUsage };
