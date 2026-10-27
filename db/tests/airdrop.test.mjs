@@ -10,14 +10,11 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import fs from "node:fs/promises";
-import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { Wallet, verifyMessage } from "ethers";
 import { createDb } from "./helpers.mjs";
 
-const here = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 const msg = require("../../website/api/_lib/entry-message.js");
 const store = require("../../website/api/_lib/store.js");

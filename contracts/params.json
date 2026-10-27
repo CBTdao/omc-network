@@ -70,7 +70,12 @@
       60000000
     ],
     "rationale": "The pool is finite, so the only real question is when it is spent. A flat 50M a year pays out 76% of the entire TGE float in year one, against a network that has no paying demand yet, and the dilution lands before the utility exists. The schedule instead ramps: 15M in year 1 (23% of float), reaching 60M by year 5 and holding there. Same 500M total, same 10-year window, one third of the year-one sell pressure.",
-    "implementation": "OMCStaking stores a single per-second rate, so the ramp is applied as one owner transaction at each annual boundary. set-params.js emit --apply prints and sends the rate for the year that is starting. A missed boundary simply continues the previous year's rate, which is why the schedule belongs in its own contract at mainnet rather than in an operator's calendar."
+    "implementation": "OMCStaking stores a single per-second rate, so the ramp is applied as one owner transaction at each annual boundary. set-params.js emit --apply prints and sends the rate for the year that is starting. A missed boundary simply continues the previous year's rate, which is why the schedule belongs in its own contract at mainnet rather than in an operator's calendar.",
+    "testnet": {
+      "chainId": 97,
+      "perSecond": "10000000000000000",
+      "note": "The deployed testnet contract emits 0.01 tOMC/s (about 864 a day) as a test rate. It is not the schedule above: tOMC is not OMC, has no cap and has no value. /stake shows whatever the contract currently pays, read live."
+    }
   },
   "airdrop": {
     "pool": 20000000,
