@@ -164,6 +164,9 @@ PAGE_SPECIFIC = {
     "canonical", "og:title", "og:desc", "og:url", "tw:title", "tw:desc",
     "h1", "h1_tag", "imgs",
     "bc_first", "bc_last", "bc_len", "ld_types", "ld_blocks",
+    # hreflang differs on purpose: only the batch-1 pages have a /zh/ mirror
+    # (website/tools/build_zh.py) and therefore a zh alternate.
+    "hreflang",
 }
 
 print("=" * 100)

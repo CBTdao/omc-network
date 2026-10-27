@@ -4,11 +4,15 @@
 
    Language policy
    ---------------
-   English is the ONE and ONLY default, for every visitor, from every
-   region. There is deliberately NO navigator.language / geo detection.
-   The only thing that can override the default is an explicit pick in
-   the language switcher — and that pick is the only value ever written
-   to storage, so a stale default can never get "stuck" on a visitor.
+   English is the default, for every visitor, from every region. There is
+   deliberately NO navigator.language / geo detection. Two things can
+   override it, in order of strength:
+     1. an explicit pick in the language switcher — the only value ever
+        written to storage, so a stale default can never get "stuck";
+     2. the URL itself: /zh/… (the static Chinese mirror built by
+        website/tools/build_zh.py) defaults to Chinese, because a visitor
+        who opened the Chinese URL asked for Chinese — and crawlers that
+        never run this script already see the Chinese HTML statically.
    ============================================================ */
 
 (function () {
@@ -43,8 +47,16 @@
     return saved && SUPPORTED.indexOf(saved) !== -1 ? saved : null;
   }
 
+  /* The /zh/ static copies (website/zh/, built by website/tools/build_zh.py)
+     are real Chinese HTML at a distinct URL so crawlers never have to run
+     this script. A visitor landing on one of them gets zh as the default —
+     ahead of the English hard default but still behind an explicit pick. */
+  function pathLang() {
+    return /^\/zh(\/|$)/.test(location.pathname) ? "zh" : null;
+  }
+
   function currentLang() {
-    return savedLang() || DEFAULT_LANG;
+    return savedLang() || pathLang() || DEFAULT_LANG;
   }
 
   function dict(lang) {

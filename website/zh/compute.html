@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <title data-i18n="meta.title_compute">AI 算力服务站 — Omniverse Compute (OMC)</title>
+  <link rel="canonical" href="https://omc.network/zh/compute">
+  <link rel="alternate" hreflang="en" href="https://omc.network/compute">
+  <link rel="alternate" hreflang="x-default" href="https://omc.network/compute">
+  <link rel="alternate" hreflang="zh" href="https://omc.network/zh/compute">
+  <script type="application/ld+json">
+{"@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"],"@context":"https://schema.org"}
+</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"AI Compute Station","url":"https://omc.network/compute","description":"Configure a GPU job on the OMC network: pick a hardware tier, choose a verification policy, see the fee breakdown and escrow the job on BNB Smart Chain Testnet. Buyers pay only for work that passes verification, and a failed job is compensated out of the provider's stake.","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}}
+</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"Testnet","item":"https://omc.network/testnet"},{"@type":"ListItem","position":3,"name":"AI Compute Station","item":"https://omc.network/compute"}]}
+</script>
+  <meta property="og:site_name" content="Omniverse Compute">
+  <meta property="og:type" content="website">
+  <meta property="og:title" data-i18n-content="meta.title_compute" content="AI 算力服务站 — Omniverse Compute (OMC)">
+  <meta property="og:description" data-i18n-content="meta.desc_compute" content="在 OMC 网络上配置并托管一笔 GPU 算力任务：选择硬件档位与验证策略，只为通过验证的工作付费。">
+  <meta property="og:url" content="https://omc.network/zh/compute">
+  <meta property="og:image" content="https://omc.network/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+  <meta property="og:locale" data-i18n-content="meta.og_locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Omniverse_Depin">
+  <meta name="twitter:title" data-i18n-content="meta.title_compute" content="AI 算力服务站 — Omniverse Compute (OMC)">
+  <meta name="twitter:description" data-i18n-content="meta.desc_compute" content="在 OMC 网络上配置并托管一笔 GPU 算力任务：选择硬件档位与验证策略，只为通过验证的工作付费。">
+  <meta name="twitter:image" content="https://omc.network/og-image.png">
+  <meta name="twitter:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+  <meta name="description" data-i18n-content="meta.desc_compute" content="在 OMC 网络上配置并托管一笔 GPU 算力任务：选择硬件档位与验证策略，只为通过验证的工作付费。">
+  <link rel="stylesheet" href="/assets/css/app.css?v=20261027a">
+  <link rel="stylesheet" href="/assets/css/net-canvas.css?v=20261027a">
+  <link rel="stylesheet" href="/assets/css/wallet-support.css?v=20261027a">
+  <link rel="stylesheet" href="/assets/css/footer-chain.css?v=20261027a">
+  <link rel="stylesheet" href="/assets/css/stake.css?v=20261027a">
+  <link rel="stylesheet" href="/assets/css/compute.css?v=20261027a">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the OMC AI Compute Station?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is the requester side of the OMC network, live on BNB Smart Chain Testnet (chainId 97). You configure a GPU job — hardware tier, verification policy, protection level and a price ceiling — then escrow the fee on chain. The GPU itself runs off chain; the contract holds the escrow, the assignment record and the verdict."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is a compute job verified?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The requester chooses a per-job verification policy: spot-check (a random share of the work is re-run on another node), full redundancy (the job runs on 2–3 independent nodes and results are compared), or TEE (the job runs inside hardware-isolated trusted execution). Verification is a dial, not a single flag — you pay more for stronger checks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if a job fails or returns bad output?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Provider misbehavior is slashed from its stake: a timeout is 2%, going offline 5%, bad output 30%, and proven fraud 100%. Half of the slashed amount compensates the requester whose job failed, 30% goes to the protocol treasury, and 20% is burned. A failed job is refunded out of the provider's bond, not out of the requester's escrow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the job price built?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Price equals GPU-hours × your reference rate × the verification multiplier, plus an 8% protocol fee, minus a 10% fee discount when you pay in OMC. You set the ceiling; the contract refuses to settle above it. No published rate card exists yet — the benchmark against hyperscalers and other networks is published after mainnet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this mainnet, and can I lose real money?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The station runs on BNB Smart Chain Testnet with the test token tOMC. tOMC and tBNB have no monetary value and are sold nowhere. Never send real funds to any address on this page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which wallets can I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any EIP-1193 wallet works, including MetaMask and Trust Wallet. Inside the Binance App, the dApp connects through the Binance Web3 Wallet that Binance injects at window.binancew3w.ethereum rather than window.ethereum."
+      }
+    }
+  ]
+}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/zh/">
+        <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="eager" decoding="async">
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/zh/" data-i18n="nav.home">首页</a>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.product">产品</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/zh/compute" data-i18n="nav.compute">算力</a>
+            <a href="/zh/ai-tools" data-i18n="nav.aitools">AI 工具</a>
+            <a href="/calculator" data-i18n="nav.calc">计算器</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.eco">生态</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="nav.game">真图还是 AI</a>
+            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="nav.forum">算力论坛</a>
+            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="nav.top">AI 工具站</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.network">网络</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/zh/testnet" data-i18n="nav.testnet">测试网</a>
+            <a href="/zh/stake" data-i18n="nav.stake">质押</a>
+          </div>
+        </div>
+        <a href="/zh/news" data-i18n="nav.news">动态</a>
+        <a href="/whitepaper" data-i18n="nav.wp">白皮书</a>
+        <a href="/zh/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 参与空投</a>
+        <div class="nav-wallet" id="walletNav"></div>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+        </select>
+        </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" style="padding-bottom: 44px;">
+    <canvas class="net-canvas" aria-hidden="true"></canvas>
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="cst.badge">第一阶段 — 买方侧已在测试网上线</span></div>
+      <h1><span data-i18n="cst.t1">买算力。</span><br><span class="grad" data-i18n="cst.t2">只为通过验证的作业付费。</span></h1>
+      <p class="sub" data-i18n="cst.sub">算力服务站是作业创建的地方：选硬件档位、选校验强度、看清价格的每一部分，然后把它托管上链。作业失败时，赔付款来自服务方的质押金 —— 而不是别人的托管款。</p>
+      <div class="net-status">
+        <span class="status-pill live"><span class="dot"></span><span data-i18n="stk.status_chain">BNB Smart Chain 测试网 · Chain 97</span></span>
+        <span class="status-pill warn"><span class="dot"></span><span data-i18n="cst.status_value">tOMC 没有任何货币价值</span></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 26px;" id="cmpApp">
+    <div class="container stk-wrap">
+
+      <div class="stk-warn" data-i18n="cst.disclaim"><b>仅限测试网。</b>作业在 BNB Smart Chain <b>测试网</b>上以 tOMC 结算。tOMC 与 tBNB 一文不值，且任何地方都不出售。GPU 实际运行在链下；合约只负责托管、分配记录与裁定。切勿向这些地址转入真实资金。</div>
+
+      <!-- wallet bar -->
+      <div class="stk-wallet">
+        <div class="who">
+          <span id="cmpWStatus" class="pill idle"><span class="dot"></span>未连接</span>
+          <span id="cmpWAddr" class="addr">—</span>
+        </div>
+        <div class="who">
+          <span class="hint" data-i18n="cst.wallet_note">报价与档位表无需钱包即可查看，托管作业需要连接钱包。</span>
+          <button id="cmpConnect" class="btn btn-ghost" type="button">连接钱包</button>
+        </div>
+      </div>
+
+      <!-- summary tiles -->
+      <div class="stk-tiles">
+        <div class="stk-tile"><div class="lbl" data-i18n="cst.tile_bal">tOMC 余额</div><div class="val" id="cmpTileBal">0</div><div class="sub" data-i18n="cst.tile_bal_sub">钱包内，可用于下单</div></div>
+        <div class="stk-tile"><div class="lbl" data-i18n="cst.tile_nodes">已注册服务方</div><div class="val" id="cmpNetNodes">—</div><div class="sub" data-i18n="cst.tile_nodes_sub">调度器可选用的已质押节点</div></div>
+        <div class="stk-tile"><div class="lbl" data-i18n="cst.tile_staked">背后的质押总额</div><div class="val" id="cmpNetStaked">—</div><div class="sub" data-i18n="cst.tile_staked_sub">作业失败时的赔付来源</div></div>
+        <div class="stk-tile"><div class="lbl" data-i18n="cst.tile_volume">已结算金额</div><div class="val" id="cmpVolume">—</div><div class="sub"><span id="cmpJobsSettled">—</span> <span data-i18n="cst.tile_volume_sub">笔作业已结算</span></div></div>
+      </div>
+
+      <div class="stk-grid">
+        <!-- ===== LEFT: configure ===== -->
+        <div>
+          <div class="stk-panel">
+            <h2 class="as-h3" data-i18n="cst.h_config">1 · 配置作业</h2>
+            <p class="p-sub" data-i18n="cst.h_config_sub">档位是你要的硬件等级。每一档的最低质押都从质押合约实时读取，因此本页与质押页永远不会互相矛盾。</p>
+
+            <div class="field">
+              <label data-i18n="cst.l_tier">硬件档位</label>
+              <div class="cmp-tiers" id="cmpTiers"></div>
+              <div class="note" data-i18n="cst.tier_note">档位是一类机器，而不是对某张具体显卡的承诺。调度器会在该档位内挑选合格节点。</div>
+            </div>
+
+            <div class="field">
+              <label data-i18n="cst.l_spec">你要跑什么？</label>
+              <input id="cmpSpec" type="text" placeholder="e.g. SDXL batch render, 512 images, 1024px" autocomplete="off">
+              <div class="note" data-i18n="cst.spec_note">描述容器、资源需求与地区。只有这段文字的哈希会上链 —— 描述本身留在你的浏览器里。</div>
+            </div>
+
+            <div class="field">
+              <label data-i18n="cst.l_verify">校验策略</label>
+              <div class="cmp-seg" id="cmpVerify">
+                <button type="button" class="on" data-v="0"><b data-i18n="cst.v0">抽查复算</b><small data-i18n="cst.v0s">随机比例被重跑</small></button>
+                <button type="button" data-v="1"><b data-i18n="cst.v1">全冗余</b><small data-i18n="cst.v1s">2–3 个节点比对</small></button>
+                <button type="button" data-v="2"><b data-i18n="cst.v2">TEE 机密计算</b><small data-i18n="cst.v2s">硬件级隔离</small></button>
+              </div>
+              <div class="note" data-i18n="cst.verify_note">这是价格上最大的一个杠杆。全冗余要贵两到三倍，因为它真的跑了两到三遍。</div>
+            </div>
+
+            <div class="field">
+              <label data-i18n="cst.l_protect">数据保护等级</label>
+              <div class="cmp-seg" id="cmpProtect">
+                <button type="button" class="on" data-v="0"><b data-i18n="cst.p0">标准</b><small data-i18n="cst.p0s">公开或非敏感数据</small></button>
+                <button type="button" data-v="1"><b data-i18n="cst.p1">受保护</b><small data-i18n="cst.p1s">加密，作业后擦除</small></button>
+                <button type="button" data-v="2"><b data-i18n="cst.p2">机密</b><small data-i18n="cst.p2s">仅限 TEE 节点</small></button>
+              </div>
+            </div>
+
+            <div class="stk-row" style="gap:12px;">
+              <div style="flex:1;">
+                <label class="mini-lbl" data-i18n="cst.l_rate">参考费率（tOMC / GPU-小时）</label>
+                <input id="cmpRate" type="text" inputmode="decimal" value="12" autocomplete="off">
+              </div>
+              <div style="flex:1;">
+                <label class="mini-lbl" data-i18n="cst.l_hours">预估 GPU 小时数</label>
+                <input id="cmpHours" type="text" inputmode="decimal" value="8" autocomplete="off">
+              </div>
+            </div>
+            <div class="note" data-i18n="cst.rate_note">目前没有公布价目表。你填写自己愿意支付的费率上限；合约永远不会以高于它的价格结算。与超大规模云及其他网络的实测对标将在主网后公布。</div>
+
+            <div class="field">
+              <label data-i18n="cst.l_pay">支付方式</label>
+              <div class="cmp-seg two" id="cmpPay">
+                <button type="button" class="on" data-v="omc"><b data-i18n="cst.pay_omc">tOMC</b><small data-i18n="cst.pay_omc_s">手续费 9 折</small></button>
+                <button type="button" data-v="usd"><b data-i18n="cst.pay_usd">稳定币</b><small data-i18n="cst.pay_usd_s">全额手续费</small></button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label data-i18n="cst.l_deadline">交付期限</label>
+              <select id="cmpDeadline" class="cmp-select">
+                <option value="1" data-i18n="cst.dl1">1 小时</option>
+                <option value="6" data-i18n="cst.dl6">6 小时</option>
+                <option value="24" selected data-i18n="cst.dl24">24 小时</option>
+                <option value="72" data-i18n="cst.dl72">3 天</option>
+              </select>
+              <div class="note" data-i18n="cst.deadline_note">错过交付期限将罚没服务方质押金的 2%。你的托管款仍会退回，并额外获得罚金中属于你的那一份。</div>
+            </div>
+
+            <button id="cmpBtnCreate" class="stk-btn" type="button" disabled data-i18n="cst.btn_create">托管这笔作业</button>
+            <div class="stk-row">
+              <button id="cmpBtnApprove" class="stk-btn sec" type="button" disabled data-i18n="cst.btn_approve">仅授权托管额度</button>
+              <button id="cmpBtnFaucet" class="stk-btn sec" data-i18n="cst.btn_faucet">领取测试 tOMC</button>
+            </div>
+            <div class="note" id="cmpFaucetNote" style="margin-top:9px;" data-i18n="cst.faucet_air">在本页直接领取测试 tOMC：每天 1 次，每人最多 5 次，每次 20 tOMC。</div>
+            <div class="note" data-i18n="cst.approve_note">授权额度恰好等于你刚配置的这笔作业上限 —— 永远不是无限授权。</div>
+          </div>
+        </div>
+
+        <!-- ===== RIGHT: quote + network ===== -->
+        <div>
+          <div class="cmp-quote empty" id="cmpQuoteOut">
+            <div class="qh" data-i18n="cst.quote_empty">填写费率与工时，查看价格构成。</div>
+          </div>
+
+          <div class="stk-panel" style="margin-top:20px;">
+            <h2 class="as-h3" data-i18n="cst.h_why">谁为这笔作业做担保</h2>
+            <p class="p-sub" data-i18n="cst.h_why_sub">直接从两个合约读取，无需钱包。</p>
+
+            <div class="cmp-why">
+              <div class="cw"><span class="cwn">1</span><div>
+                <b data-i18n="cst.w1_t">质押 = 被分配的资格</b>
+                <p data-i18n="cst.w1_d">调度器只能选择已注册、状态正常、且质押不低于该作业档位门槛的节点。阶梯在分配那一刻从质押合约读取 —— 没有商量余地。</p>
+              </div></div>
+              <div class="cw"><span class="cwn">2</span><div>
+                <b data-i18n="cst.w2_t">质押 = 作业失败时赔付你的钱</b>
+                <p data-i18n="cst.w2_d">超时 2%、掉线 5%、结果错误 30%、确认欺诈 100% —— 按该服务方质押金的比例。罚没金额的 50% 赔给受影响的买方，30% 归财库，20% 销毁。</p>
+              </div></div>
+              <div class="cw"><span class="cwn">3</span><div>
+                <b data-i18n="cst.w3_t">质押不是理财产品</b>
+                <p data-i18n="cst.w3_d">质押 OMC 是押金，不是收益。这里不宣传任何利率，将来也不会：节点能赚多少取决于它真正交付的工作。</p>
+              </div></div>
+            </div>
+
+            <a class="cmp-xlink" href="/zh/stake"><span data-i18n="cst.to_stake">想质押一张 GPU？供给侧在质押页。</span> →</a>
+          </div>
+
+          <div class="stk-panel" style="margin-top:20px;">
+            <h2 class="as-h3" data-i18n="cst.h_ladder">档位阶梯</h2>
+            <p class="p-sub" data-i18n="cst.h_ladder_sub">与质押页相同的五档，实时从合约读取。</p>
+            <table class="tier-table">
+              <thead><tr><th data-i18n="stk.th_tier">档位</th><th data-i18n="stk.th_hw">硬件</th><th data-i18n="stk.th_min">最低质押</th></tr></thead>
+              <tbody id="cmpLadder"></tbody>
+            </table>
+          </div>
+
+          <div class="stk-panel" style="margin-top:20px;">
+            <h2 class="as-h3" data-i18n="cst.h_net">市场</h2>
+            <p class="p-sub" data-i18n="cst.h_net_sub">买方侧实时计数。</p>
+            <div class="kv"><span class="k" data-i18n="cst.m_jobs">已创建作业</span><span class="v" id="cmpJobsTotal">—</span></div>
+            <div class="kv"><span class="k" data-i18n="cst.m_settled">已结算作业</span><span class="v" id="cmpJobsSettled2">—</span></div>
+            <div class="kv"><span class="k" data-i18n="cst.m_burned">已销毁手续费</span><span class="v" id="cmpFeesBurned">—</span></div>
+            <div class="kv"><span class="k" data-i18n="cst.m_liquidity">奖励池余额</span><span class="v" id="cmpNetLiquidity">—</span></div>
+            <div class="kv"><span class="k" data-i18n="cst.m_slashed">累计罚没</span><span class="v" id="cmpNetSlashed">—</span></div>
+            <div class="note" data-i18n="cst.m_note">每笔结算的作业支付 8% 协议费（在供给方报价之上另计）：其中 50% 由合约在结算时直接销毁（不存在市场回购），30% 按质押比例分给节点，20% 进入金库。销毁量等于结算金额的 4.0%。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stk-log" id="cmpLog"></div>
+
+      <!-- contracts -->
+      <div style="max-width:900px;margin:30px auto 0;">
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="stk.k_token">tOMC（测试代币）</span>
+          <span class="v">0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</span>
+          <button data-copy="0xBEB21E40FB50A0F4ba9287C2058DC7851e450671">复制</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="stk.k_staking">OMCStaking</span>
+          <span class="v">0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</span>
+          <button data-copy="0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6">复制</button>
+        </div>
+        <div class="endpoint reveal">
+          <span class="k" data-i18n="cst.k_market">OMCComputeMarket</span>
+          <span class="v">0x7664f1e73c2CBCbaFE636a653C173378C369C40A</span>
+          <button data-copy="0x7664f1e73c2CBCbaFE636a653C173378C369C40A">复制</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIFECYCLE ===== -->
+  <section class="section" style="padding-top: 40px;">
+    <div class="container stk-wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="cst.lc_eyebrow">作业流程</div>
+        <h2 data-i18n="cst.lc_title">点击托管之后会发生什么</h2>
+        <p data-i18n="cst.lc_sub">白皮书从买方视角描述的同样八步，并标出每一步由哪个合约负责。</p>
+      </div>
+      <div class="cmp-steps reveal">
+        <div class="cs"><span>1</span><b data-i18n="cst.s1_t">提交</b><p data-i18n="cst.s1_d">容器镜像、资源需求、地区、价格上限、校验策略与数据保护等级。</p></div>
+        <div class="cs"><span>2</span><b data-i18n="cst.s2_t">托管</b><p data-i18n="cst.s2_d">价格上限被锁进 OMCComputeMarket，永远不会被收取超过这个数。</p></div>
+        <div class="cs"><span>3</span><b data-i18n="cst.s3_t">过滤</b><p data-i18n="cst.s3_d">不满足显存、驱动、地区、TEE、质押或声誉门槛的节点被剔除。</p></div>
+        <div class="cs"><span>4</span><b data-i18n="cst.s4_t">打分</b><p data-i18n="cst.s4_d">幸存节点按算力、显存、带宽、延迟与声誉排名，权重按作业类型配置。</p></div>
+        <div class="cs"><span>5</span><b data-i18n="cst.s5_t">分配</b><p data-i18n="cst.s5_d">从得分最高的前 k 个中抽取服务方并上链记录 —— 资格检查就在这笔交易里执行。</p></div>
+        <div class="cs"><span>6</span><b data-i18n="cst.s6_t">执行</b><p data-i18n="cst.s6_d">节点拉取镜像，在被分配后才拿到密钥，跑完作业并返回执行回执。</p></div>
+        <div class="cs"><span>7</span><b data-i18n="cst.s7_t">验证</b><p data-i18n="cst.s7_d">抽查、全冗余或 TEE 远程证明决定结果是否被接受。</p></div>
+        <div class="cs"><span>8</span><b data-i18n="cst.s8_t">结算</b><p data-i18n="cst.s8_d">通过：服务方获得报酬，手续费按比例拆分，声誉更新。失败：罚没质押金，买方获赔。</p></div>
+      </div>
+      <div class="wp-note reveal" style="max-width:820px;margin:30px auto 0;" data-i18n="cst.lc_note"><b>需要如实说明的部分。</b>GPU 在链下运行，测试网期间调度器是一个受信角色 —— 与质押合约上的验证者角色完全同构。链上强制的是托管、资格过滤、结算与罚没。交付后 48 小时内可发起争议；协议会先在独立节点上重跑该作业，之后才会升级处理。</div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container stk-wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="cst.pr_eyebrow">定价</div>
+        <h2 data-i18n="cst.pr_title">价格是怎么构成的 —— 以及我们不会声称什么</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">🧮</div>
+          <h2 class="as-h3" data-i18n="cst.pr1_t">只讲结构，不给价目表</h2>
+          <p data-i18n="cst.pr1_d">GPU 小时数 × 参考费率 × 校验系数，加上 8% 协议费，用 OMC 支付时该费用的 10% 减免。上限由你设定；合约拒绝以高于上限的金额结算。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🔍</div>
+          <h2 class="as-h3" data-i18n="cst.pr2_t">校验强度就是价格杠杆</h2>
+          <p data-i18n="cst.pr2_d">抽查会在基准价上叠加审计比例。全冗余贵 2–3 倍，因为工作真的做了 2–3 遍。TEE 有溢价，且需要有 TEE 能力的节点在线。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">📉</div>
+          <h2 class="as-h3" data-i18n="cst.pr3_t">把目标说清楚</h2>
+          <p data-i18n="cst.pr3_d">OMC 的目标是低于中心化 GPU 市场的中位价。超大规模云每 H100 SXM GPU-小时为 $6.88–$12.29，GPU 市场为 $2.49–$6.16，其他去中心化网络为 $1.25–$3.00。OMC 的实测基准将在主网后公布。</p>
+        </div>
+      </div>
+      <div class="wp-note reveal" style="max-width:820px;margin:30px auto 0;" data-i18n="cst.pr_note"><b>本页任何数字都不是报价。</b>服务站展示的是算式与目标，不公布价格。你输入的任何数字都是你自己的上限。把上方框里的输出一律当作指示性参考 —— 它是用来看钱花在哪里的，不是要约。</div>
+    </div>
+  </section>
+
+
+  <!-- omc:wallet-support — wallet entry points, including the Binance Web3
+       Wallet mark. Satisfies the dApp Zone self-test case
+       "Binance Logo Exposure - Success (Web & App)". -->
+  <section class="wlt-band">
+    <div class="wlt-inner">
+      <div class="wlt-head">
+        <h2 data-i18n="wlt.title">支持的钱包</h2>
+        <p data-i18n="wlt.sub">任何 EIP-1193 钱包均可连接。在币安 App 内，本 dApp 通过币安注入在 <code>window.binancew3w.ethereum</code>（而非 <code>window.ethereum</code>）的 Binance Web3 Wallet 建立连接。</p>
+      </div>
+      <ul class="wlt-list">
+        <li class="wlt-item wlt-primary">
+          <img class="wlt-logo" src="/assets/img/wallets/binance-web3.svg" alt="Binance Web3 Wallet" width="40" height="40" loading="lazy" decoding="async">
+          <span>
+            <span class="wlt-name" data-i18n="wlt.bnb">Binance Web3 Wallet</span>
+            <span class="wlt-tag" data-i18n="wlt.bnb_tag">在币安 App 内自动识别，无需安装插件</span>
+          </span>
+        </li>
+        <li class="wlt-item">
+          <span class="wlt-glyph" aria-hidden="true">🔑</span>
+          <span>
+            <span class="wlt-name" data-i18n="wlt.browser">浏览器钱包</span>
+            <span class="wlt-tag" data-i18n="wlt.browser_tag">MetaMask、Trust Wallet 及其他 EIP-1193 提供方</span>
+          </span>
+        </li>
+        <li class="wlt-item">
+          <span class="wlt-glyph" aria-hidden="true">⛓</span>
+          <span>
+            <span class="wlt-name" data-i18n="wlt.chain">网络</span>
+            <span class="wlt-tag" data-i18n="wlt.chain_v">BNB 智能链测试网（chainId 97）—— 页面会自动发起切链请求</span>
+          </span>
+        </li>
+      </ul>
+      <div class="wlt-open" id="wltOpenInApp" hidden>
+        <a class="btn btn-primary" href="#" data-i18n="wlt.open_app">在币安 App 中打开 →</a>
+        <span class="wlt-open-note" data-i18n="wlt.open_app_note">Binance Web3 Wallet 内置在币安 App 里，不是浏览器插件。这个链接会在币安 App 中重新打开当前页面，并切到 BNB 智能链测试网。</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="/zh/">
+            <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="lazy" decoding="async">
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">去中心化高性能 GPU 基础设施网络，构建 DeAI 的未来。</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_protocol">协议</h3></div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_community">社区</h3></div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_ecosystem">生态</h3></div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_resources">资源</h3></div>
+      </div>
+      <!-- omc:contracts-block — network + deployed contracts, published for verification -->
+      <div class="footer-chain">
+        <div class="fc-head">
+          <span class="fc-title" data-i18n="footer.chain_t">链上合约</span>
+          <span class="fc-badge" data-i18n="footer.chain_verified">BscScan 已验证</span>
+        </div>
+        <div class="fc-rows">
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_net">网络</span>
+            <span class="fc-v fc-plain" data-i18n="footer.chain_netv">BNB 智能链 · 测试网（chainId 97）</span>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_token">OMC 代币（tOMC）</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671" target="_blank" rel="noopener"><code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_staking">质押合约（OMCStaking）</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_market">算力市场（OMCComputeMarket）</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_sec">安全</span>
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">已做自动化安全测试 —— 未经审计 →</a>
+          </div>
+        </div>
+        <p class="fc-note" data-i18n="footer.chain_note">测试网合约，公开供核验。测试网代币无任何货币价值，也不在任何地方出售或上线。</p>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="disc">
+          <span data-i18n="footer.disclaimer">免责声明：Omniverse Compute（OMC）是去中心化基础设施协议的功能型代币。本站内容不构成任何投资建议。数字资产风险极高，请自行研究并遵守所在司法辖区的法律法规。空投与 OMC 代币不面向中国大陆及美国居民发行，本站亦不针对该地区；部分司法辖区可能受限。</span>
+          <span data-i18n="footer.disc_testnet"> 测试网代币（tOMC）不具有任何货币价值。</span>
+        </div>
+        <div>© 2026 Omniverse Compute · omc.network</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/lang/en.js?v=20261027a"></script>
+  <script src="/assets/js/lang/zh.js?v=20261027a"></script>
+  <script src="/assets/js/i18n.js?v=20261027a"></script>
+  <script src="/assets/js/i18n-meta.js?v=20261027a"></script>
+  <script src="/assets/js/binance-w3w.js?v=20261027a"></script>
+  <script src="/assets/js/wallet.js?v=20261027a"></script>
+  <script src="/assets/js/stake-core.js?v=20261027a"></script>
+  <script src="/assets/js/compute-core.js?v=20261027a"></script>
+  <script src="/assets/js/compute.js?v=20261027a"></script>
+  <script src="/assets/js/main.js?v=20261027a"></script>
+  <script src="/assets/js/net-canvas.js?v=20261027a" defer></script>
+</body>
+</html>

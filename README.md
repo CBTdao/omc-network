@@ -401,6 +401,26 @@ The game sub-site (`website/game/`) is deployed twice — at `game.omc.network/`
 project, which every canonical points at) and under `omc.network/game/`; the redirect rules in
 `vercel.json` send the second one to the first, so the two copies do not compete.
 
+### Chinese pages
+
+The main site's Chinese is a client-side switch, which crawlers do not run. `website/zh/`
+is the static Chinese mirror that fixes that: real Chinese HTML at `/zh/…`, canonical
+pointing at itself, hreflang pairs in both directions, and zh URLs in the sitemap.
+
+```bash
+python website/tools/build_zh.py            # (re)generate website/zh/*.html
+python website/tools/build_zh.py --patch-en # add the zh hreflang line to the en pages
+node scripts/zh-pages.test.mjs              # guards: lang, canonical, hreflang, coverage
+```
+
+Eight pages are generated (index, airdrop, tokenomics, stake, compute, testnet, ai-tools,
+news) — the ones whose visible text the zh dictionary covers. `whitepaper`, `about`,
+`privacy`, `aup` and `calculator` are 51–92% inline English and are deliberately **not**
+generated: a half-translated whitepaper or legal page is worse than none. Adding them is
+a translation task (extend the `MANUAL` tables in `build_zh.py` or tag the markup with
+`data-i18n`), not a build task. `i18n.js` treats `/zh/` URLs as a Chinese default, behind
+an explicit switcher pick; asset references in the zh copies are rewritten root-absolute.
+
 ---
 
 ## 🤝 Contributing

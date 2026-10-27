@@ -68,15 +68,19 @@ function pageInfo(file) {
   const body = html.slice(h.length);
   const rel = relative(WEB, file).split(sep).join("/");
   const isGame = rel.startsWith("game/");
+  const isZh = rel.startsWith("zh/");
   const url = (() => {
     // website/game/ is deployed twice: at game.omc.network/ (its own Vercel
     // project, which is what the canonicals point at) and at omc.network/game/.
     // The canonical target is the subdomain, so that is what we expect.
-    const path = isGame ? rel.slice("game/".length) : rel;
-    if (path === "index.html") return isGame ? `${GAME_ORIGIN}/` : `${ORIGIN}/`;
+    // website/zh/ is the static Chinese mirror (website/tools/build_zh.py);
+    // it lives at omc.network/zh/ and its canonical points there.
+    const path = isGame ? rel.slice("game/".length) : isZh ? rel.slice("zh/".length) : rel;
+    if (path === "index.html")
+      return isGame ? `${GAME_ORIGIN}/` : isZh ? `${ORIGIN}/zh/` : `${ORIGIN}/`;
     let clean = "/" + path.replace(/\.html$/, "");
     if (clean.endsWith("/index")) clean = clean.slice(0, -"index".length);
-    return `${isGame ? GAME_ORIGIN : ORIGIN}${clean}`;
+    return `${isGame ? GAME_ORIGIN : ORIGIN}${isZh ? "/zh" : ""}${clean}`;
   })();
 
   const tags = [...h.matchAll(/<meta\b[^>]*>/gi)].map((m) => m[0]);
@@ -92,6 +96,8 @@ function pageInfo(file) {
   const imgs = [...body.matchAll(/<img\b[^>]*>/gi)].map((m) => m[0]);
   const jsonld = [...h.matchAll(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
   const hreflang = [...h.matchAll(/<link[^>]+hreflang=["']([^"']+)["'][^>]*>/gi)].map((m) => m[1]);
+  const zhHreflangLink = h.match(/<link[^>]+hreflang=["']zh["'][^>]*>/i);
+  const zhHreflangHref = zhHreflangLink ? attr(zhHreflangLink[0], "href") : null;
   const ldErrors = [];
   const ldTypes = [];
   for (const block of jsonld) {
@@ -148,6 +154,7 @@ function pageInfo(file) {
     ldErrors,
     ldTypes,
     hreflang,
+    zhHreflangHref,
     hasLang,
     langValue,
     jsonldCount: jsonld.length,
@@ -183,7 +190,10 @@ for (const p of pages) {
 
   if (!p.description) add(problems, p, "description-missing", "no meta description");
   else {
-    if (p.description.length < 50) add(warnings, p, "description-short", `${p.description.length} chars`);
+    // Chinese carries roughly twice the information per character; the /zh/
+    // mirror uses the lower bound so a good Chinese description is not flagged.
+    const descMin = p.file.startsWith("zh/") ? 30 : 50;
+    if (p.description.length < descMin) add(warnings, p, "description-short", `${p.description.length} chars`);
     if (p.description.length > 165) add(warnings, p, "description-long", `${p.description.length} chars`);
   }
 
@@ -195,7 +205,10 @@ for (const p of pages) {
 
   if (!p.viewport) add(problems, p, "viewport-missing", "no viewport meta");
   if (!p.hasLang) add(problems, p, "lang-missing", "<html> has no lang");
-  if (/^zh/i.test(p.langValue || "")) add(warnings, p, "lang-zh", `lang=${p.langValue} on an English page`);
+  if (/^zh/i.test(p.langValue || "") && !p.file.startsWith("zh/"))
+    add(warnings, p, "lang-zh", `lang=${p.langValue} on an English page`);
+  if (p.file.startsWith("zh/") && !/^zh/i.test(p.langValue || ""))
+    add(problems, p, "zh-page-lang", `zh/ page has lang=${p.langValue}`);
 
   if (p.h1s.length === 0) add(problems, p, "h1-missing", "no <h1>");
   else if (p.h1s.length > 1) add(problems, p, "h1-multiple", `${p.h1s.length}: ${p.h1s.join(" | ").slice(0, 80)}`);
@@ -223,8 +236,21 @@ for (const p of pages) {
   const inSitemap = (p.isGame ? gameSitemap : mainSitemap).includes(p.url);
   if (!is404 && !inSitemap) add(problems, p, "not-in-sitemap", p.url);
 
-  if (p.hreflang.includes("zh") || p.hreflang.includes("zh-CN"))
-    add(warnings, p, "hreflang-zh", "zh hreflang points at an English URL");
+  // A zh hreflang is legitimate now (the /zh/ mirror). What must still hold:
+  // the URL it names is one this repo actually serves.
+  if (p.zhHreflangHref) {
+    const zhHref = p.zhHreflangHref;
+    const zhPath = zhHref.startsWith(`${ORIGIN}/zh/`)
+      ? join(WEB, "zh", zhHref.slice(`${ORIGIN}/zh/`.length))
+      : null;
+    const candidates = zhPath
+      ? [zhPath, `${zhPath}.html`, join(zhPath, "index.html")]
+      : [];
+    if (!candidates.some((c) => existsSync(c) && statSync(c).isFile()))
+      add(problems, p, "hreflang-zh-dead", `zh hreflang target not in repo: ${zhHref}`);
+  } else if (!is404 && !p.isGame && !p.file.startsWith("zh/")) {
+    add(warnings, p, "hreflang-zh-missing", "no zh alternate (batch-2 page?)");
+  }
 }
 
 /* duplicates */

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <title data-i18n="meta.title_index">Omniverse Compute (OMC) — 去中心化 GPU 网络</title>
+  <link rel="canonical" href="https://omc.network/zh/">
+  <link rel="alternate" hreflang="en" href="https://omc.network/">
+  <link rel="alternate" hreflang="x-default" href="https://omc.network/">
+  <link rel="alternate" hreflang="zh" href="https://omc.network/zh/">
+  <meta property="og:site_name" content="Omniverse Compute">
+  <meta property="og:type" content="website">
+  <meta property="og:title" data-i18n-content="meta.title_index" content="Omniverse Compute (OMC) — 去中心化 GPU 网络">
+  <meta property="og:description" data-i18n-content="meta.desc_index" content="Omniverse Compute (OMC) 是构建在 BNB Chain 上的去中心化 GPU 算力网络：逐任务验证、按硬件档位的质押阶梯，以及固定 10 亿枚的 BEP-20 供应。">
+  <meta property="og:url" content="https://omc.network/zh/">
+  <meta property="og:image" content="https://omc.network/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+  <meta property="og:locale" data-i18n-content="meta.og_locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Omniverse_Depin">
+  <meta name="twitter:title" data-i18n-content="meta.title_index" content="Omniverse Compute (OMC) — 去中心化 GPU 网络">
+  <meta name="twitter:description" data-i18n-content="meta.desc_index" content="Omniverse Compute (OMC) 是构建在 BNB Chain 上的去中心化 GPU 算力网络：逐任务验证、按硬件档位的质押阶梯，以及固定 10 亿枚的 BEP-20 供应。">
+  <meta name="twitter:image" content="https://omc.network/og-image.png">
+  <meta name="twitter:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+  <meta name="description" data-i18n-content="meta.desc_index" content="Omniverse Compute (OMC) 是构建在 BNB Chain 上的去中心化 GPU 算力网络：逐任务验证、按硬件档位的质押阶梯，以及固定 10 亿枚的 BEP-20 供应。">
+  <link rel="stylesheet" href="/assets/css/app.css?v=20261027a">
+  <link rel="stylesheet" href="/assets/css/footer-chain.css?v=20261027a">
+  <link rel="stylesheet" href="/assets/css/net-canvas.css?v=20261027a">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin","https://t.me/OmniverseCompute"]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/zh/">
+        <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="eager" decoding="async">
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/zh/" data-i18n="nav.home">首页</a>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.product">产品</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/zh/compute" data-i18n="nav.compute">算力</a>
+            <a href="/zh/ai-tools" data-i18n="nav.aitools">AI 工具</a>
+            <a href="/calculator" data-i18n="nav.calc">计算器</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.eco">生态</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="nav.game">真图还是 AI</a>
+            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="nav.forum">算力论坛</a>
+            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="nav.top">AI 工具站</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.network">网络</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/zh/testnet" data-i18n="nav.testnet">测试网</a>
+            <a href="/zh/stake" data-i18n="nav.stake">质押</a>
+          </div>
+        </div>
+        <a href="/zh/news" data-i18n="nav.news">动态</a>
+        <a href="/whitepaper" data-i18n="nav.wp">白皮书</a>
+        <a href="/zh/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 参与空投</a>
+        <div class="nav-wallet" id="walletNav"></div>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+        </select>
+        </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <canvas class="net-canvas" aria-hidden="true"></canvas>
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="hero.badge">第一阶段测试网已上线</span></div>
+      <h1><span data-i18n="hero.t1">驱动下一代</span><br><span class="grad" data-i18n="hero.t2">全球 AI 算力网络</span></h1>
+      <p class="sub" data-i18n="hero.sub">Omniverse Compute（OMC）是一个去中心化物理基础设施网络（DePIN），将全球闲置 GPU 汇聚成高吞吐、低成本、抗审查的算力共享网络，并由 BNB Chain 进行结算。</p>
+      <div class="hero-actions">
+        <a href="/zh/testnet" class="btn btn-primary btn-lg" data-i18n="hero.cta1">加入测试网 →</a>
+        <a href="/whitepaper" class="btn btn-ghost btn-lg" data-i18n="hero.cta2">阅读白皮书</a>
+      </div>
+      <div class="hero-chain">
+        <span class="chip" data-i18n="chip.chain">⛓ 根结算层 <b>BNB Chain</b></span>
+        <span class="chip" data-i18n="chip.scaling">⚡ 扩容方案 <b>L2 Rollup（规划中）</b></span>
+        <span class="chip" data-i18n="chip.token">🪙 代币 <b>OMC · BEP-20</b></span>
+        <span class="chip" data-i18n="chip.supply">🔥 总量 <b>1,000,000,000</b></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== STATS ===== -->
+  <div class="stats reveal">
+    <div class="stat"><div class="num">4×</div><div class="label" data-i18n="stat1.label">H100 各供应商价差（2026 实测）</div></div>
+    <div class="stat"><div class="num">$1T+</div><div class="label" data-i18n="stat2.label">AI 与 DeAI 市场潜力</div></div>
+    <div class="stat"><div class="num">2%</div><div class="label" data-i18n="stat3.label">预留社区空投的供应量</div></div>
+    <div class="stat"><div class="num">~0</div><div class="label" data-i18n="stat4.label">闲置 GPU 接入边际成本</div></div>
+  </div>
+
+  <!-- ===== AIRDROP PROGRESS (live ticker) ===== -->
+  <section class="section" id="airdrop-progress" style="padding-bottom: 40px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="tk.eyebrow">空投进展</div>
+        <h2 data-i18n="tk.title">社区空投</h2>
+        <p data-i18n="tk.sub">奖池 20,000,000 OMC。参与现已开放——前往空投页登记；领取随主网于 2027 年 1 月 1 日（UTC+8）开启。</p>
+      </div>
+
+      <div class="ticker-panel reveal" id="airdropTicker">
+        <div class="tk-left">
+          <div class="tk-status">
+            <span class="tk-live-dot"></span>
+            <span class="tk-live">实时</span>
+            <span class="tk-demo" hidden data-i18n="tk.demo">预览数据</span>
+          </div>
+          <div class="tk-metrics">
+            <div class="tk-m"><span data-i18n="tk.claimed">已领取份数</span><b id="tkClaimed">0</b><i>/ 1,000,000</i></div>
+            <div class="tk-m"><span data-i18n="tk.participants">参与人数</span><b id="tkParts">0</b></div>
+            <div class="tk-m"><span data-i18n="tk.remaining">剩余份数</span><b id="tkLeft">1,000,000</b></div>
+            <div class="tk-m"><span data-i18n="tk.your">我的份数</span><b id="tkMine">—</b></div>
+          </div>
+          <div class="tk-progress">
+            <div class="tk-progress-head">
+              <span data-i18n="tk.pool">空投池进度</span>
+              <span id="tkPct">0.000%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="tkFill"></div></div>
+          </div>
+          <div class="tk-actions">
+            <a class="btn btn-primary" href="/zh/airdrop" data-i18n="tk.cta">打开空投页 →</a>
+            <span class="tk-note" id="tkNote" hidden></span>
+          </div>
+        </div>
+
+        <div class="tk-right">
+          <div class="tk-window-head">
+            <span data-i18n="tk.feed">最新参与</span>
+            <span class="tk-before" id="tkBefore" data-i18n="tk.before">领取于 2027 年 1 月 1 日（UTC+8）开启</span>
+          </div>
+          <div class="tk-window"><div class="tk-feed" id="tkFeed"></div></div>
+          <div class="tk-window-foot">
+            <span data-i18n="tk.wallet_note">登录钱包即可查看你自己的进度</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY OMC ===== -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="about.eyebrow">执行摘要</div>
+        <h2 data-i18n="about.title">重塑 AI 算力交付方式</h2>
+        <p data-i18n="about.sub">AI 需求正在爆发——大模型训练、Sora 级视频生成、实时 3D 渲染。中心化云给出的答案是高昂的资本开支、严格的配额限制和厂商锁定，而 OMC 的答案是一个无需许可的 GPU 算力网络。</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">🖥️</div>
+          <h3 data-i18n="card1.t">激活闲置 GPU</h3>
+          <p data-i18n="card1.d">全球数十万张消费级显卡（RTX 4090/3090）、数据中心闲置算力和 PoW 时代的矿机仍在空转。OMC 以近乎零边际成本将它们接入网络。</p>
+          <span class="tag">DePIN</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">💸</div>
+          <h3 data-i18n="card2.t">超低 Gas 与高扩展</h3>
+          <p data-i18n="card2.d">专用 BNB Chain L2 Rollup 用于承载节点心跳、任务分配和按秒/按任务的微支付，目前处于规划阶段、尚未部署；现阶段这些功能直接运行在 BNB Chain 上，由 L1 负责最终结算与争议仲裁。</p>
+          <span class="tag">L2 Rollup</span>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🛡️</div>
+          <h3 data-i18n="card3.t">无信任验证</h3>
+          <p data-i18n="card3.d">按任务选择的验证策略：抽样重执行、可选的 2–3 节点冗余，以及面向机密负载的硬件 TEE。</p>
+          <span class="tag">验证政策</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CLIENT SEGMENTS ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="seg.eyebrow">目标客户</div>
+        <h2 data-i18n="seg.title">四大核心客户群体</h2>
+      </div>
+      <div class="grid-4">
+        <div class="card reveal">
+          <div class="icon">🤖</div>
+          <h3 data-i18n="seg1.t">AI 创业团队</h3>
+          <p data-i18n="seg1.d">大模型微调、LoRA 训练与推理——无需企业折扣，也没有 GPU 配额墙。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🧩</div>
+          <h3 data-i18n="seg2.t">DeAI 项目</h3>
+          <p data-i18n="seg2.d">7×24 小时自主 Agent 推理、单机微调与批量渲染，原生加密支付。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🎬</div>
+          <h3 data-i18n="seg3.t">3D 与 VFX 工作室</h3>
+          <p data-i18n="seg3.d">Unreal Engine 5 实时渲染、Blender 离线批渲染与高斯泼溅重建的极端算力峰值。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🔌</div>
+          <h3 data-i18n="seg4.t">GPU 供给方</h3>
+          <p data-i18n="seg4.d">把闲置硬件接入协议，凭你提供的已验证算力赚取 OMC 报酬。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ARCHITECTURE ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="arch.eyebrow">网络架构</div>
+        <h2 data-i18n="arch.title">三层网络堆栈</h2>
+      </div>
+      <div style="max-width: 860px; margin: 0 auto;">
+        <div class="arch-row reveal">
+          <div class="tier"><span class="n">L1</span><span data-i18n="arch1.tier">结算层</span></div>
+          <p data-i18n="arch1.d"><b>BNB Chain 主网</b>——OMC 代币发行、质押智能合约、DAO 治理与最终争议仲裁。</p>
+        </div>
+        <div class="arch-row reveal">
+          <div class="tier"><span class="n">L2</span><span data-i18n="arch2.tier">编排层</span></div>
+          <p data-i18n="arch2.d"><b>L2 Rollup（规划中，尚未部署）</b>——高频节点心跳、任务分配状态映射、状态通道结算与低成本微支付。在上线之前，这些功能由 BNB Chain 承载。</p>
+        </div>
+        <div class="arch-row reveal">
+          <div class="tier"><span class="n">GPU</span><span data-i18n="arch3.tier">算力网格</span></div>
+          <p data-i18n="arch3.d"><b>链下容器化网格</b>——Docker/Kubernetes 沙箱，支持 CUDA/ROCm 硬件加速、NVLink 卡间互联与 P2P 数据传输。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORKFLOW ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="wf.eyebrow">工作流程</div>
+        <h2 data-i18n="wf.title">任务分发与匹配</h2>
+        <p data-i18n="wf.sub">每个任务都由加权二部图匹配引擎进行评分与调度。</p>
+      </div>
+      <div class="steps" style="max-width: 980px; margin: 0 auto;">
+        <div class="step reveal">
+          <div class="sn">1</div>
+          <h3 data-i18n="step1.t">任务锁定</h3>
+          <p data-i18n="step1.d">需求方在分发前将 OMC 费用代币锁定进托管合约。</p>
+        </div>
+        <div class="step reveal">
+          <div class="sn">2</div>
+          <h3 data-i18n="step2.t">智能调度</h3>
+          <p data-i18n="step2.d">按显存、TFLOPS、带宽、时延与信誉分匹配节点。</p>
+        </div>
+        <div class="step reveal">
+          <div class="sn">3</div>
+          <h3 data-i18n="step3.t">沙箱执行</h3>
+          <p data-i18n="step3.d">任务在隔离容器中执行，输出经冗余与 ZK 证明双重验证。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TOKEN UTILITY ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="util.eyebrow">价值捕获</div>
+        <h2 data-i18n="util.title">代币效用与通缩机制</h2>
+      </div>
+      <div class="grid-4">
+        <div class="card reveal">
+          <div class="icon">💠</div>
+          <h3 data-i18n="util1.t">算力支付</h3>
+          <p data-i18n="util1.d">AI 训练、推理与 3D 渲染任务的结算货币。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🔒</div>
+          <h3 data-i18n="util2.t">节点质押</h3>
+          <p data-i18n="util2.d">按硬件等级质押相应抵押品后方可接单。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🗳️</div>
+          <h3 data-i18n="util3.t">DAO 治理</h3>
+          <p data-i18n="util3.d">对协议参数与国库分配进行投票。</p>
+        </div>
+        <div class="card reveal" style="border-color: rgba(94,162,255,0.5);">
+          <div class="icon">🔥</div>
+          <h3 data-i18n="util4.t">销毁</h3>
+          <p data-i18n="util4.d">每笔任务 8% 协议费中的 50% 直接销毁，相当于结算额的 4%；罚没另销毁 20%。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPUTE STATION ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="cs.eyebrow">AI 算力服务站</div>
+        <h2 data-i18n="cs.title">买算力。卖方的质押就是担保。</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">🧾</div>
+          <h3 data-i18n="cs1.t">上限由你自己定</h3>
+          <p data-i18n="cs1.d">你填入参考费率，合约按不超过它的金额结算，差额退回。站内不公布任何价目表 —— 这里只展示算术过程，不构成要约。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">🔒</div>
+          <h3 data-i18n="cs2.t">质押就是抵押品</h3>
+          <p data-i18n="cs2.d">只有当服务方质押的 OMC 达到对应硬件档位，它才有资格接单。同一笔质押，也是它交付失败时赔给你的钱。</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">⚖️</div>
+          <h3 data-i18n="cs3.t">48 小时争议窗口</h3>
+          <p data-i18n="cs3.d">通过验证的结果自动放款。有争议的进入 48 小时窗口处理，被罚没的质押按买方 50%、金库 30%、销毁 20% 拆分。</p>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top: 26px;" class="reveal">
+        <a class="btn btn-primary" href="/zh/compute" data-i18n="cs.cta">打开算力服务站 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROADMAP ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="rd.eyebrow">路线图</div>
+        <h2 data-i18n="rd.title">从测试网到全球算力网格</h2>
+      </div>
+      <div class="timeline">
+        <div class="tl-item done reveal">
+          <div class="dot"></div>
+          <div class="phase" data-i18n="ph1.tag">第 1 阶段 · 2026 Q4 · 进行中</div>
+          <h3 data-i18n="ph1.title">基础设施与测试网</h3>
+          <ul>
+            <li data-i18n="ph1.l1">BNB Chain 测试网智能合约部署</li>
+            <li data-i18n="ph1.l2">开源节点客户端发布</li>
+            <li data-i18n="ph1.l3">公共测试网上线</li>
+            <li data-i18n="ph1.l4">2% 社区空投活动搭建完成——参与已开放，领取随主网开启</li>
+          </ul>
+        </div>
+        <div class="tl-item reveal">
+          <div class="dot"></div>
+          <div class="phase" data-i18n="ph2.tag">第 2 阶段 · 2027 Q1 · 计划中</div>
+          <h3 data-i18n="ph2.title">主网与挖矿</h3>
+          <ul>
+            <li data-i18n="ph2.l1">主网上线——2027 年 1 月 1 日</li>
+            <li data-i18n="ph2.l2">空投领取开放——领取窗口与质押于首日同步开启</li>
+            <li data-i18n="ph2.l3">算力挖矿激活</li>
+            <li data-i18n="ph2.l4">HuggingFace 与 Blender 插件集成</li>
+          </ul>
+        </div>
+        <div class="tl-item reveal">
+          <div class="dot"></div>
+          <div class="phase" data-i18n="ph3.tag">第 3 阶段 · 2027 Q4 及以后</div>
+          <h3 data-i18n="ph3.title">完全 DAO 与高级验证</h3>
+          <ul>
+            <li data-i18n="ph3.l1">TEE 机密计算档位（ZK 证明为研究课题）</li>
+            <li data-i18n="ph3.l2">全面过渡至 DAO 治理</li>
+            <li data-i18n="ph3.l3">跨链算力结算扩展</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GAME ===== -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="game-band reveal">
+        <span class="g-tag" data-i18n="game.tag">浏览器小游戏 · 免费玩</span>
+        <h2 data-i18n="game.title">真图还是 AI — 每日照片挑战</h2>
+        <p data-i18n="game.sub">每天五组图。一张是真实照片，另一张由模型生成。不用安装、不用注册，只有一张成绩单和一条连击记录。这也是我们整个网络想要回答的那个问题的一次小演示：哪一段算力产出的结果，你真的信？</p>
+        <div class="hero-actions">
+          <a href="https://game.omc.network" class="btn btn-primary btn-lg" target="_blank" rel="noopener" data-i18n="game.cta">开始今天的挑战</a>
+          <a href="https://game.omc.network/guide" class="btn btn-ghost btn-lg" target="_blank" rel="noopener" data-i18n="game.cta2">怎么分辨 AI 照片</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2 data-i18n="cta.title">准备好加入网格了吗？</h2>
+        <p data-i18n="cta.sub">领取属于你的 20,000,000 OMC 社区空投份额，或立即把闲置 GPU 接入测试网。</p>
+        <div class="hero-actions">
+          <a href="/zh/airdrop" class="btn btn-primary btn-lg" data-i18n="cta.b1">🎁 参与空投</a>
+          <a href="/zh/testnet" class="btn btn-ghost btn-lg" data-i18n="cta.b2">运行节点</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="/zh/">
+            <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="lazy" decoding="async">
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">去中心化高性能 GPU 基础设施网络，构建 DeAI 的未来。</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_protocol">协议</h3>
+          <a href="/whitepaper" data-i18n="f.wp">白皮书</a>
+          <a href="/zh/testnet" data-i18n="f.testnet">测试网</a>
+          <a href="/#about" data-i18n="f.arch">网络架构</a>
+          <a href="/zh/tokenomics" data-i18n="f.tokenomics">代币经济</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_community">社区</h3>
+          <a href="/zh/airdrop" data-i18n="f.airdrop">空投</a>
+          <a href="/zh/news" data-i18n="nav.news">动态</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X（推特）</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram 电报群</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_ecosystem">生态</h3>
+          <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI 工具对比</a>
+          <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — 算力论坛</a>
+          <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="f.game">真图还是 AI — 每日照片小游戏</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_resources">资源</h3>
+          <a href="/calculator" data-i18n="f.calculator">GPU 成本计算器</a>
+          <a href="/zh/compute" data-i18n="f.compute">AI 算力服务站</a>
+          <a href="/zh/ai-tools" data-i18n="f.aitools">图像超分</a>
+          <a href="/assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">白皮书 PDF</a>
+          <a href="/assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">白皮书演示版</a>
+          <a href="/testnet#endpoints" data-i18n="f.rpc">RPC 端点</a>
+          <a href="/about" data-i18n="f.about">关于与联系</a>
+          <a href="/privacy" data-i18n="f.privacy">隐私政策</a>
+          <a href="/aup" data-i18n="f.aup">可接受使用政策</a>
+        </div>
+      </div>
+      <!-- omc:contracts-block — network + deployed contracts, published for verification -->
+      <div class="footer-chain">
+        <div class="fc-head">
+          <span class="fc-title" data-i18n="footer.chain_t">链上合约</span>
+          <span class="fc-badge" data-i18n="footer.chain_verified">BscScan 已验证</span>
+        </div>
+        <div class="fc-rows">
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_net">网络</span>
+            <span class="fc-v fc-plain" data-i18n="footer.chain_netv">BNB 智能链 · 测试网（chainId 97）</span>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_token">OMC 代币（tOMC）</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671" target="_blank" rel="noopener"><code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_staking">质押合约（OMCStaking）</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_market">算力市场（OMCComputeMarket）</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_sec">安全</span>
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">已做自动化安全测试 —— 未经审计 →</a>
+          </div>
+        </div>
+        <p class="fc-note" data-i18n="footer.chain_note">测试网合约，公开供核验。测试网代币无任何货币价值，也不在任何地方出售或上线。</p>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="disc" data-i18n="footer.disclaimer">免责声明：Omniverse Compute（OMC）是去中心化基础设施协议的功能型代币。本站内容不构成任何投资建议。数字资产风险极高，请自行研究并遵守所在司法辖区的法律法规。空投与 OMC 代币不面向中国大陆及美国居民发行，本站亦不针对该地区；部分司法辖区可能受限。</div>
+        <div>© 2026 Omniverse Compute · omc.network</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/lang/en.js?v=20261027a"></script>
+  <script src="/assets/js/lang/zh.js?v=20261027a"></script>
+  <script src="/assets/js/i18n.js?v=20261027a"></script>
+  <script src="/assets/js/i18n-meta.js?v=20261027a"></script>
+  <script src="/assets/js/main.js?v=20261027a"></script>
+  <script src="/assets/js/binance-w3w.js?v=20261027a"></script>
+  <script src="/assets/js/wallet.js?v=20261027a"></script>
+  <script src="/assets/js/airdrop-stats.js?v=20261027a"></script>
+  <script src="/assets/js/net-canvas.js?v=20261027a" defer></script>
+</body>
+</html>
