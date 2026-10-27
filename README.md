@@ -141,6 +141,8 @@ database lock. Schema, API contract and setup: [`db/README.md`](db/README.md).
 
 With no `DATABASE_URL` configured the API answers `503` and the page falls back
 to its browser-local preview, which the participation rules then say out loud.
+With one configured, the schema applies itself on the first request — creating
+the database is the only manual step, and nothing needs `psql` run against it.
 
 A second table, `airdrop_allocations`, records the credit rather than the event:
 per wallet, its own entries and its referral bonus, the per-entry rate that
@@ -275,7 +277,7 @@ omc-network/
 │   ├── api/                  ← Airdrop ledger functions (Vercel)
 │   │   ├── airdrop/entry.js  ← POST: verify signature, record one entry
 │   │   ├── airdrop/summary.js← GET:  a wallet's recorded entries
-│   │   └── _lib/             ← canonical message, caps, SQL
+│   │   └── _lib/             ← canonical message, caps, SQL, self-migration
 │   └── assets/
 │       ├── css/style.css
 │       ├── img/logo.png

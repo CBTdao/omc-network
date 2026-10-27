@@ -17,12 +17,15 @@ const require = createRequire(import.meta.url);
 
 const msgLib = require("../../website/api/_lib/entry-message.js");
 const dbLib = require("../../website/api/_lib/db.js");
+const migrateLib = require("../../website/api/_lib/migrate.js");
 const entryHandler = require("../../website/api/airdrop/entry.js");
 const summaryHandler = require("../../website/api/airdrop/summary.js");
 
 async function withDb() {
   const db = await createDb();
   dbLib.setPool(db);
+  /* ensureSchema memoises per process; each test gets a fresh database. */
+  migrateLib.resetSchemaCache();
   return db;
 }
 

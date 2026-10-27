@@ -15,30 +15,53 @@ db/
 
 ## Setup
 
-1. Create a Postgres database. Any of these work and all have a free tier:
-   Neon, Vercel Postgres, Supabase, Railway.
-2. Apply the migrations — there are two now, and the runner skips the ones
-   already applied, so this is the only command you need from here on:
+Two steps, and only the first one needs a human.
 
-   ```bash
-   DATABASE_URL="postgres://..." node db/scripts/migrate.mjs
-   ```
+1. **Create a Postgres database.** Neon, Vercel Postgres, Supabase and Railway
+   all have a free tier. In the Vercel dashboard, `Storage` → `Create Database`
+   → Neon also injects `DATABASE_URL` into the project for you, which removes
+   step 2 entirely.
+2. **Set `DATABASE_URL`** on the Vercel project (`website/` is the project root)
+   and redeploy.
 
-   (`psql -f` on individual files still works, but it will not record what has
-   run, and the second migration will be silently missed later.)
+The schema then applies itself: the first request to `/api/airdrop/*` runs any
+pending migration from `website/api/_lib/schema.generated.js`, under a session
+advisory lock, and records it in `schema_migrations`. Nobody has to run `psql`
+against a connection string, which matters because that is the step a
+one-maintainer project forgets, and its failure mode — an API that answers 200
+with an opaque SQL error — is worse than a few hundred milliseconds of DDL on
+the first cold start.
 
-3. Set the environment variable on the Vercel project (`website/` is the
-   project root):
+| Variable | Required | Meaning |
+|---|---|---|
+| `DATABASE_URL` | yes | Postgres connection string (`POSTGRES_URL` is also read) |
+| `AIRDROP_IP_SALT` | no | Salt for the IP hash; defaults to a fixed string |
+| `PGSSL=disable` | no | Turns TLS off for a local database |
 
-   | Variable | Required | Meaning |
-   |---|---|---|
-   | `DATABASE_URL` | yes | Postgres connection string (`POSTGRES_URL` is also read) |
-   | `AIRDROP_IP_SALT` | no | Salt for the IP hash; defaults to a fixed string |
-   | `PGSSL=disable` | no | Turns TLS off for a local database |
+Until `DATABASE_URL` is set the API answers `503 UNAVAILABLE`, the page detects
+it on load and stays in its browser-local preview mode — it never claims an
+entry was recorded when it was not.
 
-4. Redeploy. Until `DATABASE_URL` is set the API answers `503 UNAVAILABLE`,
-   the page detects it on load and stays in its browser-local preview mode —
-   it never claims an entry was recorded when it was not.
+### Running migrations by hand
+
+The CLI is still there for local work and for a database you have already
+connected to. It reads the same `schema_migrations` table as the API, so the two
+never disagree:
+
+```bash
+DATABASE_URL="postgres://..." node db/scripts/migrate.mjs          # apply
+DATABASE_URL="postgres://..." node db/scripts/migrate.mjs --plan   # list only
+```
+
+After adding a migration, regenerate the embedded copy — a test fails if you
+forget:
+
+```bash
+node db/scripts/embed-schema.mjs
+```
+
+(`psql -f` on individual files still works, but it will not record what has
+run, and a later migration will be silently missed.)
 
 ## Schema
 

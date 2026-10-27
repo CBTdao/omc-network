@@ -13,6 +13,7 @@ const { verifyMessage } = require("ethers");
 const { parseMessage, dayKeyUTC8, normalizeAddress, ADDRESS_RE } = require("../_lib/entry-message");
 const { getPool, hashIp, send } = require("../_lib/db");
 const { registerEntry } = require("../_lib/store");
+const { ensureSchema } = require("../_lib/migrate");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
@@ -22,6 +23,16 @@ module.exports = async function handler(req, res) {
 
   const pool = getPool();
   if (!pool) return send(res, 503, { ok: false, code: "UNAVAILABLE" });
+
+  /* Creating the database is the only manual deployment step; the schema
+     applies itself on the first request. Migrations are idempotent and run
+     under an advisory lock, so overlapping cold starts are safe. */
+  try {
+    await ensureSchema(pool);
+  } catch (err) {
+    console.error("airdrop schema failed", err && err.message);
+    return send(res, 503, { ok: false, code: "SCHEMA_UNAVAILABLE" });
+  }
 
   const body = req.body && typeof req.body === "object" ? req.body : {};
   const address = normalizeAddress(body.address);

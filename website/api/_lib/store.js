@@ -186,4 +186,4 @@ async function registerEntry(pool, { address, referrer, refCode, message, signat
   });
 }
 
-module.exports = { CAPS, getStatus, registerEntry };
+module.exports = { CAPS, getStatus, registerEntry, withClient };

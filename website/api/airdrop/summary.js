@@ -10,6 +10,7 @@
 const { normalizeAddress, ADDRESS_RE } = require("../_lib/entry-message");
 const { getPool, send } = require("../_lib/db");
 const { CAPS, getStatus } = require("../_lib/store");
+const { ensureSchema } = require("../_lib/migrate");
 
 /**
  * Public progress numbers for the home-page ticker. Reads the credit ledger
@@ -44,6 +45,15 @@ module.exports = async function handler(req, res) {
 
   const pool = getPool();
   if (!pool) return send(res, 503, { ok: false, code: "UNAVAILABLE" });
+
+  /* Same self-migration as POST /entry: a freshly created database works
+     without anyone running psql against it. */
+  try {
+    await ensureSchema(pool);
+  } catch (err) {
+    console.error("airdrop schema failed", err && err.message);
+    return send(res, 503, { ok: false, code: "SCHEMA_UNAVAILABLE" });
+  }
 
   const address = normalizeAddress(
     (req.query && req.query.address) || ""

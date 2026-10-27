@@ -5,8 +5,9 @@
   "type": "module",
   "description": "Airdrop ledger migration and tests (runs against PGlite, a real Postgres in WASM)",
   "scripts": {
-    "test": "node --test tests/airdrop.test.mjs tests/airdrop-allocations.test.mjs tests/airdrop-api.test.mjs",
-    "migrate": "node scripts/migrate.mjs"
+    "test": "node --test tests/airdrop.test.mjs tests/airdrop-allocations.test.mjs tests/airdrop-api.test.mjs tests/auto-migrate.test.mjs tests/schema-sync.test.mjs",
+    "migrate": "node scripts/migrate.mjs",
+    "embed-schema": "node scripts/embed-schema.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.2.17",
