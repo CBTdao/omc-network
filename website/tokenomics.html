@@ -184,27 +184,27 @@
         </div>
 
         <h2 class="as-h3">5 · Emission schedule for node rewards</h2>
-        <p>The 500,000,000 OMC node-reward pool is released in <strong>equal annual instalments over ten years</strong> — 50,000,000 OMC per year, 10% of the pool each year, released linearly by day within the year. There is no halving step and no epoch structure: a provider joining in year 7 mines against the same annual ceiling as one that joined in year 1.</p>
-        <p>The schedule is deliberately flat. A halving curve front-loads roughly three quarters of the pool into the first four years and leaves late-joining providers with a fraction of the early rate. A flat curve keeps the reward for a given unit of verified work legible across the whole decade, which is what an operator buying hardware to run for several years actually needs in order to underwrite the decision.</p>
+        <p>The 500,000,000 OMC node-reward pool is released over ten years on a <strong>rising schedule</strong>: 15,000,000 in year 1, 30,000,000 in year 2, 45,000,000 in year 3, 50,000,000 in year 4 and 60,000,000 a year from year 5 to year 10 — 500,000,000 in total, released linearly by day within each year. There is no halving step and no epoch structure.</p>
+        <p>The schedule is deliberately back-loaded. A flat 50,000,000 OMC in year 1 is <strong>76% of the entire TGE float</strong> (65,500,000 OMC), paid to a network with no paying demand yet — dilution against a use case that does not exist, and new tokens whose only buyer is a market maker. A halving curve is worse in the other direction, spending three quarters of the pool inside four years. Starting at 15,000,000 cuts first-year dilution to 23% of float and keeps the total and the decade unchanged. The trade-off is stated plainly: later years are heavier, so the network has to be earning fees by year 5, and if it is not, the utilisation scaling below leaves emission unspent rather than forcing it into the float.</p>
         <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work, and daily emission is scaled by network utilisation — the proposed function is <code>daily emission = ceiling × min(1, U / U<sub>target</sub>)</code>, where U is paid GPU-hours divided by online available GPU-hours and U<sub>target</sub> is 60%. Emission that is not distributed goes to an Emission Reserve, and only a DAO vote can burn it or release it again. New supply therefore tracks real usage rather than the calendar.</p>
 
         <h2 class="as-h3">6 · Staking ladder and slashing</h2>
-        <p>Nodes stake OMC before they may accept jobs. The required amount is a published five-rung ladder with a fixed OMC figure per rung. The same ladder is used on the testnet and at mainnet, so a node registered on the testnet is already positioned for the tier it will hold at launch.</p>
+        <p>Nodes stake OMC before they may accept jobs. The required amount is a published five-rung ladder. Rungs are <strong>denominated in USD</strong> and restated into OMC at each re-peg, so the bond keeps its size while the token price moves. The amounts on the testnet are placeholders; <code>/stake</code> reads the live OMC figure from the contract.</p>
         <div class="table-wrap">
             <table>
             <thead>
-              <tr><th>Tier</th><th>Hardware class</th><th>Minimum stake (OMC)</th></tr>
+              <tr><th>Tier</th><th>Hardware class</th><th>Target bond (USD)</th><th>OMC on the testnet today</th></tr>
             </thead>
             <tbody>
-              <tr><td>1</td><td>Consumer GPU, up to 24 GB VRAM (RTX 3090 / 4090 class)</td><td>20</td></tr>
-              <tr><td>2</td><td>Workstation / professional GPU (RTX A6000, L40S class)</td><td>100</td></tr>
-              <tr><td>3</td><td>Data-centre GPU, 80 GB class (A100 / H100 single card)</td><td>500</td></tr>
-              <tr><td>4</td><td>Multi-GPU data-centre node (2–8 accelerators)</td><td>1,000</td></tr>
-              <tr><td>5</td><td>Cluster-scale deployment (multi-node)</td><td>5,000</td></tr>
+              <tr><td>1</td><td>Consumer GPU, up to 24 GB VRAM (RTX 3090 / 4090 class)</td><td><strong>$250</strong></td><td>20 (placeholder)</td></tr>
+              <tr><td>2</td><td>Workstation / professional GPU (RTX A6000, L40S class)</td><td><strong>$1,000</strong></td><td>100 (placeholder)</td></tr>
+              <tr><td>3</td><td>Data-centre GPU, 80 GB class (A100 / H100 single card)</td><td><strong>$5,000</strong></td><td>500 (placeholder)</td></tr>
+              <tr><td>4</td><td>Multi-GPU data-centre node (2–8 accelerators)</td><td><strong>$15,000</strong></td><td>1,000 (placeholder)</td></tr>
+              <tr><td>5</td><td>Cluster-scale deployment (multi-node)</td><td><strong>$50,000</strong></td><td>5,000 (placeholder)</td></tr>
             </tbody>
           </table>
         </div>
-        <p>The steps are non-linear by design. Tier 1 is priced at one airdrop entry (20 OMC) and tier 2 at one full airdrop (5 × 20 = 100 OMC), so a wallet that maxes out the community airdrop reaches tier 2 without buying anything. Tiers 3–5 escalate hard, because a node at those levels is underwriting data-centre and cluster-scale capacity and carries a proportionally larger slashing exposure. The ladder fixes the OMC amount, not a dollar amount.</p>
+        <p>The steps are non-linear by design: the rungs separate provider classes rather than pricing a small step up in hardware. Two problems in the old fixed-OMC ladder are worth stating, because both were arithmetic. First, 20 OMC per tier-1 machine was a <strong>$20 deposit</strong> behind a $1,500 GPU at a one-dollar token — a guarantee in wording only. Second, tier 1 was exactly one airdrop entry and tier 2 exactly one full airdrop, so a wallet could mint a stake out of nothing and draw emissions without ever buying OMC. USD pricing fixes the first outright and the second as a side effect: a maximum airdrop is 100 OMC, and turning that into a $250 tier-1 bond would need OMC at $2.50. Targets and the amounts last applied are recorded in <code>contracts/params.json</code>.</p>
         <p>Slashing penalties, as a percentage of the stake:</p>
         <div class="table-wrap">
             <table>

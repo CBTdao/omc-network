@@ -12,8 +12,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
-import { PGlite } from "@electric-sql/pglite";
 import { Wallet } from "ethers";
+import { createDb } from "./helpers.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -24,9 +24,7 @@ const entryHandler = require("../../website/api/airdrop/entry.js");
 const summaryHandler = require("../../website/api/airdrop/summary.js");
 
 async function withDb() {
-  const db = new PGlite();
-  const sql = await fs.readFile(path.join(here, "..", "migrations", "001_airdrop_entries.sql"), "utf8");
-  await db.exec(sql);
+  const db = await createDb();
   dbLib.setPool(db);
   return db;
 }

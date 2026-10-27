@@ -560,9 +560,9 @@ window.I18N.en = {
   "stk.tile_pending": "Claimable now",
 
   "stk.h_stake": "1 · Stake tOMC",
-  "stk.h_stake_sub": "A tier is a hardware class. Each tier has its own fixed OMC minimum, published as a ladder and used identically on testnet and mainnet — you cannot reach a higher tier with less stake.",
+  "stk.h_stake_sub": "A tier is a hardware class. Each tier has its own minimum, published as a ladder, and you cannot reach a higher tier with less stake. Tier targets are denominated in USD and restated into OMC at each re-peg — the OMC figure below is read live from the contract, so on the testnet it is still the placeholder value.",
   "stk.l_tier": "Hardware tier",
-  "stk.tier_note": "Tier 1 = 20 tOMC (one airdrop entry), tier 2 = 100 tOMC (a maxed-out airdrop) — a wallet that maxes out the community airdrop reaches tier 2 without buying anything. Tiers 3-5 span 500 / 1000 / 5000 tOMC and are priced for data-center accelerators and cluster-scale deployments.",
+  "stk.tier_note": "Targets are USD 250 / 1,000 / 5,000 / 15,000 / 50,000 for tiers 1-5, restated into OMC at the 30-day average price, so a bond keeps its size while the token price moves. The OMC amounts shown here are the testnet placeholders (20 / 100 / 500 / 1000 / 5000 tOMC): tOMC has no price to anchor to. On mainnet the same table reads the restated amounts from the contract.",
   "stk.l_amount": "Amount to stake (tOMC)",
   "stk.max": "MAX",
   "stk.btn_stake": "Stake",
@@ -615,7 +615,7 @@ window.I18N.en = {
 
   "stk.h_tiers": "Tier ladder",
   "stk.h_tiers_sub": "Every tier minimum is read live from the contract, so this table can never drift from the code.",
-  "stk.tier_scope": "This is the staking ladder for the whole protocol — the same five tiers, at the same OMC minimums, on testnet and on mainnet. The table is read live from the contract, so it cannot drift from what is deployed.",
+  "stk.tier_scope": "This is the staking ladder for the whole protocol — five tiers at the same USD targets on testnet and on mainnet. Only the OMC restatement differs: the testnet amounts are placeholders. The table is read live from the contract, so it cannot drift from what is deployed.",
   "stk.th_tier": "Tier",
   "stk.th_hw": "Hardware",
   "stk.hw1": "Consumer GPU, up to 24 GB VRAM (RTX 3090 / 4090 class)",

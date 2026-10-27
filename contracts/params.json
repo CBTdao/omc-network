@@ -1,0 +1,83 @@
+{
+  "_comment": [
+    "Canonical protocol parameters. This file is the single source of truth:",
+    "the whitepaper, /tokenomics, /stake and README must quote these numbers,",
+    "and contracts/tools/set-params.js is the only thing that puts them on",
+    "chain. If you change a number here and nowhere else, the docs are wrong;",
+    "if you change it on chain and nowhere else, this file is wrong. Both are",
+    "checked by scripts/params.test.mjs."
+  ],
+  "version": 2,
+  "updatedAt": "2026-10-27",
+  "staking": {
+    "model": "usd",
+    "rationale": "A stake is collateral, and collateral only deters if it is worth more than the damage an operator can do. A fixed OMC figure is a fixed dollar figure only on the day it is written; when the token falls 80% the deterrent falls with it. Tier minimums are therefore denominated in USD and restated in OMC at each re-peg, so the bond keeps its size while the token price moves.",
+    "tiers": [
+      {
+        "tier": 1,
+        "hardware": "Consumer GPU, up to 24 GB VRAM (RTX 3090 / 4090 class)",
+        "usdTarget": 250
+      },
+      {
+        "tier": 2,
+        "hardware": "Workstation / professional GPU (RTX A6000, L40S class)",
+        "usdTarget": 1000
+      },
+      {
+        "tier": 3,
+        "hardware": "Data-center GPU, 80 GB class (A100 / H100 single card)",
+        "usdTarget": 5000
+      },
+      {
+        "tier": 4,
+        "hardware": "Multi-GPU data-center node (2-8 accelerators)",
+        "usdTarget": 15000
+      },
+      {
+        "tier": 5,
+        "hardware": "Cluster-scale deployment (multi-node)",
+        "usdTarget": 50000
+      }
+    ],
+    "repeg": {
+      "referencePriceUsd": null,
+      "bandPct": 25,
+      "windowDays": 30,
+      "rule": "Restate the ladder when the 30-day volume-weighted average price leaves a +/-25% band around the reference price used at the last restatement. The OMC amounts stored on chain are authoritative; /stake reads them live and never caches a copy."
+    },
+    "onChain": {
+      "chainId": 97,
+      "contract": "0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6",
+      "appliedAt": "2026-10-11",
+      "amountsOMC": [20, 100, 500, 1000, 5000],
+      "status": "placeholder",
+      "note": "The deployed testnet contract runs placeholder amounts because tOMC has no price to anchor to. They are not the published ladder; the USD targets above are. contracts/tools/set-params.js ladder --apply replaces them."
+    }
+  },
+  "emission": {
+    "pool": 500000000,
+    "startDate": "2027-01-01",
+    "scheduleOMC": [
+      15000000,
+      30000000,
+      45000000,
+      50000000,
+      60000000,
+      60000000,
+      60000000,
+      60000000,
+      60000000,
+      60000000
+    ],
+    "rationale": "The pool is finite, so the only real question is when it is spent. A flat 50M a year pays out 76% of the entire TGE float in year one, against a network that has no paying demand yet, and the dilution lands before the utility exists. The schedule instead ramps: 15M in year 1 (23% of float), reaching 60M by year 5 and holding there. Same 500M total, same 10-year window, one third of the year-one sell pressure.",
+    "implementation": "OMCStaking stores a single per-second rate, so the ramp is applied as one owner transaction at each annual boundary. set-params.js emit --apply prints and sends the rate for the year that is starting. A missed boundary simply continues the previous year's rate, which is why the schedule belongs in its own contract at mainnet rather than in an operator's calendar."
+  },
+  "airdrop": {
+    "pool": 20000000,
+    "perEntry": 20,
+    "baseEntries": 5,
+    "referralEntries": 5,
+    "claimOpens": "2027-01-01",
+    "note": "100 OMC is the maximum a single wallet can register. Against a $250 tier-1 bond that is worth 40% of a tier-1 stake only if OMC trades at $2.50; the free-stake loop that a fixed 20/100/500/1000/5000 ladder produced therefore closes as a side effect of USD pricing, without a separate lock."
+  }
+}

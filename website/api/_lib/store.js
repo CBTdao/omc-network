@@ -52,6 +52,45 @@ async function readCounts(client, address, day) {
   };
 }
 
+/**
+ * Recompute the credit row for one wallet (002). Returns null when the
+ * allocation table is not present yet, so a database that has only run 001
+ * keeps working instead of failing every registration.
+ */
+async function refreshAllocation(client, address) {
+  try {
+    const { rows } = await client.query("select * from refresh_airdrop_allocation($1)", [address]);
+    return shapeAllocation(rows[0]);
+  } catch (err) {
+    if (err && (err.code === "42883" || err.code === "42P01")) return null;
+    throw err;
+  }
+}
+
+async function readAllocation(client, address) {
+  try {
+    const { rows } = await client.query("select * from airdrop_allocations where address = $1", [address]);
+    return rows[0] ? shapeAllocation(rows[0]) : null;
+  } catch (err) {
+    if (err && err.code === "42P01") return null;
+    throw err;
+  }
+}
+
+function shapeAllocation(r) {
+  if (!r) return null;
+  return {
+    baseEntries: Number(r.base_entries),
+    referralEntries: Number(r.referral_entries),
+    totalEntries: Number(r.total_entries),
+    total: Number(r.total_amount),
+    base: Number(r.base_amount),
+    bonus: Number(r.bonus_amount),
+    status: r.status,
+    computedAt: r.computed_at,
+  };
+}
+
 /** Public status for one address. Never throws for an unknown address. */
 async function getStatus(pool, address, now) {
   const addr = normalizeAddress(address);
@@ -62,6 +101,7 @@ async function getStatus(pool, address, now) {
       address: addr,
       ...counts,
       day,
+      allocation: await readAllocation(client, addr),
       canParticipate:
         counts.today === 0 && counts.base < CAPS.base,
       caps: { ...CAPS, total: CAPS.base + CAPS.referral },
@@ -123,9 +163,15 @@ async function registerEntry(pool, { address, referrer, refCode, message, signat
         }
       }
 
+      /* Keep the credit row in step with the events, inside the same
+         transaction: an entry that commits without its allocation would be a
+         participant the claim window has no record of. */
+      const allocation = await refreshAllocation(client, addr);
+      if (credited && ref) await refreshAllocation(client, ref);
+
       const after = await readCounts(client, addr, day);
       await client.query("commit");
-      return { code: "OK", credited, ...after };
+      return { code: "OK", credited, ...after, allocation };
     } catch (err) {
       try { await client.query("rollback"); } catch (_) { /* connection gone */ }
       /* Backstop: the partial unique index fired despite the advisory lock. */

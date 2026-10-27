@@ -257,7 +257,7 @@
           <p><strong>Airdrop mechanics.</strong> The 20,000,000 OMC airdrop pool is fixed and is paid out as <strong>1,000,000 entries of 20 OMC each</strong>. Registration opens ahead of launch: the three social tasks can be completed and entries registered from the moment the campaign page goes live, because an entry is a reservation against the pool rather than a token — no OMC exists before mainnet. A participant can register up to <strong>5 entries (100 OMC)</strong> through the campaign itself, plus up to <strong>5 additional entries</strong> earned by inviting new participants — at most <strong>10 entries (200 OMC)</strong> per wallet. Referral entries are drawn from that same fixed pool: the referral program changes how entries are distributed, never how many exist. A referral credit is granted only once the invited address completes its own first entry, and only for <strong>direct invites</strong> — the program is strictly single-layer, with no recursion, no downlines and no team commissions. Participation is free throughout: no payment, purchase or deposit is required at any point.</p>
           <p><strong>TGE, mainnet launch, staking and the airdrop claim window open on the same date (1 January 2027, UTC+8).</strong> Registration, by contrast, is open earlier, so the community is assembled before the token exists. Holding the claim to the TGE date is deliberate: the OMC a participant needs in order to stake is the OMC they accumulate during the campaign, and that OMC only comes into existence with mainnet. Entries become claimable the moment mainnet and staking open, so what a participant earns is stakeable from day one. A wallet that completes the campaign itself holds 100 OMC — exactly the tier-2 staking minimum — so a participant can go from zero to a registered, staked node without buying tokens first; a participant who also invites others can accumulate up to 200 OMC. The claim window runs for three months and closes on 31 March 2027 (UTC+8).</p>
           <h3>7.4 Emission Schedule for Node Rewards</h3>
-          <p>The 500,000,000 OMC reward pool is released in <strong>equal annual instalments over 10 years</strong>. The ceiling is the same in every year, and within a year release is linear by day. There is no halving step and no epoch structure: a provider that joins in year 7 is mining against the same annual ceiling as one that joined in year 1.</p>
+          <p>The 500,000,000 OMC reward pool is released over 10 years on a <strong>rising schedule</strong>: 15,000,000 in year 1, 30,000,000 in year 2, 45,000,000 in year 3, 50,000,000 in year 4, and 60,000,000 a year from year 5 to year 10 — 500,000,000 in total. Within a year, release is linear by day. There is no halving step and no epoch structure: a provider that joins in year 7 mines against the same annual ceiling as one that joined in year 5. The schedule is published as data in <code>contracts/params.json</code> and is applied on chain one year at a time.</p>
           <div class="table-wrap">
           <table>
           <thead><tr>
@@ -265,36 +265,38 @@
           <th>Emission ceiling (OMC)</th>
           <th>Share of pool</th>
           </tr></thead><tbody>
-          <tr><td>1</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>2</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>3</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>1</td><td>15.00M</td><td>3.0%</td></tr>
+          <tr><td>2</td><td>30.00M</td><td>6.0%</td></tr>
+          <tr><td>3</td><td>45.00M</td><td>9.0%</td></tr>
           <tr><td>4</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>5</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>6</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>7</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>8</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>9</td><td>50.00M</td><td>10.0%</td></tr>
-          <tr><td>10</td><td>50.00M</td><td>10.0%</td></tr>
+          <tr><td>5</td><td>60.00M</td><td>12.0%</td></tr>
+          <tr><td>6</td><td>60.00M</td><td>12.0%</td></tr>
+          <tr><td>7</td><td>60.00M</td><td>12.0%</td></tr>
+          <tr><td>8</td><td>60.00M</td><td>12.0%</td></tr>
+          <tr><td>9</td><td>60.00M</td><td>12.0%</td></tr>
+          <tr><td>10</td><td>60.00M</td><td>12.0%</td></tr>
           </tbody></table></div>
-          <p>The schedule is deliberately flat. A halving curve front-loads roughly three quarters of the pool into the first four years and then leaves late-joining providers with a fraction of the early rate; a flat curve keeps the reward rate for a given unit of verified work legible for the whole decade, which is what a provider buying hardware to run for several years actually needs to underwrite. The supply that is not released in the early years is not removed from the pool — it is simply released later, so the total is unchanged at 500,000,000 OMC over 10 years.</p>
-          <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. Because the annual ceiling is flat, an under-utilized network accumulates a smaller reserve per year than an exponentially decaying schedule would, and that reserve can only re-enter circulation by DAO vote. This ties new supply to real usage rather than to the calendar. Independently of utilization, the rate paid to stakers is clamped by the published ceiling in §7.5, so whenever stake is small that ceiling — not this schedule — is the binding constraint.</p>
+          <p>The schedule is deliberately back-loaded. A flat curve is the obvious alternative and it is worse than it looks: 50,000,000 OMC in year 1 is <strong>76% of the entire TGE float</strong> (65,500,000 OMC), handed to a network that has no paying demand in its first year — dilution against a use case that does not exist yet, and new tokens whose only buyer is a market maker. A halving curve is worse in the other direction, spending roughly three quarters of the pool inside four years. Starting at 15,000,000 cuts first-year dilution to 23% of float, while the total and the decade are unchanged. The trade-off is stated plainly rather than hidden: late years are heavier than early ones, so the network has to be earning fees by year 5. If it is not, the utilisation scaling below and the APR clamp in §7.5 leave emission unspent rather than forcing it into the float.</p>
+          <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work. Daily emission is scaled by network utilization (<strong>proposed</strong> function: daily emission = ceiling × min(1, U / Utarget), where U = paid GPU-hours ÷ online available GPU-hours and Utarget = 60%). Any emission not distributed goes to an Emission Reserve that can only be burned or re-released by DAO vote. Because the annual ceiling rises, an under-utilized early network accumulates a small reserve in absolute terms, and that reserve can only re-enter circulation by DAO vote. This ties new supply to real usage rather than to the calendar. Independently of utilization, the rate paid to stakers is clamped by the published ceiling in §7.5, so whenever stake is small that ceiling — not this schedule — is the binding constraint.</p>
           <h3>7.5 Staking and Slashing</h3>
-          <p>Nodes must stake OMC before receiving jobs. The required stake is a published ladder: five hardware tiers, each with its own fixed minimum. The same ladder is used on the testnet and on mainnet, so a node that registers on the testnet is already positioned for the tier it will hold at launch.</p>
+          <p>Nodes must stake OMC before receiving jobs. The required stake is a published ladder of five hardware tiers, each with its own minimum. Tier minimums are <strong>denominated in USD</strong> and restated into OMC at each re-peg, because a bond only deters if it is worth more than the damage an operator can do — and a fixed OMC figure stops being that the moment the token moves.</p>
           <div class="table-wrap">
           <table>
           <thead><tr>
           <th>Tier</th>
           <th>Hardware</th>
-          <th>Minimum stake (OMC)</th>
+          <th>Target bond (USD)</th>
+          <th>OMC on the testnet today</th>
           </tr></thead><tbody>
-          <tr><td>1</td><td>Consumer GPU, up to 24 GB VRAM (RTX 3090 / 4090 class)</td><td>20 (<strong>proposed</strong>)</td></tr>
-          <tr><td>2</td><td>Workstation / professional GPU (RTX A6000, L40S class)</td><td>100 (<strong>proposed</strong>)</td></tr>
-          <tr><td>3</td><td>Data-center GPU, 80 GB class (A100 / H100 single card)</td><td>500 (<strong>proposed</strong>)</td></tr>
-          <tr><td>4</td><td>Multi-GPU data-center node (2–8 accelerators)</td><td>1,000 (<strong>proposed</strong>)</td></tr>
-          <tr><td>5</td><td>Cluster-scale deployment (multi-node)</td><td>5,000 (<strong>proposed</strong>)</td></tr>
+          <tr><td>1</td><td>Consumer GPU, up to 24 GB VRAM (RTX 3090 / 4090 class)</td><td><strong>$250</strong></td><td>20 (placeholder)</td></tr>
+          <tr><td>2</td><td>Workstation / professional GPU (RTX A6000, L40S class)</td><td><strong>$1,000</strong></td><td>100 (placeholder)</td></tr>
+          <tr><td>3</td><td>Data-center GPU, 80 GB class (A100 / H100 single card)</td><td><strong>$5,000</strong></td><td>500 (placeholder)</td></tr>
+          <tr><td>4</td><td>Multi-GPU data-center node (2–8 accelerators)</td><td><strong>$15,000</strong></td><td>1,000 (placeholder)</td></tr>
+          <tr><td>5</td><td>Cluster-scale deployment (multi-node)</td><td><strong>$50,000</strong></td><td>5,000 (placeholder)</td></tr>
           </tbody></table></div>
-          <p>The steps are deliberately non-linear. Tier 1 is priced at one airdrop entry (20 OMC) and tier 2 at the campaign's own allocation (5 × 20 = 100 OMC), so a wallet that completes the community airdrop can reach tier 2 without buying anything. Tiers 3–5 escalate hard, because a node at those levels is underwriting data-center and cluster-scale capacity and a proportionally larger slashing exposure — the tiers separate provider classes rather than pricing a small step up in hardware.</p>
-          <p>Amounts are <strong>proposed</strong> and adjustable by governance before mainnet. The USD value of a given tier therefore moves with the token price; the ladder fixes the OMC amount, not the dollar amount, and governance is expected to revisit the rungs if the token's price range changes materially.</p>
+          <p>The steps are deliberately non-linear, because the tiers separate provider classes rather than pricing a small step up in hardware: a node at tier 4 or 5 is underwriting data-center and cluster-scale capacity, and a proportionally larger slashing exposure.</p>
+          <p><strong>Why USD, and what it fixes.</strong> The previous ladder was a fixed 20 / 100 / 500 / 1 000 / 5 000 OMC. Two problems, both arithmetic. First, at a one-dollar token that put a <strong>$20 deposit</strong> behind a $1,500 GPU and a job that could be worth more than both — the seller's stake was a guarantee in wording only, and the real verification pressure fell back on the protocol. Second, tier 1 was exactly one airdrop entry and tier 2 exactly one full airdrop, so a wallet could mint a stake out of nothing, collect emissions and never buy OMC. USD pricing closes the second one as a side effect: a maximum airdrop is 100 OMC, and reaching a $250 tier-1 bond with it would require OMC to trade at $2.50, so no separate lock is needed on airdropped tokens.</p>
+          <p>The OMC amounts currently on the testnet (20 / 100 / 500 / 1 000 / 5 000) are <strong>placeholders, not the ladder</strong> — tOMC has no price to anchor to, so there is nothing to restate against. The targets above are the published policy. At each re-peg the ladder is restated at the 30-day volume-weighted average price when that price leaves a ±25% band around the reference used at the previous restatement; <code>contracts/params.json</code> records both the targets and the amounts last applied, and <code>contracts/tools/set-params.js</code> is the only thing that writes them on chain. The OMC amount stored in the contract is authoritative: <code>/stake</code> reads it live from the contract and never caches a copy, so the page cannot drift from the chain.</p>
           <p>Slashing triggers and <strong>proposed</strong> penalties (percent of stake):</p>
           <div class="table-wrap">
           <table>

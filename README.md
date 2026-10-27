@@ -74,9 +74,11 @@ Score = 0.35 × TFLOPS + 0.25 × VRAM + 0.15 × Bandwidth + 0.25 × Reputation
 ### Staking & Slashing
 
 ```
-Staking_Min  = Base_Deposit × Card_Tier_Multiplier
+Staking_Min  = USD_Tier_Target ÷ OMC_Price      (restated at each re-peg)
 Burn_Amount  = Slashed_Tokens × 20%
 ```
+
+Tier targets are **USD 250 / 1,000 / 5,000 / 15,000 / 50,000**, not fixed OMC figures: a bond has to be worth more than the damage an operator can do, and a fixed OMC number stops being that the moment the token moves. The OMC amount actually stored on chain is authoritative and `/stake` reads it live; published targets and the amounts last applied both live in [`contracts/params.json`](contracts/params.json), and [`contracts/tools/set-params.js`](contracts/tools/set-params.js) is the only thing that writes them. The values currently deployed on the testnet (20 / 100 / 500 / 1,000 / 5,000 tOMC) are placeholders — tOMC has no price to anchor to.
 
 Slashing triggers: fraudulent outputs, task timeouts, unexpected offline dropouts, fake heartbeats.
 Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20%** permanently burned.
@@ -89,7 +91,7 @@ Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20
 
 | Category | Allocation | Amount (OMC) | Vesting |
 |---|---|---|---|
-| Compute Mining & Node Rewards | 50% | 500,000,000 | 0% at TGE; equal annual instalments over 10 years (no halving), released linearly by day within each year and scaled by network utilisation |
+| Compute Mining & Node Rewards | 50% | 500,000,000 | 0% at TGE; rising annual ceilings over 10 years — 15M / 30M / 45M / 50M / 60M ×6 = 500M (no halving), released linearly by day within each year and scaled by network utilisation |
 | Ecosystem & Grants | 15% | 150,000,000 | 5% at TGE, 6m lockup, then 36m monthly linear |
 | Institutional Investors | 10% | 100,000,000 | 5% at TGE, 6m cliff, then 24m monthly linear |
 | Team & Core Contributors | 10% | 100,000,000 | 0% at TGE, 12m cliff, then 24m monthly linear |
@@ -139,6 +141,36 @@ database lock. Schema, API contract and setup: [`db/README.md`](db/README.md).
 
 With no `DATABASE_URL` configured the API answers `503` and the page falls back
 to its browser-local preview, which the participation rules then say out loud.
+
+A second table, `airdrop_allocations`, records the credit rather than the event:
+per wallet, its own entries and its referral bonus, the per-entry rate that
+produced the total, and a `status` that flips from `accruing` to `frozen` when
+`freeze_airdrop_allocations()` is run at the claim cutoff. Once frozen, further
+entries still append to the event log but cannot move the amount owed — the
+distinction between "what happened" and "what is committed" is explicit instead
+of implied.
+
+### Protocol parameters
+
+Every number that appears in more than one document lives in
+[`contracts/params.json`](contracts/params.json): the USD staking targets, the
+ten-year emission schedule, the airdrop caps. `scripts/params.test.mjs` asserts
+the things that went wrong before — that the schedule sums to the 500,000,000
+pool, that year one is a real reduction and not a rounding difference, that the
+ladder is monotone, and that the file still matches what is deployed.
+
+```
+node --test scripts/params.test.mjs        # invariants
+node contracts/tools/set-params.js check   # same checks, operator-facing
+node contracts/tools/set-params.js show    # targets vs what the chain holds
+node contracts/tools/set-params.js plan --price 0.02
+```
+
+`set-params.js` sends nothing without `--apply`, and `--apply` needs the owner
+key: `setTierMinStake` and `setEmissionPerSecond` are `onlyOwner` on the
+deployed `OMCStaking`, so a parameter change is an owner transaction, not a
+redeploy. Every applied change is appended to
+`contracts/deployments/params-history.json` with the price it was made at.
 
 ### Security
 
@@ -258,8 +290,11 @@ omc-network/
 │       │   └── lang/         ← en · zh
 │       └── docs/             ← Whitepaper PDFs
 ├── db/                       ← Airdrop ledger schema + tests (see db/README.md)
-│   ├── migrations/           ← SQL
-│   └── tests/                ← 9 tests against a real Postgres (PGlite)
+│   ├── migrations/           ← 001 entries · 002 allocations (credit ledger)
+│   ├── scripts/migrate.mjs   ← applies pending migrations, once each
+│   └── tests/                ← 24 tests against a real Postgres (PGlite)
+├── scripts/
+│   └── params.test.mjs       ← asserts contracts/params.json invariants
 ├── contracts/                ← Testnet contracts + deploy tooling
 │   ├── OMCTestToken.sol      ← tOMC: transferable ERC-20 + faucet (20/day, 5 lifetime)
 │   ├── OMCStaking.sol        ← tier stake · heartbeat · real slashing
@@ -268,6 +303,8 @@ omc-network/
 │   ├── security/             ← self-review harness, snapshots, tool output
 │   ├── tools/compile.js      ← solc build (viaIR, paris evm)
 │   ├── tools/deploy.js       ← deploy / verify / handover
+│   ├── tools/set-params.js   ← owner-only parameter changes (dry-run by default)
+│   ├── params.json           ← canonical ladder, emission schedule, caps
 │   └── deployments/bsc-testnet.json ← live addresses (git-tracked)
 ├── SECURITY.md               ← security posture, disclosures, known issues
 └── docs/                     ← Whitepaper PDFs + security-review.md

@@ -14,8 +14,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
-import { PGlite } from "@electric-sql/pglite";
 import { Wallet, verifyMessage } from "ethers";
+import { createDb } from "./helpers.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -28,10 +28,7 @@ const DAYS = [DAY1, DAY2, new Date("2026-10-29T04:00:00Z"), new Date("2026-10-30
   new Date("2026-10-31T04:00:00Z"), new Date("2026-11-01T04:00:00Z")];
 
 async function freshDb() {
-  const db = new PGlite();
-  const sql = await fs.readFile(path.join(here, "..", "migrations", "001_airdrop_entries.sql"), "utf8");
-  await db.exec(sql);
-  return db;
+  return createDb();
 }
 
 async function signed(wallet, { day, referrer = null, nonce = "0123456789abcdef" }) {

@@ -79,6 +79,7 @@ module.exports = async function handler(req, res) {
         amount: result.amount,
         cap: result.cap,
       },
+      allocation: result.allocation || null,
     });
   } catch (err) {
     console.error("airdrop entry failed", err && err.message);

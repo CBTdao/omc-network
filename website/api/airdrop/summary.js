@@ -11,6 +11,31 @@ const { normalizeAddress, ADDRESS_RE } = require("../_lib/entry-message");
 const { getPool, send } = require("../_lib/db");
 const { CAPS, getStatus } = require("../_lib/store");
 
+/**
+ * Public progress numbers for the home-page ticker. Reads the credit ledger
+ * (002) and degrades to null when that migration has not been applied, so the
+ * page falls back to its static copy instead of showing zeros as if they were
+ * real. Zeros that mean "no data" are a lie with a straight face.
+ */
+async function readTotals(pool) {
+  try {
+    const { rows } = await pool.query(
+      "select wallets, entries, amount, is_frozen from airdrop_totals"
+    );
+    const r = rows[0];
+    if (!r) return null;
+    return {
+      wallets: Number(r.wallets),
+      entries: Number(r.entries),
+      amount: Number(r.amount),
+      frozen: Boolean(r.is_frozen),
+    };
+  } catch (err) {
+    if (err && (err.code === "42P01" || err.code === "42883")) return null;
+    throw err;
+  }
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
@@ -29,6 +54,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       service: "airdrop-ledger",
       caps: { ...CAPS, total: CAPS.base + CAPS.referral },
+      totals: await readTotals(pool),
     });
   }
 
@@ -49,6 +75,7 @@ module.exports = async function handler(req, res) {
       day: status.day,
       canParticipate: status.canParticipate,
       caps: status.caps,
+      allocation: status.allocation,
     });
   } catch (err) {
     console.error("airdrop summary failed", err && err.message);

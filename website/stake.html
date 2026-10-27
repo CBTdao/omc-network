@@ -135,12 +135,12 @@
         <div>
           <div class="stk-panel">
             <h2 class="as-h3" data-i18n="stk.h_stake">1 · Stake tOMC</h2>
-            <p class="p-sub" data-i18n="stk.h_stake_sub">A tier is a hardware class. Each tier has its own fixed minimum stake, published as a ladder — you cannot reach a higher tier with less stake.</p>
+            <p class="p-sub" data-i18n="stk.h_stake_sub">A tier is a hardware class. Each tier has its own minimum, published as a ladder, and you cannot reach a higher tier with less stake. Tier targets are denominated in USD and restated into OMC at each re-peg — the OMC figure below is read live from the contract, so on the testnet it is still the placeholder value.</p>
 
             <div class="field">
               <label data-i18n="stk.l_tier">Hardware tier</label>
               <div class="tiers" id="stkTiers"></div>
-              <div class="note" data-i18n="stk.tier_note">Tier 1 = 20 tOMC (one airdrop entry), tier 2 = 100 tOMC (a maxed-out airdrop). Tiers 3-5 require OMC from mining or the market.</div>
+              <div class="note" data-i18n="stk.tier_note">Targets are USD 250 / 1,000 / 5,000 / 15,000 / 50,000 for tiers 1-5, restated into OMC at the 30-day average price. The OMC amounts shown here are the testnet placeholders (20 / 100 / 500 / 1000 / 5000 tOMC): tOMC has no price to anchor to.</div>
             </div>
 
             <div class="field">
@@ -225,7 +225,7 @@
           <div class="stk-panel" style="margin-top:20px;">
             <h2 class="as-h3" data-i18n="stk.h_tiers">Tier ladder</h2>
             <p class="p-sub" data-i18n="stk.h_tiers_sub">Every tier minimum is read live from the contract, so this table can never drift from the code.</p>
-            <div class="note" data-i18n="stk.tier_scope" style="margin-bottom:12px;">This is the staking ladder for the whole protocol — the same five tiers, at the same OMC minimums, on testnet and on mainnet. The table is read live from the contract, so it cannot drift from what is deployed.</div>
+            <div class="note" data-i18n="stk.tier_scope" style="margin-bottom:12px;">This is the staking ladder for the whole protocol — five tiers at the same USD targets on testnet and on mainnet. Only the OMC restatement differs: the testnet amounts are placeholders. The table is read live from the contract, so it cannot drift from what is deployed.</div>
             <table class="tier-table">
               <thead><tr><th data-i18n="stk.th_tier">Tier</th><th data-i18n="stk.th_hw">Hardware</th><th data-i18n="stk.th_min">Minimum stake</th></tr></thead>
               <tbody id="stkTierTable"></tbody>
