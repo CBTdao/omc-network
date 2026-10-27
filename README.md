@@ -255,7 +255,7 @@ Why the claim is not free — two reasons, and they are the whole argument:
 
 The charge is **per entry**, and it is not indexed to the token price: five entries cost
 0.05 BNB whether OMC lists at $0.01 or at $1. What changes is whether the claim is worth
-making, and the docs do not pretend otherwise — below about **$0.37/OMC** a five-entry
+making, and the docs do not pretend otherwise — below about **$0.374/OMC** a five-entry
 claim is a net cash cost. The campaign asks people to claim because they intend to use the
 network, not because the arithmetic promises a profit.
 

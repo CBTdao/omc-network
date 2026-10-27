@@ -208,15 +208,15 @@ parameter time, and every change to `perEntry` was really a change to a forecast
 rule survives any listing price, and the table below is what that looks like rather than what
 it hides:
 
-| OMC price | 100 OMC claim worth | Fee | Fee as % of the claim | Net cash after claim |
+| OMC price | 100 OMC claim worth | Fee + gas | Cost as % of the claim | Net cash after claim |
 |---:|---:|---:|---:|---:|
-| $0.01 | $1.00 | $37.10 | 3,710% | **−$36.10** |
-| $0.20 | $20.00 | $37.10 | 186% | **−$17.10** |
-| $0.37 | $37.10 | $37.10 | 100% | $0.00 |
-| $0.50 | $50.00 | $37.10 | 74% | +$12.90 |
-| $1.00 | $100.00 | $37.10 | 37% | +$62.90 |
+| $0.01 | $1.00 | $37.40 | 3,740% | **−$36.40** |
+| $0.20 | $20.00 | $37.40 | 187% | **−$17.40** |
+| $0.37 | $37.00 | $37.40 | 101% | **−$0.40** |
+| $0.50 | $50.00 | $37.40 | 75% | +$12.60 |
+| $1.00 | $100.00 | $37.40 | 37% | +$62.60 |
 
-Read the last column honestly: below about **$0.37 per OMC**, a five-entry claim is a net cash
+Read the last column honestly: below about **$0.374 per OMC**, a five-entry claim is a net cash
 cost, not a gain. That is not a defect in the fee — it is what "the fee is not tied to the
 price" means, and the campaign tells people so. Whoever claims below that line is buying into a
 network they intend to use, not buying a discount. `node models/claim.mjs --price` prints the
