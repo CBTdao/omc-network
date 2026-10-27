@@ -30,7 +30,7 @@ const BATCH = {
 };
 
 const enUrl = (slug) => `https://omc.network/${slug}`;
-const zhUrl = (slug) => `https://omc.network/zh/${slug}`;
+const zhUrl = (slug) => (slug ? `https://omc.network/zh/${slug}` : "https://omc.network/zh");
 
 test("every batch-1 zh page exists and declares itself correctly", () => {
   for (const [name, slug] of Object.entries(BATCH)) {

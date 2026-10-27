@@ -42,7 +42,8 @@ ORIGIN = "https://omc.network"
 
 
 def zh_url(slug):
-    return f"{ORIGIN}/zh/{slug}" if slug else f"{ORIGIN}/zh/"
+    # no trailing slash: vercel.json sets trailingSlash:false, so /zh/ 308s to /zh
+    return f"{ORIGIN}/zh/{slug}" if slug else f"{ORIGIN}/zh"
 
 
 def en_url(slug):
@@ -334,7 +335,7 @@ def zh_href_map():
         m[en] = zh
         m[en.replace(ORIGIN, "")] = zh.replace(ORIGIN, "")
         # "/" for the home page
-    m["/"] = "/zh/"
+    m["/"] = "/zh"
     return m
 
 

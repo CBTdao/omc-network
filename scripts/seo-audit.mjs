@@ -77,7 +77,8 @@ function pageInfo(file) {
     // it lives at omc.network/zh/ and its canonical points there.
     const path = isGame ? rel.slice("game/".length) : isZh ? rel.slice("zh/".length) : rel;
     if (path === "index.html")
-      return isGame ? `${GAME_ORIGIN}/` : isZh ? `${ORIGIN}/zh/` : `${ORIGIN}/`;
+      // trailingSlash:false means /zh/ would 308; the served URL is /zh.
+      return isGame ? `${GAME_ORIGIN}/` : isZh ? `${ORIGIN}/zh` : `${ORIGIN}/`;
     let clean = "/" + path.replace(/\.html$/, "");
     if (clean.endsWith("/index")) clean = clean.slice(0, -"index".length);
     return `${isGame ? GAME_ORIGIN : ORIGIN}${isZh ? "/zh" : ""}${clean}`;
@@ -240,9 +241,12 @@ for (const p of pages) {
   // the URL it names is one this repo actually serves.
   if (p.zhHreflangHref) {
     const zhHref = p.zhHreflangHref;
-    const zhPath = zhHref.startsWith(`${ORIGIN}/zh/`)
-      ? join(WEB, "zh", zhHref.slice(`${ORIGIN}/zh/`.length))
-      : null;
+    // /zh (home, trailingSlash:false) and /zh/<page> are both valid targets.
+    const zhPath = zhHref === `${ORIGIN}/zh`
+      ? join(WEB, "zh")
+      : zhHref.startsWith(`${ORIGIN}/zh/`)
+        ? join(WEB, "zh", zhHref.slice(`${ORIGIN}/zh/`.length))
+        : null;
     const candidates = zhPath
       ? [zhPath, `${zhPath}.html`, join(zhPath, "index.html")]
       : [];
