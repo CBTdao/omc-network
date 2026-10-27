@@ -5,13 +5,90 @@
     "and contracts/tools/set-params.js is the only thing that puts them on",
     "chain. If you change a number here and nowhere else, the docs are wrong;",
     "if you change it on chain and nowhere else, this file is wrong. Both are",
-    "checked by scripts/params.test.mjs."
+    "checked by scripts/params.test.mjs and models/economics.test.mjs."
   ],
-  "version": 2,
+  "version": 3,
   "updatedAt": "2026-10-27",
+  "fees": {
+    "protocolFeeBps": 800,
+    "omcPaymentDiscountBps": 1000,
+    "split": {
+      "burnBps": 5000,
+      "stakersBps": 3000,
+      "treasuryBps": 2000
+    },
+    "rationale": [
+      "A 3% fee with 30% of it burned destroys 0.9% of GMV. Against any emission",
+      "schedule that is noise: the current design needs USD 33M of annual GMV in",
+      "year one just to stop diluting, and USD 133M by year five. No new compute",
+      "network does that, so the token was structurally inflationary for its whole",
+      "growth phase. The correct description of the old model is not 'a fee-burning",
+      "token', it is 'an inflationary token with a rounding-error burn'.",
+      "An 8% fee with half of it burned destroys 4.0% of GMV — 4.4x the sink — and",
+      "the pitch ('50-70% cheaper than Web2 cloud') still holds with a protocol",
+      "take of 8%.",
+      "The 30% staker slice is new and is the part that matters most. Previously",
+      "stakers were paid exclusively in emissions, so the only reason to stake was",
+      "dilution: mercenary capital with no reason to stay. A pro-rata share of fees",
+      "is revenue, not inflation, and it is the yield an investor can model."
+    ],
+    "onChain": {
+      "contract": "0x7664f1e73c2CBCbaFE636a653C173378C369C40A",
+      "appliedFeeBps": 300,
+      "appliedSplit": { "burnBps": 3000, "stakersBps": 0, "treasuryBps": 7000 },
+      "status": "requires redeploy",
+      "note": "PROTOCOL_FEE_BPS, FEE_BURN_BPS and FEE_REWARD_BPS are compile-time constants in OMCComputeMarket, so unlike the staking ladder these cannot be changed by an owner transaction. They change at the next deployment."
+    }
+  },
+  "emission": {
+    "pool": 500000000,
+    "poolNote": "The pool is an allocation ceiling, not a promise to mint. Only 400,000,000 is scheduled; the remaining 100,000,000 is a DAO reserve that cannot be minted before 2037 and requires a governance vote. Scheduling the whole pool forces 60M/year ceilings in the late years purely to make the arithmetic balance.",
+    "daoReserveOMC": 100000000,
+    "daoReserveUnlock": "2037-01-01",
+    "startDate": "2027-01-01",
+    "scheduleOMC": [
+      10000000,
+      20000000,
+      30000000,
+      40000000,
+      50000000,
+      50000000,
+      50000000,
+      50000000,
+      50000000,
+      50000000
+    ],
+    "revenueGate": {
+      "k": [3, 2, 1.5, 1, 0.75, 0.5, 0.5, 0.5, 0.5, 0.5],
+      "formula": "dailyEmission = min(annualCeiling / 365, k x trailing30dFeeRevenue / 30)",
+      "source": "trailing 30-day protocol fee revenue, denominated in OMC, read from OMCComputeMarket",
+      "rationale": [
+        "A schedule answers 'how fast may we spend the pool'. It cannot answer the",
+        "question that decides whether the token survives: 'how fast are we spending",
+        "it relative to what the network earns'. Tying emission to fee revenue does,",
+        "and it does so without a committee: no revenue means no emission, so a",
+        "network that never finds demand simply never inflates.",
+        "The consequence is worth stating plainly, because it is the whole design.",
+        "Inside the gate regime the ratio of burn to emission is exactly",
+        "burnShare / k, independent of GMV and of price: 17% in year 1, 25% in",
+        "year 2, 33%, 50%, 67%, and 100% from year 6 — at which point emission",
+        "equals burn and circulating supply stops growing, whatever the scale.",
+        "The schedule then becomes a ceiling that only binds when the network is",
+        "genuinely earning, which is the correct place for a ceiling."
+      ]
+    },
+    "implementation": "OMCStaking holds a single per-second rate and has no view of the market contract, so the gate needs one of two things: (a) a keeper that calls setEmissionPerSecond monthly with the gated rate, or (b) at mainnet, an EmissionController contract that reads fee revenue from OMCComputeMarket and exposes currentRate(). (b) is the honest one; (a) is acceptable on the testnet only, and only if the keeper's calls are public and auditable.",
+    "testnet": {
+      "chainId": 97,
+      "perSecond": "10000000000000000",
+      "note": "The deployed testnet contract emits 0.01 tOMC/s (about 864 a day) as a test rate. It is not the schedule above: tOMC is not OMC, has no cap and has no value. /stake shows whatever the contract currently pays, read live."
+    }
+  },
   "staking": {
     "model": "usd",
     "rationale": "A stake is collateral, and collateral only deters if it is worth more than the damage an operator can do. A fixed OMC figure is a fixed dollar figure only on the day it is written; when the token falls 80% the deterrent falls with it. Tier minimums are therefore denominated in USD and restated in OMC at each re-peg, so the bond keeps its size while the token price moves.",
+    "unstakeCooldownDays": 14,
+    "unstakeRationale": "The deployed contract lets a node unstake in the same block it registers, which makes staking a free option: stake, accrue emissions for a week, unstake, sell. With a 20% APR and instant exit there is no cost to trying, so the marginal staker is a yield farmer rather than an operator, and the emissions meant to buy capacity buy nothing but sell pressure. A 14-day cooldown makes the position a commitment: long enough that farming is a real risk, short enough that an honest operator is not locked out of hardware resale.",
     "tiers": [
       {
         "tier": 1,
@@ -47,34 +124,11 @@
     },
     "onChain": {
       "chainId": 97,
-      "contract": "0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6",
+      "contract": "0xa70B8506a1a614Fd83D0c70d73Da1E21fdcf1fB6",
       "appliedAt": "2026-10-11",
       "amountsOMC": [20, 100, 500, 1000, 5000],
       "status": "placeholder",
       "note": "The deployed testnet contract runs placeholder amounts because tOMC has no price to anchor to. They are not the published ladder; the USD targets above are. contracts/tools/set-params.js ladder --apply replaces them."
-    }
-  },
-  "emission": {
-    "pool": 500000000,
-    "startDate": "2027-01-01",
-    "scheduleOMC": [
-      15000000,
-      30000000,
-      45000000,
-      50000000,
-      60000000,
-      60000000,
-      60000000,
-      60000000,
-      60000000,
-      60000000
-    ],
-    "rationale": "The pool is finite, so the only real question is when it is spent. A flat 50M a year pays out 76% of the entire TGE float in year one, against a network that has no paying demand yet, and the dilution lands before the utility exists. The schedule instead ramps: 15M in year 1 (23% of float), reaching 60M by year 5 and holding there. Same 500M total, same 10-year window, one third of the year-one sell pressure.",
-    "implementation": "OMCStaking stores a single per-second rate, so the ramp is applied as one owner transaction at each annual boundary. set-params.js emit --apply prints and sends the rate for the year that is starting. A missed boundary simply continues the previous year's rate, which is why the schedule belongs in its own contract at mainnet rather than in an operator's calendar.",
-    "testnet": {
-      "chainId": 97,
-      "perSecond": "10000000000000000",
-      "note": "The deployed testnet contract emits 0.01 tOMC/s (about 864 a day) as a test rate. It is not the schedule above: tOMC is not OMC, has no cap and has no value. /stake shows whatever the contract currently pays, read live."
     }
   },
   "airdrop": {
@@ -83,6 +137,20 @@
     "baseEntries": 5,
     "referralEntries": 5,
     "claimOpens": "2027-01-01",
+    "vesting": "25% at claim + 75% linear over 180 days",
+    "vestingRationale": "2% of supply released to whoever claims first is a day-one sell wall built by the project itself, and the wallets that dump are the ones least likely to ever run a GPU. A 25/75 split keeps the claim meaningful — you can do something with it immediately — while removing the cliff that market makers price in.",
     "note": "100 OMC is the maximum a single wallet can register. Against a $250 tier-1 bond that is worth 40% of a tier-1 stake only if OMC trades at $2.50; the free-stake loop that a fixed 20/100/500/1000/5000 ladder produced therefore closes as a side effect of USD pricing, without a separate lock."
+  },
+  "capital": {
+    "status": "no round closed",
+    "reservedForInvestors": 200000000,
+    "reservedNote": "Institutional 10% + private 8%. No round has been closed, so there is no price and no discount to disclose — which is itself the disclosure. An 18% allocation sitting in a table with no price against it is the most common reason a token diligence stops early.",
+    "disclosureRequiredBeforeAnyRound": [
+      "Amount raised and the FDV it was raised at",
+      "Lock-up and vesting per round (proposed floor: 12-month cliff, 36-month linear)",
+      "Whether any allocation carries a discount or a liquidation preference",
+      "Treasury address and the multisig threshold controlling it",
+      "Legal entity, jurisdiction, and whether the token is characterised as a security there"
+    ]
   }
 }

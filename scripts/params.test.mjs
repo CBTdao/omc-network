@@ -19,11 +19,16 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const paramsPath = path.join(here, "..", "contracts", "params.json");
 const params = JSON.parse(fs.readFileSync(paramsPath, "utf8"));
 
-test("emission schedule spends exactly the pool over ten years", () => {
-  const { scheduleOMC, pool } = params.emission;
+test("emission schedule plus the DAO reserve spends exactly the pool", () => {
+  const { scheduleOMC, pool, daoReserveOMC } = params.emission;
   assert.equal(scheduleOMC.length, 10, "the schedule is published as ten annual ceilings");
   const total = scheduleOMC.reduce((a, b) => a + b, 0);
-  assert.equal(total, pool, `schedule sums to ${total}, pool is ${pool} — the difference is a number nobody can explain later`);
+  assert.equal(
+    total + daoReserveOMC,
+    pool,
+    `schedule ${total} + reserve ${daoReserveOMC} != pool ${pool} — the difference is a number nobody can explain later`
+  );
+  assert.ok(daoReserveOMC > 0, "the pool is not fully scheduled on purpose; scheduling it all forces late-year ceilings up purely to balance the arithmetic");
 });
 
 test("emission never falls year on year", () => {
@@ -38,6 +43,71 @@ test("year one is a real reduction, not a rounding difference", () => {
   const flat = pool / 10;
   const yearOneShare = scheduleOMC[0] / flat;
   assert.ok(yearOneShare <= 0.5, `year 1 is ${(yearOneShare * 100).toFixed(0)}% of a flat year — the point of the ramp was to cut first-year dilution, and anything above half a flat year does not`);
+});
+
+/* ---------- the economic model ---------- */
+
+test("the fee is split in full", () => {
+  const s = params.fees.split;
+  assert.equal(s.burnBps + s.stakersBps + s.treasuryBps, 10_000);
+});
+
+test("the fee split covers the entire fee, not more", () => {
+  assert.ok(params.fees.protocolFeeBps > 0 && params.fees.protocolFeeBps <= 2_000, "a protocol take above 20% stops being competitive with Web2 cloud");
+  assert.equal(params.fees.omcPaymentDiscountBps, 1_000);
+});
+
+test("the burn is large enough to matter against the schedule", () => {
+  /* Burn, as a fraction of GMV: feeBps x burnBps / 1e8. */
+  const burnOfGmv = (params.fees.protocolFeeBps * params.fees.split.burnBps) / 1e8;
+  assert.ok(
+    burnOfGmv >= 0.03,
+    `burn is only ${(burnOfGmv * 100).toFixed(2)}% of GMV; below ~3% the sink cannot catch a 50M/year emission at any GMV a new network reaches`
+  );
+});
+
+test("stakers earn a share of fees, not only emissions", () => {
+  /* This is the difference between a yield farm and an income claim. */
+  assert.ok(params.fees.split.stakersBps > 0, "with a zero staker slice, the only reason to stake is dilution");
+});
+
+test("the revenue gate tightens every year and reaches equilibrium", () => {
+  const k = params.emission.revenueGate.k;
+  assert.equal(k.length, 10);
+  for (let i = 1; i < k.length; i++) {
+    assert.ok(k[i] <= k[i - 1], `k rose in year ${i + 1} — dilution must not increase over time`);
+  }
+  /* At k = burnShare the gate regime is exactly net-zero: emission = burn. */
+  const equilibrium = params.fees.split.burnBps / 10_000;
+  assert.equal(k[k.length - 1], equilibrium, `the gate must converge to burnShare (${equilibrium}), otherwise the token never stops inflating`);
+});
+
+test("emission gate converges inside the published decade", () => {
+  const k = params.emission.revenueGate.k;
+  const equilibrium = params.fees.split.burnBps / 10_000;
+  const year = k.findIndex((v) => v <= equilibrium) + 1;
+  assert.ok(year > 0 && year <= 6, `equilibrium is only reached in year ${year}; an investor will ask when dilution stops, and "year 9" is a no`);
+});
+
+test("a node cannot stake and exit in the same block", () => {
+  assert.ok(
+    params.staking.unstakeCooldownDays >= 7,
+    "with no cooldown, staking is a free option: farm emissions for a week, unstake, sell"
+  );
+});
+
+test("the airdrop is not a day-one sell wall", () => {
+  assert.ok(/25% at claim/.test(params.airdrop.vesting), "the claim must not release the whole allocation at once");
+  assert.ok(/180 days/.test(params.airdrop.vesting));
+});
+
+test("a token round cannot be run without the disclosures an investor needs", () => {
+  const c = params.capital;
+  assert.equal(c.status, "no round closed", "if a round closes, this file must say so — an undisclosed raise is worse than no raise");
+  const req = c.disclosureRequiredBeforeAnyRound.join(" ").toLowerCase();
+  for (const item of ["fdv", "vesting", "treasury", "legal entity"]) {
+    assert.ok(req.includes(item), `the disclosure list is missing "${item}"`);
+  }
 });
 
 test("year one emission stays under a third of the TGE float", () => {

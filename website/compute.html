@@ -79,7 +79,7 @@
       "name": "How is the job price built?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Price equals GPU-hours × your reference rate × the verification multiplier, plus a 3% protocol fee, minus a 10% fee discount when you pay in OMC. You set the ceiling; the contract refuses to settle above it. No published rate card exists yet — the benchmark against hyperscalers and other networks is published after mainnet."
+        "text": "Price equals GPU-hours × your reference rate × the verification multiplier, plus an 8% protocol fee, minus a 10% fee discount when you pay in OMC. You set the ceiling; the contract refuses to settle above it. No published rate card exists yet — the benchmark against hyperscalers and other networks is published after mainnet."
       }
     },
     {
@@ -313,7 +313,7 @@
             <div class="kv"><span class="k" data-i18n="cst.m_burned">Fees burned</span><span class="v" id="cmpFeesBurned">—</span></div>
             <div class="kv"><span class="k" data-i18n="cst.m_liquidity">Reward pool left</span><span class="v" id="cmpNetLiquidity">—</span></div>
             <div class="kv"><span class="k" data-i18n="cst.m_slashed">Slashed so far</span><span class="v" id="cmpNetSlashed">—</span></div>
-            <div class="note" data-i18n="cst.m_note">Every settled job pays a 3% protocol fee: 30% of the fee is burned by the contract at settlement (no market buyback), 70% goes to the reputation reward pool. The burn is 0.9% of settled volume.</div>
+            <div class="note" data-i18n="cst.m_note">Every settled job pays an 8% protocol fee, charged on top of the provider’s price: 50% is burned by the contract at settlement (no market buyback), 30% is shared pro-rata with staked nodes, 20% funds the treasury. The burn is 4.0% of settled volume.</div>
           </div>
         </div>
       </div>
@@ -374,7 +374,7 @@
         <div class="card reveal">
           <div class="icon">🧮</div>
           <h2 class="as-h3" data-i18n="cst.pr1_t">Structure, not a rate card</h2>
-          <p data-i18n="cst.pr1_d">GPU-hours × reference rate × verification multiplier, plus a 3% protocol fee, minus 10% of that fee when you pay in OMC. You set the ceiling; the contract refuses to settle above it.</p>
+          <p data-i18n="cst.pr1_d">GPU-hours × reference rate × verification multiplier, plus an 8% protocol fee, minus 10% of that fee when you pay in OMC. You set the ceiling; the contract refuses to settle above it.</p>
         </div>
         <div class="card reveal">
           <div class="icon">🔍</div>

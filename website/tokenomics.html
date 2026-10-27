@@ -117,10 +117,11 @@
         <p>OMC is a BEP-20 token on BNB Chain with a fixed maximum supply of <strong>1,000,000,000</strong>. There is no inflation parameter and no mechanism that can raise the cap.</p>
         <p>Two mechanisms reduce supply. Nothing increases it:</p>
         <ul>
-          <li><strong>Fee burn.</strong> Every settled job pays a 3% protocol fee; 30% of that fee is destroyed by the contract at settlement, which reduces total supply directly. That is <strong>0.9% of settled job volume</strong>.</li>
+          <li><strong>Fee burn.</strong> Every settled job pays an <strong>8%</strong> protocol fee, charged to the requester on top of the provider's quoted price. <strong>50% of that fee is destroyed</strong> by the contract at settlement, which reduces total supply directly. That is <strong>4.0% of settled job volume</strong> — 4.4× the sink of the previous 3%/30% split, which destroyed 0.9% and could not offset emission at any volume a new network reaches.</li>
+          <li><strong>Fee share to stakers.</strong> 30% of the fee is distributed pro-rata to staked nodes. Unlike emissions this is revenue, not dilution, and it is the only staking yield that survives a falling token price.</li>
           <li><strong>Slashing burn.</strong> 20% of any slashed stake is burned. See section 6.</li>
         </ul>
-        <p>The remaining 70% of each protocol fee goes to the Reputation Reward Pool held by the Treasury contract, and is distributed to nodes in proportion to reputation-weighted verified work.</p>
+        <p>The remaining 50% is split <strong>30% to staked nodes pro-rata</strong> and <strong>20% to the Treasury</strong>. The staker slice matters: paid only in emissions, a staker has no reason to hold beyond farming, which makes the position mercenary by construction. A share of fees is revenue, and it survives a falling token price.</p>
 
         <h2 class="as-h3">2 · Distribution</h2>
         <p>The full 1,000,000,000 supply is allocated at deployment. Nothing is held back outside these seven categories.</p>
@@ -184,9 +185,19 @@
         </div>
 
         <h2 class="as-h3">5 · Emission schedule for node rewards</h2>
-        <p>The 500,000,000 OMC node-reward pool is released over ten years on a <strong>rising schedule</strong>: 15,000,000 in year 1, 30,000,000 in year 2, 45,000,000 in year 3, 50,000,000 in year 4 and 60,000,000 a year from year 5 to year 10 — 500,000,000 in total, released linearly by day within each year. There is no halving step and no epoch structure.</p>
-        <p>The schedule is deliberately back-loaded. A flat 50,000,000 OMC in year 1 is <strong>76% of the entire TGE float</strong> (65,500,000 OMC), paid to a network with no paying demand yet — dilution against a use case that does not exist, and new tokens whose only buyer is a market maker. A halving curve is worse in the other direction, spending three quarters of the pool inside four years. Starting at 15,000,000 cuts first-year dilution to 23% of float and keeps the total and the decade unchanged. The trade-off is stated plainly: later years are heavier, so the network has to be earning fees by year 5, and if it is not, the utilisation scaling below leaves emission unspent rather than forcing it into the float.</p>
-        <p><strong>Emission is a ceiling, not an entitlement.</strong> Rewards are paid only against verified work, and daily emission is scaled by network utilisation — the proposed function is <code>daily emission = ceiling × min(1, U / U<sub>target</sub>)</code>, where U is paid GPU-hours divided by online available GPU-hours and U<sub>target</sub> is 60%. Emission that is not distributed goes to an Emission Reserve, and only a DAO vote can burn it or release it again. New supply therefore tracks real usage rather than the calendar.</p>
+        <p>The 500,000,000 OMC node-reward pool is <strong>400,000,000 scheduled plus a 100,000,000 DAO reserve</strong> that cannot be minted before 2037 without a governance vote. The scheduled ceilings are 10,000,000 in year 1, 20,000,000 in year 2, 30,000,000 in year 3, 40,000,000 in year 4 and 50,000,000 a year from year 5 to year 10, released linearly by day within each year. They are ceilings, not entitlements.</p>
+        <p>The curve is deliberately back-loaded. A flat 50,000,000 OMC in year 1 is <strong>76% of the entire TGE float</strong> (65,500,000 OMC), paid to a network with no paying demand yet — dilution against a use case that does not exist, and new tokens whose only buyer is a market maker. A halving curve errs the other way, spending three quarters of the pool inside four years. Starting at 10,000,000 cuts first-year dilution to 15% of float.</p>
+        <p><strong>Emission is capped by revenue, not only by the calendar.</strong> The rate paid in any period is
+        <code>min(annual ceiling / 365, k × trailing 30-day fee revenue / 30)</code>, with <code>k</code> decaying from
+        <strong>3</strong> in year 1 to <strong>0.5</strong> from year 6. A schedule can only say how fast the pool may be
+        spent; the gate says how fast it is spent relative to what the network earns. No revenue means no emission, so a
+        network that never finds demand never inflates.</p>
+        <p>The consequence is the cleanest number on this page. Inside the gate both burn and emission are linear in fee
+        revenue, so their ratio is <strong>independent of volume and of price</strong>: 17% in year 1, 25% in year 2,
+        33%, 50%, 67%, and <strong>100% from year 6</strong> — at which point emission equals burn and circulating supply
+        stops growing at any scale. Above the gate, when the network is genuinely earning, the ceiling binds instead, and
+        because the burn keeps scaling with volume those years are deflationary. Unemitted amounts stay unminted; the pool
+        is not a promise to mint.</p>
 
         <h2 class="as-h3">6 · Staking ladder and slashing</h2>
         <p>Nodes stake OMC before they may accept jobs. The required amount is a published five-rung ladder. Rungs are <strong>denominated in USD</strong> and restated into OMC at each re-peg, so the bond keeps its size while the token price moves. The amounts on the testnet are placeholders; <code>/stake</code> reads the live OMC figure from the contract.</p>

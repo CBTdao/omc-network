@@ -74,9 +74,15 @@ Score = 0.35 × TFLOPS + 0.25 × VRAM + 0.15 × Bandwidth + 0.25 × Reputation
 ### Staking & Slashing
 
 ```
-Staking_Min  = USD_Tier_Target ÷ OMC_Price      (restated at each re-peg)
-Burn_Amount  = Slashed_Tokens × 20%
+Staking_Min  = USD_Tier_Target ÷ OMC_Price          (restated at each re-peg)
+Slash_Burn   = Slashed_Tokens × 20%
+Fee_Burn     = Job_Volume × 8% × 50%                (= 4.0% of GMV)
+Emission     = min(Annual_Ceiling, k × Fee_Revenue_30d)   (k: 3 → 0.5)
 ```
+
+Exit is a two-step request with a **14-day cooldown**: an instant `unstake()`
+makes staking a free option — farm emissions for a week, exit, sell — which is
+the difference between attracting operators and attracting yield farmers.
 
 Tier targets are **USD 250 / 1,000 / 5,000 / 15,000 / 50,000**, not fixed OMC figures: a bond has to be worth more than the damage an operator can do, and a fixed OMC number stops being that the moment the token moves. The OMC amount actually stored on chain is authoritative and `/stake` reads it live; published targets and the amounts last applied both live in [`contracts/params.json`](contracts/params.json), and [`contracts/tools/set-params.js`](contracts/tools/set-params.js) is the only thing that writes them. The values currently deployed on the testnet (20 / 100 / 500 / 1,000 / 5,000 tOMC) are placeholders — tOMC has no price to anchor to.
 
@@ -91,7 +97,7 @@ Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20
 
 | Category | Allocation | Amount (OMC) | Vesting |
 |---|---|---|---|
-| Compute Mining & Node Rewards | 50% | 500,000,000 | 0% at TGE; rising annual ceilings over 10 years — 15M / 30M / 45M / 50M / 60M ×6 = 500M (no halving), released linearly by day within each year and scaled by network utilisation |
+| Compute Mining & Node Rewards | 50% | 500,000,000 | 0% at TGE; **400M scheduled + 100M DAO reserve (2037+)**. Ceilings 10M / 20M / 30M / 40M / 50M ×6 = 400M, and the binding cap is a **revenue gate** — see [ECONOMICS.md](ECONOMICS.md) |
 | Ecosystem & Grants | 15% | 150,000,000 | 5% at TGE, 6m lockup, then 36m monthly linear |
 | Institutional Investors | 10% | 100,000,000 | 5% at TGE, 6m cliff, then 24m monthly linear |
 | Team & Core Contributors | 10% | 100,000,000 | 0% at TGE, 12m cliff, then 24m monthly linear |
@@ -102,9 +108,9 @@ Re-allocation: **50%** to affected requesters · **30%** to DAO Treasury · **20
 
 ### Deflationary Mechanics
 
-- **Protocol fee burn** — 3% service fee per job; **30% of that fee is burned by the contract at settlement** (there is no market buyback), 70% funds the Reputation Reward Pool held by the Treasury
+- **Protocol fee burn** — **8% fee per job, charged to the requester on top of the provider's price**; **50% of that fee is burned by the contract at settlement** (there is no market buyback), 30% is distributed pro-rata to staked nodes as fee revenue, 20% funds the Treasury. That burns **4.0% of settled volume**, 4.4× the old 3%/30% split, whose 0.9% sink could not offset emission at any volume a new network reaches
 - **Slashing burn** — 20% of every slashed stake is permanently burned
-- **Dual burn engine** — service-fee burn + slashing burn constantly reduce circulating supply
+- **Emission gated by revenue** — `min(annual ceiling, k × trailing 30-day fee revenue)`, k: 3 → 0.5. No revenue means no emission; from year 6 emission equals burn and supply stops growing at any scale. Arithmetic and scenarios: [ECONOMICS.md](ECONOMICS.md) | `node models/economics.mjs`
 
 ---
 
@@ -295,6 +301,9 @@ omc-network/
 │   ├── migrations/           ← 001 entries · 002 allocations (credit ledger)
 │   ├── scripts/migrate.mjs   ← applies pending migrations, once each
 │   └── tests/                ← 24 tests against a real Postgres (PGlite)
+├── models/
+│   ├── economics.mjs         ← supply/sink model (scenarios, break-even, JSON)
+│   └── economics.test.mjs    ← asserts the identities the docs quote
 ├── scripts/
 │   └── params.test.mjs       ← asserts contracts/params.json invariants
 ├── contracts/                ← Testnet contracts + deploy tooling

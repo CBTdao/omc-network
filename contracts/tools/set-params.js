@@ -73,7 +73,13 @@ function validate(params) {
   const s = params.emission.scheduleOMC;
   const total = s.reduce((a, b) => a + b, 0);
   if (s.length !== 10) problems.push(`emission schedule has ${s.length} years, published as 10`);
-  if (total !== params.emission.pool) problems.push(`emission schedule sums to ${fmt(total)} but the pool is ${fmt(params.emission.pool)}`);
+  const reserve = params.emission.daoReserveOMC || 0;
+  if (total + reserve !== params.emission.pool) {
+    problems.push(
+      `emission schedule ${fmt(total)} + DAO reserve ${fmt(reserve)} = ${fmt(total + reserve)}, ` +
+      `but the pool is ${fmt(params.emission.pool)}`
+    );
+  }
   for (let i = 1; i < s.length; i++) if (s[i] < s[i - 1]) problems.push(`emission falls in year ${i + 1}`);
 
   const tiers = params.staking.tiers;
@@ -104,7 +110,16 @@ function cmdCheck() {
     for (const p of problems) console.error("  - " + p);
     process.exit(1);
   }
-  console.log("params.json OK — schedule sums to " + fmt(params.emission.pool) + " over 10 years, ladder is monotone.");
+  const scheduled = params.emission.scheduleOMC.reduce((a, b) => a + b, 0);
+  console.log(
+    "params.json OK — " +
+      fmt(scheduled) +
+      " scheduled over 10 years + " +
+      fmt(params.emission.daoReserveOMC || 0) +
+      " DAO reserve = " +
+      fmt(params.emission.pool) +
+      " pool, ladder is monotone."
+  );
 }
 
 function cmdShow() {
