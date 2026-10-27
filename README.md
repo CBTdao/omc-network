@@ -259,6 +259,14 @@ making, and the docs do not pretend otherwise — below about **$0.374/OMC** a f
 claim is a net cash cost. The campaign asks people to claim because they intend to use the
 network, not because the arithmetic promises a profit.
 
+**On the name, and on the address.** It is still an airdrop: the tokens are given for
+completing tasks, no price was set for them, and no round sits behind them. A flat claim fee
+is ordinary on BSC — the claimer pays gas anyway — and publishing the amount is what
+separates this from a hidden cost, so the fee stays in the copy rather than in a footnote.
+**The receiving address is deliberately not fixed yet:** `claim()` hard-codes the treasury,
+so it is set at deployment together with the multisig, and `contracts/params.json` records
+`treasuryAddress: null` until then. No figure anywhere depends on it.
+
 Full arithmetic, including what the fee raises, where it stops filtering, and how the
 allocation was sized: [`ECONOMICS.md` §5](ECONOMICS.md#5-airdrop-claim-what-001-bnb-actually-costs),
 reproducible with `node models/claim.mjs`, `--revenue` and `--sybil`.

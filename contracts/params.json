@@ -7,7 +7,7 @@
     "if you change it on chain and nowhere else, this file is wrong. Both are",
     "checked by scripts/params.test.mjs and models/economics.test.mjs."
   ],
-  "version": 5,
+  "version": 6,
   "updatedAt": "2026-10-27",
   "fees": {
     "protocolFeeBps": 800,
@@ -179,6 +179,8 @@
         "ecosystemDevelopmentBps": 6000,
         "teamOperationsBps": 4000
       },
+      "treasuryAddress": null,
+      "treasuryAddressNote": "Deliberately not fixed yet. The claim function hard-codes the receiving address and pays the 60/40 split as two transfers, so the address has to exist before the contract can be written — and the multisig is being created alongside the real deployment, not ahead of it. Nothing else depends on it: every figure on the site reads feeBnb and treasurySplit, never an address, and the copy says 'paid to the treasury' rather than naming one. The wallet is set once, at deployment, and published in README with the transaction that created it.",
       "model": "models/claim.mjs",
       "whyFee": [
         "The fee is a flat, one-off charge per entry. It is not indexed to the token price and it is not a percentage of anything: the same 0.01 BNB is charged whether OMC trades at $0.01 or $1. That is the point — the protocol is not selling tokens at a discount or at a premium, it is charging an entrance fee to a campaign, and the entry is worth whatever the market later decides.",

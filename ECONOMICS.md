@@ -181,9 +181,18 @@ the remaining ones are the honest kind: does this team ship, and will anyone pay
 
 The airdrop is not free, and the page says so before anyone connects a wallet. Each entry
 carries a **0.01 BNB fee that the treasury keeps**, charged when the allocation is claimed and
-split 60% to ecosystem development and 40% to team operations. It is a flat entrance charge:
-it does not move with the OMC price, it is not a percentage of the airdrop, and no parameter
-is tuned to a listing price nobody can know.
+split 60% to ecosystem development and 40% to team operations. It is a flat claim fee: it does
+not move with the OMC price, it is not a percentage of the airdrop, and no parameter is tuned
+to a listing price nobody can know. It is still called an airdrop because that is what it is —
+tokens given for completing tasks, with no price set for them and no round behind them — and
+because charging the claimer a fixed fee is ordinary practice on BSC, where they already pay
+gas. The difference is that this one is published.
+
+The receiving address is **not fixed yet**, on purpose: `claim()` hard-codes the recipient and
+pays the 60/40 split as two transfers, so the address has to exist before the contract can be
+written, and the multisig is being created alongside the real deployment. `params.json` records
+`treasuryAddress: null` rather than a placeholder. Nothing in the model reads it — every figure
+here comes from `feeBnb` and `treasurySplit`.
 
 | Wallet | Entries | OMC | Fee | ≈ USD @ $742/BNB | + gas | Out of pocket |
 |---|---:|---:|---:|---:|---:|---:|
