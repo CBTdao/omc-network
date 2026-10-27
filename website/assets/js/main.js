@@ -219,6 +219,65 @@ function maxTotalDisplay() {
   return maxTotal() + " / " + top;
 }
 
+/* ---------- Where the numbers come from ----------
+   With the ledger configured the server is the source of truth (entries follow
+   the wallet across browsers and devices); localStorage is only there to paint
+   the first frame. Without it, the old browser-local preview is used and the
+   rules note says so explicitly. */
+function airdropTotals() {
+  const state = loadState();
+  const s = state.server;
+  if (s && typeof s.total === "number") {
+    return {
+      total: s.total,
+      today: typeof s.today === "number" ? s.today : 0,
+      cap: typeof s.cap === "number" ? s.cap : maxTotal(),
+      server: true
+    };
+  }
+  const entries = state.entries || [];
+  return { total: entries.length, today: todayCount(entries), cap: maxTotal(), server: false };
+}
+
+function applyServerEntries(entries) {
+  if (!entries) return;
+  const state = loadState();
+  state.server = {
+    total: Number(entries.total || 0),
+    today: Number(entries.today || 0),
+    cap: Number(entries.cap || maxTotal()),
+    amount: Number(entries.amount || 0),
+    at: Date.now()
+  };
+  saveState(state);
+}
+
+let syncing = false;
+function syncServer() {
+  if (!window.OMCAirdrop || syncing) return;
+  const addr = walletAddress();
+  if (!addr) return;
+  syncing = true;
+  OMCAirdrop.summary(addr)
+    .then((b) => {
+      if (b && b.ok) { applyServerEntries(b.entries); }
+      renderAirdrop();
+      syncRulesNote();
+    })
+    .catch(() => {})
+    .then(() => { syncing = false; });
+}
+
+/* The participation rule text differs by mode, so it is never wrong. */
+function syncRulesNote() {
+  const el = document.querySelector('[data-i18n="rules.r6"]');
+  if (!el || !window.OMCAirdrop) return;
+  const key = OMCAirdrop.isOnline() ? "rules.r6_ledger" : "rules.r6";
+  if (el.getAttribute("data-i18n") === key) return;
+  el.setAttribute("data-i18n", key);
+  el.innerHTML = i18n(key);
+}
+
 /* Set emoji + span text of a labeled button ("🦊 <span>…</span>") */
 function setLabeledBtn(btn, emoji, text) {
   if (!btn) return;
@@ -230,9 +289,7 @@ function setLabeledBtn(btn, emoji, text) {
 
 function renderAirdrop() {
   const state = loadState();
-  const entries = state.entries || [];
-  const total = entries.length;
-  const today = todayCount(entries);
+  const { total, today, cap } = airdropTotals();
   const now = Date.now();
   const ended = now > CLAIM_CLOSE;   /* participation and the claim window both close here */
 
@@ -272,7 +329,7 @@ function renderAirdrop() {
   /* Stats */
   const ct = document.getElementById("claimsTotal");
   const cd = document.getElementById("claimsToday");
-  if (ct) ct.textContent = total + " / " + maxTotal();
+  if (ct) ct.textContent = total + " / " + cap;
   if (cd) cd.textContent = today + " / " + MAX_DAILY;
 
   /* Participate button + hint */
@@ -282,13 +339,13 @@ function renderAirdrop() {
      caps only. Claiming is the part that waits for TGE. */
   const ready =
     !ended && connected &&
-    doneCount === TASK_IDS.length && total < maxTotal() && today < MAX_DAILY;
+    doneCount === TASK_IDS.length && total < cap && today < MAX_DAILY;
   if (p) p.disabled = !ready;
   if (hint) {
     if (ended) hint.textContent = i18n("js.hint_ended");
     else if (!connected) hint.textContent = i18n("js.hint_step1");
     else if (doneCount < TASK_IDS.length) hint.textContent = i18n("js.hint_step2");
-    else if (total >= maxTotal()) hint.textContent = i18n("js.hint_limit_total", { n: maxTotal() });
+    else if (total >= cap) hint.textContent = i18n("js.hint_limit_total", { n: cap });
     else if (today >= MAX_DAILY) hint.textContent = i18n("js.hint_limit_daily");
     else if (now < CLAIM_OPEN) hint.textContent = i18n("js.hint_claim_locked");
     else hint.textContent = i18n("js.hint_ready");
@@ -336,29 +393,65 @@ if (connectBtn) {
 document.addEventListener("omc:wallet", renderAirdrop);
 
 /* ---------- Participate: +20 OMC (open now — no calendar gate) ---------- */
+const ERR_KEY = {
+  LIMIT_DAILY: "js.err_daily",
+  LIMIT_TOTAL: "js.err_total",
+  STALE_MESSAGE: "js.err_stale",
+  BAD_SIGNATURE: "js.err_sig",
+  BAD_MESSAGE: "js.err_sig",
+  NO_WALLET: "js.hint_step1",
+  NO_PROVIDER: "js.err_provider",
+  USER_REJECTED: "js.err_rejected",
+  UNAVAILABLE: "js.err_unavailable",
+  NETWORK: "js.err_net",
+  SERVER_ERROR: "js.err_net"
+};
+
 const participateBtn = document.getElementById("participateBtn");
 if (participateBtn) {
   participateBtn.addEventListener("click", () => {
-    const state = loadState();
-    const entries = state.entries || [];
+    const { total, today, cap } = airdropTotals();
     if (Date.now() > CLAIM_CLOSE) { showToast(i18n("js.hint_ended")); return; }
     if (!walletAddress()) { showToast(i18n("js.hint_step1")); return; }
-    if (entries.length >= maxTotal()) { showToast(i18n("js.hint_limit_total", { n: maxTotal() })); return; }
-    if (todayCount(entries) >= MAX_DAILY) { showToast(i18n("js.hint_limit_daily")); return; }
+    if (total >= cap) { showToast(i18n("js.hint_limit_total", { n: cap })); return; }
+    if (today >= MAX_DAILY) { showToast(i18n("js.hint_limit_daily")); return; }
+
+    /* Ledger mode: sign, then let the server record the entry against the
+       wallet. The server re-checks the address, the day and both caps. */
+    if (window.OMCAirdrop && OMCAirdrop.isOnline()) {
+      participateBtn.disabled = true;
+      OMCAirdrop.register().then((r) => {
+        participateBtn.disabled = false;
+        if (!r.ok) { showToast(i18n(ERR_KEY[r.code] || "js.err_net")); return; }
+        const e = r.entries || {};
+        applyServerEntries(e);
+        document.dispatchEvent(new CustomEvent("omc:participated", {
+          detail: { total: e.total, first: (e.base || 0) <= 1 }
+        }));
+        renderAirdrop();
+        showToast(i18n("js.toast_participated", { t: e.total, c: e.cap || cap, d: e.today }));
+      });
+      return;
+    }
+
+    /* No ledger configured: keep the browser-local preview rather than
+       pretending an entry was stored, and say so in the rules. */
+    const state = loadState();
+    const entries = state.entries || [];
     const first = entries.length === 0;
     entries.push(Date.now());
     state.entries = entries;
     saveState(state);
     /* referral.js listens for this and credits the inviter on the first entry */
     document.dispatchEvent(new CustomEvent("omc:participated", {
-      detail: { total: state.entries.length, first: first }
+      detail: { total: entries.length, first: first }
     }));
     renderAirdrop();
     showToast(
       i18n("js.toast_participated", {
-        t: state.entries.length,
+        t: entries.length,
         c: maxTotal(),
-        d: todayCount(state.entries)
+        d: todayCount(entries)
       })
     );
   });
@@ -370,7 +463,7 @@ if (claimAllBtn) {
   claimAllBtn.addEventListener("click", () => {
     if (Date.now() < CLAIM_OPEN) { showToast(i18n("js.toast_claim_locked")); return; }
     const state = loadState();
-    const amount = (state.entries || []).length * PER_ENTRY;
+    const amount = airdropTotals().total * PER_ENTRY;
     if (!amount) return;
     showToast(i18n("js.toast_claim_all", { n: amount.toLocaleString("en-US") }));
     state.entries = []; /* demo: whole accumulated balance withdrawn */
@@ -410,4 +503,15 @@ renderAirdrop();
 if (document.getElementById("countdown")) {
   tickCountdown();
   setInterval(tickCountdown, 1000);
+}
+
+/* ---------- Ledger sync ----------
+   Probe once whether the airdrop ledger is wired up, then pull this wallet's
+   recorded entries. Both are no-ops on the offline preview. */
+if (window.OMCAirdrop) {
+  OMCAirdrop.probe().then(() => {
+    syncRulesNote();
+    syncServer();
+  });
+  document.addEventListener("omc:wallet", syncServer);
 }

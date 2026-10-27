@@ -128,6 +128,18 @@ OMC runs on **BNB Smart Chain Testnet**.
 > community airdrop, in line with the roadmap in the whitepaper. Nothing on this page refers
 > to a mainnet asset today.
 
+### Airdrop ledger
+
+Airdrop entries are recorded server-side against the wallet that signs for them,
+so they follow a participant across browsers and devices and can be audited at
+claim time. Each entry is a `personal_sign` over a canonical message that carries
+the UTC+8 day (yesterday's signature cannot register today's entry), and the caps
+— one per day, five base plus five referral — are enforced inside a per-address
+database lock. Schema, API contract and setup: [`db/README.md`](db/README.md).
+
+With no `DATABASE_URL` configured the API answers `503` and the page falls back
+to its browser-local preview, which the participation rules then say out loud.
+
 ### Security
 
 **Not audited.** The contracts have not been reviewed by a third-party firm. The team runs
@@ -228,6 +240,10 @@ omc-network/
 │   ├── stake.html            ← Live testnet staking dApp (real contracts)
 │   ├── airdrop.html          ← Community airdrop
 │   ├── news.html             ← Project news & announcements
+│   ├── api/                  ← Airdrop ledger functions (Vercel)
+│   │   ├── airdrop/entry.js  ← POST: verify signature, record one entry
+│   │   ├── airdrop/summary.js← GET:  a wallet's recorded entries
+│   │   └── _lib/             ← canonical message, caps, SQL
 │   └── assets/
 │       ├── css/style.css
 │       ├── img/logo.png
@@ -235,11 +251,15 @@ omc-network/
 │       ├── js/               ← i18n engine + airdrop logic (wallet connect on airdrop page only)
 │       │   ├── i18n.js
 │       │   ├── wallet.js     ← Wallet connect for airdrop claims (EIP-1193 / personal_sign)
+│       │   ├── airdrop-api.js← Signs and posts an entry to the ledger
 │       │   ├── main.js
 │       │   ├── airdrop-stats.js ← Home-page progress ticker
 │       │   ├── news.js       ← News feed renderer
 │       │   └── lang/         ← en · zh
 │       └── docs/             ← Whitepaper PDFs
+├── db/                       ← Airdrop ledger schema + tests (see db/README.md)
+│   ├── migrations/           ← SQL
+│   └── tests/                ← 9 tests against a real Postgres (PGlite)
 ├── contracts/                ← Testnet contracts + deploy tooling
 │   ├── OMCTestToken.sol      ← tOMC: transferable ERC-20 + faucet (20/day, 5 lifetime)
 │   ├── OMCStaking.sol        ← tier stake · heartbeat · real slashing

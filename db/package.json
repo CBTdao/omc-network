@@ -1,0 +1,14 @@
+{
+  "name": "omc-airdrop-db",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Airdrop ledger migration and tests (runs against PGlite, a real Postgres in WASM)",
+  "scripts": {
+    "test": "node --test tests/airdrop.test.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.2.17",
+    "ethers": "^6.13.4"
+  }
+}
