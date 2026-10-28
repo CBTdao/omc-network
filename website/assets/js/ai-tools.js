@@ -28,7 +28,11 @@
 
   var ORT_CDN = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.19.2/dist/ort.min.js";
   var ORT_WASM_DIR = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.19.2/dist/";
-  var MODEL_URL = "assets/models/real_esrgan_x4.onnx";
+  // 64MB 模型不打包进 Vercel 部署（会撑爆 10GB 部署存储）：生产环境运行时从 GitHub raw 按需拉取；
+  // 本地开发（localhost）仍走站内路径，避免依赖外网。
+  var MODEL_URL = (typeof location !== "undefined" && (location.hostname === "localhost" || location.hostname === "127.0.0.1"))
+    ? "/assets/models/real_esrgan_x4.onnx"
+    : "https://raw.githubusercontent.com/CBTdao/omc-network/main/website/assets/models/real_esrgan_x4.onnx";
   var SCALE = 4;
   var PAD = 16;
   var MAX_LONG_EDGE = 4096;

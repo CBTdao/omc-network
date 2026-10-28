@@ -1,0 +1,21 @@
+# 64MB Real-ESRGAN 模型不进部署产物：运行时按需从 GitHub raw 拉取，避免每次部署都打包 64MB
+assets/models/
+
+# 构建/缓存/测试产物
+node_modules/
+**/node_modules/
+.git/
+**/.git/
+*.map
+**/__tests__/
+**/tests/
+coverage/
+.cache/
+dist/
+build/
+
+# 编辑器 / 系统文件
+.DS_Store
+.idea/
+.vscode/
+*.log
