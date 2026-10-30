@@ -27,6 +27,16 @@
     "tokenAddress": null,
     "tokenAddressNote": "No mainnet token yet. TGE is 2027-01-01; the address will be published in the README and on omc.network on the day of deployment, with the deployment transaction.",
     "status": "registration-open",
+    "tags": [
+      "free-airdrop",
+      "bnb-chain",
+      "bep-20",
+      "depin",
+      "gpu-compute",
+      "social-tasks",
+      "referral",
+      "first-come-first-served"
+    ],
     "registrationOpens": "2026-10-27",
     "claimOpens": "2027-01-01",
     "claimCloses": "2027-03-31",
@@ -50,17 +60,19 @@
       "dailyEntryCap": 1
     },
     "cost": {
-      "model": "flat fee per entry, paid in the claim transaction",
+      "model": "free to participate; flat processing fee per entry at claim",
+      "airdropIsFree": true,
       "registrationCost": 0,
-      "registrationCostNote": "Registering is free. An entry is a wallet signature, not a transaction.",
+      "registrationCostNote": "Registering is free. An entry is a wallet signature, not a transaction, so it costs no gas and no payment.",
+      "tokenPurchaseRequired": false,
+      "tokenPurchaseNote": "No OMC is sold and no allocation is bought. The three tasks are free social actions, and the 20,000,000 OMC is given for completing them.",
       "claimFeePerEntry": 0.01,
       "claimFeeUnit": "BNB",
       "claimFeeRefundable": false,
       "maxClaimFee": 0.1,
       "maxClaimFeeUnit": "BNB",
-      "isFree": false,
       "paidAt": "claim, not registration",
-      "whyFee": "The fee is a flat entrance charge to the campaign. It is not indexed to the token price and it is not a percentage of anything: the same 0.01 BNB applies whether OMC trades at $0.01 or $1. It funds development and team operations through a treasury split of 60% ecosystem development / 40% team operations.",
+      "whyFee": "The fee is a flat processing charge for the claim transaction, in the same way the network charges gas for a transfer. It is not a price for OMC: it is not a percentage of anything, it is not indexed to the OMC price, and it is the same 0.01 BNB per entry whether OMC trades at $0.01 or at $1. It funds development and team operations through a treasury split of 60% ecosystem development / 40% team operations.",
       "sybilCost": "A farm pays per entry, so its cost is linear in entries. 100,000 wallets taking 5 entries each spend 5,000 BNB, and the pool caps any participant at 1,000,000 entries."
     },
     "tasks": [
@@ -104,9 +116,9 @@
       "impliedPricePerOmcUsd": 0.371,
       "bnbReferenceUsd": 742,
       "bnbReferenceAt": "2026-10-27",
-      "note": "Recorded because it is arithmetic, not because it is a target. 0.01 BNB per 20 OMC entry is $0.371/OMC at the reference BNB price. Neither the fee nor the design depends on this number.",
-      "noPurchaseOfTokens": "The claim fee buys participation in the campaign, not OMC. It is not a token sale, not a presale, and not a discount to any future price.",
-      "risks": "OMC has no established market. The value of a claimed allocation may be zero. Claim fees are non-refundable whether or not the token ever lists."
+      "note": "Recorded because it is arithmetic, not because it is a target. 0.01 BNB per 20 OMC entry is $0.371/OMC at the reference BNB price, and a five-entry base claim is $37.10. Neither the fee nor the design depends on this number.",
+      "whatTheFeeCovers": "The 0.01 BNB per entry covers processing of the claim transaction and funds development (60%) and team operations (40%). Nothing is deducted from the 20 OMC an entry delivers: the entry arrives in full, in the claim transaction.",
+      "risks": "OMC has no established market yet, so the value of a claimed allocation may be zero. The claim processing fee is not refunded."
     }
   },
   "links": {

@@ -259,7 +259,7 @@ making, and the docs do not pretend otherwise — below about **$0.374/OMC** a f
 claim is a net cash cost. The campaign asks people to claim because they intend to use the
 network, not because the arithmetic promises a profit.
 
-**On the name, and on the address.** It is still an airdrop: the tokens are given for
+**On the name, and on the address.** It is an airdrop: the tokens are given for
 completing tasks, no price was set for them, and no round sits behind them. A flat claim fee
 is ordinary on BSC — the claimer pays gas anyway — and publishing the amount is what
 separates this from a hidden cost, so the fee stays in the copy rather than in a footnote.

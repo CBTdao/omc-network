@@ -52,16 +52,27 @@ test("airdrop.json dates match contracts/params.json", () => {
   assert.equal(f.claimCloses, a.claimCloses);
 });
 
-test("airdrop.json fee matches claimCost, and isFree follows the fee", () => {
+test("airdrop.json fee matches claimCost, and the free framing is explicit", () => {
   assert.equal(f.cost.claimFeePerEntry, a.claimCost.feeBnb);
   assert.equal(f.cost.claimFeeRefundable, a.claimCost.refundable);
   assert.equal(f.cost.maxClaimFee, a.claimCost.maxChargeBnb);
   assert.equal(f.cost.maxClaimFee, f.entryCaps.maxEntriesPerWallet * f.cost.claimFeePerEntry);
-  // A positive fee means the feed must not call itself free. If the fee ever
-  // drops to zero this assertion flips, which is the point: it is a reminder,
-  // not a preference.
-  assert.equal(f.cost.isFree, a.claimCost.feeBnb === 0);
+  // The campaign is a free airdrop: nothing is bought, and registering costs no
+  // gas. The 0.01 BNB is a claim processing fee, and the feed has to say so in
+  // those terms rather than leaving a bare isFree flag for a listing to read as
+  // "paid" and drop us into the wrong category.
+  assert.equal(f.cost.airdropIsFree, true);
+  assert.equal(f.cost.tokenPurchaseRequired, false);
   assert.equal(f.cost.registrationCost, 0, "registering is a signature, not a transaction");
+  assert.equal(f.cost.paidAt, "claim, not registration");
+});
+
+test("the feed never frames the claim fee as a price of entry", () => {
+  const flat = JSON.stringify(f).toLowerCase();
+  for (const banned of ["entrance fee", "entry fee", "paid airdrop", "cost to enter", "buy the airdrop"]) {
+    assert.ok(!flat.includes(banned), `the feed must not describe itself as a paid airdrop: "${banned}"`);
+  }
+  assert.ok(flat.includes("processing"), "the fee is a processing charge, and the feed says so");
 });
 
 test("airdrop.json vesting is 100% at claim, matching params", () => {
@@ -107,7 +118,7 @@ test("llms.txt describes both language versions and points at the feed", () => {
   // The old line claimed Chinese was client-side only. It is a static mirror
   // now; leaving the stale sentence in would tell crawlers to skip /zh.
   assert.doesNotMatch(llms, /language toggle \(client-side\)/);
-  for (const fact of ["20,000,000", "1,000,000", "0.01 BNB", "100% at claim", "2027-01-01"]) {
+  for (const fact of ["20,000,000", "1,000,000", "0.01 BNB", "100% at claim", "2027-01-01", "Is it free: yes"]) {
     assert.ok(llms.includes(fact), `llms.txt must state ${fact}`);
   }
 });
