@@ -448,8 +448,31 @@ asks, and it needs a key file at the host root:
 ```bash
 node scripts/indexnow.mjs --dry-run      # print the payload
 node scripts/indexnow.mjs               # submit every sitemap URL, both hosts
-node scripts/indexnow.mjs /airdrop       # only URLs containing this
+node scripts/indexnow.mjs airdrop        # only URLs containing this
 ```
+
+**Reading back what happened.** IndexNow and a sitemap both report only that a URL exists.
+`scripts/bing-submit.mjs` is the other channel: the authenticated Webmaster URL Submission API,
+which can also be asked what Bing did with each URL.
+
+```bash
+node scripts/bing-submit.mjs --sites     # verified properties on the account
+node scripts/bing-submit.mjs             # submit every sitemap URL, grouped by property
+node scripts/bing-submit.mjs --status    # crawl state per URL, submits nothing
+```
+
+`--status` is the part that matters. Every submission endpoint answers `200` whether or not it
+will act on the URL — including for a URL that does not belong to the property at all, which is
+how 34 `game.omc.network` URLs stayed invisible: the host is deployed, but the verified property
+in Bing is `game.omc.center`, a different site. So the script maps each URL to the longest
+matching *verified* property, refuses to submit the rest, and prints them as `ACTION NEEDED`.
+`LastCrawledDate` is the only real evidence, and `DateTime.MinValue` (`/Date(-62135596800000)/`)
+means "known, never fetched".
+
+The key lives in `~/.bing-api-key` or `BING_WEBMASTER_API_KEY`, never in the repo — it grants
+write access to every property on the account. `scripts/bing-submit.test.mjs` reads the live key
+and fails if it appears anywhere in `website/`, `scripts/` or `contracts/`, because a secret that
+reaches a commit is not removed by deleting the file afterwards.
 
 The key is read from `website/indexnow-<key>.txt` rather than from config, so the published
 file and the request cannot drift. The `indexnow-` prefix is load-bearing: a bare 32-char hex
