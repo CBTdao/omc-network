@@ -491,6 +491,8 @@ window.I18N.en = {
   "nw16.d": "Registration is live. 20,000,000 OMC is split into 1,000,000 slots of 20 OMC each, first come first served. No purchase and no presale — three social tasks plus a wallet signature. Claiming opens 1 January 2027 with a 0.01 BNB processing fee per entry. Read the announcement →",
   "nw15.t": "AITop glossary: quantization — the bits-per-weight dial that decides if a 70B model fits your GPU",
   "nw15.d": "New on top.omc.network: a plain-English glossary entry on quantization, the one formula (VRAM ≈ params × bytes/weight) every local-LLM buyer needs, and why Q4_K_M is the default. Read the glossary →",
+  "nw16.t": "DCF forum: the network-fabric tax — why 800G ports and radix math cap cluster scale",
+  "nw16.d": "New on forum.omc.network: a deep dive on the interconnect, the compute bill everyone prices last. 800G ports, the radix math behind spine-leaf topology, and why one oversubscribed uplink can stall an entire training run. Read the deep dive →",
 
   "f.about": "About & Contact",
   "f.privacy": "Privacy Policy",

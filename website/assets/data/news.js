@@ -148,5 +148,14 @@ window.OMC_NEWS = [
     d: "nw15.d",
     href: "https://top.omc.network/glossary/quantization?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n16",
+    date: "2026-10-30",
+    kind: "dev",
+    t: "nw16.t",
+    d: "nw16.d",
+    href: "https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
