@@ -12,12 +12,12 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const site = (p) => join(root, "website", p);
+const site = (p = "") => join(root, "website", p);
 
 const BING_FILE = site("BingSiteAuth.xml");
 const BING_TOKEN = "5335DB876B2315C0358C088A62BF3596";
@@ -67,6 +67,23 @@ test("the game subdomain can be verified with the same token", () => {
   const html = readFileSync(site("game/index.html"), "utf8");
   assert.match(html, new RegExp(`<meta name="msvalidate\\.01" content="${BING_TOKEN}"`),
     "game/index.html lost the verification meta");
+});
+
+test("an IndexNow key is published for both hosts", () => {
+  // IndexNow proves ownership by hosting <key>.txt, so the file is the
+  // credential. It has to exist on the apex and on the game subdomain, because
+  // the protocol fetches keyLocation from the host that owns the URLs.
+  const marker = /^indexnow-[A-Za-z0-9-]{8,128}\.txt$/;
+  const apex = readdirSync(site()).filter((f) => marker.test(f));
+  assert.equal(apex.length, 1, `expected one website/indexnow-*.txt, found ${apex.length}`);
+
+  const key = apex[0].replace(/\.txt$/, "");
+  assert.equal(readFileSync(site(apex[0]), "utf8").trim(), key, "the key file must contain its own name");
+
+  const sub = readdirSync(site("game")).filter((f) => marker.test(f));
+  assert.equal(sub.length, 1, `expected one website/game/indexnow-*.txt, found ${sub.length}`);
+  assert.equal(sub[0], apex[0], "the subdomain must use the same key file name");
+  assert.equal(readFileSync(site(`game/${sub[0]}`), "utf8").trim(), key);
 });
 
 test("the Google verification file is still in place", () => {
