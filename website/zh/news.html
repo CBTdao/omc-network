@@ -115,7 +115,23 @@
       <div class="news-layout">
         <div class="news-main">
           <div class="news-count" id="newsCount"></div>
-          <div class="news-list" id="newsList"></div>
+          <div class="news-list" id="newsList">
+            <!-- No-JS fallback. assets/js/news.js re-renders this list from
+                 assets/data/news.js; crawlers and answer engines that do not
+                 run JavaScript read the pinned announcement below instead. -->
+            <article class="news-item pinned" data-kind="airdrop">
+              <div class="ni-body">
+                <div class="ni-meta">
+                  <span class="ni-tag k-airdrop" data-i18n="nw.airdrop">空投</span>
+                  <span class="ni-time">2026-10-27</span>
+                  <span class="ni-pin" data-i18n="nw.pin">置顶</span>
+                </div>
+                <h3 data-i18n="nw16.t">OMC 空投已开放：2000 万 OMC、100 万份，免费参与</h3>
+                <p data-i18n="nw16.d">报名已开放。20,000,000 OMC 分为 1,000,000 份、每份 20 OMC，先到先得。无需购买、没有预售——三步社交任务加一次钱包签名即可。2027 年 1 月 1 日起可领取，每份 0.01 BNB 领取手续费。查看公告 →</p>
+                <a class="ni-link" href="/news/omc-airdrop-is-open" data-i18n="nw.open">查看详情 →</a>
+              </div>
+            </article>
+          </div>
         </div>
 
         <aside class="news-side">

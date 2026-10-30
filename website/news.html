@@ -115,7 +115,23 @@
       <div class="news-layout">
         <div class="news-main">
           <div class="news-count" id="newsCount"></div>
-          <div class="news-list" id="newsList"></div>
+          <div class="news-list" id="newsList">
+            <!-- No-JS fallback. assets/js/news.js re-renders this list from
+                 assets/data/news.js; crawlers and answer engines that do not
+                 run JavaScript read the pinned announcement below instead. -->
+            <article class="news-item pinned" data-kind="airdrop">
+              <div class="ni-body">
+                <div class="ni-meta">
+                  <span class="ni-tag k-airdrop" data-i18n="nw.airdrop">Airdrop</span>
+                  <span class="ni-time">2026-10-27</span>
+                  <span class="ni-pin" data-i18n="nw.pin">Pinned</span>
+                </div>
+                <h3 data-i18n="nw16.t">The OMC airdrop is open: 20,000,000 OMC, 1,000,000 slots, free to join</h3>
+                <p data-i18n="nw16.d">Registration is live. 20,000,000 OMC is split into 1,000,000 slots of 20 OMC each, first come first served. No purchase and no presale — three social tasks plus a wallet signature. Claiming opens 1 January 2027 with a 0.01 BNB processing fee per entry. Read the announcement →</p>
+                <a class="ni-link" href="/news/omc-airdrop-is-open" data-i18n="nw.open">Open →</a>
+              </div>
+            </article>
+          </div>
         </div>
 
         <aside class="news-side">
