@@ -127,3 +127,22 @@ test("the Chinese mirror is actually Chinese", () => {
   const leftovers = text.match(/[A-Za-z][A-Za-z' ]{30,}/g) || [];
   assert.deepEqual(leftovers, [], `zh mirror has untranslated English: ${leftovers.slice(0, 3)}`);
 });
+
+test("the copy-paste versions for external platforms quote the same numbers", () => {
+  const docs = {
+    en: readFileSync(ROOT + "docs/marketing/airdrop-announcement-en.md", "utf8"),
+    zh: readFileSync(ROOT + "docs/marketing/airdrop-announcement-zh.md", "utf8"),
+  };
+  for (const [name, md] of Object.entries(docs)) {
+    assert.ok(md.includes(th(a.pool)), `${name}: pool ${a.pool} not stated`);
+    assert.ok(md.includes(th(a.poolSlots)), `${name}: slot count not stated`);
+    assert.ok(md.includes(`20 OMC`), `${name}: per-entry amount not stated`);
+    assert.ok(md.includes(`${a.claimCost.feeBnb} BNB`), `${name}: claim fee not stated`);
+    assert.ok(md.includes("2027") && md.includes("2026"), `${name}: dates missing`);
+    assert.ok(md.includes("omc.network/airdrop"), `${name}: no claim link`);
+    // Same rule as the feed: never frame the fee as a price of entry.
+    for (const banned of ["entrance fee", "paid airdrop", "cost to enter"]) {
+      assert.ok(!md.toLowerCase().includes(banned), `${name}: "${banned}" must not appear`);
+    }
+  }
+});
