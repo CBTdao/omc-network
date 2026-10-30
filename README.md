@@ -430,6 +430,35 @@ a translation task (extend the `MANUAL` tables in `build_zh.py` or tag the marku
 `data-i18n`), not a build task. `i18n.js` treats `/zh/` URLs as a Chinese default, behind
 an explicit switcher pick; asset references in the zh copies are rewritten root-absolute.
 
+### Search engine indexing
+
+Two things about indexing are easy to get wrong and both are handled in the repo.
+
+**Ownership proofs.** `website/BingSiteAuth.xml` and the `msvalidate.01` meta tag carry the
+same token, and the same pair is duplicated into `website/game/` so `game.omc.network` can be
+verified without a second token. `scripts/site-verification.test.mjs` asserts all of them exist
+and agree, because the usual failure mode for these files is not corruption — it is someone
+deleting a file that looks like junk. The site keeps working; the index quietly does not.
+
+**Asking for a crawl.** A sitemap only says a URL exists. On a domain with no crawl history
+that is not enough to earn a fetch — Bing reported pages as *discovered, not crawled* for
+weeks while returning 200 to bingbot on every one of them. IndexNow is the protocol that
+asks, and it needs a key file at the host root:
+
+```bash
+node scripts/indexnow.mjs --dry-run      # print the payload
+node scripts/indexnow.mjs               # submit every sitemap URL, both hosts
+node scripts/indexnow.mjs /airdrop       # only URLs containing this
+```
+
+The key is read from `website/indexnow-<key>.txt` rather than from config, so the published
+file and the request cannot drift. The `indexnow-` prefix is load-bearing: a bare 32-char hex
+key file is indistinguishable in shape from the Google Search Console proof at the same root.
+
+A GitHub Actions job would remove the need to remember the command, but pushing
+`.github/workflows/` requires a token with the `workflow` scope, which the deploy token
+deliberately does not have. Until that changes, run the script after a content deploy.
+
 ---
 
 ## 🤝 Contributing
