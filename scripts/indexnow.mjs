@@ -18,7 +18,11 @@
  *   node scripts/indexnow.mjs              # submit every sitemap URL
  *   node scripts/indexnow.mjs --dry-run    # show what would be sent
  *   node scripts/indexnow.mjs --host game.omc.network
- *   node scripts/indexnow.mjs /airdrop /zh  # only URLs containing these
+ *   node scripts/indexnow.mjs airdrop      # only URLs containing this substring
+ *
+ * Substring filters take no leading slash: Git Bash on Windows rewrites a
+ * leading-slash argument into a Windows path before node ever sees it, so
+ * "/airdrop" arrives as something else entirely and matches nothing.
  */
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -104,6 +108,7 @@ for (const u of urls) {
 
 if (byHost.size === 0) {
   console.error("Nothing to submit — check the filters. Known URLs: " + sitemapUrls().length);
+  console.error("Hint: drop the leading slash (airdrop, not /airdrop) — Git Bash rewrites it as a path.");
   process.exit(1);
 }
 
