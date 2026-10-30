@@ -258,6 +258,18 @@ window.I18N.en = {
   "cta2.b1": "🎁 Claim Airdrop",
 
   /* ===== AIRDROP ===== */
+  "val.title": "What 20 OMC is actually for",
+  "val.sub": "The airdrop does not pay out cash — it hands out a share of a compute network. Here is what one entry, and a full claim, actually buys.",
+  "val.k1": "· <b>A share, not an amount.</b> One entry is 20 OMC — <b>0.000002%</b> of the fixed 1,000,000,000 supply. A full claim of 10 entries is 200 OMC — <b>0.00002%</b>.",
+  "val.k2": "· <b>A down payment on a node.</b> Receiving jobs requires a bond, and tier 1 is <b>$250</b> for a consumer GPU (RTX 3090 / 4090 class). At the $0.371 reference price a full claim covers about <b>30%</b> of that bond — 674 OMC — and the rest is bought on the market. That is the honest value of the airdrop: not pocket money, but the difference between being interested in running a node and being 30% of the way to affording one.",
+  "val.k3": "· <b>A claim on emissions.</b> Staked OMC earns from what the network emits, and the rate is a division, not a promise: <code>APR = min(100%, annual emission ÷ total staked)</code>. More stake means a lower rate for everyone, which is why no headline number is published.",
+  "val.k4": "· <b>A vote, not a veto.</b> In the transition stage holders vote on fees, audit rates, slashing sizes and treasury spending. The proposal threshold is 100,000 OMC, so a full claim casts a vote rather than setting the agenda.",
+  "val.tbl_title": "What the rate looks like at different stake levels",
+  "val.th_stake": "Total staked network-wide",
+  "val.th_apr": "Rate, year-one schedule (ceiling 100%)",
+  "val.at_cap": "— the ceiling binds here",
+  "val.warn": "⚠️ <b>The ceiling is not a promise.</b> Emission is gated on fee revenue: <code>daily = min(schedule ÷ 365, k × trailing 30-day fees ÷ 30)</code>, with k starting at 3. A network that has not yet earned fees emits nothing, so the real rate can be 0% regardless of the table above. That is the design — it is what keeps a token from inflating while nothing is being sold — but it also means nobody should quote a return before a single job has been paid for.",
+
   "ad.badge": "Free Airdrop — Participation Open",
   "ad.sub": "2% of the total 1B supply is reserved for the community — <b>1,000,000 entries × 20 OMC each</b>. The airdrop is free: complete three simple social tasks, connect your wallet, and register up to 5 entries — plus up to 5 more by inviting friends.",
   "ad.chip_free": "✅ Free to Join <b>No Purchase</b>",

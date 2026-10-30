@@ -15,6 +15,10 @@ measured and either shrunk or split at a chosen point, so a longer Chinese
 string cannot silently run off the edge.
 
     python website/tools/build_share_card.py
+
+They land in website/assets/img/press/ rather than docs/: the press kit links to
+them, so they have to be publicly downloadable, and one copy cannot drift from
+the other.
 """
 import json
 import os
@@ -22,7 +26,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PARAMS = json.load(open(os.path.join(ROOT, "contracts", "params.json"), encoding="utf-8"))
-OUT = os.path.join(ROOT, "docs", "marketing", "cards")
+OUT = os.path.join(ROOT, "website", "assets", "img", "press")
 
 A = PARAMS["airdrop"]
 POOL = A["pool"]
@@ -131,6 +135,7 @@ def zh_landscape():
         ("rule", "", None),
         ("t", f"{SLOTS:,} 份 × 每份 {PER} OMC", (ZH_BOLD, 46, WHITE)),
         ("t", "先到先得 · 无抽签 · 无白名单", (ZH_BODY, 34, DIM)),
+        ("t", "满额 200 OMC ≈ 一台 GPU 节点保证金的 30%", (ZH_BODY, 30, DIM)),
         ("t", "关注 X · 转发评论 · 加入 Telegram", (ZH_BODY, 32, DIM)),
         ("t", "登记免费 · 领取时 0.01 BNB/份 处理手续费", (ZH_BODY, 28, ACCENT)),
         ("t", "BNB Chain 上的去中心化 GPU 算力网络 · 泛宇宙算力", (ZH_BODY, 26, DIM)),
@@ -147,6 +152,7 @@ def zh_square():
         ("rule", "", None),
         ("t", "100 万份 × 每份 20 OMC", (ZH_BOLD, 44, WHITE)),
         ("t", "先到先得，完成任务即可登记", (ZH_BODY, 34, DIM)),
+        ("t", "满额 200 OMC ≈ 节点保证金 30%", (ZH_BODY, 30, DIM)),
         ("t", "登记免费", (ZH_BODY, 30, DIM)),
         ("t", "领取时 0.01 BNB/份 处理手续费", (ZH_BODY, 30, ACCENT)),
         ("t", "BNB Chain · 去中心化 GPU 算力网络", (ZH_BODY, 28, DIM)),
@@ -161,6 +167,7 @@ def en_landscape():
         ("rule", "", None),
         ("t", f"{SLOTS:,} slots × {PER} OMC each", (EN_BOLD, 44, WHITE)),
         ("t", "First come, first served. No lottery, no snapshot.", (EN_BODY, 32, DIM)),
+        ("t", "A full 200 OMC claim ≈ 30% of a tier-1 GPU node bond", (EN_BODY, 30, DIM)),
         ("t", "Follow · Retweet · Join Telegram", (EN_BODY, 32, DIM)),
         ("t", "Free to register. 0.01 BNB per entry at claim.", (EN_BODY, 28, ACCENT)),
         ("t", "Decentralized GPU compute on BNB Chain", (EN_BODY, 26, DIM)),

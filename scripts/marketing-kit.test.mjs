@@ -19,7 +19,7 @@ const params = JSON.parse(readFileSync(join(root, "contracts/params.json"), "utf
 const a = params.airdrop;
 
 const KIT = join(root, "docs/marketing/distribution-kit-zh.md");
-const CARDS = join(root, "docs/marketing/cards");
+const CARDS = join(root, "website/assets/img/press");
 
 const kit = readFileSync(KIT, "utf8");
 const n = (v) => v.toLocaleString("en-US");

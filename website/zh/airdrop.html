@@ -408,6 +408,47 @@
     </div>
   </section>
 
+  <!-- ===== WHAT AN ENTRY IS WORTH =====
+       Reads as a share of a network, not as cash. Every figure here is derived
+       from contracts/params.json and asserted in scripts/what-is-omc.test.mjs:
+       20 / 1e9, 250 / 0.371, emission.scheduleOMC[0] / stake. -->
+  <section class="section" style="padding-top: 0;" id="value">
+    <div class="container">
+      <div class="card reveal">
+        <h2 data-i18n="val.title">20 OMC 到底是什么</h2>
+        <p data-i18n="val.sub">空投不发钱，发的是一个算力网络的份额。下面是一份、以及满额，究竟换到什么。</p>
+
+        <div class="rules-list" style="margin-top: 8px;">
+          <p data-i18n="val.k1">· <b>是份额，不是金额。</b>一份 20 OMC——占固定总量 1,000,000,000 的 <b>0.000002%</b>。满额 10 份 200 OMC——<b>0.00002%</b>。</p>
+          <p data-i18n="val.k2">· <b>是一台节点的首付。</b>接单需要质押保证金，第 1 档（RTX 3090 / 4090 级消费级显卡）目标 <b>$250</b>。按 $0.371 参考价，满额空投约合这条保证金的 <b>30%</b>（674 OMC），其余在市场买入。这才是空投的真实价值：不是零花钱，而是「对跑节点感兴趣」和「已经付得起三成」之间的差别。</p>
+          <p data-i18n="val.k3">· <b>是对释放的索取权。</b>质押的 OMC 分得网络释放的一部分，而这个比例是除法，不是承诺：<code>年化 = min(100%, 年释放 ÷ 全网质押量)</code>。质押越多，每个人的比例越低——所以不公布一个招牌年化。</p>
+          <p data-i18n="val.k4">· <b>是投票权，不是否决权。</b>过渡阶段持币人对费率、审计比例、罚没额度、国库支出投票。提案门槛 100,000 OMC，所以满额空投是投一票，而不是定议程。</p>
+        </div>
+
+        <div class="note" style="margin-top: 18px;">
+          <b data-i18n="val.tbl_title">不同质押量下的年化长什么样</b>
+          <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.55;margin-top:12px;">
+            <thead>
+              <tr>
+                <th scope="col" style="text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid rgba(128,128,128,.3);" data-i18n="val.th_stake">全网质押总量</th>
+                <th scope="col" style="text-align:left;padding:8px 0;border-bottom:1px solid rgba(128,128,128,.3);" data-i18n="val.th_apr">年化（第 1 年释放计划，上限 100%）</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:8px 10px 8px 0;border-bottom:1px solid rgba(128,128,128,.18);">10,000,000 OMC</td><td style="padding:8px 0;border-bottom:1px solid rgba(128,128,128,.18);"><b>100%</b> <span data-i18n="val.at_cap">— 在这里触到上限</span></td></tr>
+              <tr><td style="padding:8px 10px 8px 0;border-bottom:1px solid rgba(128,128,128,.18);">20,000,000 OMC</td><td style="padding:8px 0;border-bottom:1px solid rgba(128,128,128,.18);"><b>50%</b></td></tr>
+              <tr><td style="padding:8px 10px 8px 0;border-bottom:1px solid rgba(128,128,128,.18);">50,000,000 OMC</td><td style="padding:8px 0;border-bottom:1px solid rgba(128,128,128,.18);"><b>20%</b></td></tr>
+              <tr><td style="padding:8px 10px 8px 0;border-bottom:1px solid rgba(128,128,128,.18);">100,000,000 OMC</td><td style="padding:8px 0;border-bottom:1px solid rgba(128,128,128,.18);"><b>10%</b></td></tr>
+              <tr><td style="padding:8px 10px 8px 0;">20% of the 65,500,000 OMC TGE float (13,100,000)</td><td style="padding:8px 0;"><b>76%</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="note" style="margin-top: 16px;" data-i18n="val.warn">⚠️ <b>上限不是承诺。</b>释放受手续费收入闸门约束：<code>每日 = min(年计划 ÷ 365, k × 近 30 天手续费 ÷ 30)</code>，k 从 3 起。还没有挣到手续费的网络不释放，所以真实年化可能是 0%，与上表无关。这是设计的一部分——它让代币在没有任何卖出的时候不会通胀——但同样意味着，在一个还没付过一单的网络里，谁都不该报出一个回报率。</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== CTA ===== -->
   <section class="section" style="padding-top: 0;">
     <div class="container">

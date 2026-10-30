@@ -7,8 +7,8 @@
     "if you change it on chain and nowhere else, this file is wrong. Both are",
     "checked by scripts/params.test.mjs and models/economics.test.mjs."
   ],
-  "version": 7,
-  "updatedAt": "2026-10-27",
+  "version": 8,
+  "updatedAt": "2026-10-30",
   "fees": {
     "protocolFeeBps": 800,
     "omcPaymentDiscountBps": 1000,
@@ -103,6 +103,10 @@
     "model": "usd",
     "rationale": "A stake is collateral, and collateral only deters if it is worth more than the damage an operator can do. A fixed OMC figure is a fixed dollar figure only on the day it is written; when the token falls 80% the deterrent falls with it. Tier minimums are therefore denominated in USD and restated in OMC at each re-peg, so the bond keeps its size while the token price moves.",
     "unstakeCooldownDays": 14,
+    "aprCeilingPct": 100,
+    "aprCeilingRationale": "A ceiling, not a rate. APR here is a division, not a policy: apr = annualEmission / totalStaked, so it falls as more stake arrives and rises when stake leaves. The ceiling exists only so a tiny stake base cannot be paid an absurd rate -- if 900,000 OMC were staked against a 10,000,000 OMC year-one schedule, the division alone would advertise 1,111%. 100% is the point above which the protocol treats the number as a bug rather than a yield. It is expressly not a promise: with the revenue gate in place, emission is min(schedule/365, k x trailing-30d fee revenue/30), so a network that has not yet earned fees pays nothing regardless of how high the ceiling is.",
+    "aprFormula": "apr = min(aprCeilingPct/100, annualEmissionOMC / totalStakedOMC)",
+    "aprNote": "The /airdrop value section shows the division at several stake levels rather than a headline rate, because a headline rate on a network with no fee revenue yet would be a number we cannot pay.",
     "unstakeRationale": "The deployed contract lets a node unstake in the same block it registers, which makes staking a free option: stake, accrue emissions for a week, unstake, sell. With a 20% APR and instant exit there is no cost to trying, so the marginal staker is a yield farmer rather than an operator, and the emissions meant to buy capacity buy nothing but sell pressure. A 14-day cooldown makes the position a commitment: long enough that farming is a real risk, short enough that an honest operator is not locked out of hardware resale.",
     "tiers": [
       {

@@ -39,19 +39,66 @@ $ curl -s https://omc.network/api/airdrop/summary
 这意味着：**如果 2027-01-01 没有价格锚，登记数再大也换不成现金。** 十万个钱包登记，
 币没有可参照的价值，来付钱的可能只有几百个。
 
-三个杠杆，都是你的决定，代价不同：
+三个杠杆，代价不同。**2026-10-30 已定：做 A，否决 B，不做 C。**
 
-| 杠杆 | 效果 | 代价 |
+| 杠杆 | 效果 | 状态 |
 |---|---|---|
-| **A. 讲清「20 OMC 能干什么」** | 唯一不花钱、不动物理参数的办法：质押年化、租算力折扣、治理权重。让它有参照物 | 需要真数据支撑，编不得 |
-| **B. 每份 20 → 40 OMC** | 份数 100 万 → 50 万，隐含单价腰斩到 **$0.185**，池子仍是 20M（2%），一分钱不少收 | 改 `perEntry`，同步 5 处 + 重建 zh |
-| **C. 每份 0.01 → 0.005 BNB** | 门槛减半，隐含单价同样到 $0.185 | 直接减半回笼资金，不建议 |
+| **A. 讲清「20 OMC 能干什么」** | 不花钱、不动参数，给份额一个参照物 | ✅ **已上线**（见 1.5） |
+| **B. 每份 20 → 40 OMC** | 隐含单价腰斩到 $0.185，池子不变 | ❌ 否决——份数减半没必要 |
+| **C. 每份 0.01 → 0.005 BNB** | 门槛减半 | ❌ 不做——直接腰斩回笼资金 |
 
-我的话：**A 必做，B 值得做，C 不要做。** B 是唯一一个「让人感觉便宜但不多花一分钱」的
-调整——同样的 20,000,000 OMC 池子，只是切得更细。猎人看的是「一份多少钱」，不是「一共多少份」。
+---
 
-> 提醒：B 会动到 `params.json` → `airdrop.json` → 公告页 → 两篇外发长文 → 5 个测试文件。
-> 这些现在是联动红的，这是设计。要不要改，你定，我一句话就能改完并重新发布。
+## 1.5 「20 OMC 是什么」——对猎人怎么说
+
+这一节是 A 方案落地后的对外表述，页面上的原文在 `omc.network/airdrop#value`，
+中英双语。所有数字由 `scripts/what-is-omc.test.mjs` 绑在 `params.json` 上。
+
+三个必须记住的数：
+
+| 说法 | 数 | 来源 |
+|---|---|---|
+| 一份占总量 | **0.000002%**（满额 200 OMC = 0.00002%） | 20 / 1,000,000,000 |
+| 满额空投 ≈ 一台节点的首付 | **30%**（第 1 档保证金 $250，约合 674 OMC） | 200 × $0.371 / $250 |
+| 年化是除法，不是承诺 | 上限 **100%**；质押 2000 万时 50%，1 亿时 10% | 年释放 1000 万 ÷ 质押量 |
+
+**为什么这套说法重要**：猎人来问的第一个问题永远是「这值多少」。以前我们只能答
+「20 OMC」，那是个没有参照物的数字；现在能答「一台消费级显卡节点保证金的 30%」——
+这是他能拿去做决定的东西，而且是真的。
+
+### 可直接发的版本（X / Telegram）
+
+```
+What a full OMC claim is actually worth:
+
+200 OMC (10 entries) ≈ 30% of the bond for a tier-1 GPU node
+(tier 1 = $250 bond for an RTX 3090/4090-class card)
+
+Stake it and you earn from network emissions:
+APR = min(100%, annual emission ÷ total staked) — it falls as more
+stake arrives, so no fixed rate is promised.
+
+Register free: omc.network/airdrop
+```
+
+```
+中文版：
+
+满额空投 200 OMC ≈ 一台入门级节点保证金的 30%
+（第 1 档 = $250 保证金，RTX 3090/4090 级显卡）
+
+质押可分享网络释放：
+年化 = min(100%, 年释放 ÷ 全网质押量)，质押越多越低，不承诺固定年化
+
+免费登记：omc.network/airdrop
+```
+
+### 一句必须先说的话
+
+**不要对任何人说「年化最高 100%」而不带下半句。** 释放受手续费收入闸门约束
+（`min(年计划/365, k × 近 30 天手续费/30)`），网络还没挣到手续费时不释放，真实年化可能是 0。
+说了上半句不说下半句，1 月 1 日就会变成「承诺落空」的截图。
+
 
 ---
 
@@ -234,7 +281,7 @@ Announcement:        https://omc.network/news/omc-airdrop-is-open
 Spec (machine):      https://omc.network/airdrop.json
 Telegram:            https://t.me/OmniverseCompute
 X:                   https://x.com/Omniverse_Depin
-Logo:                1200×630 card in docs/marketing/cards/ (or /og-image.png)
+Logo / banner:       https://omc.network/assets/img/press/omc-airdrop-en-1200x630.png (or /og-image.png)
 ```
 
 短描述（≤160 字符）：
