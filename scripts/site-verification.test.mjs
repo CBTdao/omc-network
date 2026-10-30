@@ -54,6 +54,21 @@ test("the Chinese mirror carries it too", () => {
     "zh/index.html lost the verification meta — rerun website/tools/build_zh.py");
 });
 
+test("the game subdomain can be verified with the same token", () => {
+  // game.omc.network is a separate deployment served from website/game/, so the
+  // root file does not cover it. Copying the same token there means the subdomain
+  // verifies without a second round trip to Bing, and without a different token
+  // to keep track of. The Google file was already duplicated the same way.
+  const file = site("game/BingSiteAuth.xml");
+  assert.ok(existsSync(file), "website/game/BingSiteAuth.xml is missing");
+  const token = readFileSync(file, "utf8").match(/<user>\s*([^<]*?)\s*<\/user>/)[1];
+  assert.equal(token, BING_TOKEN, "subdomain must use the same token as the main domain");
+
+  const html = readFileSync(site("game/index.html"), "utf8");
+  assert.match(html, new RegExp(`<meta name="msvalidate\\.01" content="${BING_TOKEN}"`),
+    "game/index.html lost the verification meta");
+});
+
 test("the Google verification file is still in place", () => {
   // Same failure mode, different engine. The name is opaque on purpose: it is
   // the token. It looked like a stray file before this test existed.
