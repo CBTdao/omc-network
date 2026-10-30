@@ -277,6 +277,15 @@ reproducible with `node models/claim.mjs`, `--revenue` and `--sybil`.
 2. Retweet & comment on the pinned post
 3. Join the [Telegram community](https://t.me/OmniverseCompute)
 
+**For aggregators, listing sites, and AI agents.** The campaign is published in
+machine-readable form at **https://omc.network/airdrop.json** — pool, per-entry amount,
+slot count, fee, dates, entry caps and task list, each field named the way a listing
+schema names it. A plain-text summary of the project is at
+**https://omc.network/llms.txt**, and the canonical numbers live in
+[`contracts/params.json`](contracts/params.json). Where a third-party listing disagrees
+with these, the listing is stale: `scripts/airdrop-json.test.mjs` fails the build if the
+feed drifts from the parameter file, so the two cannot silently diverge.
+
 ---
 
 ## 🗺 Roadmap
