@@ -492,6 +492,7 @@ window.I18N.zh = {
   "nw16.d": "forum.omc.network 新文：深挖互联层，那张人人最后才计价的大账单。800G 端口、spine-leaf 拓扑背后的基数数学，以及为什么一条超额订阅的上联就能拖垮整次训练任务。阅读深度长文 →",
 
   "f.about": "关于与联系",
+  "f.press": "媒体资料包",
   "f.privacy": "隐私政策",
   "f.aup": "可接受使用政策",
   "meta.title_aup": "可接受使用政策 — Omniverse Compute (OMC)",

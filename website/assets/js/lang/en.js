@@ -495,6 +495,7 @@ window.I18N.en = {
   "nw16.d": "New on forum.omc.network: a deep dive on the interconnect, the compute bill everyone prices last. 800G ports, the radix math behind spine-leaf topology, and why one oversubscribed uplink can stall an entire training run. Read the deep dive →",
 
   "f.about": "About & Contact",
+  "f.press": "Press Kit",
   "f.privacy": "Privacy Policy",
   "f.aup": "Acceptable Use",
   "meta.title_aup": "Acceptable Use Policy — Omniverse Compute (OMC)",

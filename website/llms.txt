@@ -29,6 +29,7 @@ This site is static HTML with two fully rendered language versions: English at t
 - [https://omc.network/ai-tools](https://omc.network/ai-tools): In-browser 4x image upscaler
 - [https://omc.network/news](https://omc.network/news): News and changelog
 - [https://omc.network/about](https://omc.network/about): About and contact
+- [https://omc.network/press](https://omc.network/press): Press kit — logos, share cards, three boilerplate lengths, fast facts, and the repository file each figure comes from
 - [https://omc.network/privacy](https://omc.network/privacy): Privacy policy
 - [https://omc.network/aup](https://omc.network/aup): Acceptable use policy
 
@@ -42,6 +43,7 @@ This site is static HTML with two fully rendered language versions: English at t
 - [https://omc.network/zh/testnet](https://omc.network/zh/testnet): 测试网
 - [https://omc.network/zh/ai-tools](https://omc.network/zh/ai-tools): 浏览器内 4 倍图像超分
 - [https://omc.network/zh/news](https://omc.network/zh/news): 新闻与更新
+- [https://omc.network/zh/press](https://omc.network/zh/press): 媒体资料包 — 标志、分享卡、三档标准介绍、关键数据，以及每个数字在仓库中的来源文件
 
 ## Companion sites
 
