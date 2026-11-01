@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
 import { test } from "node:test";
 
-import { pickProperty, parseBingDate, sitemapUrls } from "./bing-submit.mjs";
+import { pickProperty, parseBingDate, sitemapUrls, classifyError } from "./bing-submit.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const script = readFileSync(join(root, "scripts", "bing-submit.mjs"), "utf8");
@@ -17,6 +17,38 @@ const PROPS = [
   { url: "https://omc.network/zh/", verified: true },
   { url: "https://top.omc.network/", verified: false },
 ];
+
+test("ErrorCode=4 with a ThrottleUser suffix is read as rate limiting, not as a bad property", () => {
+  // Observed live after submitting 44 URLs in one session: GetUrlInfo starts
+  // answering HTTP 400 ErrorCode=4 with "ERROR!!! ThrottleUser". Code 4 is
+  // documented as "the key does not own this site", so a code-first mapping
+  // sends you off to re-verify a property that verified fine an hour ago.
+  const throttled = classifyError({
+    status: 400,
+    code: 4,
+    message: "ERROR!!! ThrottleUser",
+  });
+  assert.equal(throttled.throttled, true);
+  assert.match(throttled.hint, /rate limited/i);
+  assert.doesNotMatch(throttled.hint, /not verified/i);
+
+  const hostThrottle = classifyError({ status: 400, code: 4, message: "ERROR!!! ThrottleHost" });
+  assert.equal(hostThrottle.throttled, true);
+});
+
+test("a real ownership failure is still reported as one", () => {
+  // The message says nothing about throttling here, which is the only case
+  // where code 4 should be believed.
+  const real = classifyError({ status: 400, code: 4, message: "ERROR!!! InvalidSiteUrl" });
+  assert.equal(real.throttled, false);
+  assert.match(real.hint, /not verified/i);
+});
+
+test("other failure codes keep their own explanation", () => {
+  assert.match(classifyError({ status: 400, code: 3 }).hint, /API key/i);
+  assert.match(classifyError({ status: 400, code: 5 }).hint, /quota/i);
+  assert.equal(classifyError({ status: 500 }).throttled, false);
+});
 
 test("a Chinese page is attributed to the /zh/ property, not the root one", () => {
   assert.equal(pickProperty("https://omc.network/zh/airdrop", PROPS), "https://omc.network/zh/");

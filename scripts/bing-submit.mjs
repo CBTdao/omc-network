@@ -84,18 +84,50 @@ async function call(method, { query = {}, body } = {}) {
     // The API reports failures as HTTP 400 with a numeric ErrorCode, which is
     // easy to mistake for a bad request when it is really a bad key or a quota
     // that ran out. Name the cause.
-    const code = json.ErrorCode;
-    const hint =
-      code === 3
-        ? "invalid API key"
-        : code === 4
-          ? "key does not own this site, or the site is not verified"
-          : code === 5
-            ? "daily URL submission quota exhausted"
-            : "unexpected error";
-    throw new Error(`${method} failed: HTTP ${res.status} ErrorCode=${code ?? "-"} (${hint}) ${json.Message ?? ""}`.trim());
+    const { hint, throttled } = classifyError({
+      status: res.status,
+      code: json.ErrorCode,
+      message: json.Message,
+    });
+    const err = new Error(
+      `${method} failed: HTTP ${res.status} ErrorCode=${json.ErrorCode ?? "-"} (${hint}) ${json.Message ?? ""}`.trim(),
+    );
+    err.throttled = throttled;
+    throw err;
   }
   return json.d ?? null;
+}
+
+/**
+ * Decide what a failed call actually means.
+ *
+ * The trap is ErrorCode=4. Bing documents it as "the key does not own this
+ * site", and GetUrlInfo also returns it when the *user* is rate limited —
+ * the only difference is a trailing "ERROR!!! ThrottleUser" in Message. Mapping
+ * on the code alone tells you to go re-verify a property that is perfectly fine,
+ * and it does so exactly when you are submitting hardest. So the message is
+ * checked first and the code only decides when it says nothing about throttling.
+ *
+ * Exported because this is the branch that lies to a human, and it is worth a
+ * test rather than a comment.
+ */
+export function classifyError({ status, code, message } = {}) {
+  const msg = String(message ?? "");
+  if (/throttle/i.test(msg)) {
+    return {
+      throttled: true,
+      hint: "rate limited by Bing (per-user or per-host daily quota) — not a verification problem, retry later",
+    };
+  }
+  const hint =
+    code === 3
+      ? "invalid API key"
+      : code === 4
+        ? "key does not own this site, or the site is not verified"
+        : code === 5
+          ? "daily quota exhausted"
+          : `unexpected error (HTTP ${status ?? "-"})`;
+  return { throttled: false, hint };
 }
 
 export async function sites() {
@@ -245,12 +277,14 @@ async function main(argv) {
         try {
           s = await status(u, property);
         } catch (err) {
-          // GetUrlInfo is throttled per host, and it throttles fast: a full
-          // crawl report can exhaust the allowance partway through. Letting the
-          // error escape would kill the whole report and hide the rows that had
-          // already been answered, so this records the gap and stops asking
-          // instead of retrying into the same wall.
-          if (/ThrottleHost|ErrorCode=5/.test(err.message)) {
+          // GetUrlInfo is rate limited per host and per user, and it throttles
+          // fast: a full crawl report can exhaust the allowance partway
+          // through. Letting the error escape would kill the whole report and
+          // hide the rows that had already been answered, so this records the
+          // gap and stops asking instead of retrying into the same wall.
+          // err.throttled is set by classifyError, which trusts the message
+          // over ErrorCode=4 — see the comment there.
+          if (err.throttled || /ThrottleHost|ThrottleUser|ErrorCode=5/.test(err.message)) {
             stop = err.message;
             console.log(`  throttled    —                  ${u}`);
             unchecked++;
@@ -272,7 +306,10 @@ async function main(argv) {
     console.log(`\n${crawled}/${answered} crawled${unchecked ? `, ${unchecked} unchecked` : ""}.`);
     if (stop) {
       console.log(`\nStopped early — ${stop}`);
-      console.log(`Re-run later, or narrow it: node scripts/bing-submit.mjs --status airdrop`);
+      // Repeat the filter the caller actually used: a hardcoded example sends
+      // people to a different URL set than the one that just failed.
+      const again = filters.length ? ` ${filters.join(" ")}` : "";
+      console.log(`Re-run later, or narrow it: node scripts/bing-submit.mjs --status${again}`);
     }
     if (uncovered.length) {
       console.log(`\nACTION NEEDED: ${uncovered.length} URL(s) have no verified property in Bing.`);
