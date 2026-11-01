@@ -188,6 +188,8 @@ async function status(url, property) {
   };
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 const fmt = (d) =>
   d ? d.toLocaleString("sv-SE", { timeZone: "Asia/Shanghai" }).slice(0, 16) : "—";
 
@@ -227,19 +229,51 @@ async function main(argv) {
   if (flags.includes("--status")) {
     console.log(`Crawl state, ${urls.length} URLs (UTC+8, "—" = never fetched)\n`);
     let crawled = 0;
+    let unchecked = 0;
+    let stop = null;
     for (const [property, list] of [...groups, [null, uncovered]]) {
       for (const u of list) {
         if (!property) {
           console.log(`  no property  ${u}`);
           continue;
         }
-        const s = await status(u, property);
+        if (stop) {
+          unchecked++;
+          continue;
+        }
+        let s;
+        try {
+          s = await status(u, property);
+        } catch (err) {
+          // GetUrlInfo is throttled per host, and it throttles fast: a full
+          // crawl report can exhaust the allowance partway through. Letting the
+          // error escape would kill the whole report and hide the rows that had
+          // already been answered, so this records the gap and stops asking
+          // instead of retrying into the same wall.
+          if (/ThrottleHost|ErrorCode=5/.test(err.message)) {
+            stop = err.message;
+            console.log(`  throttled    —                  ${u}`);
+            unchecked++;
+            continue;
+          }
+          console.log(`  error        —                  ${u}   ${err.message}`);
+          unchecked++;
+          continue;
+        }
         if (s.crawled) crawled++;
         const flag = s.blocked ? "  BLOCKED" : "";
         console.log(`  ${s.state.padEnd(13)} ${fmt(s.crawled).padEnd(18)} ${u}${flag}`);
+        // Deliberate pacing: the endpoint has no batch form, and a tight loop
+        // is what triggers the throttle above.
+        await sleep(150);
       }
     }
-    console.log(`\n${crawled}/${urls.length} crawled.`);
+    const answered = urls.length - unchecked - uncovered.length;
+    console.log(`\n${crawled}/${answered} crawled${unchecked ? `, ${unchecked} unchecked` : ""}.`);
+    if (stop) {
+      console.log(`\nStopped early — ${stop}`);
+      console.log(`Re-run later, or narrow it: node scripts/bing-submit.mjs --status airdrop`);
+    }
     if (uncovered.length) {
       console.log(`\nACTION NEEDED: ${uncovered.length} URL(s) have no verified property in Bing.`);
       console.log(`Add them at https://www.bing.com/webmaster -> Add site, then re-run.`);

@@ -10,12 +10,12 @@
 
 window.OMC_NEWS = [
   {
-    id: "n16",
+    id: "airdrop-2026",
     date: "2026-10-27",
     kind: "airdrop",
     pin: true,
-    t: "nw16.t",
-    d: "nw16.d",
+    t: "nw.announce.t",
+    d: "nw.announce.d",
     href: "/news/omc-airdrop-is-open"
   },
   {
