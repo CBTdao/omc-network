@@ -25,7 +25,7 @@ window.I18N.en = {
   "meta.desc_ai": "A free 4x image upscaler that runs entirely in your browser using Real-ESRGAN. Your image never leaves your device. No account, no wallet, no upload.",
   "meta.desc_tn": "Join the Omniverse Compute testnet: run a GPU node, get test OMC from the faucet, and help validate the DePIN compute grid before mainnet.",
   "meta.desc_stake": "Stake tOMC on the OMC testnet: pick a hardware tier, register a GPU node, keep it live and earn testnet rewards.",
-  "meta.desc_airdrop": "Free OMC airdrop: 20,000,000 OMC (2% of supply), 1,000,000 slots × 20 OMC. Follow X, retweet, join Telegram. Claim from 1 Jan 2027.",
+  "meta.desc_airdrop": "Free OMC airdrop: 20,000,000 OMC, 1,000,000 slots × 20 OMC. Follow X, retweet, join Telegram. Claim from 1 Jan 2027 with a 0.01 BNB processing fee.",
   "meta.desc_about": "Who is behind Omniverse Compute (OMC): what we are building, what is live today, our editorial standards, and how to reach the team.",
   "meta.desc_aup": "OMC Acceptable Use Policy — the rules for requesting jobs and providing GPU capacity: prohibited content, prohibited workloads, obligations and enforcement.",
   "meta.desc_privacy": "Privacy Policy for omc.network: what data we collect, how we use cookies, our use of Google AdSense, and your rights under GDPR, UK GDPR and CCPA/CPRA.",

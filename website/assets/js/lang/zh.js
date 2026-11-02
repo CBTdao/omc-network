@@ -24,7 +24,7 @@ window.I18N.zh = {
   "meta.desc_ai": "免费的 4 倍图像超分工具，用 Real-ESRGAN 完全在你的浏览器里运行，图片不会离开你的设备。无需账号、无需钱包、无需上传。",
   "meta.desc_tn": "加入 Omniverse Compute 测试网：运行 GPU 节点、从水龙头领取测试 OMC，在主网上线前一起验证这个 DePIN 算力网格。",
   "meta.desc_stake": "在 OMC 测试网上质押 tOMC：选择硬件档位、注册 GPU 节点、保持在线，获取测试网奖励。",
-  "meta.desc_airdrop": "免费 OMC 空投：20,000,000 OMC（占总供应 2%），1,000,000 份 × 每份 20 OMC。关注 X、转发、加入 Telegram，2027 年 1 月 1 日起领取。",
+  "meta.desc_airdrop": "免费 OMC 空投：20,000,000 OMC，1,000,000 份 × 每份 20 OMC。关注 X、转发、加入 Telegram。2027 年 1 月 1 日起领取，每份 0.01 BNB 处理手续费。",
   "meta.desc_about": "Omniverse Compute (OMC) 背后是谁：我们在做什么、今天已经上线了什么、我们的内容标准，以及如何联系团队。",
   "meta.desc_aup": "OMC 可接受使用政策——发起任务与提供 GPU 算力时必须遵守的规则：禁止内容、禁止负载、义务与执行。",
   "meta.desc_privacy": "omc.network 的隐私政策：我们收集哪些数据、如何使用 Cookie、Google AdSense 的使用方式，以及你在 GDPR、英国 GDPR 与 CCPA/CPRA 下的权利。",
