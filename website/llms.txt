@@ -9,6 +9,7 @@ This site is static HTML with two fully rendered language versions: English at t
 - [https://omc.network/llms-full.txt](https://omc.network/llms-full.txt): the full text of all 15 English pages, ~127 KB, nav and footer stripped, one `##` section per page with its URL. Read this instead of crawling.
 - [https://omc.network/llms-full-zh.txt](https://omc.network/llms-full-zh.txt): 中文全文，10 页，约 27 KB。
 - [https://omc.network/airdrop.json](https://omc.network/airdrop.json): structured airdrop specification for listing sites and aggregators.
+- [https://omc.network/news/feed.xml](https://omc.network/news/feed.xml): RSS feed of every announcement, newest first, full excerpts — the fastest way to see what changed and when. Chinese: https://omc.network/zh/news/feed.xml
 
 ## Airdrop — the facts, in the order people ask for them
 

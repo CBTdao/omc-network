@@ -68,6 +68,13 @@ STRIP_BLOCKS = re.compile(r"<(nav|footer|script|style|svg)\b[\s\S]*?</\1>", re.I
 # Buttons are navigation. Their labels are imperatives ("Register free →"), which
 # is the voice that makes a page read like an advertisement to a summariser.
 BUTTON = re.compile(r'<(a|button)\b[^>]*class="[^"]*\bbtn\b[^"]*"[^>]*>[\s\S]*?</\1>', re.I)
+# News-list furniture: the big day/month tile repeats the <time> beside it, and
+# every card ends in a link labelled "Open →". Neither is content, and repeated
+# seventeen times they make the section read like a list of commands.
+DECOR = re.compile(
+    r'<(div|span|a)\b[^>]*class="[^"]*\b(?:ni-date|ni-link|nl-date)\b[^"]*"[^>]*>[\s\S]*?</\1>',
+    re.I,
+)
 HEADING = re.compile(r"<h([1-6])\b[^>]*>([\s\S]*?)</h\1>", re.I)
 LI = re.compile(r"<li\b[^>]*>", re.I)
 BR = re.compile(r"<br\s*/?>", re.I)
@@ -139,6 +146,7 @@ def build(pages, lang, lang_note):
         raw = path.read_text(encoding="utf-8")
         title = page_title(raw)
         body = BUTTON.sub(" ", raw)
+        body = DECOR.sub(" ", body)
         body = STRIP_BLOCKS.sub("\n", body)
         # everything before </head> is metadata; everything before <body ...> is
         # chrome we do not want to read twice

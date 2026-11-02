@@ -38,17 +38,21 @@
     return arr;
   }
 
+  // The markup here must match what website/tools/build_news.py emits, down to
+  // the <time> element and the item id: the static list is what a crawler reads,
+  // this is what the visitor sees after hydration, and a shape difference shows
+  // up as a reflow on load and as broken in-page anchors.
   function card(p) {
     var ext = p.href.indexOf("http") === 0;
     return [
-      '<article class="news-item' + (p.pin ? " pinned" : "") + '" data-kind="' + p.kind + '">',
+      '<article class="news-item' + (p.pin ? " pinned" : "") + '" data-kind="' + p.kind + '" id="post-' + p.id + '">',
       '  <div class="ni-date"><b>' + new Date(p.date + "T00:00:00Z").getUTCDate() + "</b>" +
       "<span>" + monthLabel(p.date) + "</span></div>",
       '  <div class="ni-body">',
       '    <div class="ni-meta">',
       '      <span class="ni-tag k-' + p.kind + '">' + T(KIND_KEY[p.kind] || "nw.dev") + "</span>",
-      '      <span class="ni-time">' + dateLabel(p.date) + "</span>",
-      p.pin ? '      <span class="ni-pin">📌 ' + T("nw.pin") + "</span>" : "",
+      '      <time class="ni-time" datetime="' + p.date + '">' + dateLabel(p.date) + "</time>",
+      p.pin ? '      <span class="ni-pin">📌 <span>' + T("nw.pin") + "</span></span>" : "",
       "    </div>",
       "    <h3>" + T(p.t) + "</h3>",
       "    <p>" + T(p.d) + "</p>",

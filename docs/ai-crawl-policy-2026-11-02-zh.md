@@ -131,10 +131,12 @@
 
 1. ~~`/llms-full.txt`~~ ✅
 2. ~~全站 `dateModified` + 页脚版本号~~ ✅
-3. **`/news` 静态化 + `/news/feed.xml`** — 让新鲜度面真正对爬虫打开（当前不跑 JS 只读到 1 条）。
+3. ~~`/news` 静态化 + `/news/feed.xml`~~ ✅（见下）
 4. **中文 batch 2**（whitepaper / about / calculator 优先，privacy / aup 次之）。
 5. **`Organization.alternateName: 泛宇宙算力` + `disambiguatingDescription`** 全站生效。
 
-**构建顺序（写进 README 了，别打乱）**：`build_zh.py` → `build_announcement.py` / `build_press.py` → `build_llms_full.py` → `inject_facts.py`。前者会重建页面，后两者是盖章，必须最后跑。
+**3 已完成（2026-11-02）**：17 条动态全部在构建期渲染进 `news.html` / `zh/news.html`（原来不跑 JS 只读到 1 条），并发布 `/news/feed.xml` 与 `/zh/news/feed.xml`（RSS 2.0，最新在前，完整摘要，绝对链接）。`lastBuildDate` 取最新一条的日期而不是构建时刻——否则每跑一次生成器都像更新过，读者会学会忽略这个文件。`build_news.py --check` 校验 HTML 与两份 feed 是否过期；`scripts/news-static.test.mjs` 13 条守「静态顺序 = 数据文件顺序」「两种语言条目一致」「中文日期真的是中文」「zh feed 不链不存在的页面」。副作用：`llms-full.txt` 从 126,668 涨到 133,106 字符，因为新闻段现在带着全部 17 条。
+
+**构建顺序（写进 README 了，别打乱）**：`build_zh.py` → `build_announcement.py` / `build_press.py` → `build_news.py` → `build_llms_full.py` → `inject_facts.py`。前三个会重建页面，后两个是盖章，必须最后跑。
 
 **判断这套有没有用的标准**：一个月后，去问 ChatGPT / Perplexity「OMC 空投怎么参与、要不要花钱」，看它答的是 20 OMC 免费参与 + 0.01 BNB 处理手续费，还是「付费空投」。答错了，说明是引用源不够硬，不是文案不够多。

@@ -442,8 +442,9 @@ node scripts/ai-readiness.test.mjs        # guards both files and the per-page d
 ```
 
 `llms-full.txt` is the whole readable site in one fetch — nav, footer, script, svg and
-button labels stripped, one `##` section per page with its URL (~127 KB, about 33k
-tokens). `llms-full-zh.txt` is the same for the ten Chinese pages (~27 KB). Both are
+button labels stripped, one `##` section per page with its URL (~133 KB, about 34k
+tokens). The news section carries all seventeen posts with their dates, which is why the
+file grew when the list became static. `llms-full-zh.txt` is the same for the ten Chinese pages (~27 KB). Both are
 served as `text/plain` with `Access-Control-Allow-Origin: *`.
 
 The header of each file states the `params.json` version it was built from, which is the
@@ -474,9 +475,42 @@ announcement — are left alone rather than given a second, coarser answer.
 
 **Run order matters.** These two scripts stamp pages that the generators rebuild, so the
 sequence is always: `build_zh.py` → `build_announcement.py` / `build_press.py` →
-`build_llms_full.py` → `inject_facts.py`. `build_zh.py` copies the English footer
-verbatim and only translates `data-i18n` nodes, so a rebuilt Chinese page carries the
+`build_news.py` → `build_llms_full.py` → `inject_facts.py`. `build_zh.py` copies the English
+footer verbatim and only translates `data-i18n` nodes, so a rebuilt Chinese page carries the
 English stamp until `inject_facts.py` runs; `--check` fails on exactly that.
+
+### The news list and the feeds
+
+`news.html` used to hold one static card and build the other sixteen in the browser. That
+made ten months of posts invisible to anything that does not execute JavaScript — which is
+most crawlers and nearly every answer engine. The list is now rendered at build time from
+`website/assets/data/news.js`:
+
+```bash
+python website/tools/build_news.py           # rewrite the list, both feeds
+python website/tools/build_news.py --check    # exit 1 if the HTML or a feed is stale
+node scripts/news-static.test.mjs             # 13 guards
+```
+
+`assets/js/news.js` still runs and still replaces the list — for the filter chips — so two
+renderers now produce the same markup. They are kept in step by the test, not by hope: it
+compares the static order against the data file, asserts every card has a machine-readable
+`<time datetime>`, and asserts both languages carry the same posts.
+
+Two details that are easy to lose:
+
+- **Dates are text.** `Intl` only runs in the browser, so the Chinese dates are written by
+  the generator and this script therefore has to run *after* `build_zh.py`. `--check` and
+  the test both compare the formatted day strings, not just the ISO attribute.
+- **Chinese links are checked against the filesystem.** `/zh/` is prefixed only where a
+  mirror exists — `whitepaper` does not have one — because guessing the prefix would send
+  Chinese readers to a 404 on the very links this work exists to make work.
+
+`/news/feed.xml` and `/zh/news/feed.xml` are RSS 2.0: newest first, full excerpts, absolute
+links, `lastBuildDate` set to the newest post rather than the build clock (otherwise every
+run of the generator looks like an update, and readers learn to ignore the file). Both are
+linked from the page head, `robots.txt` and `llms.txt`.
+
 
 ### Search engine indexing
 
