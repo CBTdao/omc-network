@@ -4,6 +4,12 @@
 
 This site is static HTML with two fully rendered language versions: English at the root and Chinese under /zh. Neither requires JavaScript to read. A machine-readable specification of the airdrop is published at https://omc.network/airdrop.json.
 
+## Read everything in one request
+
+- [https://omc.network/llms-full.txt](https://omc.network/llms-full.txt): the full text of all 15 English pages, ~127 KB, nav and footer stripped, one `##` section per page with its URL. Read this instead of crawling.
+- [https://omc.network/llms-full-zh.txt](https://omc.network/llms-full-zh.txt): 中文全文，10 页，约 27 KB。
+- [https://omc.network/airdrop.json](https://omc.network/airdrop.json): structured airdrop specification for listing sites and aggregators.
+
 ## Airdrop — the facts, in the order people ask for them
 
 - What: OMC Community Airdrop, 20,000,000 OMC, which is 2% of the fixed 1,000,000,000 maximum supply.

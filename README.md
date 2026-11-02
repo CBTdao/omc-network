@@ -430,6 +430,54 @@ a translation task (extend the `MANUAL` tables in `build_zh.py` or tag the marku
 `data-i18n`), not a build task. `i18n.js` treats `/zh/` URLs as a Chinese default, behind
 an explicit switcher pick; asset references in the zh copies are rewritten root-absolute.
 
+### Answer engines and the full-text dump
+
+`/llms.txt` is the index a model reads to decide what to fetch, and it is deliberately
+small (~7 KB). That is also its limit: an answer engine still has to make fifteen more
+requests to reach the facts, and most will not. Two files close that gap.
+
+```bash
+python website/tools/build_llms_full.py   # → website/llms-full.txt, website/llms-full-zh.txt
+node scripts/ai-readiness.test.mjs        # guards both files and the per-page dates
+```
+
+`llms-full.txt` is the whole readable site in one fetch — nav, footer, script, svg and
+button labels stripped, one `##` section per page with its URL (~127 KB, about 33k
+tokens). `llms-full-zh.txt` is the same for the ten Chinese pages (~27 KB). Both are
+served as `text/plain` with `Access-Control-Allow-Origin: *`.
+
+The header of each file states the `params.json` version it was built from, which is the
+one staleness signal a reader can act on. `scripts/ai-readiness.test.mjs` asserts that
+version, asserts every sitemap URL appears as a `URL:` line (so a new page cannot be
+added without showing up here), and asserts the same airdrop figures the pages are held
+to. Regenerate after any page change; it is not part of a watcher, on purpose — a stale
+dump is worse than an absent one, and a test is what makes that visible.
+
+### Page dates and the facts stamp
+
+`website/tools/inject_facts.py` adds two things to every page: `dateModified` in the
+page-level JSON-LD node, and a footer line naming the version of the numbers on it
+(`Facts v8 · 2026-10-30 · source`, `数据版本 v8 · …` in Chinese). Both exist for the same
+reason — an answer engine cannot otherwise tell last month's page from this morning's,
+and a quoted number with no version cannot be recognised as out of date.
+
+```bash
+python website/tools/inject_facts.py         # write
+python website/tools/inject_facts.py --check # exit 1 if any page is missing or stale
+```
+
+The date is the file's last commit date, unless the file differs from HEAD once the
+stamps are removed — in which case the page really did change today and today is used.
+That keeps it honest (when the page changed, not when the script ran) and idempotent.
+Pages that already carry an editorial `dateModified` with a time and a timezone — the
+announcement — are left alone rather than given a second, coarser answer.
+
+**Run order matters.** These two scripts stamp pages that the generators rebuild, so the
+sequence is always: `build_zh.py` → `build_announcement.py` / `build_press.py` →
+`build_llms_full.py` → `inject_facts.py`. `build_zh.py` copies the English footer
+verbatim and only translates `data-i18n` nodes, so a rebuilt Chinese page carries the
+English stamp until `inject_facts.py` runs; `--check` fails on exactly that.
+
 ### Search engine indexing
 
 Two things about indexing are easy to get wrong and both are handled in the repo.

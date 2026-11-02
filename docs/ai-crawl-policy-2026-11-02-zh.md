@@ -114,14 +114,27 @@
 
 ---
 
-## 六、建议的下一步（按杠杆排序）
+## 六、进度
 
-1. **生成 `/llms-full.txt`** — 把 15 页去重正文压成一份纯文本（实测约 120 KB / 3.3 万 token，在主流模型上下文内），`llms.txt` 顶部加一行指向它。一次成本，长期收益最大。
-2. **全站注入 `WebPage` JSON-LD 的 `dateModified` + 页脚事实版本号** — 脚本一次跑完，之后每次构建自动。
-3. **`/news` 静态化 + `/news/feed.xml`** — 让新鲜度面真正对爬虫打开。
+**1 和 2 已完成（2026-11-02）**
+
+| 项 | 落地 |
+|---|---|
+| `/llms-full.txt` | 15 页、126,668 字符（≈3.3 万 token），去 nav/footer/script/svg/按钮，每页一个 `## 标题` + `URL:` 行，页内标题降一级避免与页标题混淆。头部写明生成依据的 `params.json` 版本 |
+| `/llms-full-zh.txt` | 10 页、26,981 字符，中文文件头，同样先给「免费参与 + 0.01 BNB 处理手续费」那段 |
+| 访问方式 | 两者都是 `text/plain` + `Access-Control-Allow-Origin: *` + 1 小时缓存；`/llms.txt` 顶部新增「Read everything in one request」小节；`robots.txt` 注释块列出 |
+| `dateModified` | 全站 26 个页面（含 `/zh`、`/news/*`）全部有了机器可读日期；公告页保留它自己带时区的时间戳，不覆盖 |
+| 页脚数据版本 | `Facts v8 · 2026-10-30 · source`（中文页 `数据版本 v8 · … · 来源`），版本号与日期直接读 `params.json` |
+| 防回归 | `scripts/ai-readiness.test.mjs` 12 条：文件体量、版本号、无 HTML 残留、数字绑 params、禁词、**每条 sitemap URL 都必须出现在 dump 里**、两条 CORS 头、每页有日期、每页有版本戳、中文页必须是中文戳、JSON-LD 仍可解析 |
+
+**下一步（按杠杆排序）**
+
+1. ~~`/llms-full.txt`~~ ✅
+2. ~~全站 `dateModified` + 页脚版本号~~ ✅
+3. **`/news` 静态化 + `/news/feed.xml`** — 让新鲜度面真正对爬虫打开（当前不跑 JS 只读到 1 条）。
 4. **中文 batch 2**（whitepaper / about / calculator 优先，privacy / aup 次之）。
 5. **`Organization.alternateName: 泛宇宙算力` + `disambiguatingDescription`** 全站生效。
 
-前 3 项加起来是一次构建脚本的事；第 4 项是翻译工作量；第 5 项十分钟。
+**构建顺序（写进 README 了，别打乱）**：`build_zh.py` → `build_announcement.py` / `build_press.py` → `build_llms_full.py` → `inject_facts.py`。前者会重建页面，后两者是盖章，必须最后跑。
 
 **判断这套有没有用的标准**：一个月后，去问 ChatGPT / Perplexity「OMC 空投怎么参与、要不要花钱」，看它答的是 20 OMC 免费参与 + 0.01 BNB 处理手续费，还是「付费空投」。答错了，说明是引用源不够硬，不是文案不够多。

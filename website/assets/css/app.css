@@ -1816,3 +1816,9 @@ footer {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .nav, .site-nav, .to-top, .cookie-bar, .wl-backdrop { display: none !important; }
 }
+
+/* Facts version stamp in the footer (website/tools/inject_facts.py). Deliberately
+   small and low-contrast: it is a provenance note for someone checking a number,
+   not a claim to draw the eye. */
+.facts-v { display: inline-block; margin-top: 6px; font-size: 12px; opacity: .62; letter-spacing: .01em; }
+.facts-v a { text-decoration: underline; text-underline-offset: 2px; }

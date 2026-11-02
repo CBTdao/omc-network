@@ -46,6 +46,8 @@ Allow: /
 Sitemap: https://omc.network/sitemap.xml
 
 # Machine-readable endpoints
-# https://omc.network/llms.txt      — plain-text summary of the site and the airdrop
-# https://omc.network/airdrop.json  — airdrop specification (pool, per-entry amount, fees, dates, tasks)
+# https://omc.network/llms.txt          — plain-text summary of the site and the airdrop
+# https://omc.network/llms-full.txt     — the full text of every page in one file (English)
+# https://omc.network/llms-full-zh.txt  — 全站中文正文（一个文件）
+# https://omc.network/airdrop.json      — airdrop specification (pool, per-entry amount, fees, dates, tasks)
 
