@@ -28,7 +28,7 @@
 |---|---|---|
 | 0.01 BNB/份 | 「OMC 空投要花钱买」「paid airdrop」 | 基本防住：`airdrop.json` 三字段 + 禁词测试；但**否定式表述仍散在各处** |
 | 20 OMC/份 | 「20 美元」「20 USDT」 | 防住：全部写作 `20 OMC`，且喂给 `airdrop.json` |
-| TGE 2027-01-01 | 「已上线」「已发币」 | 部分防住：多处写 scheduled；但**没有机器可读的 `status: pre-launch`** 字段供抓取方判断 |
+| TGE 2027-01-01 | 「已上线」「已发币」 | 防住：`airdrop.json` 有 `status: registration-open`、`tokenAddress: null` 及其说明，抓取方不必猜 |
 
 ### 2. 被旧数字污染（不可控，只能标注）
 
@@ -121,7 +121,7 @@
 | 项 | 落地 |
 |---|---|
 | `/llms-full.txt` | 15 页、126,668 字符（≈3.3 万 token），去 nav/footer/script/svg/按钮，每页一个 `## 标题` + `URL:` 行，页内标题降一级避免与页标题混淆。头部写明生成依据的 `params.json` 版本 |
-| `/llms-full-zh.txt` | 10 页、26,981 字符，中文文件头，同样先给「免费参与 + 0.01 BNB 处理手续费」那段 |
+| `/llms-full-zh.txt` | 15 页、56,248 字符，中文文件头，同样先给「免费参与 + 0.01 BNB 处理手续费」那段 |
 | 访问方式 | 两者都是 `text/plain` + `Access-Control-Allow-Origin: *` + 1 小时缓存；`/llms.txt` 顶部新增「Read everything in one request」小节；`robots.txt` 注释块列出 |
 | `dateModified` | 全站 26 个页面（含 `/zh`、`/news/*`）全部有了机器可读日期；公告页保留它自己带时区的时间戳，不覆盖 |
 | 页脚数据版本 | `Facts v8 · 2026-10-30 · source`（中文页 `数据版本 v8 · … · 来源`），版本号与日期直接读 `params.json` |
