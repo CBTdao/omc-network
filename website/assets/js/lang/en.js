@@ -96,6 +96,7 @@ window.I18N.en = {
   "hero.t1": "Powering the Next-Gen",
   "hero.t2": "Global AI Compute Grid",
   "hero.sub": "Omniverse Compute (OMC) is a decentralized physical infrastructure network (DePIN) that turns idle GPUs worldwide into a high-throughput, low-cost, censorship-resistant compute grid — settled on BNB Chain.",
+  "facts.airdrop": "Each entry delivers 20 OMC in full at claim and carries a 0.01 BNB processing charge for that claim; the OMC token deploys at TGE on 1 January 2027.",
   "hero.cta1": "Join the Testnet →",
   "hero.cta2": "Read Whitepaper",
   "chip.chain": "⛓ Root Settlement <b>BNB Chain</b>",

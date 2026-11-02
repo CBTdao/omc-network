@@ -360,6 +360,17 @@ img { max-width: 100%; display: block; }
   margin: 22px auto 38px;
 }
 
+/* The numbers, second paragraph of the hero. A retriever reads the first 100
+   words of a page; a page whose opening paragraph has no figure in it answers
+   nothing when it is the only chunk that gets quoted. Same colour, tighter and
+   smaller, so it reads as a caption to the pitch rather than a second pitch. */
+.hero p.sub.facts-line {
+  font-size: clamp(14px, 1.9vw, 16px);
+  max-width: 720px;
+  margin: -20px auto 34px;
+  opacity: .82;
+}
+
 .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
 .hero-chain {

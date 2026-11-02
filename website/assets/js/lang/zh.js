@@ -93,6 +93,7 @@ window.I18N.zh = {
   "hero.t1": "驱动下一代",
   "hero.t2": "全球 AI 算力网络",
   "hero.sub": "Omniverse Compute（OMC）是一个去中心化物理基础设施网络（DePIN），将全球闲置 GPU 汇聚成高吞吐、低成本、抗审查的算力共享网络，并由 BNB Chain 进行结算。",
+  "facts.airdrop": "每份领取一次性发放 20 OMC，并对该笔领取交易收取 0.01 BNB 领取手续费；OMC 代币在 2027 年 1 月 1 日 TGE 时部署。",
   "hero.cta1": "加入测试网 →",
   "hero.cta2": "阅读白皮书",
   "chip.chain": "⛓ 根结算层 <b>BNB Chain</b>",

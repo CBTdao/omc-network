@@ -201,7 +201,7 @@
         "impliedPricePerOmcUsd": 0.371,
         "atBnbUsd": 742,
         "feeShareOfBaseClaim": 0.74,
-        "note": "Recorded because it is arithmetic, not because it is a target. 0.01 BNB per 20 OMC entry is $0.371/OMC at the reference BNB price, and the fee is 74% of the $10.00 a 100 OMC base claim is worth at a $0.05 listing. The design does not depend on either number: the fee is a fixed entrance charge and the entry's value is set by the market after listing. Publish the figure if an exchange or a reader asks — hiding it is how a project gets accused of a disclosure gap."
+        "note": "Recorded because it is arithmetic, not because it is a target. 0.01 BNB per 20 OMC entry is $0.371/OMC at the reference BNB price, and the fee is 74% of the $10.00 a 100 OMC base claim is worth at a $0.05 listing. The design does not depend on either number: the fee is a fixed processing charge for the claim transaction and the entry's value is set by the market after listing. Publish the figure if an exchange or a reader asks — hiding it is how a project gets accused of a disclosure gap."
       },
       "sybilCost": {
         "perWalletBaseBnb": 0.05,

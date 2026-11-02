@@ -73,7 +73,7 @@
 | 4 | ~~**中文只覆盖 9/15 页**~~ | 豆包/元宝/Kimi/DeepSeek 抓中文；whitepaper/about/calculator 缺失 | ✅ 已补（13 页镜像 + 2 页只需词条） |
 | 5 | ~~**`Organization` 没有 `alternateName`**~~（原只有 `/zh/press` 有） | 「OMC」在全球金融里是 Open Market Committee；中文「泛宇宙算力」和英文实体在 AI 眼里可能是两个 | ✅ 全站生效（见第六节） |
 | 6 | **没有 feed（RSS/Atom）** | 聚合站与部分 agent 依赖 feed 发现更新 | 1 次生成 |
-| 7 | **关键事实只出现在 6 页** | `/stake`、`/compute`、`/index` 只说结论不带数字，被单独检索时答不出数 | 文案小改 |
+| 7 | ~~**关键事实只出现在 6 页**~~ | `/stake`、`/compute`、`/index` 只说结论不带数字，被单独检索时答不出数 | ✅ 已补（见第六节） |
 
 ---
 
@@ -92,7 +92,7 @@
 5. **每个 H2 下面第一句必须是这一段的小结论**，因为检索器优先取块首与块尾。
 6. **页面顶部 100 词内出现一次「一句话结论 + 主数字」**，不要让人/模型滚到第三屏才看到 20 OMC。
 7. **发布即推送**：sitemap → IndexNow → Bing API，48 小时后读回 `LastCrawledDate`。三条都做完才算发完。
-8. **改完跑两个检查**：`node scripts/seo-audit.mjs`（0 问题）与全量测试（当前 182 项）。
+8. **改完跑两个检查**：`node scripts/seo-audit.mjs`（0 问题）与全量测试（当前 191 项）。
 
 ### 每次更新前的六问
 
@@ -159,3 +159,15 @@
 嵌套节点（`NewsArticle.publisher` 这类）只给 `@id` 和两个名字，不给描述：一页一份描述足够解决实体，publisher 里塞三个额外字段只是噪音。`scripts/entity-identity.test.mjs` 5 条守：全站同 `@id`、每个节点都带两个名字、没有节点只叫缩写、描述与页面语言一致、sitemap 里每条 URL 都有页面说明发布者。
 
 **判断这套有没有用的标准**：一个月后，去问 ChatGPT / Perplexity「OMC 空投怎么参与、要不要花钱」，看它答的是 20 OMC 免费参与 + 0.01 BNB 处理手续费，还是「付费空投」。答错了，说明是引用源不够硬，不是文案不够多。
+
+**7 已完成（2026-11-02）**：`/index`、`/stake`、`/compute`、`/testnet` 四页的 hero 第二段加了一句「数字句」，中英双语，走词典键 `facts.airdrop`（所以英文页的 fallback 文案、词典、中文页三处天然一致）：
+
+> Each entry delivers 20 OMC in full at claim and carries a 0.01 BNB processing charge for that claim; the OMC token deploys at TGE on 1 January 2027.
+
+一句里同时给出**数量、费用、时间**，因此无论检索器切出哪一块，被单独引用时都答得出数。三个取舍：
+
+- **不作视觉主角。** 它是 `.sub` 的第二段，字号更小、透明度 .82、上边距 -20px，读起来像给主张配的注解，不像第二个主张。
+- **数字必须来自 `params.json`，不能手抄。** `scripts/key-facts.test.mjs` 4 条从 `perEntry` / `claimCost.feeBnb` / `claimOpens` 现算，参数一改就红；同时校验「处理手续费」这个定性没被写成价格、入场费或预售，以及 fallback 文本与词典完全相等（不跑 JS 的抓取方读到的是同一句）。
+- **没有给 `/ai-tools` 加。** 那页讲的是工具选型，把空投数字塞进去是噪音；`/about` 本来就有费率。
+
+顺带修掉一个自相矛盾：`params.json` 的 `disclosure.note` 里写着 "the fee is a fixed entrance charge"——正是禁词表里的说法，而这个文件在公开仓库里、页脚还专门链过去当"来源"。已改成 "a fixed processing charge for the claim transaction"。

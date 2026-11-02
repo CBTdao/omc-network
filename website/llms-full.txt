@@ -25,6 +25,7 @@ Testnet Phase 1 is Live
 ## Powering the Next-Gen
 Global AI Compute Grid
 Omniverse Compute (OMC) is a decentralized physical infrastructure network (DePIN) that turns idle GPUs worldwide into a high-throughput, low-cost, censorship-resistant compute grid — settled on BNB Chain.
+Each entry delivers 20 OMC in full at claim and carries a 0.01 BNB processing charge for that claim; the OMC token deploys at TGE on 1 January 2027.
 
 ⛓ Root Settlement BNB Chain ⚡ Scaling L2 rollup planned 🪙 Token OMC · BEP-20 🔥 Supply 1,000,000,000
 
@@ -818,6 +819,7 @@ Phase 1 — Testnet Staking is Live
 ## Stake for a Tier.
 Keep the Node Alive.
 Real contracts, real slashing, real testnet rewards. Deposit tOMC against a hardware tier, register your node, publish a heartbeat — and get cut down if you go dark.
+Each entry delivers 20 OMC in full at claim and carries a 0.01 BNB processing charge for that claim; the OMC token deploys at TGE on 1 January 2027.
 BNB Smart Chain Testnet · Chain 97 tOMC has no monetary value
 
 Testnet only. This is a live contract on BNB Smart Chain Testnet. Deal only in tOMC and tBNB — both are worthless and neither is sold anywhere. Never send real funds to these addresses.
@@ -978,6 +980,7 @@ Phase 1 — Requester side on testnet
 ## Buy Compute.
 Pay for Work That Verifies.
 The station is where a job gets created: pick a hardware tier, choose how hard the result is checked, see every part of the price, and escrow it on chain. If the job fails, the requester is made whole out of the provider's stake — not out of somebody else's escrow.
+Each entry delivers 20 OMC in full at claim and carries a 0.01 BNB processing charge for that claim; the OMC token deploys at TGE on 1 January 2027.
 BNB Smart Chain Testnet · Chain 97 tOMC has no monetary value
 
 Testnet only. Jobs settle in tOMC on BNB Smart Chain Testnet. tOMC and tBNB are worthless and are sold nowhere. The GPU actually runs off chain; the contract holds the escrow, the assignment record and the verdict. Never send real funds to these addresses.
@@ -1112,6 +1115,7 @@ Phase 1 — Testnet is Live
 ## Run a Node.
 Shape the Grid.
 The OMC public testnet is the proving ground for the compute grid. Connect your GPU, execute verification tasks, earn testnet rewards — and secure your position before mainnet.
+Each entry delivers 20 OMC in full at claim and carries a 0.01 BNB processing charge for that claim; the OMC token deploys at TGE on 1 January 2027.
 Testnet: ONLINE Mainnet: 1 Jan 2027
 
 GPU
