@@ -1,0 +1,60 @@
+# calculator.html — 57 blocks. Table cells keep the numbers and instance names;
+# only the descriptive words are translated. The $ figures are list prices and
+# must not be touched.
+GPU
+AWS
+Google Cloud
+Azure
+Lambda
+CoreWeave
+<b>H100 80GB</b><span class="ct-spec">SXM5 · 节点规格见脚注</span>
+<b>$6.88</b><span class="ct-spec">p5.48xlarge · $55.04 ÷ 8 卡</span>
+<b>$11.06</b><span class="ct-spec">a3-highgpu-8g · $88.49 ÷ 8 卡</span>
+<b>$12.29</b><span class="ct-spec">ND96isr H100 v5 · $98.32 ÷ 8 卡</span>
+<b>$3.99</b><span class="ct-spec">单卡，按需</span>
+<b>$6.16</b><span class="ct-spec">HGX H100 · $49.24 ÷ 8 卡</span>
+<b>H200 141GB</b><span class="ct-spec">SXM · 节点规格见脚注</span>
+<b>$7.91</b><span class="ct-spec">p5en.48xlarge · $63.30 ÷ 8 卡</span>
+<b>$10.60</b><span class="ct-spec">a3-ultragpu-8g · $84.81 ÷ 8 卡</span>
+<b>$13.78</b><span class="ct-spec">ND96isr H200 v5 · $110.24 ÷ 8 卡</span>
+<span class="ct-na">—</span>
+<b>$6.31</b><span class="ct-spec">HGX H200 · $50.44 ÷ 8 卡</span>
+空闲时长照样计费
+一台 p5.48xlarge 每小时计费 $55.04，无论那八张 GPU 在训练还是空转——一个长假就接近 $4,000。按需定价卖的是墙上时钟的时间，不是你交付的算力。
+出网流量在另一张账单上
+出站数据单独计价：AWS 约 $0.09/GB，Azure 约 $0.08/GB，Google Cloud 为 $0.08–0.12/GB。对一套中等规模的 H100 部署来说，传输检查点与输出通常每月多出四位数美元。
+折扣覆盖不到这些 GPU
+AI 团队真正买的那部分算力，往往被排除在那些为了省钱而设计的折扣之外：AWS Spot 不在 Savings Plans 范围内，Capacity Blocks 既不在 Savings Plans 也不在 Reserved Instances 范围内，Google 则把 A3/A4 排除在灵活承诺使用折扣之外。
+维度
+超大规模云厂商按需价
+OMC <span class="ct-spec">（设计目标）</span>
+<b>计费单位</b>
+按小时，整机实例
+按任务，L2 rollup 上按秒微支付（规划中；目前结算在 BNB Chain 上）
+<b>空闲时间</b>
+运行时长即计费
+只为已接受、已验证的工作结算
+<b>算力获取</b>
+区域配额限制与可用性门槛
+无需许可，受网络供给约束
+<b>承诺期</b>
+无需承诺；折扣需 1–3 年承诺
+设计上无需承诺
+<b>支付</b>
+法币，通过厂商账单
+OMC 或受支持的稳定币（BNB Chain 上的 USDT / USDC）
+<b>结果验证</b>
+依赖对提供方的信任
+按任务类型分级验证策略（抽检重算、冗余、TEE）
+为什么计算器里没有 OMC 价格？
+因为没有已公布的 OMC 网络费率可以引用。主网于 2027 年 1 月 1 日开启；在费率确定并公布之前，我们印出的任何数字都是编造。所以计算器让你自己填一个假设费率，然后展示算术过程——并明确标注那是你的假设，不是我们的价格。
+表格里的「每 GPU 小时」到底指什么？
+超大规模云厂商是在固定机型里卖 GPU 算力的。AWS 的 p5.48xlarge、Google 的 a3-highgpu-8g 与 Azure 的 ND96isr H100 v5 都打包了八张 H100，所以诚实的可比数字是整机价格除以八。拿整机价去比单卡价，是 GPU 价格表最常见的一种误导方式——一个「$49.24」的醒目报价，在把单位对齐之后，可能比「$3.99」更贵。
+这些数字包含存储、网络与支持吗？
+不包含。它们只是算力的目录价。存储、出网流量、负载均衡、快照以及任何支持档位都在其之上；对于长期运行的部署，这些项目很可观——仅出网流量一项，一个中等规模的训练集群通常每月就要多花四位数美元。
+为什么不显示竞价、预留或承诺折扣价？
+竞价与承诺折扣价是真实存在的，而且往往低得多，但它们不可直接比较：竞价算力可能被回收，承诺折扣需要一至三年的承诺，而且常常排除最新的 GPU 系列。把这几类混进一张表，正是「最便宜」这种说法诞生的地方。本页只使用按需目录价——它是唯一既公开又能直接比较的费率。
+这些数据的时效性如何，多久更新一次？
+费率于 2026 年 9 月从各厂商定价页采集。GPU 价格变动频繁，所以我们给每个数字标注日期，而不是把它当作永久有效。请把它当作有据可查的建模起点，并在真正把预算投出去之前向厂商确认实时价格。
+今天能在 OMC 上买算力吗？
+不能。OMC 目前运行的是公共测试网。主网——网络可以接受付费任务、提供方可以赚取收益——将于 2027 年 1 月 1 日开启。你现在可以加入测试网、登记社区空投，但没有算力可买，也没有价格可付。

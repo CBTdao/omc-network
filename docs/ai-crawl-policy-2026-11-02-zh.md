@@ -58,8 +58,8 @@
 | `robots.txt` 显式放行 13 个 AI agent（GPTBot / OAI-SearchBot / ChatGPT-User / PerplexityBot / Perplexity-User / ClaudeBot / Claude-User / anthropic-ai / Google-Extended / Applebot-Extended / Bingbot / DuckDuckBot / CCBot） | ✅ |
 | `/llms.txt` — 65 行 / 6.5 KB，中英双语 URL 全列，空投事实前置 | ✅ 体量刚好在模型上下文里 |
 | `/airdrop.json` — 机器可读，`Access-Control-Allow-Origin: *`，1 小时缓存 | ✅ |
-| 静态 HTML，正文不依赖 JS（除 `/news` 列表） | ✅ 15 页中 14 页达标 |
-| 中英双语静态镜像（不同 URL，各自 canonical） | ✅ 9 / 15 页 |
+| 静态 HTML，正文不依赖 JS | ✅ 15 页全部达标（`/news` 已静态化） |
+| 中英双语静态镜像（不同 URL，各自 canonical） | ✅ 14 / 14 内容页 + 公告页（batch 2 补齐；404 页不需要镜像） |
 | JSON-LD：`/airdrop` 有 5 块（Organization / WebPage / Breadcrumb / **FAQPage** / **HowTo**） | ✅ 全站最好的一页 |
 | `/press` 有 `dateModified`、更正政策、可引用格式 | ✅ 唯一有新鲜度信号的页 |
 
@@ -70,7 +70,7 @@
 | 1 | **没有 `llms-full.txt`** | AI 现在只能读 6.5 KB 摘要；15 页去重正文实测 **120,556 字符 / 约 3.3 万 token**，一次抓完要 15 次请求，多数 agent 不会做 | 1 次生成脚本 |
 | 2 | **全站只有 `/press` 有 `dateModified`** | 抓取方无法判断新鲜度；旧页面和新页面在模型眼里等价 | 脚本注入 |
 | 3 | **`/news` 对不跑 JS 的爬虫只有 1 条** | `/news` 是唯一的新鲜度面，等于关着 | 构建时烤进 HTML |
-| 4 | **中文只覆盖 9/15 页** | 豆包/元宝/Kimi/DeepSeek 抓中文；whitepaper/about/calculator 缺失 | 翻译 batch 2 |
+| 4 | ~~**中文只覆盖 9/15 页**~~ | 豆包/元宝/Kimi/DeepSeek 抓中文；whitepaper/about/calculator 缺失 | ✅ 已补（13 页镜像 + 2 页只需词条） |
 | 5 | **`Organization` 没有 `alternateName`**（除 `/zh/press`） | 「OMC」在全球金融里是 Open Market Committee；中文「泛宇宙算力」和英文实体在 AI 眼里可能是两个 | 改 1 处 × 15 页 |
 | 6 | **没有 feed（RSS/Atom）** | 聚合站与部分 agent 依赖 feed 发现更新 | 1 次生成 |
 | 7 | **关键事实只出现在 6 页** | `/stake`、`/compute`、`/index` 只说结论不带数字，被单独检索时答不出数 | 文案小改 |
@@ -92,7 +92,7 @@
 5. **每个 H2 下面第一句必须是这一段的小结论**，因为检索器优先取块首与块尾。
 6. **页面顶部 100 词内出现一次「一句话结论 + 主数字」**，不要让人/模型滚到第三屏才看到 20 OMC。
 7. **发布即推送**：sitemap → IndexNow → Bing API，48 小时后读回 `LastCrawledDate`。三条都做完才算发完。
-8. **改完跑两个检查**：`node scripts/seo-audit.mjs`（0 问题）与全量测试（当前 156 项）。
+8. **改完跑两个检查**：`node scripts/seo-audit.mjs`（0 问题）与全量测试（当前 182 项）。
 
 ### 每次更新前的六问
 
@@ -132,10 +132,19 @@
 1. ~~`/llms-full.txt`~~ ✅
 2. ~~全站 `dateModified` + 页脚版本号~~ ✅
 3. ~~`/news` 静态化 + `/news/feed.xml`~~ ✅（见下）
-4. **中文 batch 2**（whitepaper / about / calculator 优先，privacy / aup 次之）。
+4. ~~中文 batch 2（whitepaper / about / calculator / privacy / aup）~~ ✅（见下）
 5. **`Organization.alternateName: 泛宇宙算力` + `disambiguatingDescription`** 全站生效。
 
 **3 已完成（2026-11-02）**：17 条动态全部在构建期渲染进 `news.html` / `zh/news.html`（原来不跑 JS 只读到 1 条），并发布 `/news/feed.xml` 与 `/zh/news/feed.xml`（RSS 2.0，最新在前，完整摘要，绝对链接）。`lastBuildDate` 取最新一条的日期而不是构建时刻——否则每跑一次生成器都像更新过，读者会学会忽略这个文件。`build_news.py --check` 校验 HTML 与两份 feed 是否过期；`scripts/news-static.test.mjs` 13 条守「静态顺序 = 数据文件顺序」「两种语言条目一致」「中文日期真的是中文」「zh feed 不链不存在的页面」。副作用：`llms-full.txt` 从 126,668 涨到 133,106 字符，因为新闻段现在带着全部 17 条。
+
+**4 已完成（2026-11-02）**：whitepaper / about / calculator / privacy / aup 五页有了中文镜像，`/zh/` 从 9 页扩到 14 页，`llms-full-zh.txt` 从 26,981 涨到 **55,948 字符（15 页，与英文版一一对应）**。这五页和 batch 1 不是同一套机制：batch 1 的英文都在 `data-i18n` 键后面，batch 2 的英文散在内联标记里（`<strong>`、`<a>`、`<code>`），逐文本节点翻译会把强调位置拆坏，所以改用**块级、位置化**的翻译表——`zh-batch2/<page>.txt` 的第 N 行对应页面第 N 个可译块，`zh_extract.py --compile` 编成 `zh-batch2.json` 并给每块记 `sha1[:10]` 指纹。英文被改动时构建报 `CHANGED block #N` 并停下，而不是让下面每一句静默错位一行；`.txt` 跳行由「该行没有汉字且不等于英文块」兜住。
+
+两个刻意的取舍：
+
+- 表里存的是**译文**不是英文原文，因为英文已经在 HTML 里，再抄一份会让文件翻倍并开始腐化；代价是位置语义，所以必须有指纹。
+- 白皮书引用的英文来源标题保留英文，用 `<em lang="en">` 标注——这是「引文不是我漏译」的机器可读写法，测试统计残留英文前会先剥掉 `lang="en"` 的元素。目录里 13 条锚点文字不在块表内（`<a>` 不是块元素），走手写映射，且必须与正文标题逐字一致。
+
+配套：sitemap 25 → **30 条**（15 对 hreflang 成对补齐），SEO 审计 65 页 **0 problems / 0 warnings**；`scripts/zh-pages.test.mjs` 增到 8 条，新增一条守「`.txt` 与 `.json` 一致、指纹数匹配、每张表都有对应中文页」。
 
 **构建顺序（写进 README 了，别打乱）**：`build_zh.py` → `build_announcement.py` / `build_press.py` → `build_news.py` → `build_llms_full.py` → `inject_facts.py`。前三个会重建页面，后两个是盖章，必须最后跑。
 

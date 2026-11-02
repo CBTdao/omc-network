@@ -422,13 +422,32 @@ python website/tools/build_zh.py --patch-en # add the zh hreflang line to the en
 node scripts/zh-pages.test.mjs              # guards: lang, canonical, hreflang, coverage
 ```
 
-Eight pages are generated (index, airdrop, tokenomics, stake, compute, testnet, ai-tools,
-news) — the ones whose visible text the zh dictionary covers. `whitepaper`, `about`,
-`privacy`, `aup` and `calculator` are 51–92% inline English and are deliberately **not**
-generated: a half-translated whitepaper or legal page is worse than none. Adding them is
-a translation task (extend the `MANUAL` tables in `build_zh.py` or tag the markup with
-`data-i18n`), not a build task. `i18n.js` treats `/zh/` URLs as a Chinese default, behind
-an explicit switcher pick; asset references in the zh copies are rewritten root-absolute.
+Thirteen pages are generated, in two batches with two mechanisms.
+
+**Batch 1** (index, airdrop, tokenomics, stake, compute, testnet, ai-tools, news) is
+dictionary-driven: the markup carries `data-i18n` keys and the rest is in the `MANUAL`
+tables in `build_zh.py`.
+
+**Batch 2** (whitepaper, about, calculator, privacy, aup) is inline English wrapped in
+inline markup, so it is translated per *block element* from tables compiled out of
+`website/tools/zh-batch2/*.txt`:
+
+```bash
+python website/tools/zh_extract.py whitepaper --html --full   # read the source blocks
+python website/tools/zh_extract.py --compile                  # .txt -> zh-batch2.json
+python website/tools/zh_extract.py --compile --check          # exit 1 if stale
+```
+
+The tables are **positional** — the Nth line of `zh-batch2/<page>.txt` is the Nth
+translatable block of the English page — because the English is already in the HTML and
+repeating it as a key would double the file and then drift. Position is made safe by a
+fingerprint per block: edit a paragraph and the build reports `CHANGED block #N` with the
+new text instead of shifting every sentence below it. A line with no Chinese in it is
+accepted only when it *is* the English block (a number, a brand, a ticker), so a skipped
+line cannot hide either.
+
+`i18n.js` treats `/zh/` URLs as a Chinese default, behind an explicit switcher pick; asset
+references in the zh copies are rewritten root-absolute.
 
 ### Answer engines and the full-text dump
 

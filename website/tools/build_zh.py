@@ -6,15 +6,24 @@ having to execute the client-side language switcher.
   python website/tools/build_zh.py            # (re)generate website/zh/*.html
   python website/tools/build_zh.py --patch-en # add hreflang="zh" to the en pages
 
-Pages are chosen by dictionary coverage, measured with the untagged-text scan:
-index/airdrop/tokenomics/stake/compute/testnet/ai-tools/news leave under 15%
-untagged, and every string worth translating on them is in MANUAL below.
-whitepaper/about/privacy/aup/calculator are 51-92% inline English and are
-deliberately NOT generated yet — a half-translated legal/whitepaper page is
-worse than none. Batch 2 is a translation task, not a build task.
+Two batches, two mechanisms.
+
+Batch 1 (index/airdrop/tokenomics/stake/compute/testnet/ai-tools/news) is
+dictionary-driven: the markup carries data-i18n keys, and anything left
+untagged is in MANUAL below.
+
+Batch 2 (whitepaper/about/calculator/privacy/aup) is inline English inside
+inline markup, so it is translated per *block element* from the tables compiled
+out of website/tools/zh-batch2/*.txt — see zh_extract.py. Positional, with a
+fingerprint per block, so editing a paragraph reports CHANGED instead of
+silently shifting every sentence below it.
+
+  python website/tools/zh_extract.py about --html --full   # read the source blocks
+  python website/tools/zh_extract.py --compile             # .txt -> zh-batch2.json
 """
 
 import copy
+import hashlib
 import json
 import re
 import subprocess
@@ -36,6 +45,11 @@ BATCH = {
     "testnet": "testnet",
     "ai-tools": "ai-tools",
     "news": "news",
+    "about": "about",
+    "aup": "aup",
+    "calculator": "calculator",
+    "privacy": "privacy",
+    "whitepaper": "whitepaper",
 }
 
 ORIGIN = "https://omc.network"
@@ -69,6 +83,36 @@ def load_zh_dict():
 # ---------------------------------------------------------------------------
 
 GLOBAL_MANUAL = {
+    # breadcrumb crumb on every page (the rest of the crumb is a data-i18n key)
+    "About": "关于",
+    # "Related documents" strip on the policy pages
+    "Related documents.": "相关文档。",
+    "Privacy Policy": "隐私政策",
+    "About & Contact": "关于与联系",
+    "Whitepaper v3.0": "白皮书 v3.0",
+    # card badges on /calculator
+    "Wall-clock billing": "按时钟计费",
+    "Data transfer": "数据传输",
+    # whitepaper table of contents: the anchors are not block elements, so they
+    # are matched by text. Keep these strings identical to the section headings
+    # in zh-batch2/whitepaper.txt or the TOC stops matching the page.
+    "1 · Executive Summary": "1 · 摘要",
+    "2 · Problem and Opportunity": "2 · 问题与机会",
+    "3 · Supported Workloads and Limits": "3 · 支持的工作负载与限制",
+    "4 · Architecture": "4 · 架构",
+    "5 · Verification and Trust": "5 · 验证与信任",
+    "6 · Security and Privacy": "6 · 安全与隐私",
+    "7 · Economics and the OMC Token": "7 · 经济模型与 OMC 代币",
+    "8 · Governance": "8 · 治理",
+    "9 · Competitive Landscape": "9 · 竞争格局",
+    "10 · Roadmap": "10 · 路线图",
+    "11 · Team, Audits and Legal": "11 · 团队、审计与法律",
+    "12 · Risk Factors": "12 · 风险因素",
+    "13 · References and Data Sources": "13 · 参考文献与数据来源",
+    # breadcrumb crumb on the policy pages, and the line under the storage list
+    "Legal": "法律",
+    "You can clear these at any time in your browser settings.":
+        "你随时可以在浏览器设置中清除这些数据。",
     # wallet / shared UI
     "Connect wallet": "连接钱包",
     "Not connected": "未连接",
@@ -210,6 +254,8 @@ TOKENOMICS_MANUAL = {
     ". The staker slice matters: paid only in emissions, a staker has no reason to hold beyond farming, which makes the position mercenary by construction. A share of fees is revenue, and it survives a falling token price.":
         "。给质押者的这一份很关键：若只靠增发支付，质押者没有任何持仓理由，挖提卖是结构性的；费用分成是收入，币价下跌时依然成立。",
     "30% to staked nodes pro-rata": "30% 按比例给质押节点",
+    # A bare connective left between two <strong> spans by the entry above.
+    "and": "、",
     "20% to the Treasury": "20% 进国库",
     "2 · Distribution": "2 · 分配",
     "The full 1,000,000,000 supply is allocated at deployment. Nothing is held back outside these seven categories.":
@@ -300,6 +346,7 @@ TOKENOMICS_MANUAL = {
         "（chainId 97）。在此公布，是为了让上文的一切都能对照链上数据核验，而不是对照本页。",
     "It is not sold anywhere, it is not listed on any exchange, and it will not carry over to mainnet. Never send real funds to these addresses.":
         "它不在任何地方出售、不上任何交易所，也不会映射到主网。切勿向这些地址发送真实资金。",
+    "20% of the 65,500,000 OMC TGE float (13,100,000)": "TGE 流通量 65,500,000 OMC 的 20%（13,100,000）",
     "These are testnet contracts and tOMC has no monetary value.":
         "以上为测试网合约，tOMC 没有任何货币价值。",
     "9 · Where to verify all of this": "9 · 在哪里核验这些内容",
@@ -318,7 +365,71 @@ TOKENOMICS_MANUAL = {
         "本页任何内容均不构成出售任何代币或证券的要约，也不构成任何购买要约的邀请。OMC 是去中心化计算网络的实用型代币。数字资产价格波动剧烈，存在血本无归的风险。请自行研究并遵守所在司法辖区的法律。",
 }
 
+# Batch 2: whitepaper, about, calculator, privacy, aup. Their visible text is
+# inline English rather than data-i18n keys, and a lot of it sits inside inline
+# markup (<a>, <strong>), so it is translated per *block element* instead of per
+# text node: translating "…, never ask for your seed phrase" as a bare text
+# fragment produces Chinese with the emphasis in the wrong place.
+#
+# Keys are positional (the Nth block element in document order) because the
+# English is already in the HTML — repeating it in the table would double the
+# file and rot silently. The positional scheme is made safe by a fingerprint of
+# the English text per block: if a block is edited, the build reports CHANGED
+# with the new text instead of shifting every translation below it.
+BATCH2_JSON = Path(__file__).resolve().parent / "zh-batch2.json"
+
+
+def load_batch2():
+    """Blocks and fingerprints, generated by zh_extract.py --compile."""
+    if not BATCH2_JSON.exists():
+        return {}, {}
+    data = json.loads(BATCH2_JSON.read_text(encoding="utf-8"))
+    blocks = {f"{k}.html": v["blocks"] for k, v in data.items() if not k.startswith("_")}
+    fps = {f"{k}.html": v["fp"] for k, v in data.items() if not k.startswith("_")}
+    return blocks, fps
+
+
+BLOCK_ZH, BLOCK_FP = load_batch2()
+
 MANUAL_PER_PAGE = {"tokenomics.html": {**GLOBAL_MANUAL, **TOKENOMICS_MANUAL}}
+
+# Elements translated as a unit. Table cells are included: on the whitepaper and
+# the calculator they carry prose ("TGE + 12 months, then linear over 18"), not
+# just numbers, and a cell is the smallest unit that can be rewritten safely.
+BLOCK_TAGS = {"h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "td", "th",
+              "dt", "dd", "figcaption", "blockquote", "summary", "caption"}
+
+SKIP_ANCESTORS = {"nav", "footer", "script", "style", "svg"}
+
+
+def norm(s):
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def fingerprint(text):
+    """Short, stable hash of a block's English text, used to detect drift."""
+    return hashlib.sha1(norm(text).encode("utf-8")).hexdigest()[:10]
+
+
+def iter_blocks(doc):
+    """Yield translatable block elements in document order.
+
+    Shared with website/tools/zh_extract.py, so the positions the tables were
+    authored against and the positions the build looks up cannot diverge.
+    """
+    for el in doc.iter():
+        if not isinstance(el.tag, str) or el.tag not in BLOCK_TAGS:
+            continue
+        if not any(True for _ in el.itertext() if _.strip()):
+            continue
+        if any(a.tag in SKIP_ANCESTORS for a in el.iterancestors() if isinstance(a.tag, str)):
+            continue
+        # Blocks the dictionary already owns are not in the table: one string,
+        # one owner. Keeps the positional table aligned with what the extractor
+        # prints, and stops two translations of the same sentence diverging.
+        if el.get("data-i18n") or any(a.get("data-i18n") for a in el.iterancestors()):
+            continue
+        yield el
 
 
 def norm(s):
@@ -387,6 +498,12 @@ def build_page(name, slug, zh):
 
     doc.set("lang", "zh-CN")
 
+    # Snapshot before any replacement: the dictionary pass below rewrites tagged
+    # blocks in place, so a fingerprint taken afterwards would be a hash of the
+    # Chinese and every table entry would read as CHANGED.
+    blocks = list(iter_blocks(doc))
+    block_en = [norm(" ".join(el.itertext())) for el in blocks]
+
     # head metadata
     for title in doc.xpath("//head/title"):
         k = title.get("data-i18n")
@@ -420,6 +537,20 @@ def build_page(name, slug, zh):
         if ph and ph in zh:
             el.set("placeholder", zh[ph])
             used.add(ph)
+
+    # block-level translations (batch 2), before the short-label table below
+    table = BLOCK_ZH.get(f"{name}.html")
+    if table is not None:
+        fps = BLOCK_FP.get(f"{name}.html", [])
+        for i, el in enumerate(blocks):
+            en = block_en[i]
+            if i >= len(table):
+                report.append(f"MISSING block #{i}: {en[:60]!r}")
+                continue
+            if i >= len(fps) or fingerprint(en) != fps[i]:
+                report.append(f"CHANGED block #{i}: {en[:60]!r} — English edited, retranslate")
+                continue
+            set_i18n_inner(el, table[i])
 
     # manual replacements on untagged text nodes (text + tails)
     manual = MANUAL_PER_PAGE.get(f"{name}.html", GLOBAL_MANUAL)
@@ -481,7 +612,7 @@ def main():
         report, out = build_page(name, slug, zh)
         for line in report:
             print(f"{name}: {line}")
-        if any(line.startswith("MISSING") for line in report):
+        if any(line.startswith(("MISSING", "CHANGED")) for line in report):
             failures.append(name)
         print(f"built {out.relative_to(WEB.parent)}")
     if failures:

@@ -51,18 +51,18 @@ PAGES_EN = [
     ("aup.html", "https://omc.network/aup"),
 ]
 
-PAGES_ZH = [
-    ("zh/index.html", "https://omc.network/zh"),
-    ("zh/airdrop.html", "https://omc.network/zh/airdrop"),
-    ("zh/news/omc-airdrop-is-open.html", "https://omc.network/zh/news/omc-airdrop-is-open"),
-    ("zh/tokenomics.html", "https://omc.network/zh/tokenomics"),
-    ("zh/stake.html", "https://omc.network/zh/stake"),
-    ("zh/compute.html", "https://omc.network/zh/compute"),
-    ("zh/testnet.html", "https://omc.network/zh/testnet"),
-    ("zh/ai-tools.html", "https://omc.network/zh/ai-tools"),
-    ("zh/news.html", "https://omc.network/zh/news"),
-    ("zh/press.html", "https://omc.network/zh/press"),
-]
+# Derived from PAGES_EN rather than listed by hand: the hand-written version
+# silently kept five pages out of the dump after they were translated, and the
+# point of the dump is that a page cannot be missing from it.
+def _zh_target(rel):
+    """(file, url) of the Chinese mirror of an English page."""
+    slug = rel[:-len(".html")]
+    if slug == "index":
+        return "zh/index.html", "https://omc.network/zh"
+    return f"zh/{rel}", f"https://omc.network/zh/{slug}"
+
+
+PAGES_ZH = [(f, u) for f, u in map(_zh_target, [r for r, _ in PAGES_EN]) if (WEB / f).exists()]
 
 STRIP_BLOCKS = re.compile(r"<(nav|footer|script|style|svg)\b[\s\S]*?</\1>", re.I)
 # Buttons are navigation. Their labels are imperatives ("Register free →"), which

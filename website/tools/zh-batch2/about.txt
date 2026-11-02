@@ -1,0 +1,31 @@
+# about.html — 30 blocks. Order matters: the Nth non-comment line is the Nth
+# translatable block in the English page. Comment lines are ignored.
+我们是谁、今天已经上线了什么，以及如何联系我们。
+我们在建什么
+泛宇宙算力（Omniverse Compute，OMC）是一个去中心化 GPU 算力网络。我们把闲置与低负载的 GPU 算力——来自独立节点运营者、小型数据中心与社区硬件——聚合起来，路由给真正需要它的负载：AI 训练与推理、渲染与科学计算仿真。
+这个网络围绕一个开放市场设计：承诺型算力提供有保障的可用性，开放型算力出售无人预留的机时。这套结构以及它产生的定价，都写进了白皮书，并在测试网上公开验证。
+今天已经上线的东西
+<strong>币安智能链上的公共测试网</strong>——已验证的测试合约、已公布的 RPC 端点，以及测试网页面上的节点接入指南。
+<strong>白皮书 v3.0</strong>——架构、验证与罚没规则、撮合引擎与完整的代币经济，见白皮书页面。
+<strong>开源仓库</strong>——网站与文档源码以 MIT 许可发布在 <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener">github.com/CBTdao/omc-network</a>。
+<strong>社区空投</strong>——报名已开放；领取随主网于 2027 年 1 月 1 日开放（占总量 2%；登记免费，每份在领取时收取 0.01 BNB 不可退还的处理手续费——五份的基础领取为 0.05 BNB，十份上限时为 0.1 BNB——这笔钱用于开发与运营；每份在你领取时全额到账，没有锁仓期，也没有线性释放尾巴）。详情见空投页面。
+<strong>配套站点</strong>——<a href="https://top.omc.network" target="_blank" rel="noopener">AITop</a> 做 AI 工具对比，<a href="https://forum.omc.network" target="_blank" rel="noopener">DCF 论坛</a> 发表长篇算力研究。
+主网与算力挖矿计划在测试网阶段之后推进；当前路线图发布在动态页面与白皮书中。
+我们怎么做事
+我们公开工程路线图与仓库，并以任何人可验证的小步迭代交付。当我们对定价、性能或市场结构给出事实性论断时，会同时公布方法论，使其可以被核对。
+编辑准则
+我们的研究与评测内容遵循三条规则，并适用于我们发布的每一篇内容：
+<strong>不卖位置。</strong>榜单与评测不出售，也没有任何品牌为排名付钱给我们。
+<strong>不放返佣链接。</strong>我们不从被对比的产品中获取佣金。
+<strong>方法论公开。</strong>当我们比较工具或费率时，会写明标准、日期与来源。
+我们写加密与 AI 行业，包括我们不与之合作的项目；当证据支持时，我们也会发表对它们的批评性结论。
+联系方式
+<strong>邮箱：</strong><a href="mailto:support@omc.network">support@omc.network</a>——一般问题、媒体咨询与内容更正。
+<strong>X / Twitter：</strong><a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener">@Omniverse_Depin</a>——项目公告。
+<strong>Telegram：</strong><a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener">t.me/OmniverseCompute</a>——社区交流。
+<strong>GitHub：</strong><a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener">CBTdao/omc-network</a>——代码、issue 与贡献指南。
+如果你在我们的文章里发现错误，请把链接与更正内容发到上面的邮箱：我们会更新文章并注明改动。
+安全提示
+<strong>我们永远不会索要你的助记词或私钥</strong>，也永远不会要求你把 BNB 转到一个我们给出的地址。登记一份只是一次免费的签名；真正发生资金移动的只有领取交易本身——每份 0.01 BNB 的领取手续费，加上网络 gas。这笔费用不退还（五份领取为 0.05 BNB），它是空投的处理手续费，不是代币的价格：无论 OMC 成交在 $0.01 还是 $1，它都是同样的 0.01 BNB。OMC 的任何人都不会主动联系你，要求「验证」或「解锁」钱包。把这类消息当作诈骗未遂，并通过上面的邮箱告诉我们。
+非投资建议
+OMC 是去中心化计算网络中使用的实用型代币。我们发布的任何内容都不构成财务、投资、法律或税务建议，也不构成出售证券的要约。数字资产波动剧烈，存在全部损失的风险。请自行研究，并遵守所在司法辖区的法律。

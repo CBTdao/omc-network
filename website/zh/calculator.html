@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+  <title data-i18n="meta.title_calc">GPU 云端成本计算器 — Omniverse Compute (OMC)</title>
+
+  <link rel="canonical" href="https://omc.network/zh/calculator">
+
+  <link rel="alternate" hreflang="en" href="https://omc.network/calculator">
+
+  <link rel="alternate" hreflang="x-default" href="https://omc.network/calculator">
+
+  <link rel="alternate" hreflang="zh" href="https://omc.network/zh/calculator">
+
+  <script type="application/ld+json">
+
+{"@context":"https://schema.org","@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin"]}
+
+</script>
+
+  <meta property="og:site_name" content="Omniverse Compute">
+
+  <meta property="og:type" content="website">
+
+  <meta property="og:title" data-i18n-content="meta.title_calc" content="GPU 云端成本计算器 — Omniverse Compute (OMC)">
+
+  <meta property="og:description" data-i18n-content="meta.desc_calc" content="用 AWS、Google Cloud、Azure 公开的按需目录价估算每月 GPU 开支——并附上多数比价文章省略的费率、来源与前提。">
+
+  <meta property="og:url" content="https://omc.network/zh/calculator">
+
+  <meta property="og:image" content="https://omc.network/og-image.png">
+
+  <meta property="og:image:width" content="1200">
+
+  <meta property="og:image:height" content="630">
+
+  <meta property="og:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+
+  <meta property="og:locale" data-i18n-content="meta.og_locale" content="zh_CN">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="twitter:site" content="@Omniverse_Depin">
+
+  <meta name="twitter:title" data-i18n-content="meta.title_calc" content="GPU 云端成本计算器 — Omniverse Compute (OMC)">
+
+  <meta name="twitter:description" data-i18n-content="meta.desc_calc" content="用 AWS、Google Cloud、Azure 公开的按需目录价估算每月 GPU 开支——并附上多数比价文章省略的费率、来源与前提。">
+
+  <meta name="twitter:image" content="https://omc.network/og-image.png">
+
+  <meta name="twitter:image:alt" content="Omniverse Compute — Decentralized GPU Infrastructure. Project card with the omc.network wordmark on a violet gradient.">
+
+  <meta name="description" data-i18n-content="meta.desc_calc" content="用 AWS、Google Cloud、Azure 公开的按需目录价估算每月 GPU 开支——并附上多数比价文章省略的费率、来源与前提。">
+
+  <link rel="stylesheet" href="/assets/css/app.css?v=20261027a">
+
+  <link rel="stylesheet" href="/assets/css/footer-chain.css?v=20261027a">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+
+  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+
+  {"@context":"https://schema.org","@type":"WebApplication","name":"GPU Cloud Cost Calculator","url":"https://omc.network/calculator","applicationCategory":"BusinessApplication","operatingSystem":"Any","description":"Estimate monthly GPU cloud spend on AWS, Google Cloud and Azure from published on-demand list prices.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+
+  "dateModified": "2026-11-02"
+
+}
+
+  </script>
+
+  <script type="application/ld+json">
+
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"GPU Cloud Cost Calculator","item":"https://omc.network/calculator"}]}
+
+  </script>
+
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+
+</head>
+
+<body>
+
+
+
+  <!-- ===== NAV ===== -->
+
+  <nav class="nav">
+
+    <div class="nav-inner">
+
+      <a class="brand" href="/zh">
+
+        <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="eager" decoding="async">
+
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+
+      </a>
+
+      <div class="nav-links" id="navLinks">
+
+        <a href="/zh" data-i18n="nav.home">首页</a>
+
+        <div class="nav-drop">
+
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.product">产品</span> <span class="caret">▾</span></button>
+
+          <div class="nav-drop-menu">
+
+            <a href="/zh/compute" data-i18n="nav.compute">算力</a>
+
+            <a href="/zh/ai-tools" data-i18n="nav.aitools">AI 工具</a>
+
+            <a href="/zh/calculator" data-i18n="nav.calc">计算器</a>
+
+          </div>
+
+        </div>
+
+        <div class="nav-drop">
+
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.eco">生态</span> <span class="caret">▾</span></button>
+
+          <div class="nav-drop-menu">
+
+            <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="nav.game">真图还是 AI</a>
+
+            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="nav.forum">算力论坛</a>
+
+            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="nav.top">AI 工具站</a>
+
+          </div>
+
+        </div>
+
+        <div class="nav-drop">
+
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.network">网络</span> <span class="caret">▾</span></button>
+
+          <div class="nav-drop-menu">
+
+            <a href="/zh/testnet" data-i18n="nav.testnet">测试网</a>
+
+            <a href="/zh/stake" data-i18n="nav.stake">质押</a>
+
+          </div>
+
+        </div>
+
+        <a href="/zh/news" data-i18n="nav.news">动态</a>
+
+        <a href="/zh/whitepaper" data-i18n="nav.wp">白皮书</a>
+
+        <a href="/zh/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 参与空投</a>
+
+        <div class="nav-wallet" id="walletNav"></div>
+
+        <select class="lang-select" id="langSelect" aria-label="Language">
+
+          <option value="en">EN</option>
+
+          <option value="zh">中文</option>
+
+        </select>
+
+        </div>
+
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- ===== HERO ===== -->
+
+  <header class="hero hero-sm">
+
+    <div class="container">
+
+      <div class="hero-badge"><span class="dot"></span><span data-i18n="calc.badge">公开标价 · 无需登录</span></div>
+
+      <h1 data-i18n="calc.title">GPU 云端成本计算器</h1>
+
+      <p class="sub" data-i18n="calc.sub">选择 GPU 型号、数量与每月使用时长，即可按公开的按需标价，估算该集群在 AWS、Google Cloud 与 Azure 上的成本，并看清这些小时价格背后没有算进去的部分。</p>
+
+      <div class="hero-chain">
+
+        <span class="chip" data-i18n="calc.chip1">📊 数据来源 <b>厂商公开标价</b></span>
+
+        <span class="chip" data-i18n="calc.chip2">🗓 观测时间 <b>2026 年 9 月</b></span>
+
+        <span class="chip" data-i18n="calc.chip3">🧮 口径 <b>仅按需价格</b></span>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ===== CALCULATOR ===== -->
+
+  <section class="section" id="calc" style="padding-top: 40px;">
+
+    <div class="container">
+
+      <div class="calc-grid">
+
+
+
+        <!-- Inputs -->
+
+        <div class="calc-panel">
+
+          <h2 class="calc-h2" data-i18n="calc.form.title">你的工作负载</h2>
+
+
+
+          <label class="calc-label" data-i18n="calc.in.gpu">GPU 型号</label>
+
+          <div class="seg" id="segGpu" role="group">
+
+            <button type="button" class="active" data-gpu="H100">H100 80GB</button>
+
+            <button type="button" data-gpu="H200">H200 141GB</button>
+
+          </div>
+
+
+
+          <label class="calc-label" style="margin-top: 22px;" data-i18n="calc.in.count">GPU 数量</label>
+
+          <div class="stepper">
+
+            <button type="button" id="btnMinus" aria-label="Decrease">−</button>
+
+            <input type="number" id="inCount" value="8" min="1" max="512" step="1" inputmode="numeric">
+
+            <button type="button" id="btnPlus" aria-label="Increase">+</button>
+
+          </div>
+
+
+
+          <label class="calc-label" style="margin-top: 22px;" data-i18n="calc.in.hours">每月使用小时数</label>
+
+          <div class="seg seg-wrap" id="segHours" role="group">
+
+            <button type="button" data-hours="730" class="active" data-i18n="calc.hours.247">24/7 · 730 小时</button>
+
+            <button type="button" data-hours="365" data-i18n="calc.hours.12">每天 12 小时 · 365 小时</button>
+
+            <button type="button" data-hours="240" data-i18n="calc.hours.8">每天 8 小时 · 240 小时</button>
+
+            <button type="button" data-hours="120" data-i18n="calc.hours.4">每天 4 小时 · 120 小时</button>
+
+          </div>
+
+          <input type="range" id="inHours" min="1" max="730" step="1" value="730" class="range">
+
+          <div class="calc-readout"><span data-i18n="calc.hours.label">已选时长</span>: <b id="outHours">730</b> h</div>
+
+
+
+          <div class="calc-note" data-i18n="calc.node.note">超大规模云的价格为「8 卡整机价 ÷ 8」折算。其 H100/H200 容量多以 8 卡整机出售；AWS 另提供单卡 p5.4xlarge，单卡单价与整机折算一致。</div>
+
+        </div>
+
+
+
+        <!-- Results -->
+
+        <div class="calc-results">
+
+          <div class="calc-cards" id="calcCards">
+
+            <div class="calc-card" data-prov="aws">
+
+              <div class="cc-head"><span class="cc-name">AWS</span><span class="cc-spec">p5.48xlarge</span></div>
+
+              <div class="cc-month" data-role="month">$0</div>
+
+              <div class="cc-sub"><span data-i18n="calc.out.permonth">每月</span> · <b data-role="hour">$0</b> <span data-i18n="calc.out.pergpu">/ 每 GPU 小时</span></div>
+
+            </div>
+
+            <div class="calc-card" data-prov="gcp">
+
+              <div class="cc-head"><span class="cc-name">Google Cloud</span><span class="cc-spec">a3-highgpu-8g</span></div>
+
+              <div class="cc-month" data-role="month">$0</div>
+
+              <div class="cc-sub"><span data-i18n="calc.out.permonth">每月</span> · <b data-role="hour">$0</b> <span data-i18n="calc.out.pergpu">/ 每 GPU 小时</span></div>
+
+            </div>
+
+            <div class="calc-card" data-prov="azure">
+
+              <div class="cc-head"><span class="cc-name">Azure</span><span class="cc-spec">ND96isr H100 v5</span></div>
+
+              <div class="cc-month" data-role="month">$0</div>
+
+              <div class="cc-sub"><span data-i18n="calc.out.permonth">每月</span> · <b data-role="hour">$0</b> <span data-i18n="calc.out.pergpu">/ 每 GPU 小时</span></div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="calc-spread" id="calcSpread">
+
+            <span data-i18n="calc.spread.label">三家超大规模云的价格差 —— 最贵 ÷ 最便宜的按需标价</span>
+
+            <b id="spreadX">—</b>
+
+          </div>
+
+
+
+          <div class="calc-omc">
+
+            <div class="co-head">
+
+              <span class="co-name" data-i18n="calc.omc.name">OMC 网络</span>
+
+              <span class="co-badge" data-i18n="calc.omc.badge">主网 · 2027 年 1 月 1 日</span>
+
+            </div>
+
+            <p class="co-note" data-i18n="calc.omc.note">OMC 尚未公布网络费率，目前也不出售算力。可在下方填入一个假设费率来查看算式——该数字是你自己的假设，不是 OMC 的报价、预测或承诺。</p>
+
+            <div class="co-row">
+
+              <label class="calc-label" for="inHypo" data-i18n="calc.omc.hypo_label">假设的 OMC 费率（美元 / GPU 小时）</label>
+
+              <input type="number" id="inHypo" min="0" step="0.01" placeholder="e.g. 2.50" inputmode="decimal">
+
+            </div>
+
+            <div class="co-out" id="coOut" hidden>
+
+              <div class="co-line"><span data-i18n="calc.omc.hypo_cost">按你的费率计算的假设月成本</span><b id="coMonth">$0</b></div>
+
+              <div class="co-line"><span data-i18n="calc.omc.vs_aws">对比 AWS 按需价格</span><b id="coDelta">—</b></div>
+
+            </div>
+
+            <div class="co-warn" data-i18n="calc.omc.hypo_note">仅为假设。此处的数字由你输入的费率计算得出，不应被理解为 OMC 的价格承诺。</div>
+
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===== RATE TABLE ===== -->
+
+  <section class="section" id="rates" style="padding-top: 0;">
+
+    <div class="container">
+
+      <div class="section-head reveal">
+
+        <div class="eyebrow" data-i18n="calc.table.eyebrow">参考数据</div>
+
+        <h2 data-i18n="calc.table.title">公开的按需标价</h2>
+
+        <p data-i18n="calc.table.sub">单位：美元 / GPU 小时。超大规模云为「8 卡整机价 ÷ 8」；Lambda 与 CoreWeave 按其标注的单卡或整机价列出。</p>
+
+      </div>
+
+
+
+      <div class="table-wrap reveal">
+
+        <table class="calc-table">
+
+          <thead>
+
+            <tr>
+
+              <th>GPU</th>
+
+              <th>AWS</th>
+
+              <th>Google Cloud</th>
+
+              <th>Azure</th>
+
+              <th>Lambda</th>
+
+              <th>CoreWeave</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr>
+
+              <td><b>H100 80GB</b><span class="ct-spec">SXM5 · 节点规格见脚注</span></td>
+
+              <td><b>$6.88</b><span class="ct-spec">p5.48xlarge · $55.04 ÷ 8 卡</span></td>
+
+              <td><b>$11.06</b><span class="ct-spec">a3-highgpu-8g · $88.49 ÷ 8 卡</span></td>
+
+              <td><b>$12.29</b><span class="ct-spec">ND96isr H100 v5 · $98.32 ÷ 8 卡</span></td>
+
+              <td><b>$3.99</b><span class="ct-spec">单卡，按需</span></td>
+
+              <td><b>$6.16</b><span class="ct-spec">HGX H100 · $49.24 ÷ 8 卡</span></td>
+
+            </tr>
+
+            <tr>
+
+              <td><b>H200 141GB</b><span class="ct-spec">SXM · 节点规格见脚注</span></td>
+
+              <td><b>$7.91</b><span class="ct-spec">p5en.48xlarge · $63.30 ÷ 8 卡</span></td>
+
+              <td><b>$10.60</b><span class="ct-spec">a3-ultragpu-8g · $84.81 ÷ 8 卡</span></td>
+
+              <td><b>$13.78</b><span class="ct-spec">ND96isr H200 v5 · $110.24 ÷ 8 卡</span></td>
+
+              <td><span class="ct-na">—</span></td>
+
+              <td><b>$6.31</b><span class="ct-spec">HGX H200 · $50.44 ÷ 8 卡</span></td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+
+      <div class="calc-note reveal" data-i18n="calc.table.note">以上为各厂商公开的按需标价，观测时间为 2026 年 9 月、美国区域（AWS us-east-1、Google Cloud us-central1、Azure East US）。不含税费、存储、网络与支持费用。竞价、抢占式与承诺用量的价格更低——例如 Google 的 H200 定价低于 H100，因此请看清具体型号行，而非代际。价格变动频繁：在依赖任何数字之前，请先向厂商确认当前报价。来源：AWS EC2 按需定价、Google Cloud 加速器优化机型定价、Azure 零售价格 API、Lambda 与 CoreWeave 公开定价页。</div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===== WHAT THE RATE LEAVES OUT ===== -->
+
+  <section class="section" id="mechanics" style="padding-top: 0;">
+
+    <div class="container">
+
+      <div class="section-head reveal">
+
+        <div class="eyebrow" data-i18n="calc.mech.eyebrow">总拥有成本</div>
+
+        <h2 data-i18n="calc.mech.title">小时价格没有算进去的部分</h2>
+
+        <p data-i18n="calc.mech.sub">三种被多数价格表忽略、却比标价更能决定真实账单的成本机制。</p>
+
+      </div>
+
+      <div class="grid-3">
+
+        <div class="card reveal">
+
+          <div class="icon">⏱️</div>
+
+          <h3>空闲时长照样计费</h3>
+
+          <p>一台 p5.48xlarge 每小时计费 $55.04，无论那八张 GPU 在训练还是空转——一个长假就接近 $4,000。按需定价卖的是墙上时钟的时间，不是你交付的算力。</p>
+
+          <span class="tag">按时钟计费</span>
+
+        </div>
+
+        <div class="card reveal">
+
+          <div class="icon">📡</div>
+
+          <h3>出网流量在另一张账单上</h3>
+
+          <p>出站数据单独计价：AWS 约 $0.09/GB，Azure 约 $0.08/GB，Google Cloud 为 $0.08–0.12/GB。对一套中等规模的 H100 部署来说，传输检查点与输出通常每月多出四位数美元。</p>
+
+          <span class="tag">数据传输</span>
+
+        </div>
+
+        <div class="card reveal">
+
+          <div class="icon">🔒</div>
+
+          <h3>折扣覆盖不到这些 GPU</h3>
+
+          <p>AI 团队真正买的那部分算力，往往被排除在那些为了省钱而设计的折扣之外：AWS Spot 不在 Savings Plans 范围内，Capacity Blocks 既不在 Savings Plans 也不在 Reserved Instances 范围内，Google 则把 A3/A4 排除在灵活承诺使用折扣之外。</p>
+
+          <span class="tag">Commitment structure</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===== HOW OMC DIFFERS ===== -->
+
+  <section class="section" id="omc-model" style="padding-top: 0;">
+
+    <div class="container">
+
+      <div class="section-head reveal">
+
+        <div class="eyebrow" data-i18n="calc.omcdiff.eyebrow">设计意图</div>
+
+        <h2 data-i18n="calc.omcdiff.title">OMC 的模式在设计上如何不同</h2>
+
+        <p data-i18n="calc.omcdiff.sub">这里对比的是计费机制，而非价格。OMC 未公布任何网络费率；下列条目来自白皮书中的设计承诺，在主网上线前仍可能调整。</p>
+
+      </div>
+
+
+
+      <div class="table-wrap reveal">
+
+        <table class="calc-table">
+
+          <thead>
+
+            <tr>
+
+              <th>维度</th>
+
+              <th>超大规模云厂商按需价</th>
+
+              <th>OMC <span class="ct-spec">（设计目标）</span></th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr><td><b>计费单位</b></td><td>按小时，整机实例</td><td>按任务，L2 rollup 上按秒微支付（规划中；目前结算在 BNB Chain 上）</td></tr>
+
+            <tr><td><b>空闲时间</b></td><td>运行时长即计费</td><td>只为已接受、已验证的工作结算</td></tr>
+
+            <tr><td><b>算力获取</b></td><td>区域配额限制与可用性门槛</td><td>无需许可，受网络供给约束</td></tr>
+
+            <tr><td><b>承诺期</b></td><td>无需承诺；折扣需 1–3 年承诺</td><td>设计上无需承诺</td></tr>
+
+            <tr><td><b>支付</b></td><td>法币，通过厂商账单</td><td>OMC 或受支持的稳定币（BNB Chain 上的 USDT / USDC）</td></tr>
+
+            <tr><td><b>结果验证</b></td><td>依赖对提供方的信任</td><td>按任务类型分级验证策略（抽检重算、冗余、TEE）</td></tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+
+      <div class="calc-note reveal" data-i18n="calc.omcdiff.note">设计承诺反映 OMC 白皮书 v3.0，属意向陈述而非已上线功能。OMC 目前处于测试网；主网——连同空投领取窗口与质押——将在 2027 年 1 月 1 日开启。此处不构成价格承诺、服务级别承诺或算力出售要约。</div>
+
+
+
+      <div class="calc-note reveal" style="border-left-color: rgba(94,162,255,0.6);" data-i18n="calc.csx.note"><b>正在和真实采购做对比？</b> 本页比较的是标价。网络的<b>买方一侧</b>是 <a href="/zh/compute">AI 算力服务站</a> —— 你可以在那里为订单报价并托管资金，由服务方质押的 OMC 为交付兜底。它是测试网工具，不销售算力，也不公布任何费率。</div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===== FAQ ===== -->
+
+  <section class="section" id="faq" style="padding-top: 0;">
+
+    <div class="container">
+
+      <div class="section-head reveal">
+
+        <div class="eyebrow" data-i18n="calc.faq.eyebrow">答疑</div>
+
+        <h2 data-i18n="calc.faq.title">常见问题解答</h2>
+
+      </div>
+
+      <div class="faq-wrap reveal">
+
+        <details class="faq">
+
+          <summary>为什么计算器里没有 OMC 价格？</summary>
+
+          <p>因为没有已公布的 OMC 网络费率可以引用。主网于 2027 年 1 月 1 日开启；在费率确定并公布之前，我们印出的任何数字都是编造。所以计算器让你自己填一个假设费率，然后展示算术过程——并明确标注那是你的假设，不是我们的价格。</p>
+
+        </details>
+
+        <details class="faq">
+
+          <summary>表格里的「每 GPU 小时」到底指什么？</summary>
+
+          <p>超大规模云厂商是在固定机型里卖 GPU 算力的。AWS 的 p5.48xlarge、Google 的 a3-highgpu-8g 与 Azure 的 ND96isr H100 v5 都打包了八张 H100，所以诚实的可比数字是整机价格除以八。拿整机价去比单卡价，是 GPU 价格表最常见的一种误导方式——一个「$49.24」的醒目报价，在把单位对齐之后，可能比「$3.99」更贵。</p>
+
+        </details>
+
+        <details class="faq">
+
+          <summary>这些数字包含存储、网络与支持吗？</summary>
+
+          <p>不包含。它们只是算力的目录价。存储、出网流量、负载均衡、快照以及任何支持档位都在其之上；对于长期运行的部署，这些项目很可观——仅出网流量一项，一个中等规模的训练集群通常每月就要多花四位数美元。</p>
+
+        </details>
+
+        <details class="faq">
+
+          <summary>为什么不显示竞价、预留或承诺折扣价？</summary>
+
+          <p>竞价与承诺折扣价是真实存在的，而且往往低得多，但它们不可直接比较：竞价算力可能被回收，承诺折扣需要一至三年的承诺，而且常常排除最新的 GPU 系列。把这几类混进一张表，正是「最便宜」这种说法诞生的地方。本页只使用按需目录价——它是唯一既公开又能直接比较的费率。</p>
+
+        </details>
+
+        <details class="faq">
+
+          <summary>这些数据的时效性如何，多久更新一次？</summary>
+
+          <p>费率于 2026 年 9 月从各厂商定价页采集。GPU 价格变动频繁，所以我们给每个数字标注日期，而不是把它当作永久有效。请把它当作有据可查的建模起点，并在真正把预算投出去之前向厂商确认实时价格。</p>
+
+        </details>
+
+        <details class="faq">
+
+          <summary>今天能在 OMC 上买算力吗？</summary>
+
+          <p>不能。OMC 目前运行的是公共测试网。主网——网络可以接受付费任务、提供方可以赚取收益——将于 2027 年 1 月 1 日开启。你现在可以加入测试网、登记社区空投，但没有算力可买，也没有价格可付。</p>
+
+        </details>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===== CTA ===== -->
+
+  <section class="section" style="padding-top: 20px;">
+
+    <div class="container">
+
+      <div class="cta-band reveal">
+
+        <h2 data-i18n="calc.cta.title">测算你自己的负载</h2>
+
+        <p data-i18n="calc.cta.sub">OMC 交付成本对比所使用的方法论，以及完整的计费设计，均记录在白皮书中。</p>
+
+        <div class="hero-actions">
+
+          <a href="/zh/whitepaper" class="btn btn-primary btn-lg" data-i18n="calc.cta.b1">阅读白皮书 →</a>
+
+          <a href="/zh/testnet" class="btn btn-ghost btn-lg" data-i18n="calc.cta.b2">加入测试网</a>
+
+        </div>
+
+      </div>
+
+      <div class="calc-note reveal" style="margin-top: 26px;" data-i18n="calc.disclaim">免责声明：本计算器为教育性工具。所用数字为 2026 年 9 月观测到的第三方标价，不提供任何担保；它们不构成要约、报价或投资建议。OMC 未公布网络费率，目前也不出售算力。</div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===== FOOTER ===== -->
+
+  <footer>
+
+    <div class="footer-inner">
+
+      <div class="footer-grid">
+
+        <div>
+
+          <a class="brand" href="/zh">
+
+            <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="lazy" decoding="async">
+
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+
+          </a>
+
+          <p data-i18n="footer.tag">去中心化高性能 GPU 基础设施网络，构建 DeAI 的未来。</p>
+
+          <div class="socials">
+
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+
+          </div>
+
+        </div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_protocol">协议</h3>
+
+          <a href="/zh/whitepaper" data-i18n="f.wp">白皮书</a>
+
+          <a href="/zh/testnet" data-i18n="f.testnet">测试网</a>
+
+          <a href="/calculator#about" data-i18n="f.arch">网络架构</a>
+
+          <a href="/zh/tokenomics" data-i18n="f.tokenomics">代币经济</a>
+
+        </div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_community">社区</h3>
+
+          <a href="/zh/airdrop" data-i18n="f.airdrop">空投</a>
+
+          <a href="/zh/news" data-i18n="nav.news">动态</a>
+
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X（推特）</a>
+
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram 电报群</a>
+
+        </div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_ecosystem">生态</h3>
+
+          <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI 工具对比</a>
+
+          <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — 算力论坛</a>
+
+          <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="f.game">真图还是 AI — 每日照片小游戏</a>
+
+        </div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_resources">资源</h3>
+
+          <a href="/zh/calculator" data-i18n="f.calculator">GPU 成本计算器</a>
+
+          <a href="/zh/compute" data-i18n="f.compute">AI 算力服务站</a>
+
+          <a href="/zh/ai-tools" data-i18n="f.aitools">图像超分</a>
+
+          <a href="/assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">白皮书 PDF</a>
+
+          <a href="/assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">白皮书演示版</a>
+
+          <a href="/testnet#endpoints" data-i18n="f.rpc">RPC 端点</a>
+
+          <a href="/zh/about" data-i18n="f.about">关于与联系</a>
+
+          <a href="/press" data-i18n="f.press">媒体资料包</a>
+
+          <a href="/zh/privacy" data-i18n="f.privacy">隐私政策</a>
+
+          <a href="/zh/aup" data-i18n="f.aup">可接受使用政策</a>
+
+        </div>
+
+      </div>
+
+      <!-- omc:contracts-block — network + deployed contracts, published for verification -->
+
+      <div class="footer-chain">
+
+        <div class="fc-head">
+
+          <span class="fc-title" data-i18n="footer.chain_t">链上合约</span>
+
+          <span class="fc-badge" data-i18n="footer.chain_verified">BscScan 已验证</span>
+
+        </div>
+
+        <div class="fc-rows">
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_net">网络</span>
+
+            <span class="fc-v fc-plain" data-i18n="footer.chain_netv">BNB 智能链 · 测试网（chainId 97）</span>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_token">OMC 代币（tOMC）</span>
+
+            <a class="fc-v" href="https://testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671" target="_blank" rel="noopener"><code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code></a>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_staking">质押合约（OMCStaking）</span>
+
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_market">算力市场（OMCComputeMarket）</span>
+
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_sec">安全</span>
+
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">已做自动化安全测试 —— 未经审计 →</a>
+
+          </div>
+
+        </div>
+
+        <p class="fc-note" data-i18n="footer.chain_note">测试网合约，公开供核验。测试网代币无任何货币价值，也不在任何地方出售或上线。</p>
+
+      </div>
+
+
+
+      <div class="footer-bottom">
+
+        <div class="disc" data-i18n="footer.disclaimer">免责声明：Omniverse Compute（OMC）是去中心化基础设施协议的功能型代币。本站内容不构成任何投资建议。数字资产风险极高，请自行研究并遵守所在司法辖区的法律法规。空投与 OMC 代币不面向中国大陆及美国居民发行，本站亦不针对该地区；部分司法辖区可能受限。</div>
+
+        <div>© 2026 Omniverse Compute · omc.network<br><span class="facts-v">数据版本 v8 · 2026-10-30 · <a href="https://github.com/CBTdao/omc-network/blob/main/contracts/params.json" target="_blank" rel="noopener">来源</a></span></div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script src="/assets/js/lang/en.js?v=20261027a"></script>
+
+  <script src="/assets/js/lang/zh.js?v=20261027a"></script>
+
+  <script src="/assets/js/i18n.js?v=20261027a"></script>
+
+  <script src="/assets/js/i18n-meta.js?v=20261027a"></script>
+
+  <script src="/assets/js/main.js?v=20261027a"></script>
+
+  <script src="/assets/js/binance-w3w.js?v=20261027a"></script>
+
+  <script src="/assets/js/wallet.js?v=20261027a"></script>
+
+  <script src="/assets/js/calculator.js?v=20261027a"></script>
+
+</body>
+
+</html>

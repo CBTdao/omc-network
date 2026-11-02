@@ -1,0 +1,63 @@
+# privacy.html — 59 blocks. Note block 2: the English original says the document
+# is provided in English and is authoritative. The Chinese page must say the
+# same thing honestly (Chinese is the translation, English wins on conflict),
+# not claim to be the English version.
+生效日期：2026 年 10 月 4 日 · 最近更新：2026 年 10 月 4 日
+本隐私政策说明泛宇宙算力（Omniverse Compute，"OMC"）项目团队（下称"我们"）在你访问 omc.network 及其子域（包括 top.omc.network 与 forum.omc.network，合称"本站"）时，如何收集、使用与保护信息。
+本文档以英文撰写，英文版是我们隐私实践的权威版本；本页中文为译文，如有歧义，以英文版为准。
+1. 摘要
+我们不要求注册账号，也不会索取你的姓名、邮寄地址或电话号码。
+我们不运行自有的广告或行为追踪像素。
+我们使用浏览器 <strong>localStorage</strong>——而不是 cookie——来记住你的语言选择与本地空投活动记录。
+第三方广告由 <strong>Google AdSense</strong> 提供，它可能设置 cookie 并使用设备标识符。你可以通过同意提示与 Google 的广告设置来控制这一点（见第 5 节）。
+<strong>我们永远不会索要你的助记词或私钥。</strong>OMC 的任何人都不会向你索取。
+2. 我们收集的信息
+<strong>2.1 你主动提供的信息。</strong>如果你通过邮件或社交媒体渠道联系我们，我们会收到你的消息内容与联系方式。我们只用它们来回复你。
+<strong>2.2 钱包与区块链数据。</strong>空投页面可以连接浏览器钱包（例如 MetaMask），以便你签名证明地址所有权。此时我们会处理你的<strong>公开钱包地址</strong>与签名。公开地址及其链上历史本身就是记录在区块链上的公开信息。我们从不获取、索要或存储你的私钥或助记词。
+<strong>2.3 自动处理的技术数据。</strong>当你请求页面时，我们的托管服务商会处理标准服务器日志——IP 地址、浏览器 User-Agent、请求的 URL 与时间戳——用于安全、滥用防护与性能监控。这些日志由服务商保留一段较短时间。
+<strong>2.4 你设备上的本地存储。</strong>我们使用 <code>localStorage</code> 键用于以下目的。它们留在你的设备上，不会传输给我们：
+<code>omc_lang</code> — 你所选择的界面语言。
+<code>omc_airdrop_v1</code> — 你在本地的空投登记记录。
+<code>omc_session_v1</code> — 空投页面上的钱包会话标记。
+3. 我们如何使用信息
+用于运行、保护与改进本站及测试网。
+用于让你参与社区空投，并防止重复领取或自动化领取等滥用行为。
+用于展示为项目提供资金的广告（见第 5 节）。
+用于回复你的咨询。
+用于履行适用的法律义务。
+我们<strong>不会</strong>出售你的个人信息。
+4. Cookie 与类似技术
+我们不设置用于分析或画像的第一方 cookie。本站上的 cookie 与类似技术来自第三方广告（Google AdSense）以及嵌入的第三方内容。当这些内容被加载或广告被投放时，第三方可能直接从你的浏览器收集信息。
+5. 第三方广告（Google AdSense）与个性化广告
+本站通过 Google AdSense 变现。Google 及其合作伙伴可能使用 cookie、网络信标与设备标识符，根据你此前对本站及其他网站的访问来投放广告。
+Google 对广告 cookie 的使用，使其及合作伙伴能够根据你对本站和／或互联网上其他站点的访问投放广告。
+你可以访问 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google 广告设置</a> 来选择退出个性化广告。
+你也可以在 <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info</a> 退出部分第三方供应商用于个性化广告的 cookie；在欧盟／英国，可在 <a href="https://www.youronlinechoices.eu" target="_blank" rel="noopener">youronlinechoices.eu</a> 退出。
+更多信息请见 <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google 如何使用使用其服务的站点所提供的信息</a> 与 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google 隐私政策</a>。
+在法律要求的情况下（例如欧洲经济区、英国与瑞士），我们会在使用广告 cookie 之前展示同意提示，该提示由 Google 认证的同意管理平台提供。你可以随时通过本站显示的隐私选项链接更改或撤回同意。
+6. 我们依赖的第三方服务
+<strong>Vercel</strong> — 网站托管与分发。<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">隐私政策</a>
+<strong>Google AdSense</strong> — 广告投放。<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">隐私政策</a>
+<strong>GitHub</strong> — 源码托管，以及我们论坛上的评论系统（giscus），它把你的评论存储在 GitHub Discussions 中。<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">隐私声明</a>
+<strong>Telegram</strong> 与 <strong>X（Twitter）</strong> — 社区渠道。如果你打开它们，适用的将是它们自己的隐私政策。
+<strong>BNB Chain</strong> — 部署我们测试网合约的公共区块链网络。链上数据是公开的，且不在我们的控制范围内。
+7. 合法性基础（欧洲经济区／英国）
+在适用 GDPR 或英国 GDPR 的情况下，我们基于以下基础处理信息：你的<strong>同意</strong>（广告 cookie 与个性化广告）、我们的<strong>正当利益</strong>（安全、滥用防护、运营本站）、<strong>履行你请求的服务</strong>（回复咨询、使空投参与成为可能）以及<strong>履行法律义务</strong>。
+8. 你的权利
+视你所在的地区，你可能有权：访问我们持有的关于你的个人数据；要求更正或删除；限制或反对处理；要求数据可携带；随时撤回同意；以及向你所在地的监管机构投诉。
+如果你是加州居民，依据 CCPA/CPRA 你有权了解被收集了哪些个人信息、要求删除、选择退出个人信息的"出售"或"共享"，并在行使这些权利时不受歧视。我们不出售个人信息，除第 5 节所述的广告合作伙伴外，我们不会将你的数据用于跨语境行为广告——而该情形由你的同意选择控制。
+如需行使任何权利，请通过第 13 节中的地址联系我们。
+9. 跨境传输
+本站由全球内容分发基础设施提供服务，我们的服务提供商可能在你所在国家以外的地区（包括美国）处理信息。在法律要求时，传输依赖相关服务商提供的标准合同条款等适当保障措施。
+10. 数据保留
+我们仅在回复所需以及保留请求记录所需的期限内保存咨询往来。服务器日志由托管服务商保留一段较短运营期。链上数据按设计是永久的。浏览器 localStorage 中的数据会保留到你清除它为止。
+11. 安全
+本站通过 HTTPS 提供。由于我们持有的个人数据极少，我们选择限制收集，而不是仅依赖保护措施。没有任何传输或存储方式是完全安全的，我们无法保证绝对安全。你对自己钱包与设备的安全负责。
+12. 儿童
+本站不面向儿童。我们不会在知情的情况下收集未满 16 岁（或你所在司法辖区的最低年龄）者的信息。如果你认为某名儿童向我们提供了信息，请联系我们，我们会将其删除。
+13. 联系
+有关本政策的疑问或与你的数据相关的请求：<a href="mailto:support@omc.network">support@omc.network</a>。你也可以通过我们<a href="/about">关于与联系</a>页面上列出的社区渠道联系我们。
+14. 本政策的变更
+我们可能更新本政策，以反映实践或法律要求的变化。页面顶部的生效日期始终显示当前版本。重大变更还会在本站的动态栏目中公布。
+15. 非投资建议
+本站任何内容均不构成财务、投资、法律或税务建议，也不构成出售证券的要约。OMC 是去中心化计算网络中使用的实用型代币。数字资产波动剧烈，存在全部损失的风险。请始终自行研究，并遵守所在司法辖区的法律。
