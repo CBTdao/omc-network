@@ -71,7 +71,7 @@
 | 2 | **全站只有 `/press` 有 `dateModified`** | 抓取方无法判断新鲜度；旧页面和新页面在模型眼里等价 | 脚本注入 |
 | 3 | **`/news` 对不跑 JS 的爬虫只有 1 条** | `/news` 是唯一的新鲜度面，等于关着 | 构建时烤进 HTML |
 | 4 | ~~**中文只覆盖 9/15 页**~~ | 豆包/元宝/Kimi/DeepSeek 抓中文；whitepaper/about/calculator 缺失 | ✅ 已补（13 页镜像 + 2 页只需词条） |
-| 5 | **`Organization` 没有 `alternateName`**（除 `/zh/press`） | 「OMC」在全球金融里是 Open Market Committee；中文「泛宇宙算力」和英文实体在 AI 眼里可能是两个 | 改 1 处 × 15 页 |
+| 5 | ~~**`Organization` 没有 `alternateName`**~~（原只有 `/zh/press` 有） | 「OMC」在全球金融里是 Open Market Committee；中文「泛宇宙算力」和英文实体在 AI 眼里可能是两个 | ✅ 全站生效（见第六节） |
 | 6 | **没有 feed（RSS/Atom）** | 聚合站与部分 agent 依赖 feed 发现更新 | 1 次生成 |
 | 7 | **关键事实只出现在 6 页** | `/stake`、`/compute`、`/index` 只说结论不带数字，被单独检索时答不出数 | 文案小改 |
 
@@ -133,7 +133,7 @@
 2. ~~全站 `dateModified` + 页脚版本号~~ ✅
 3. ~~`/news` 静态化 + `/news/feed.xml`~~ ✅（见下）
 4. ~~中文 batch 2（whitepaper / about / calculator / privacy / aup）~~ ✅（见下）
-5. **`Organization.alternateName: 泛宇宙算力` + `disambiguatingDescription`** 全站生效。
+5. ~~`Organization.alternateName: 泛宇宙算力` + `disambiguatingDescription` 全站生效~~ ✅（见下）
 
 **3 已完成（2026-11-02）**：17 条动态全部在构建期渲染进 `news.html` / `zh/news.html`（原来不跑 JS 只读到 1 条），并发布 `/news/feed.xml` 与 `/zh/news/feed.xml`（RSS 2.0，最新在前，完整摘要，绝对链接）。`lastBuildDate` 取最新一条的日期而不是构建时刻——否则每跑一次生成器都像更新过，读者会学会忽略这个文件。`build_news.py --check` 校验 HTML 与两份 feed 是否过期；`scripts/news-static.test.mjs` 13 条守「静态顺序 = 数据文件顺序」「两种语言条目一致」「中文日期真的是中文」「zh feed 不链不存在的页面」。副作用：`llms-full.txt` 从 126,668 涨到 133,106 字符，因为新闻段现在带着全部 17 条。
 
@@ -147,5 +147,15 @@
 配套：sitemap 25 → **30 条**（15 对 hreflang 成对补齐），SEO 审计 65 页 **0 problems / 0 warnings**；`scripts/zh-pages.test.mjs` 增到 8 条，新增一条守「`.txt` 与 `.json` 一致、指纹数匹配、每张表都有对应中文页」。
 
 **构建顺序（写进 README 了，别打乱）**：`build_zh.py` → `build_announcement.py` / `build_press.py` → `build_news.py` → `build_llms_full.py` → `inject_facts.py`。前三个会重建页面，后两个是盖章，必须最后跑。
+
+**5 已完成（2026-11-02）**：`inject_facts.py` 多了第三遍盖章——身份。每个 `Organization` 节点现在都有 `@id: https://omc.network/#organization`、`alternateName: ["泛宇宙算力","OMC"]`（中文页反过来，`["Omniverse Compute","OMC"]`）和一段 `disambiguatingDescription`。中文页写中文、英文页写英文。
+
+三件事值得记下来：
+
+- **只加 `alternateName` 不够，`@id` 才是关键。** 没有 `@id`，模型看到的是 47 个恰好共用一张 logo 的不同组织；有了同一个 `@id`，63 个节点解析成一个实体。两手一起做才有用。
+- **原来的副本已经漂了。** 同样一段 `Organization`，有的页 `sameAs` 两个链接、有的三个；只有 `/press` 有 `alternateName`。逐页手改会在下一次重新生成时再漂一次，所以做成脚本，`--check` 进测试。
+- **`name: "OMC"` 本身就是要修的东西。** 游戏子站 32 个页面把发布方写成 `name: "OMC"`——正是那个歧义字符串。脚本把它提升成 `Omniverse Compute`，缩写留在 `alternateName` 里，别名的位置在别名。
+
+嵌套节点（`NewsArticle.publisher` 这类）只给 `@id` 和两个名字，不给描述：一页一份描述足够解决实体，publisher 里塞三个额外字段只是噪音。`scripts/entity-identity.test.mjs` 5 条守：全站同 `@id`、每个节点都带两个名字、没有节点只叫缩写、描述与页面语言一致、sitemap 里每条 URL 都有页面说明发布者。
 
 **判断这套有没有用的标准**：一个月后，去问 ChatGPT / Perplexity「OMC 空投怎么参与、要不要花钱」，看它答的是 20 OMC 免费参与 + 0.01 BNB 处理手续费，还是「付费空投」。答错了，说明是引用源不够硬，不是文案不够多。
