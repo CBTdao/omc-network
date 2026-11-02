@@ -459,8 +459,13 @@
 
           <p><strong>提供方保护。</strong>资源限制与滥用检测保护提供方免受恶意容器侵害。被禁止的内容与负载在官网发布的《可接受使用政策》中定义。</p>
 
-          <p><strong>保障。</strong>主网前会对智能合约与节点客户端进行审计，审计报告公开（见第 11 节）。漏洞赏金计划自主网上线起运行，在公开赏金平台上按严重程度发放奖励，关键发现的起始金额为 50,000 美元（<strong>拟议</strong>）。</p>
+          <p><strong>保障。</strong>主网前计划进行独立安全审计，报告可在第 11 节查阅。漏洞赏金计划拟自主网上线起运行，在公开赏金平台上按严重程度发放奖励，关键发现的起始金额为 50,000 美元（<strong>拟议</strong>）。目前合约仅在测试网上经过自审——见 <a href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>。</p>
 
+          <h3>6.1 主网访问控制：多签与 Timelock</h3>
+          <p>主网前，合约的特权角色——owner、verifier、market、treasury 与 requesterPool——将由 Gnosis Safe 多签持有，而非单一私钥；敏感操作（参数变更、国库提现、角色转让与主网紧急暂停）将经过 TimelockController，在执行前有一段公开可见的延迟窗口。这是安全叙事中<strong>当下就已真实</strong>的部分：它消除了多数协议损失的真正来源——不是什么 exotic 密码学，而是一台被入侵的笔记本或一个泄露的密钥。合约本就接受普通地址作为角色持有者，因此这次过渡无需改动 ABI。上线后，实时地址与签名门槛将公布在 <a href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>。</p>
+
+          <h3>6.2 抗量子准备（前瞻性）</h3>
+          <p>OMC 是 BNB Chain 上的 EVM 合约，因此代币持有者的资产安全依赖于底层链的 ECDSA / secp256k1。OMC <em>无法</em>更改用户外部账户（EOA）的签名算法，且该代币<em>今天并不</em>抵御量子攻击。OMC 能实际掌控的杠杆虽窄但真实：它签发的链下签名（例如 ai-tools 服务与领取授权）现在即可采用抗量子签名，如 Dilithium（FIPS 204 / ML-DSA）；合约可升级，可随底层链采纳抗量子标准而跟进；用户保持地址卫生（不复用地址）可降低「先截获、后解密」（harvest-now-decrypt-later）的风险。这是一条<strong>前瞻路线</strong>，而非已交付的属性。完整计划、OMC 能掌控与不能掌控的边界，以及诚实性护栏，见 <a href="https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md" target="_blank" rel="noopener">docs/post-quantum-roadmap.md</a>。</p>
           <h2 id="sec7">7 · 经济模型与 OMC 代币</h2>
 
           <p>本节标注为<strong>拟议</strong>的参数是设计目标：它们将在测试网上验证，并可能在主网前通过治理调整。</p>

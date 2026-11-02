@@ -677,6 +677,14 @@ the code.
   means `OMCStaking` must be frozen before public launch, or the funding must be
   re-added. Testnet redeploys on 2026-10-11 abandoned 200 tOMC this way.
 
+- **Post-quantum exposure is inherited from the base layer.** OMC is an EVM
+  contract on BNB Chain; a user's token custody rests on the EVM's ECDSA /
+  secp256k1. The contracts cannot make a user's holdings quantum-resistant, and
+  the token is not quantum-resistant today. OMC's realistic leverage is the
+  off-chain signing it controls (Dilithium / SPHINCS+), the upgrade path, and
+  user address hygiene. This is tracked in `post-quantum-roadmap.md`, not
+  claimed as a current property.
+
 ---
 
 ## 7. How to reproduce

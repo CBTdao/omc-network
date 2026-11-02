@@ -1125,6 +1125,21 @@ td b { color: var(--text); }
 .game-band .hero-actions { justify-content: center; }
 .game-band .g-tag { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4); border-radius: 999px; padding: 5px 14px; margin-bottom: 16px; }
 
+/* ============ SECURITY NOTE BAND ============ */
+.sec-band {
+  text-align: center;
+  background: rgba(251, 191, 36, 0.07);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 22px;
+  padding: 40px 34px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+.sec-band .sec-tag { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 999px; padding: 5px 14px; margin-bottom: 16px; }
+.sec-band h3 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; letter-spacing: -0.4px; margin-bottom: 12px; }
+.sec-band p { color: var(--muted); max-width: 680px; margin: 0 auto; }
+.sec-band a { color: var(--accent); font-weight: 700; }
+
 /* ============ FOOTER ============ */
 footer {
   border-top: 1px solid var(--border);

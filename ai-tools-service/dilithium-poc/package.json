@@ -1,0 +1,14 @@
+{
+  "name": "omc-dilithium-poc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Off-chain post-quantum (Dilithium / ML-DSA, FIPS 204) signing PoC for OMC-controlled messages — the part of OMC's security story that is real today and independent of the EVM.",
+  "scripts": {
+    "run": "node run.mjs",
+    "test": "node --test test.mjs"
+  },
+  "dependencies": {
+    "@noble/post-quantum": "^0.7.1"
+  }
+}

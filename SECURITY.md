@@ -103,6 +103,47 @@ before mainnet — a single key that can retune emission and reassign the schedu
 the largest remaining risk in this system, larger than anything the automated tooling
 can see.
 
+## Mainnet access control (multisig + timelock)
+
+The testnet deployment uses single-signature keys. That is acceptable for a
+testnet but is the largest remaining risk (see `docs/security-review.md` §6) and
+**must change before mainnet**:
+
+- **Multisig.** `owner`, `verifier`, `market`, `treasury` and `requesterPool` are
+  plain `address` fields. `transferOwnership` already accepts any non-zero
+  address, so pointing them at a Gnosis Safe multisig needs **no contract
+  change** — only a deployment decision. Target a 3-of-5 (or similar) threshold.
+- **Timelock.** Sensitive operations (emission tuning, treasury changes, market
+  registration) are wrapped behind a timelock so the community has a delay window
+  to observe and react.
+- **Emergency pause.** `OMCStaking` and `OMCComputeMarket` already expose a
+  `paused` flag; confirm it is held by the multisig and reachable quickly.
+- **Cold-key custody.** Signer keys stay offline; no key ever enters application
+  code or this repository.
+
+See [`docs/post-quantum-roadmap.md`](docs/post-quantum-roadmap.md) §3 for the
+theft-resistance track and
+[`docs/mainnet-access-control.md`](docs/mainnet-access-control.md) for the concrete
+multisig + timelock spec.
+
+## Post-quantum readiness
+
+OMC runs on an EVM-compatible chain (BNB Chain), so a user's token custody rests
+on the EVM's ECDSA / secp256k1 signatures. OMC **cannot** change the signing
+algorithm of a user's account, and the token is **not** quantum-resistant today.
+What OMC controls is real and is planned:
+
+- Off-chain signing the project fully owns (e.g. `ai-tools-service` job
+  authentication) can move to **Dilithium / SPHINCS+** now, independent of the
+  chain.
+- The contract upgrade path (proxy / account abstraction) is designed so a future
+  base-layer post-quantum upgrade can be followed without stranding users.
+- User address hygiene (no address reuse, hardware wallets) is documented — it
+  reduces exposure for both theft and *harvest-now-decrypt-later*.
+
+This is a tracking-and-preparation effort, **not** a claim of current quantum
+resistance. Full plan: [`docs/post-quantum-roadmap.md`](docs/post-quantum-roadmap.md).
+
 ## Reproducing the review
 
 ```bash

@@ -993,4 +993,9 @@ window.I18N.en = {
   "aij.err_price": "Enter escrow above zero.",
   "aij.alert_transport": "The result hash is on chain, but the transport that carries the image back is not connected yet.\n\nresultHash:\n",
 
+  /* security posture band (homepage + airdrop) */
+  "sec.posture.tag": "Honest security posture",
+  "sec.posture.title": "What we are actually doing about theft and quantum",
+  "sec.posture.body": "Before mainnet, OMC's privileged contract roles move to a <b>multisig + timelock</b> — removing the single-key risk most protocol losses actually come from. On quantum: OMC runs on an EVM chain and <b>cannot make the token resist quantum attacks</b>, but it tracks the standards and can sign its own off-chain traffic with Dilithium today. Read the honest plan in the <a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">roadmap</a>.",
+
 };

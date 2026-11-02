@@ -975,4 +975,9 @@ window.I18N.zh = {
   "aij.err_price": "托管金额必须大于 0。",
   "aij.alert_transport": "结果哈希已经在链上，但把图片带回来的传输通道还没接上。\n\n结果哈希：\n",
 
+  /* security posture band（首页 + 空投页） */
+  "sec.posture.tag": "诚实的安全姿态",
+  "sec.posture.title": "我们在防盗与量子威胁上实际在做什么",
+  "sec.posture.body": "主网前，OMC 的合约特权角色将迁至<b>多签 + Timelock</b>——消除大多数协议损失真正的单点密钥风险。关于量子：OMC 运行在 EVM 链上，<b>无法让代币抵御量子攻击</b>，但项目持续跟踪标准，且今天就能用 Dilithium 对自己签发的链下流量签名。诚实计划的全文见<a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">路线图</a>。",
+
 };
