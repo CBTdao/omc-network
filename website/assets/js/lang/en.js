@@ -494,6 +494,8 @@ window.I18N.en = {
   "nw15.d": "New on top.omc.network: a plain-English glossary entry on quantization, the one formula (VRAM ≈ params × bytes/weight) every local-LLM buyer needs, and why Q4_K_M is the default. Read the glossary →",
   "nw16.t": "DCF forum: the network-fabric tax — why 800G ports and radix math cap cluster scale",
   "nw16.d": "New on forum.omc.network: a deep dive on the interconnect, the compute bill everyone prices last. 800G ports, the radix math behind spine-leaf topology, and why one oversubscribed uplink can stall an entire training run. Read the deep dive →",
+  "nw17.t": "DCF forum: the workers-per-megawatt bottleneck — why a GW-scale AI site needs a small army, not just silicon",
+  "nw17.d": "New on forum.omc.network: a deep dive on the labor queue behind AI compute. A single gigawatt of data-center capacity draws a large skilled-trades workforce — electricians, pipefitters, and cooling specialists — while lead times for transformers and switchgear now rival the GPU wait. Read the deep dive →",
 
   "f.about": "About & Contact",
   "f.press": "Press Kit",

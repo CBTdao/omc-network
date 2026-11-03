@@ -157,5 +157,14 @@ window.OMC_NEWS = [
     d: "nw16.d",
     href: "https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n17",
+    date: "2026-11-03",
+    kind: "eco",
+    t: "nw17.t",
+    d: "nw17.d",
+    href: "https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
