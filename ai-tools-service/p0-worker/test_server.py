@@ -171,5 +171,37 @@ class Harness(unittest.TestCase):
         self.assertNotIn("balance", j)
 
 
+class PaymentSwitch(unittest.TestCase):
+    """支付开关：配置要求收费时，绝不能静默退回免费模式白送算力。"""
+
+    def test_switch_predicate_matches_real_config(self):
+        """fail-fast 用的判断必须与 payments 模块读到的 enabled 一致，不能漂移。"""
+        self.assertEqual(S._payments_requested(), bool(P.load_config()["enabled"]))
+
+    def test_enabled_config_boots_a_charging_instance(self):
+        """打开开关后，服务启动时拿到的是真的会收费的 Payments 实例。"""
+        mod, inst = S._init_payments()
+        self.assertIsNotNone(mod)
+        self.assertIsNotNone(inst)
+        self.assertTrue(inst.enabled)
+        self.assertEqual(inst.cfg["treasury"], P.load_config()["treasury"])
+
+    def test_charging_config_refuses_to_boot_free_when_module_broken(self):
+        """配置要求收费却加载失败 → fail-fast，而不是悄悄免费。"""
+        with mock.patch.object(S, "_payments_requested", return_value=True), \
+             mock.patch.dict(sys.modules, {"payments": None}):
+            with self.assertRaises(RuntimeError) as cm:
+                S._init_payments()
+        self.assertIn("拒绝静默退回免费模式", str(cm.exception))
+
+    def test_free_fallback_only_when_not_charging(self):
+        """只有显式关掉开关，才允许加载失败时退回免费内测。"""
+        with mock.patch.object(S, "_payments_requested", return_value=False), \
+             mock.patch.dict(sys.modules, {"payments": None}):
+            mod, inst = S._init_payments()
+        self.assertIsNone(mod)
+        self.assertIsNone(inst)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -10,7 +10,8 @@ Real-ESRGAN 推理，并验证「充值 → 付款 → 出图 → 下载」这�
 真正的 worker 版本（接市场合约、轮询任务）会另写。
 
 支付：`payments.py`（零新依赖，只读链、不持私钥）。`payments.json` 的
-`enabled: false` 或模块加载失败时，本服务自动退回 P0 的免费内测模式。
+`enabled: false` 时本服务退回 P0 的免费内测模式。注意：一旦配置要求收费，
+支付模块加载失败会**直接启动失败**，绝不静默退回免费（否则等于白送算力）。
 
 启动：
     .venv/Scripts/python.exe p0-worker/server.py --port 8787
@@ -33,13 +34,38 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import upscale as U  # noqa: E402
 
-try:
-    import payments as P
-    PAY = P.Payments()
-except Exception as _e:  # 配置缺失 / 未装依赖时退回免费内测，不阻断原有功能
-    P = None
-    PAY = None
-    sys.stderr.write("[warn] 支付模块未启用，退回免费模式：%s\n" % _e)
+_PAY_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "payments.json")
+
+
+def _payments_requested():
+    """配置是否要求收费。刻意不依赖 payments 模块——它加载失败时也要能判断。"""
+    override = os.environ.get("OMC_PAY_ENABLED")
+    if override is not None:
+        return override.strip().lower() in ("1", "true", "yes")
+    try:
+        path = os.environ.get("OMC_PAY_CONFIG") or _PAY_CONFIG_PATH
+        with open(path, "r", encoding="utf-8") as f:
+            return bool(json.load(f).get("enabled", True))
+    except Exception:
+        return False
+
+
+def _init_payments():
+    """加载支付模块；配置要求收费却加载失败时 fail-fast，不静默白送算力。"""
+    requested = _payments_requested()
+    try:
+        import payments as _P
+        return _P, _P.Payments()
+    except Exception as e:
+        if requested:
+            raise RuntimeError(
+                "payments.json 已启用收费，但支付模块加载失败；拒绝静默退回免费模式：%s" % e
+            ) from e
+        sys.stderr.write("[warn] 支付模块未启用，退回免费模式：%s\n" % e)
+        return None, None
+
+
+P, PAY = _init_payments()
 
 # ---- 全局模型会话（惰性加载，进程内复用）------------------------------------
 _SESSION = None
