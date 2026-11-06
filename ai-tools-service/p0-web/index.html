@@ -36,12 +36,36 @@ button.ghost{background:transparent;color:var(--ac);border:1px solid var(--ac)}
 .spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(78,168,255,.3);border-top-color:var(--ac);border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:6px}
 @keyframes s{to{transform:rotate(360deg)}}
 .note{font-size:12px;color:var(--mut);margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.ptitle{font-size:15px;font-weight:700;margin-bottom:10px}
+.bal{float:right;color:var(--ok);font-size:13px;font-weight:600}
+.pline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;margin:6px 0;color:var(--mut)}
+.pline code{background:#0a1120;border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--tx);font-size:12px;word-break:break-all}
+.pline b{color:var(--tx)}
+button.mini{padding:4px 10px;font-size:12px;border-radius:6px}
+.prow{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.prow input{flex:1;min-width:220px;background:#0a1120;border:1px solid var(--line);color:var(--tx);border-radius:7px;padding:8px 10px;font-size:13px;font-family:Consolas,monospace}
+.paystat{font-size:13px;color:var(--mut);margin-top:10px;min-height:20px}
+.paystat.err{color:var(--bad)}
+.paystat b{color:var(--ok)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>OMC AI 图像超分 · P0 内测</h1>
-  <div class="sub">本地 GPU 推理 · Real-ESRGAN x4 · 不接钱包、不上传云端 · 仅用于验证链路</div>
+  <div class="sub">本地 GPU 推理 · Real-ESRGAN x4 · 图片不上传云端 · 按次付费额度（BNB 充值，链下扣次）</div>
+
+  <div class="panel" id="payPanel" style="display:none">
+    <div class="ptitle">AI 工具付费额度 <span class="bal" id="bal">—</span></div>
+    <div class="pline"><span>工具专用收款地址</span><code id="addr">—</code>
+      <button class="mini" id="copyAddr">复制</button></div>
+    <div class="pline"><span>单价 <b id="price">—</b></span><span>最低充值 <b id="mintop">—</b></span></div>
+    <div class="prow">
+      <input type="text" id="txhash" placeholder="向上面地址转账后的交易哈希 0x…" spellcheck="false">
+      <button id="redeem">兑换额度</button>
+    </div>
+    <div class="paystat" id="payStat"></div>
+    <div class="note" id="scopeNote"></div>
+  </div>
 
   <div class="panel">
     <div id="drop">
@@ -89,6 +113,62 @@ button.ghost{background:transparent;color:var(--ac);border:1px solid var(--ac)}
   var handle = $("handle");
   var current = null;      // 原始 File
   var resultB64 = null;    // 输出 dataURL
+
+  // ---- 支付 / 额度（工具专用账户，与空投手续费无关）----
+  var TOKEN = localStorage.getItem("omc_tools_token") || "";
+  var payOn = false;
+  var $pay = $("payPanel"), $bal = $("bal"), $payStat = $("payStat");
+
+  function jsonPost(path, obj){
+    return fetch(API + path, {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(obj)
+    }).then(function(r){ return r.json(); });
+  }
+  function showBal(n){ $bal.textContent = "剩余 " + n + " 次"; }
+  function refreshBal(){
+    if (!payOn) return;
+    if (!TOKEN) { $bal.textContent = "未充值"; return; }
+    jsonPost("/api/balance", { token: TOKEN }).then(function(j){
+      if (typeof j.balance === "number") showBal(j.balance);
+      else { TOKEN = ""; localStorage.removeItem("omc_tools_token"); $bal.textContent = "凭证失效，请重新兑换"; }
+    }).catch(function(){ $bal.textContent = "余额查询失败"; });
+  }
+  fetch(API + "/api/config").then(function(r){ return r.json(); }).then(function(c){
+    if (!c.enabled) return;                 // 免费内测模式：不显示支付面板
+    payOn = true;
+    $pay.style.display = "block";
+    $("addr").textContent = c.treasury;
+    $("price").textContent = c.price_bnb + " BNB / 张";
+    $("mintop").textContent = c.min_topup_bnb + " BNB 起（" + c.confirmations + " 个确认）";
+    $("scopeNote").textContent = c.scope_note || "";
+    refreshBal();
+  }).catch(function(){ /* 服务未起时健康检查会另行提示 */ });
+
+  $("copyAddr").addEventListener("click", function(){
+    var t = $("addr").textContent;
+    if (navigator.clipboard) navigator.clipboard.writeText(t);
+    $payStat.innerHTML = "地址已复制：<b>" + t + "</b>";
+  });
+  $("redeem").addEventListener("click", function(){
+    var h = $("txhash").value.trim();
+    if (!h) { $payStat.className = "paystat err"; $payStat.textContent = "请粘贴交易哈希"; return; }
+    $payStat.className = "paystat";
+    $payStat.innerHTML = '<span class="spin"></span>正在链上验证这笔交易，请稍候…';
+    jsonPost("/api/redeem", { tx_hash: h }).then(function(j){
+      if (j.ok) {
+        TOKEN = j.token; localStorage.setItem("omc_tools_token", TOKEN);
+        showBal(j.balance);
+        $payStat.className = "paystat";
+        $payStat.innerHTML = "兑换成功 · 到账 <b>" + j.credits + "</b> 次";
+        $("txhash").value = "";
+      } else {
+        $payStat.className = "paystat err"; $payStat.textContent = j.error || "兑换失败";
+      }
+    }).catch(function(e){
+      $payStat.className = "paystat err"; $payStat.textContent = "网络错误：" + e.message;
+    });
+  });
 
   // ---- 健康检查 ----
   fetch(API + "/api/health").then(function(r){ return r.json(); }).then(function(j){
@@ -138,7 +218,7 @@ button.ghost{background:transparent;color:var(--ac);border:1px solid var(--ac)}
       fetch(API + "/api/upscale", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ image: fr.result, tile: parseInt($("tile").value,10), pad: 16 })
+        body: JSON.stringify({ image: fr.result, tile: parseInt($("tile").value,10), pad: 16, token: TOKEN })
       }).then(function(r){ return r.json(); }).then(function(j){
         if (!j.ok) throw new Error(j.error || "处理失败");
         resultB64 = j.image;
@@ -149,6 +229,7 @@ button.ghost{background:transparent;color:var(--ac);border:1px solid var(--ac)}
           handle.style.left = "50%";
           document.querySelector("#cmp .after").style.width = "50%";
         };
+        if (typeof j.balance === "number") showBal(j.balance);
         var total = Date.now() - t0;
         stat.innerHTML = "完成 · <b>" + j.in_w + "×" + j.in_h + "</b> → <b>" + j.out_w + "×" + j.out_h +
           "</b> · 推理 " + (j.infer_ms/1000).toFixed(2) + "s · 端到端 " + (total/1000).toFixed(2) + "s · " + j.provider;
@@ -157,6 +238,7 @@ button.ghost{background:transparent;color:var(--ac);border:1px solid var(--ac)}
       }).catch(function(e){
         stat.innerHTML = '<span class="err">失败：' + e.message + "</span>";
         go.disabled = false;
+        if (payOn) { $pay.style.display = "block"; refreshBal(); }
       });
     };
     fr.readAsDataURL(current);

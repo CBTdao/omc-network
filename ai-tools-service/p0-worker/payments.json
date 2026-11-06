@@ -1,0 +1,20 @@
+{
+  "_comment": "AI 工具专用收款配置。与空投手续费账户完全隔离：contracts/params.json 的 airdrop.claimCost.treasuryAddress 属于另一条资金管道（未来的 claim 合约 + 多签 Safe），不得填成同一个地址。",
+  "scope": "ai-tools-only",
+  "scope_note": "本地址只接收 OMC AI 工具的付费充值；空投 claim 手续费由未来的 claim 合约单独收取，与此账户无关。",
+  "enabled": true,
+  "treasury": "0x838EDFBA183A8BcA3AF5a48Eb3Df7e68A9464b0A",
+  "chain_id": 56,
+  "rpcs": [
+    "https://bsc-dataseed.bnbchain.org",
+    "https://bsc-dataseed1.bnbchain.org",
+    "https://bsc-dataseed2.bnbchain.org",
+    "https://bsc-rpc.publicnode.com"
+  ],
+  "rpc_timeout_s": 8,
+  "confirmations": 3,
+  "price_wei": 15000000000000,
+  "min_topup_wei": 1000000000000000,
+  "pricing_note": "price_wei = 0.000015 BNB ≈ $0.0105/张（BNB≈$700，T1 首发价）。min_topup_wei = 0.001 BNB ≈ $0.70，约 66 次。单笔链上转账 gas 高于单张定价，故采用预付额度：一次充值、链下按次扣减。",
+  "testnet_override": "测试网调试用环境变量：OMC_PAY_CHAIN_ID=97 OMC_PAY_RPC=https://data-seed-prebsc-1-s1.bnbchain.org:8545 OMC_PAY_TREASURY=<测试地址> OMC_PAY_MIN_CONFIRMATIONS=1 OMC_PAY_ENABLED=0"
+}

@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-OMC AI Tools · P0 · 本地推理 HTTP 服务
+OMC AI Tools · P0/T1 · 本地推理 HTTP 服务（带按次付费额度）
 
-零框架：只用 Python 标准库 http.server。目的只有一个 —— 让前端单页能调用本地
-Real-ESRGAN 推理，验证「上传→处理→下载」这条链路。
+零框架：只用 Python 标准库 http.server。目的 —— 让前端单页能调用本地
+Real-ESRGAN 推理，并验证「充值 → 付款 → 出图 → 下载」这条真实收入链路。
 
-为什么不用 Flask/FastAPI：P0 是验证件，减少一层依赖就少一个装不上的可能。
-真正的 worker 版本（接市场合约、轮询任务）会另写，这个只服务本机前端。
+为什么不用 Flask/FastAPI：减少一层依赖就少一个装不上的可能。
+真正的 worker 版本（接市场合约、轮询任务）会另写。
+
+支付：`payments.py`（零新依赖，只读链、不持私钥）。`payments.json` 的
+`enabled: false` 或模块加载失败时，本服务自动退回 P0 的免费内测模式。
 
 启动：
     .venv/Scripts/python.exe p0-worker/server.py --port 8787
@@ -29,6 +32,14 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import upscale as U  # noqa: E402
+
+try:
+    import payments as P
+    PAY = P.Payments()
+except Exception as _e:  # 配置缺失 / 未装依赖时退回免费内测，不阻断原有功能
+    P = None
+    PAY = None
+    sys.stderr.write("[warn] 支付模块未启用，退回免费模式：%s\n" % _e)
 
 # ---- 全局模型会话（惰性加载，进程内复用）------------------------------------
 _SESSION = None
@@ -67,7 +78,7 @@ def encode_png_b64(img: np.ndarray) -> str:
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "OMCUpscaler/0.1"
+    server_version = "OMCUpscaler/0.2"
 
     def log_message(self, fmt, *args):
         sys.stderr.write("[%s] %s\n" % (time.strftime("%H:%M:%S"), fmt % args))
@@ -96,6 +107,16 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def _read_json(self):
+        n = int(self.headers.get("Content-Length", "0"))
+        if n <= 0 or n > 40 * 1024 * 1024:
+            raise ValueError("请求体为空或过大")
+        return json.loads(self.rfile.read(n).decode("utf-8"))
+
+    @property
+    def pay_on(self):
+        return PAY is not None and PAY.enabled
+
     def do_OPTIONS(self):
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -103,7 +124,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
 
-    # ---- 路由 ----
+    # ---- GET ----
     def do_GET(self):
         p = self.path.split("?")[0]
         if p in ("/", "/index.html"):
@@ -117,21 +138,31 @@ class Handler(BaseHTTPRequestHandler):
                     "provider": s.get_providers()[0],
                     "model": os.path.basename(U.MODEL_PATH),
                     "load_ms": _LOAD_MS,
+                    "payments": self.pay_on,
                 })
             except Exception as e:
                 self._send_json({"ok": False, "error": str(e)}, 500)
+        elif p == "/api/config":
+            if self.pay_on:
+                self._send_json({"ok": True, **PAY.public_config()})
+            else:
+                self._send_json({"ok": True, "enabled": False})
         else:
             self._send_json({"error": "not found"}, 404)
 
+    # ---- POST ----
     def do_POST(self):
         p = self.path.split("?")[0]
+        if p == "/api/redeem":
+            return self._redeem()
+        if p == "/api/balance":
+            return self._balance()
         if p != "/api/upscale":
             self._send_json({"error": "not found"}, 404)
             return
 
         try:
-            n = int(self.headers.get("Content-Length", "0"))
-            payload = json.loads(self.rfile.read(n).decode("utf-8"))
+            payload = self._read_json()
         except Exception as e:
             self._send_json({"error": "请求体解析失败: %s" % e}, 400)
             return
@@ -149,6 +180,19 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"error": "tile 必须大于 2*pad"}, 400)
             return
 
+        # ---- 支付门禁：先扣 1 次额度，推理失败自动退回 ----
+        token = payload.get("token") or ""
+        left = None
+        if self.pay_on:
+            if not token:
+                self._send_json({"error": "请先充值并兑换访问凭证", "code": "PAYMENT_REQUIRED"}, 402)
+                return
+            try:
+                left = PAY.debit(token)
+            except P.PaymentError as e:
+                self._send_json({"error": str(e), "code": "PAYMENT_REQUIRED"}, 402)
+                return
+
         try:
             src = decode_image(img_b64)
             t0 = time.time()
@@ -156,10 +200,15 @@ class Handler(BaseHTTPRequestHandler):
             infer_ms = int((time.time() - t0) * 1000)
         except Exception as e:
             traceback.print_exc()
+            if self.pay_on:
+                try:
+                    PAY.refund(token)
+                except Exception:
+                    traceback.print_exc()
             self._send_json({"error": str(e)}, 500)
             return
 
-        self._send_json({
+        result = {
             "ok": True,
             "image": encode_png_b64(out),
             "in_w": src.shape[1], "in_h": src.shape[0],
@@ -167,7 +216,43 @@ class Handler(BaseHTTPRequestHandler):
             "scale": 4,
             "infer_ms": infer_ms,
             "provider": get_session().get_providers()[0],
-        })
+        }
+        if left is not None:
+            result["balance"] = left
+        self._send_json(result)
+
+    # ---- 支付端点 ----
+    def _redeem(self):
+        if not self.pay_on:
+            self._send_json({"error": "支付未启用"}, 403)
+            return
+        try:
+            payload = self._read_json()
+        except Exception as e:
+            self._send_json({"error": "请求体解析失败: %s" % e}, 400)
+            return
+        try:
+            r = PAY.redeem(payload.get("tx_hash", ""))
+            self._send_json({"ok": True, **r})
+        except P.PaymentError as e:
+            self._send_json({"error": str(e)}, 400)
+        except Exception:
+            traceback.print_exc()
+            self._send_json({"error": "链上验证暂不可用，请稍后重试"}, 502)
+
+    def _balance(self):
+        if not self.pay_on:
+            self._send_json({"error": "支付未启用"}, 403)
+            return
+        try:
+            payload = self._read_json()
+        except Exception as e:
+            self._send_json({"error": "请求体解析失败: %s" % e}, 400)
+            return
+        try:
+            self._send_json({"ok": True, **PAY.balance(payload.get("token", ""))})
+        except P.PaymentError as e:
+            self._send_json({"error": str(e)}, 400)
 
 
 def main():
@@ -184,8 +269,11 @@ def main():
         print("[error] 模型加载失败:", e)
         return 1
 
+    pay_on = PAY is not None and PAY.enabled
+    print("支付 = %s" % ("开启 · AI 工具专用账户 %s" % PAY.public_config()["treasury"]
+                         if pay_on else "关闭（免费内测）"))
     httpd = ThreadingHTTPServer((args.host, args.port), Handler)
-    print("OMC AI Tools P0 已启动: http://%s:%d" % (args.host, args.port))
+    print("OMC AI Tools 已启动: http://%s:%d" % (args.host, args.port))
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

@@ -15,3 +15,7 @@ __pycache__/
 
 # runtime logs
 *.log
+
+# Prepaid-credit ledger (contains payer addresses and access tokens)
+.credits.json
+.credits.json.tmp
