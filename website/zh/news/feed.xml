@@ -6,8 +6,16 @@
     <description>泛宇宙算力（OMC）官方动态：测试网里程碑、空投活动、工程进展与治理公告。</description>
     <language>zh-cn</language>
     <atom:link href="https://omc.network/zh/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 30 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>算力论坛：每兆瓦人力瓶颈——为什么一个 GW 级 AI 园区要的是一支队伍，而不只是芯片</title>
+      <link>https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-zh-n17</guid>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 +0000</pubDate>
+      <category>生态</category>
+      <description>forum.omc.network 新文：深挖 AI 算力背后的人力排期。一吉瓦（GW）的数据中心容量需要一支庞大的熟练工种队伍——电工、管工与冷却专员；而变压器与开关柜的交付周期，如今已和 GPU 等待时间不相上下。阅读深度长文 →</description>
+    </item>
     <item>
       <title>算力论坛：网络 fabric 税——为什么 800G 端口与基数数学卡住集群规模</title>
       <link>https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&amp;utm_medium=news</link>
