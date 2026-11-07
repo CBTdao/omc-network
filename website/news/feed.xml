@@ -6,8 +6,16 @@
     <description>Official Omniverse Compute (OMC) updates: testnet milestones, airdrop campaigns, engineering progress and governance announcements.</description>
     <language>en</language>
     <atom:link href="https://omc.network/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Tue, 03 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 07 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>DCF forum: a megawatt at 800 volts — the arithmetic retiring the 54 V busbar in AI racks</title>
+      <link>https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-en-n18</guid>
+      <pubDate>Sat, 07 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Engineering</category>
+      <description>New on forum.omc.network: a deep dive on the rack-power math that now shapes AI data-center build cost. Why 800 V direct current is replacing the legacy 54 V busbar in high-density racks, how busway losses and conversion stages scale with per-GPU wattage, and why the last meter of power delivery has become a compute-bottleneck problem, not just an electrical one. Read the deep dive →</description>
+    </item>
     <item>
       <title>DCF forum: the workers-per-megawatt bottleneck — why a GW-scale AI site needs a small army, not just silicon</title>
       <link>https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&amp;utm_medium=news</link>
