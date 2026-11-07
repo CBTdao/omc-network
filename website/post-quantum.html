@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <title>Post-Quantum Signature Migration — OMC</title>
+  <meta name="description" content="OMC&#x27;s post-quantum programme: ML-DSA (FIPS 204) off chain, signature agility in contracts, and a migration path following BNB Chain. Timeline and FAQ.">
+  <link rel="canonical" href="https://omc.network/post-quantum">
+  <link rel="alternate" hreflang="en" href="https://omc.network/post-quantum" />
+  <link rel="alternate" hreflang="x-default" href="https://omc.network/post-quantum" />
+  <link rel="alternate" hreflang="zh" href="https://omc.network/zh/post-quantum" />
+  <link rel="alternate" type="application/rss+xml" title="OMC news" href="https://omc.network/news/feed.xml" />
+  <meta property="og:site_name" content="Omniverse Compute">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Post-Quantum Signature Migration — OMC">
+  <meta property="og:description" content="OMC&#x27;s post-quantum programme: ML-DSA (FIPS 204) off chain, signature agility in contracts, and a migration path following BNB Chain. Timeline and FAQ.">
+  <meta property="og:url" content="https://omc.network/post-quantum">
+  <meta property="og:image" content="https://omc.network/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Omniverse_Depin">
+  <meta name="twitter:title" content="Post-Quantum Signature Migration — OMC">
+  <meta name="twitter:description" content="OMC&#x27;s post-quantum programme: ML-DSA (FIPS 204) off chain, signature agility in contracts, and a migration path following BNB Chain. Timeline and FAQ.">
+  <meta name="twitter:image" content="https://omc.network/og-image.png">
+  <link rel="stylesheet" href="assets/css/app.css?v=20261027a" />
+  <link rel="stylesheet" href="assets/css/footer-chain.css?v=20261027a" />
+  <link rel="stylesheet" href="assets/css/net-canvas.css?v=20261027a" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script type="application/ld+json">
+{"@id":"https://omc.network/#organization","alternateName":["泛宇宙算力","OMC"],"disambiguatingDescription":"Omniverse Compute (OMC) is an independent BNB Chain DePIN project building a decentralised GPU compute network that rents out idle GPUs. The name is distinct from NVIDIA's Omniverse 3D platform, from the Federal Open Market Committee (FOMC) and from any central bank.","@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin","https://t.me/OmniverseCompute","https://dev.to/omniverse_depin"],"@context":"https://schema.org"}
+</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"Post-Quantum Signature Migration","url":"https://omc.network/post-quantum","description":"OMC's post-quantum programme: ML-DSA (FIPS 204) off chain, signature agility in contracts, and a migration path following BNB Chain. Timeline and FAQ.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"},
+  "dateModified": "2026-11-08"
+}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"Post-Quantum Signature Migration","item":"https://omc.network/post-quantum"}]}
+  </script>
+</head>
+<body>
+
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" width="36" height="36" loading="eager" decoding="async" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/" data-i18n="nav.home">Home</a>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.product">Product</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/compute" data-i18n="nav.compute">Compute</a>
+            <a href="/ai-tools" data-i18n="nav.aitools">AI Tools</a>
+            <a href="/calculator" data-i18n="nav.calc">Calculator</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.eco">Ecosystem</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="nav.game">Real or AI</a>
+            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="nav.forum">Compute Forum</a>
+            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="nav.top">AI Top</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.network">Network</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
+            <a href="/stake" data-i18n="nav.stake">Stake</a>
+          </div>
+        </div>
+        <a href="/news" data-i18n="nav.news">News</a>
+        <a href="/whitepaper" data-i18n="nav.wp">Whitepaper</a>
+        <a href="/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <div class="nav-wallet" id="walletNav"></div>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+        </select>
+        </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
+    <header class="hero" style="padding-bottom: 30px;">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span>Signature agility</span></div>
+      <h1>Post-Quantum Signature Migration</h1>
+      <p class="sub">ML-DSA off chain today, signature agility in the contracts, and a migration path that follows the base layer.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="wp-body reveal" style="max-width: 820px; margin: 0 auto;">
+
+<p><strong>OMC's post-quantum programme starts on the layers the project controls: service traffic signed by OMC already uses ML-DSA (Dilithium, FIPS 204), contracts keep signature agility, and the migration path follows BNB Chain as it adopts post-quantum signature standards.</strong> Custody on the base layer uses ECDSA / secp256k1 — the same assumption shared by every BSC asset — and the timeline is published as a roadmap.</p>
+
+<h2 class="as-h3">ML-DSA on the service layer</h2>
+<p>The ai-tools service and claim authorizations are the parts of the stack whose signature scheme OMC chooses itself. They use ML-DSA, the NIST FIPS 204 standard derived from Dilithium, with a working keygen / sign / verify implementation published in <code>ai-tools-service/dilithium-poc</code>. ML-DSA-65 keys and signatures are measured in that repository so the cost of the migration is visible rather than hypothetical.</p>
+<p>Starting here has a practical advantage: the service layer ships on our schedule, while base-layer signature support moves on the chain's schedule. Both tracks advance in parallel.</p>
+
+<h2 class="as-h3">Signature agility in the contracts</h2>
+<p>Upgradeable contracts plus a verification interface that can accept new schemes are the mechanism that makes a later migration an orderly rollout. Privileged roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, and independent audits complete before launch — the same access-control work that governs every other upgrade.</p>
+<p>The <a href="https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md" target="_blank" rel="noopener">post-quantum roadmap</a> tracks the standards work, the address-hygiene guidance and the migration stages in one place.</p>
+
+<h2 class="as-h3">Address hygiene and harvest-now-decrypt-later</h2>
+<p>Public keys become visible when an address is used. Guidance published for users covers address reuse, key rotation and the handling of long-lived authorizations, so the migration is a change of scheme rather than a scramble to clean up years of exposure.</p>
+
+<h2 class="as-h3">The parameters</h2>
+<table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.95rem"><tbody><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Off-chain signatures</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">ML-DSA (Dilithium, FIPS 204)</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Reference implementation</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">ai-tools-service/dilithium-poc · ML-DSA-65 / ML-DSA-87</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Base-layer custody</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">BNB Chain · ECDSA / secp256k1</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Contract model</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">upgradeable · multisig + 48-hour timelock before mainnet</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Standards tracking</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">BNB Chain post-quantum migration work, NIST FIPS 203/204/205</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>User guidance</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">address hygiene, key rotation, long-lived authorizations</td></tr></tbody></table>
+
+<h2 class="as-h3">Questions</h2>
+<h3>Which parts of the stack use post-quantum signatures today?</h3>
+<p>Off-chain traffic signed by OMC: the ai-tools service and claim authorizations. The verification implementation and its measured key and signature sizes are in the public repository.</p>
+<h3>How does token custody migrate?</h3>
+<p>By following the base layer. Contracts are upgradeable, the verification interface accepts new schemes, and the rollout stages are published on the roadmap alongside the chain's own standards work.</p>
+<h3>What can a user do now?</h3>
+<p>Follow the address-hygiene guidance: avoid reuse, rotate keys where practical, and keep long-lived authorizations short. Those habits pay off regardless of which scheme the chain adopts.</p>
+
+<h2 class="as-h3">Explore</h2>
+<ul><li><a href="/agent-economy">Compute for the agent economy</a></li><li><a href="/verifiable-compute">Verifiable compute</a></li><li><a href="https://github.com/CBTdao/omc-network/blob/main/docs/mainnet-access-control.md">Mainnet access control</a></li><li><a href="https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md">Post-quantum roadmap</a></li><li><a href="/whitepaper">Whitepaper §6</a></li><li><a href="/news">Project news</a></li></ul>
+
+      </div>
+    </div>
+  </section>
+<footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="/">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" width="36" height="36" loading="lazy" decoding="async" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_protocol">Protocol</h2>
+          <a href="/whitepaper" data-i18n="f.wp">Whitepaper</a>
+          <a href="/testnet" data-i18n="f.testnet">Testnet</a>
+          <a href="/about#about" data-i18n="f.arch">Architecture</a>
+          <a href="/tokenomics" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_community">Community</h2>
+          <a href="/airdrop" data-i18n="f.airdrop">Airdrop</a>
+          <a href="/news" data-i18n="nav.news">News</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_ecosystem">Ecosystem</h2>
+          <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
+          <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
+          <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="f.game">Real or AI — Daily Photo Game</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_resources">Resources</h2>
+          <a href="/calculator" data-i18n="f.calculator">GPU Cost Calculator</a>
+          <a href="/compute" data-i18n="f.compute">AI Compute Station</a>
+          <a href="/ai-tools" data-i18n="f.aitools">Image Upscaler</a>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="/testnet#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+          <a href="/about" data-i18n="f.about">About &amp; Contact</a>
+          <a href="/press" data-i18n="f.press">Press Kit</a>
+          <a href="/privacy" data-i18n="f.privacy">Privacy Policy</a>
+          <a href="/aup" data-i18n="f.aup">Acceptable Use</a>
+        </div>
+      </div>
+      <!-- omc:contracts-block — network + deployed contracts, published for verification -->
+      <div class="footer-chain">
+        <div class="fc-head">
+          <span class="fc-title" data-i18n="footer.chain_t">On-chain contracts</span>
+          <span class="fc-badge" data-i18n="footer.chain_verified">BscScan verified</span>
+        </div>
+        <div class="fc-rows">
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_net">Network</span>
+            <span class="fc-v fc-plain" data-i18n="footer.chain_netv">BNB Smart Chain &middot; Testnet (chainId 97)</span>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_token">OMC token (tOMC)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671" target="_blank" rel="noopener"><code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_staking">Staking (OMCStaking)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_market">Compute Market (OMCComputeMarket)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_sec">Security</span>
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">Security practices &rarr;</a>
+          </div>
+        </div>
+        <p class="fc-note" data-i18n="footer.chain_note">Testnet contracts, published for verification. Testnet tokens have no monetary value and are not sold or listed anywhere.</p>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="disc" data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</div>
+        <div>© 2026 Omniverse Compute · omc.network<br /><span class="facts-v">Facts v8 · 2026-10-30 · <a href="https://github.com/CBTdao/omc-network/blob/main/contracts/params.json" target="_blank" rel="noopener">source</a></span></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js?v=20261027a"></script>
+  <script src="assets/js/lang/zh.js?v=20261027a"></script>
+  <script src="assets/js/i18n.js?v=20261027a"></script>
+  <script src="assets/js/i18n-meta.js?v=20261027a"></script>
+  <script src="assets/js/main.js?v=20261027a"></script>
+  <script src="assets/js/binance-w3w.js?v=20261027a"></script>
+  <script src="assets/js/wallet.js?v=20261027a"></script>
+</body>
+</html>

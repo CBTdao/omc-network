@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <title>面向智能体经济的算力 — OMC 泛宇宙算力</title>
+  <meta name="description" content="OMC 正在构建智能体经济的结算层：自主智能体购买 GPU 算力、为可验证的推理结果付费，并在 BNB Chain 上完成机器对机器结算。本文给出模型、参数与路线图。">
+  <link rel="canonical" href="https://omc.network/zh/agent-economy">
+  <link rel="alternate" hreflang="en" href="https://omc.network/agent-economy" />
+  <link rel="alternate" hreflang="x-default" href="https://omc.network/agent-economy" />
+  <link rel="alternate" hreflang="zh" href="https://omc.network/zh/agent-economy" />
+  <link rel="alternate" type="application/rss+xml" title="OMC news" href="https://omc.network/news/feed.xml" />
+  <meta property="og:site_name" content="Omniverse Compute">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="面向智能体经济的算力 — OMC 泛宇宙算力">
+  <meta property="og:description" content="OMC 正在构建智能体经济的结算层：自主智能体购买 GPU 算力、为可验证的推理结果付费，并在 BNB Chain 上完成机器对机器结算。本文给出模型、参数与路线图。">
+  <meta property="og:url" content="https://omc.network/zh/agent-economy">
+  <meta property="og:image" content="https://omc.network/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Omniverse_Depin">
+  <meta name="twitter:title" content="面向智能体经济的算力 — OMC 泛宇宙算力">
+  <meta name="twitter:description" content="OMC 正在构建智能体经济的结算层：自主智能体购买 GPU 算力、为可验证的推理结果付费，并在 BNB Chain 上完成机器对机器结算。本文给出模型、参数与路线图。">
+  <meta name="twitter:image" content="https://omc.network/og-image.png">
+  <link rel="stylesheet" href="/assets/css/app.css?v=20261027a" />
+  <link rel="stylesheet" href="/assets/css/footer-chain.css?v=20261027a" />
+  <link rel="stylesheet" href="/assets/css/net-canvas.css?v=20261027a" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script type="application/ld+json">
+
+{"@id":"https://omc.network/#organization","alternateName":["Omniverse Compute","OMC"],"disambiguatingDescription":"泛宇宙算力（OMC）是 BNB Chain 上一个独立的 DePIN 项目，做的是出租闲置 GPU 的去中心化算力网络；该名称与 NVIDIA 的 Omniverse 3D 平台、美联储公开市场委员会（FOMC）及任何中央银行的机构无关。","@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin","https://t.me/OmniverseCompute","https://dev.to/omniverse_depin"],"@context":"https://schema.org"}
+
+</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"面向智能体经济的算力","url":"https://omc.network/zh/agent-economy","description":"OMC 正在构建智能体经济的结算层：自主智能体购买 GPU 算力、为可验证的推理结果付费，并在 BNB Chain 上完成机器对机器结算。本文给出模型、参数与路线图。","inLanguage":"zh-CN","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"},
+  "dateModified": "2026-11-08"
+}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"面向智能体经济的算力","item":"https://omc.network/zh/agent-economy"}]}
+  </script>
+</head>
+<body>
+
+
+
+
+  <!-- ===== NAV ===== -->
+
+  <nav class="nav">
+
+    <div class="nav-inner">
+
+      <a class="brand" href="/zh">
+
+        <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="eager" decoding="async">
+
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+
+      </a>
+
+      <div class="nav-links" id="navLinks">
+
+        <a href="/zh" data-i18n="nav.home">首页</a>
+
+        <div class="nav-drop">
+
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.product">产品</span> <span class="caret">▾</span></button>
+
+          <div class="nav-drop-menu">
+
+            <a href="/zh/compute" data-i18n="nav.compute">算力</a>
+
+            <a href="/zh/ai-tools" data-i18n="nav.aitools">AI 工具</a>
+
+            <a href="/zh/calculator" data-i18n="nav.calc">计算器</a>
+
+          </div>
+
+        </div>
+
+        <div class="nav-drop">
+
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.eco">生态</span> <span class="caret">▾</span></button>
+
+          <div class="nav-drop-menu">
+
+            <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="nav.game">真图还是 AI</a>
+
+            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="nav.forum">算力论坛</a>
+
+            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="nav.top">AI 工具站</a>
+
+          </div>
+
+        </div>
+
+        <div class="nav-drop">
+
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.network">网络</span> <span class="caret">▾</span></button>
+
+          <div class="nav-drop-menu">
+
+            <a href="/zh/testnet" data-i18n="nav.testnet">测试网</a>
+
+            <a href="/zh/stake" data-i18n="nav.stake">质押</a>
+
+          </div>
+
+        </div>
+
+        <a href="/zh/news" data-i18n="nav.news">动态</a>
+
+        <a href="/zh/whitepaper" data-i18n="nav.wp">白皮书</a>
+
+        <a href="/zh/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 参与空投</a>
+
+        <div class="nav-wallet" id="walletNav"></div>
+
+        <select class="lang-select" id="langSelect" aria-label="Language">
+
+          <option value="en">EN</option>
+
+          <option value="zh">中文</option>
+
+        </select>
+
+        </div>
+
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- ===== HEADER ===== -->
+
+    <header class="hero" style="padding-bottom: 30px;">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span>智能体经济</span></div>
+      <h1>面向智能体经济的算力</h1>
+      <p class="sub">常驻推理、机器对机器支付，按可验证结果结算。</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="wp-body reveal" style="max-width: 820px; margin: 0 auto;">
+
+<p><strong>OMC 泛宇宙算力正在构建智能体经济的结算层：自主运行的软件购买 GPU 算力、为可验证的结果付费，并在 BNB Chain 上完成机器对机器结算。</strong>交易单位从「预留一小时 GPU」变成「一次完成且可校验的推理」——这才是智能体真正消耗的东西。</p>
+
+<h2 class="as-h3">从 GPU 小时到可验证结果</h2>
+<p>云厂商的定价从预留开始：租一台机器一小时，把队列压短，任务成功与否都照付。常驻运行的智能体恰好相反：它持续发出成千上万个小请求，每个请求都有可校验的结果，价格应该挂在这个结果上，而不是挂在结果周围的闲置硬件上。</p>
+<p>OMC 按结果计费。请求方把任务费用托管，节点执行任务，放款条件就是任务的可验证完成态。任务匹配、质押与结算都藏在这句话背后，对外只留一个极简的商业接口：一次请求、一个结果、一次结算。</p>
+
+<h2 class="as-h3">机器对机器支付是默认形态</h2>
+<p>智能体不会填账单。它需要凭证、计量器，以及无人介入即可充值的方式。OMC 的工具端点采用预付额度：一笔链上转账兑换成额度，服务在 BNB Chain 上核验该交易，每完成一次调用扣一格，推理失败则退回这一格。服务端不持有私钥，工具收入与项目其他资金流分账核算。</p>
+<p>这套模式向下覆盖分厘级请求，向上支撑持续采购算力的长驻智能体。它也是链上结算最擅长的形状：两个程序之间，小额、高频、可审计的转账。</p>
+
+<h2 class="as-h3">为什么是推理，为什么是现在</h2>
+<p>训练是阵发性的，推理是连续的。当智能体从演示走向生产，需求曲线就不再像季度批处理任务，而更像一张水电账单。瓶颈从纯粹算力转向可用性、验证与结算延迟——恰好是去中心化算力网格能正面竞争的三件事。</p>
+<p>因此调度把验证做成一个档位：批处理适合抽检复算，高价值结果适合多节点冗余执行，机密负载适合硬件 TEE。请求方按任务的实际风险选档、按所选保证付费。<a href="/zh/verifiable-compute">可验证算力页</a>给出了完整档位。</p>
+
+<h2 class="as-h3">模型参数</h2>
+<table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.95rem"><tbody><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>结算层</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">BNB Chain · 链 ID 56</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>代币</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">BEP-20 · OMC · 固定供应量</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>计费单位</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">一次可验证结果</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>验证方式</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">请求方自选：抽检复算 / 冗余执行 / TEE</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>支付方式</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">预付额度，凭链上转账兑换</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>链下签名</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">ML-DSA（Dilithium，FIPS 204）</td></tr><tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>路线图</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)">智能体结算 → M2M 计量 → 可验证推理 → 抗量子迁移</td></tr></tbody></table>
+
+<h2 class="as-h3">常见问题</h2>
+<h3>智能体到底为什么付钱？</h3>
+<p>为一个通过所选验证策略的完整结果付钱。硬件时间是节点自身经济模型里的投入项，不是请求方账单上的条目。</p>
+<h3>任务执行期间资金由谁保管？</h3>
+<p>任务费用进入托管，达到可验证终态后释放。工具流量走预付额度，每次成功调用扣减，调用失败自动退回。</p>
+<h3>接下来往哪走？</h3>
+<p>面向智能体的 API、连续计量、按风险定价的验证档位。每个阶段都在<a href="/zh/news">动态页</a>与<a href="/zh/whitepaper">白皮书</a>公布。</p>
+
+<h2 class="as-h3">延伸阅读</h2>
+<ul><li><a href="/zh/verifiable-compute">可验证算力与结果计费</a></li><li><a href="/zh/post-quantum">抗量子签名迁移</a></li><li><a href="/zh/compute">算力网络</a></li><li><a href="/zh/whitepaper">白皮书</a></li><li><a href="/zh/ai-tools">AI 工具</a></li><li><a href="/zh/news">项目动态</a></li><li><a href="https://forum.omc.network">DCF 算力研究</a></li><li><a href="https://top.omc.network">AITop 工具对比</a></li></ul>
+
+      </div>
+    </div>
+  </section>
+<footer>
+
+    <div class="footer-inner">
+
+      <div class="footer-grid">
+
+        <div>
+
+          <a class="brand" href="/zh">
+
+            <img class="logo" src="/assets/img/logo.png" alt="OMC" width="36" height="36" loading="lazy" decoding="async">
+
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+
+          </a>
+
+          <p data-i18n="footer.tag">去中心化高性能 GPU 基础设施网络，构建 DeAI 的未来。</p>
+
+          <div class="socials">
+
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+
+          </div>
+
+        </div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_protocol">协议</h3></div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_community">社区</h3></div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_ecosystem">生态</h3></div>
+
+        <div class="f-col">
+
+          <h3 class="as-h5" data-i18n="footer.h_resources">资源</h3></div>
+
+      </div>
+
+      <!-- omc:contracts-block — network + deployed contracts, published for verification -->
+
+      <div class="footer-chain">
+
+        <div class="fc-head">
+
+          <span class="fc-title" data-i18n="footer.chain_t">链上合约</span>
+
+          <span class="fc-badge" data-i18n="footer.chain_verified">BscScan 已验证</span>
+
+        </div>
+
+        <div class="fc-rows">
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_net">网络</span>
+
+            <span class="fc-v fc-plain" data-i18n="footer.chain_netv">BNB 智能链 · 测试网（chainId 97）</span>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_token">OMC 代币（tOMC）</span>
+
+            <a class="fc-v" href="https://testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671" target="_blank" rel="noopener"><code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code></a>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_staking">质押合约（OMCStaking）</span>
+
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_market">算力市场（OMCComputeMarket）</span>
+
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
+
+          </div>
+
+          <div class="fc-row">
+
+            <span class="fc-k" data-i18n="footer.chain_sec">安全</span>
+
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">安全实践 →</a>
+
+          </div>
+
+        </div>
+
+        <p class="fc-note" data-i18n="footer.chain_note">测试网合约，公开供核验。测试网代币无任何货币价值，也不在任何地方出售或上线。</p>
+
+      </div>
+
+
+
+      <div class="footer-bottom">
+
+        <div class="disc" data-i18n="footer.disclaimer">免责声明：Omniverse Compute（OMC）是去中心化基础设施协议的功能型代币。本站内容不构成任何投资建议。数字资产风险极高，请自行研究并遵守所在司法辖区的法律法规。空投与 OMC 代币不面向中国大陆及美国居民发行，本站亦不针对该地区；部分司法辖区可能受限。</div>
+
+        <div>© 2026 Omniverse Compute · omc.network<br><span class="facts-v">数据版本 v8 · 2026-10-30 · <a href="https://github.com/CBTdao/omc-network/blob/main/contracts/params.json" target="_blank" rel="noopener">来源</a></span></div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script src="/assets/js/lang/en.js?v=20261027a"></script>
+
+  <script src="/assets/js/lang/zh.js?v=20261027a"></script>
+
+  <script src="/assets/js/i18n.js?v=20261027a"></script>
+
+  <script src="/assets/js/i18n-meta.js?v=20261027a"></script>
+
+  <script src="/assets/js/main.js?v=20261027a"></script>
+
+  <script src="/assets/js/binance-w3w.js?v=20261027a"></script>
+
+  <script src="/assets/js/wallet.js?v=20261027a"></script>
+
+</body>
+
+</html>

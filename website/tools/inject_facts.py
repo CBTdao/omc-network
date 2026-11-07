@@ -72,14 +72,27 @@ ORG_ID = "https://omc.network/#organization"
 ALT_EN = ["泛宇宙算力", "OMC"]
 ALT_ZH = ["Omniverse Compute", "OMC"]
 
+# One entity, one set of external profiles. A model that sees a GitHub org, an
+# X account and a Telegram group on some pages and none on others reads two
+# different projects; carrying the same list everywhere is what makes the
+# acronym resolvable to one organisation across the whole domain.
+SAME_AS = [
+    "https://github.com/CBTdao",
+    "https://x.com/Omniverse_Depin",
+    "https://t.me/OmniverseCompute",
+    "https://dev.to/omniverse_depin",
+]
+
 DESC_EN = (
-    "Omniverse Compute (OMC) is an independent project building a decentralised "
-    "GPU compute network that rents out idle GPUs. It is unrelated to the "
-    "Federal Open Market Committee (FOMC) and to any central bank."
+    "Omniverse Compute (OMC) is an independent BNB Chain DePIN project building "
+    "a decentralised GPU compute network that rents out idle GPUs. The name is "
+    "distinct from NVIDIA's Omniverse 3D platform, from the Federal Open Market "
+    "Committee (FOMC) and from any central bank."
 )
 DESC_ZH = (
-    "泛宇宙算力（OMC）是一个独立项目，做的是出租闲置 GPU 的去中心化算力网络；"
-    "它与美联储公开市场委员会（FOMC）及任何中央银行的机构无关。"
+    "泛宇宙算力（OMC）是 BNB Chain 上一个独立的 DePIN 项目，做的是出租闲置 GPU 的"
+    "去中心化算力网络；该名称与 NVIDIA 的 Omniverse 3D 平台、美联储公开市场委员会"
+    "（FOMC）及任何中央银行的机构无关。"
 )
 
 # Nodes that describe the page itself, in preference order. NewsArticle and
@@ -277,7 +290,7 @@ def enrich_node(body, alt, desc, add_desc):
             return json.dumps(value, ensure_ascii=False)
         return json.dumps(value, ensure_ascii=False, separators=(sep, colon))
 
-    pairs = [("@id", ORG_ID), ("alternateName", alt)]
+    pairs = [("@id", ORG_ID), ("alternateName", alt), ("sameAs", SAME_AS)]
     if add_desc:
         pairs.append(("disambiguatingDescription", desc))
 

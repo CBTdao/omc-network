@@ -22,10 +22,10 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: Claude-User
+User-agent: Claude-SearchBot
 Allow: /
 
-User-agent: anthropic-ai
+User-agent: Claude-User
 Allow: /
 
 User-agent: Google-Extended
@@ -50,6 +50,6 @@ Sitemap: https://omc.network/sitemap.xml
 # https://omc.network/llms-full.txt     — the full text of every page in one file (English)
 # https://omc.network/llms-full-zh.txt  — 全站中文正文（一个文件）
 # https://omc.network/airdrop.json      — airdrop specification (pool, per-entry amount, fees, dates, tasks)
-# https://omc.network/news/feed.xml     — RSS feed of announcements (all 17 posts, no JavaScript needed)
+# https://omc.network/news/feed.xml     — RSS feed of announcements (full text, no JavaScript needed)
 # https://omc.network/zh/news/feed.xml  — 中文动态 RSS
 

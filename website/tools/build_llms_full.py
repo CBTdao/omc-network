@@ -49,6 +49,9 @@ PAGES_EN = [
     ("about.html", "https://omc.network/about"),
     ("privacy.html", "https://omc.network/privacy"),
     ("aup.html", "https://omc.network/aup"),
+    ("agent-economy.html", "https://omc.network/agent-economy"),
+    ("verifiable-compute.html", "https://omc.network/verifiable-compute"),
+    ("post-quantum.html", "https://omc.network/post-quantum"),
 ]
 
 # Derived from PAGES_EN rather than listed by hand: the hand-written version

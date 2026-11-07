@@ -511,12 +511,26 @@ Pages that already carry an editorial `dateModified` with a time and a timezone 
 announcement — are left alone rather than given a second, coarser answer.
 
 **Run order matters.** These two scripts stamp pages that the generators rebuild, so the
-sequence is always: `build_zh.py` → `build_announcement.py` / `build_press.py` →
-`build_news.py` → `build_llms_full.py` → `inject_facts.py`. `build_zh.py` copies the English
+sequence is always: `build_topic_pages.py` → `build_zh.py` (only when the mirrored pages
+change) → `build_announcement.py` / `build_press.py` → `build_news.py` →
+`build_llms_full.py` → `inject_facts.py` → `build_sitemap.py`. `build_zh.py` copies the English
 footer verbatim and only translates `data-i18n` nodes, so a rebuilt Chinese page carries the
 English stamp until `inject_facts.py` runs; `--check` fails on exactly that.
 `scripts/entity-identity.test.mjs` holds the identity half: same `@id` everywhere, both
-names on every node, the description in the page's own language.
+names, the same external profiles, and the description in the page's own language.
+
+`build_sitemap.py` is deliberately last. It discovers indexable pages from the filesystem and
+takes each `lastmod` from the `dateModified` that `inject_facts.py` just wrote, so a sitemap
+built earlier would describe the previous version of every page. The hand-written sitemap it
+replaced went a week without a new URL or date while posts arrived daily — technically valid
+XML, and a crawler's signal that nothing had changed. `scripts/seo-coverage.test.mjs` asserts
+that the sitemap's URL set, dates and hreflang agree with the pages, because `seo-audit.mjs`
+can report zero problems while discovery is completely broken.
+
+`build_topic_pages.py` writes the three topic pillars (English + Chinese) from the `about.html`
+skeleton and injects the reverse links into `compute.html`. It compares pages with the identity,
+date and footer stamps scrubbed, so `inject_facts.py` stamping a page does not make the
+generator report it stale forever.
 
 ### The news list and the feeds
 
@@ -607,9 +621,23 @@ The key is read from `website/indexnow-<key>.txt` rather than from config, so th
 file and the request cannot drift. The `indexnow-` prefix is load-bearing: a bare 32-char hex
 key file is indistinguishable in shape from the Google Search Console proof at the same root.
 
-A GitHub Actions job would remove the need to remember the command, but pushing
-`.github/workflows/` requires a token with the `workflow` scope, which the deploy token
-deliberately does not have. Until that changes, run the script after a content deploy.
+**The publish chain is one command, and ready for CI.** `node scripts/publish.mjs` rebuilds
+the news pages, feeds, full-text dumps and sitemap, verifies every `--check` target, runs the
+Node guards, then submits the URLs to IndexNow and Bing. `--no-push` rebuilds and verifies
+without touching the network. That closes the loop the content bot left open — it writes
+`news.js` but not the generated pages, so a manually-run script was the only thing keeping
+the index current.
+
+`scripts/publish.yml` is the GitHub Actions version of the same chain: it commits regenerated
+output with `[skip ci]` and submits to IndexNow on every push to `main`, and the optional
+`BING_WEBMASTER_API_KEY` secret enables the authenticated Bing submission. Copy it to
+`.github/workflows/publish.yml` to switch that on — the deploy PAT deliberately has no
+`workflow` scope, so GitHub will not let it create files in that directory. The GitHub web UI
+uses the account's full permissions and works without a new token.
+
+Neither command replaces reading back what actually happened:
+`node scripts/bing-submit.mjs --status` is still the only place `LastCrawledDate` shows
+whether a URL was ever fetched.
 
 ---
 
