@@ -237,7 +237,7 @@
 
         <div class="news-main">
 
-          <div class="news-count" id="newsCount">共 19 条</div>
+          <div class="news-count" id="newsCount">共 17 条</div>
 
           <div class="news-list" id="newsList">
 
@@ -272,8 +272,8 @@
                   <time class="ni-time" datetime="2026-10-11">2026年10月11日</time>
                   <span class="ni-pin">📌 <span data-i18n="nw.pin">置顶</span></span>
                 </div>
-                <h3 data-i18n="nw12.t">合约重部署：「销毁」现在真的让总量下降</h3>
-                <p data-i18n="nw12.d">我们在自评中发现：两条「销毁」路径其实只是把代币转到死地址，totalSupply() 从未下降 —— 机制比公开承诺的更弱，做的也不是同一件事。现在罚没与结算手续费都调用代币的 burn()，整套合约级联重部署（市场合约把质押地址写死，两者必须一起换）。链上实测：一笔 6.0 tOMC 的罚没让总量恰好下降 1.2，即其 20% 的销毁份额。新地址见页脚与测试网页。</p>
+                <h3 data-i18n="nw12.t">我们自己抓到了一个 bug：「销毁」其实从没真的销毁 —— 已上链修复</h3>
+                <p data-i18n="nw12.d">自评发现两条「销毁」路径只是把代币转到死地址，totalSupply() 从未下降——机制比承诺的更弱、做的也不是同一件事。现在罚没与结算手续费都调用代币的 burn()，整套级联重部署。链上实证：一笔 6.0 tOMC 罚没让总量恰好下降 1.2（其 20% 销毁份额）。新地址见页脚。阅读 →</p>
                 <a class="ni-link" href="/zh/testnet" data-i18n="nw.open">查看详情 →</a>
               </div>
             </article>
@@ -286,8 +286,8 @@
                   <time class="ni-time" datetime="2026-10-01">2026年10月1日</time>
                   <span class="ni-pin">📌 <span data-i18n="nw.pin">置顶</span></span>
                 </div>
-                <h3 data-i18n="nw1.t">第一阶段测试网已在币安链上线</h3>
-                <p data-i18n="nw1.d">OMC 公共测试网已部署至 BNB Smart Chain 测试网（Chain ID 97）。测试合约已在 BscScan 完成验证，RPC 节点、水龙头指引与四步节点接入教程均已发布在测试网页面。</p>
+                <h3 data-i18n="nw1.t">OMC 测试网已在币安链上线 —— 四步就能跑节点，无需排队</h3>
+                <p data-i18n="nw1.d">公共测试网已部署至 BNB Smart Chain 测试网（Chain ID 97），合约在 BscScan 完成验证。RPC 节点、水龙头指引与四步节点接入教程都已发布在测试网页面，今天就开一个节点。</p>
                 <a class="ni-link" href="/zh/testnet" data-i18n="nw.open">查看详情 →</a>
               </div>
             </article>
@@ -299,8 +299,8 @@
                   <span class="ni-tag k-dev" data-i18n="nw.dev">工程技术</span>
                   <time class="ni-time" datetime="2026-11-07">2026年11月7日</time>
                 </div>
-                <h3 data-i18n="nw18.t">算力论坛：一兆瓦 800 伏——正在让 AI 机架淘汰 54V 母线排的账</h3>
-                <p data-i18n="nw18.d">forum.omc.network 新文：深挖如今决定 AI 数据中心建设成本的机架供电账。为什么高密度机架里 800V 直流电正在取代沿用已久的 54V 母线排、母线槽损耗与转换级数如何随单 GPU 功耗上升而放大，以及为什么最后这一米供电已成为算力瓶颈问题，而不只是电气问题。阅读深度长文 →</p>
+                <h3 data-i18n="nw18.t">800V 正在让数据中心用了十年的 54V 母线排退休</h3>
+                <p data-i18n="nw18.d">论坛新文：如今决定 AI 数据中心建设成本的机架供电账。为什么高密度机架里 800V 直流电正在取代沿用已久的 54V 母线排、母线槽损耗如何随单 GPU 功耗放大，以及为什么最后这一米供电已成为算力瓶颈，而不只是电气问题。阅读 →</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -312,8 +312,8 @@
                   <span class="ni-tag k-eco" data-i18n="nw.eco">生态</span>
                   <time class="ni-time" datetime="2026-11-03">2026年11月3日</time>
                 </div>
-                <h3 data-i18n="nw17.t">算力论坛：每兆瓦人力瓶颈——为什么一个 GW 级 AI 园区要的是一支队伍，而不只是芯片</h3>
-                <p data-i18n="nw17.d">forum.omc.network 新文：深挖 AI 算力背后的人力排期。一吉瓦（GW）的数据中心容量需要一支庞大的熟练工种队伍——电工、管工与冷却专员；而变压器与开关柜的交付周期，如今已和 GPU 等待时间不相上下。阅读深度长文 →</p>
+                <h3 data-i18n="nw17.t">一个 GW 级 AI 园区要的是一支电工大军，而不只是芯片</h3>
+                <p data-i18n="nw17.d">论坛新文：深挖 AI 算力背后的人力排期。一吉瓦数据中心容量需要一支庞大的熟练工种队伍——电工、管工与冷却专员；变压器与开关柜的交付周期，如今已和 GPU 等待不相上下。阅读 →</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -325,8 +325,8 @@
                   <span class="ni-tag k-dev" data-i18n="nw.dev">工程技术</span>
                   <time class="ni-time" datetime="2026-10-30">2026年10月30日</time>
                 </div>
-                <h3 data-i18n="nw16.t">算力论坛：网络 fabric 税——为什么 800G 端口与基数数学卡住集群规模</h3>
-                <p data-i18n="nw16.d">forum.omc.network 新文：深挖互联层，那张人人最后才计价的大账单。800G 端口、spine-leaf 拓扑背后的基数数学，以及为什么一条超额订阅的上联就能拖垮整次训练任务。阅读深度长文 →</p>
+                <h3 data-i18n="nw16.t">互联税：为什么卡住集群规模的不是 GPU，而是 800G 端口</h3>
+                <p data-i18n="nw16.d">论坛新文：深挖互联层，那张人人最后才计价的大账单。800G 端口、spine-leaf 拓扑背后的基数数学，以及为什么一条超额订阅的上联就能拖垮整次训练任务。阅读 →</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -338,7 +338,7 @@
                   <span class="ni-tag k-eco" data-i18n="nw.eco">生态</span>
                   <time class="ni-time" datetime="2026-10-26">2026年10月26日</time>
                 </div>
-                <h3 data-i18n="nw15.t">AITop 术语表：量化——决定 70B 模型能否装进你显卡的「每权重比特数」旋钮</h3>
+                <h3 data-i18n="nw15.t">决定 70B 模型能否塞进你显卡的那个旋钮：量化，讲人话</h3>
                 <p data-i18n="nw15.d">top.omc.network 新增：用大白话讲清量化，以及每个本地大模型买家都该记住的等式（显存 ≈ 参数量 × 每权重字节数），还有为什么 Q4_K_M 是默认选择。查看术语表 →</p>
                 <a class="ni-link" href="https://top.omc.network/glossary/quantization?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
@@ -351,22 +351,9 @@
                   <span class="ni-tag k-eco" data-i18n="nw.eco">生态</span>
                   <time class="ni-time" datetime="2026-10-25">2026年10月25日</time>
                 </div>
-                <h3 data-i18n="nw14.t">算力论坛：12 倍水账——数据中心 92% 的水其实在电厂</h3>
-                <p data-i18n="nw14.d">论坛新文：深度拆解显示，2023 年美国数据中心现场耗水 660 亿升，而为它们发电在电厂端耗水约 8000 亿升——12 倍差距，直接改写「闭式循环冷却」的算法。点此读全文 →</p>
+                <h3 data-i18n="nw14.t">AI 数据中心的隐藏水账是肉眼所见 12 倍 —— 这账我们算出来了</h3>
+                <p data-i18n="nw14.d">论坛新文：2023 年美国数据中心现场耗水 660 亿升，而为它们发电在电厂端耗水约 8000 亿升——12 倍差距，直接改写「闭式循环冷却」的算法。全文带来源。阅读 →</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/water-footprint-power-plant-2026?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
-              </div>
-            </article>
-
-            <article class="news-item" data-kind="dev" id="post-n13">
-              <div class="ni-date"><b>11</b><span>10月</span></div>
-              <div class="ni-body">
-                <div class="ni-meta">
-                  <span class="ni-tag k-dev" data-i18n="nw.dev">工程技术</span>
-                  <time class="ni-time" datetime="2026-10-11">2026年10月11日</time>
-                </div>
-                <h3 data-i18n="nw13.t">安全自评审公开 —— 附可复现的字节码校验</h3>
-                <p data-i18n="nw13.d">完整的安全自评审已公开：发现并修复一处高危缺陷（理赔路径完全无法执行），修复已上线。字节码校验证明测试网上运行的合约与评审过的源码一致，属性测试在真实 EVM 上跑了 2,762 条断言。需要说清楚它的性质：这是团队自己做的自动化测试加人工通读，不是第三方审计。</p>
-                <a class="ni-link" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
 
@@ -377,8 +364,8 @@
                   <span class="ni-tag k-eco" data-i18n="nw.eco">生态</span>
                   <time class="ni-time" datetime="2026-10-04">2026年10月4日</time>
                 </div>
-                <h3 data-i18n="nw7.t">生态扩容：DCF 论坛与 AITop 对比站上线</h3>
-                <p data-i18n="nw7.d">OMC 生态现由三站组成：主站 omc.network、独立无返佣的 AI 工具榜单站 top.omc.network，以及去中心化算力论坛 forum.omc.network（DCF，深度长文 + 开放评论区），三站已互链。</p>
+                <h3 data-i18n="nw7.t">OMC 现在三站联动 —— 其中一个给 AI 工具排名，零返佣</h3>
+                <p data-i18n="nw7.d">生态现由三站组成：主站 omc.network、独立无返佣的 AI 工具榜单站 top.omc.network，以及去中心化算力论坛 forum.omc.network（深度长文 + 开放评论区）。三站已互链。去逛逛 →</p>
                 <a class="ni-link" href="https://forum.omc.network/?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -390,8 +377,8 @@
                   <span class="ni-tag k-vo" data-i18n="nw.vo">行业观点</span>
                   <time class="ni-time" datetime="2026-10-04">2026年10月4日</time>
                 </div>
-                <h3 data-i18n="nw8.t">行业观点：黄仁勋 —— 数据中心正在变成「AI 工厂」</h3>
-                <p data-i18n="nw8.d">黄仁勋在 GTC 2024 上提出，数据中心正从「文件柜」演进为规模化生产新商品——智能——的 AI 工厂；真正的瓶颈不再是芯片，而是算力与电力。内容为行业观点摘述，不构成对本项目的背书。相关深度分析 →</p>
+                <h3 data-i18n="nw8.t">黄仁勋说数据中心正在变成「AI 工厂」—— 我们就在建那个智能的交易市场</h3>
+                <p data-i18n="nw8.d">黄仁勋在 GTC 2024 提出，数据中心正从「文件柜」演进为规模化生产智能的 AI 工厂，真正的瓶颈是算力与电力、而非芯片。这正是 OMC 去中心化 GPU 市场要解决的问题。深度分析 →（行业观点，非投资建议）</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/the-power-wall-not-gpus?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -403,8 +390,8 @@
                   <span class="ni-tag k-vo" data-i18n="nw.vo">行业观点</span>
                   <time class="ni-time" datetime="2026-10-03">2026年10月3日</time>
                 </div>
-                <h3 data-i18n="nw10.t">行业观点：Vitalik Buterin —— 去中心化计算属于 d/acc 的关键拼图</h3>
-                <p data-i18n="nw10.d">这位以太坊创始人在 2024 年 11 月的文章《d/acc》中主张，开放、可验证、去中心化的计算是值得建设的防御性技术——包括把闲置 GPU 路由到真实工作负载的市场。内容为行业观点摘述，不构成对本项目的背书。相关深度分析 →</p>
+                <h3 data-i18n="nw10.t">Vitalik 说去中心化计算属于 d/acc 拼图 —— 所以我们把它造出来了</h3>
+                <p data-i18n="nw10.d">在《d/acc》（2024-11）中，这位以太坊创始人主张开放、可验证、去中心化的计算是值得建设的防御性技术——包括把闲置 GPU 路由到真实工作负载的市场。OMC 就是我们对这一呼吁的回答。深度分析 →（行业观点，非投资建议）</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/depin-2026-who-actually-has-users?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -416,8 +403,8 @@
                   <span class="ni-tag k-dev" data-i18n="nw.dev">工程技术</span>
                   <time class="ni-time" datetime="2026-10-03">2026年10月3日</time>
                 </div>
-                <h3 data-i18n="nw9.t">DCF 论坛推出 GPU 定价深度系列</h3>
-                <p data-i18n="nw9.d">forum.omc.network 新开 Pricing Watch 系列：训练一次模型的真实成本、超大规模云与去中心化市场的 H100 价差、预留与竞价的套利空间。无赞助、无返佣链接，每篇附方法论。</p>
+                <h3 data-i18n="nw9.t">云上 GPU 定价是个黑箱。我们把它拆开 —— H100 价差、竞价套利，连方法论一起给</h3>
+                <p data-i18n="nw9.d">论坛新开 Pricing Watch 系列：训练一次模型的真实成本、超大规模云与去中心化市场的 H100 价差、预留与竞价的套利空间。无赞助、无返佣，每篇附方法论。阅读 →</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -429,8 +416,8 @@
                   <span class="ni-tag k-vo" data-i18n="nw.vo">行业观点</span>
                   <time class="ni-time" datetime="2026-10-02">2026年10月2日</time>
                 </div>
-                <h3 data-i18n="nw11.t">行业观点：Sam Altman —— 智能的成本将趋近能源的成本</h3>
-                <p data-i18n="nw11.d">OpenAI CEO 在《智能时代》（The Intelligence Age，2024 年 9 月）中提出，智能的成本将下降到接近电力的价格，算力供给与能源获取因此成为最硬的约束。内容为行业观点摘述，不构成对本项目的背书。相关深度分析 →</p>
+                <h3 data-i18n="nw11.t">Altman：智能的成本将趋近能源的成本 —— 而这正是我们的全部论点</h3>
+                <p data-i18n="nw11.d">在《智能时代》（2024-09）中，OpenAI CEO 提出智能将沦为一种公用事业，成本下降到接近电力的价格，算力供给与能源获取因而成为最硬的约束。OMC 就是为那个世界而建。深度分析 →（行业观点，非投资建议）</p>
                 <a class="ni-link" href="https://forum.omc.network/posts/real-cost-of-training-a-model-2026?utm_source=site&utm_medium=news" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
               </div>
             </article>
@@ -442,8 +429,8 @@
                   <span class="ni-tag k-gov" data-i18n="nw.gov">治理</span>
                   <time class="ni-time" datetime="2026-10-02">2026年10月2日</time>
                 </div>
-                <h3 data-i18n="nw5.t">路线图更新：主网定于 2027 年 1 月 1 日</h3>
-                <p data-i18n="nw5.d">第 1 阶段涵盖 BNB Chain 测试网合约部署、开源节点客户端、公开测试网与 2% 社区空投。参与现已开放；主网——连同空投领取窗口与质押——将在 2027 年 1 月 1 日开启，因此参与期累积的 OMC 在同一时点即可领取并质押。零知识验证研究与完整 DAO 治理自 2027 Q4 起推进。</p>
+                <h3 data-i18n="nw5.t">主网锁定 2027 年 1 月 1 日 —— 这一波会一起上线的东西都在这</h3>
+                <p data-i18n="nw5.d">第 1 阶段涵盖 BNB Chain 测试网部署、开源节点客户端、公开测试网与 2% 社区空投。主网——含空投领取与质押——于 2027 年 1 月 1 日开启，因此你累积的 OMC 在同一时刻即可领取并质押。零知识验证与完整 DAO 治理自 2027 Q4 起推进。看路线图 →</p>
                 <a class="ni-link" href="/zh/whitepaper#s5" data-i18n="nw.open">查看详情 →</a>
               </div>
             </article>
@@ -455,8 +442,8 @@
                   <span class="ni-tag k-airdrop" data-i18n="nw.airdrop">空投</span>
                   <time class="ni-time" datetime="2026-09-30">2026年9月30日</time>
                 </div>
-                <h3 data-i18n="nw2.t">社区空投：参与已开放，领取随主网 · 2027 年 1 月 1 日</h3>
-                <p data-i18n="nw2.d">2%（20,000,000 OMC）的固定供应预留给社区：1,000,000 次 × 每次 20 OMC。每个钱包最多 5 次、每天 1 次（UTC+8 零点重置）。登记现已开放：完成三项社交任务即可提前登记。基础领取为 100 OMC，领满上限为 200 OMC；领取需支付不退的 0.01 BNB，用于项目开发。领取随主网与质押于 2027 年 1 月 1 日开启，因此累积的 OMC 在代币存在的当天即可质押。</p>
+                <h3 data-i18n="nw2.t">免费参与、前期 0 成本、2027 年 1 月 1 日解锁：怎么抢 OMC 空投的 100 万份名额</h3>
+                <p data-i18n="nw2.d">20,000,000 OMC（固定供应的 2%）拆成 1,000,000 份、每份 20 OMC，先到先得。无需购买、没有预售——三步社交任务加一次钱包签名即可。每个钱包最多登记 5 次；领取随主网于 2027 年 1 月 1 日开启，每份 0.01 BNB 领取手续费。立即登记 →</p>
                 <a class="ni-link" href="/zh/airdrop" data-i18n="nw.open">查看详情 →</a>
               </div>
             </article>
@@ -468,8 +455,8 @@
                   <span class="ni-tag k-dev" data-i18n="nw.dev">工程技术</span>
                   <time class="ni-time" datetime="2026-09-29">2026年9月29日</time>
                 </div>
-                <h3 data-i18n="nw3.t">白皮书 v2.0 正式发布</h3>
-                <p data-i18n="nw3.d">完整技术文档上线：三层架构、验证与罚没规则、加权任务匹配引擎，以及含解锁安排的完整代币经济模型 —— 提供网页版与 PDF 下载。</p>
+                <h3 data-i18n="nw3.t">OMC 完整蓝图上线：架构、验证、罚没与代币经济，一处看全</h3>
+                <p data-i18n="nw3.d">白皮书 v3.0 已以网页与 PDF 双形式发布：三层架构、按任务验证与罚没、加权任务匹配引擎，以及含解锁安排的完整代币经济模型。阅读技术参考 →</p>
                 <a class="ni-link" href="/zh/whitepaper" data-i18n="nw.open">查看详情 →</a>
               </div>
             </article>
@@ -481,22 +468,9 @@
                   <span class="ni-tag k-eco" data-i18n="nw.eco">生态</span>
                   <time class="ni-time" datetime="2026-09-28">2026年9月28日</time>
                 </div>
-                <h3 data-i18n="nw4.t">项目仓库已开源</h3>
-                <p data-i18n="nw4.d">仓库现已公开：官网源码、白皮书文档、贡献指南与 MIT 许可协议。节点运营者与贡献者可跟踪客户端路线图并直接提交 issue。</p>
+                <h3 data-i18n="nw4.t">我们把整条链开源了 —— 怎么跑节点、怎么自己校验合约，都给你</h3>
+                <p data-i18n="nw4.d">仓库现已公开：官网源码、白皮书、贡献指南与 MIT 许可协议。节点运营者与贡献者可在 GitHub 直接跟踪客户端路线图、提交 issue。去加星 →</p>
                 <a class="ni-link" href="https://github.com/CBTdao/omc-network" data-i18n="nw.open" target="_blank" rel="noopener">查看详情 →</a>
-              </div>
-            </article>
-
-            <article class="news-item" data-kind="airdrop" id="post-n6">
-              <div class="ni-date"><b>27</b><span>9月</span></div>
-              <div class="ni-body">
-                <div class="ni-meta">
-                  <span class="ni-tag k-airdrop" data-i18n="nw.airdrop">空投</span>
-                  <time class="ni-time" datetime="2026-09-27">2026年9月27日</time>
-                </div>
-                <h3 data-i18n="nw6.t">防诈提醒：注册免费，领取需付 0.01 BNB</h3>
-                <p data-i18n="nw6.d">我们绝不索取助记词、私钥，也绝不要求你向任何地址转账。唯一费用是领取时由合约直接扣收的 0.01 BNB/份领取费 —— 官方公告之外任何名为 OMC 的合约均为诈骗。</p>
-                <a class="ni-link" href="/zh/airdrop" data-i18n="nw.open">查看详情 →</a>
               </div>
             </article>
             <!-- NEWS_LIST:END -->

@@ -9,28 +9,28 @@
     <lastBuildDate>Sat, 07 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
     <item>
-      <title>DCF forum: a megawatt at 800 volts — the arithmetic retiring the 54 V busbar in AI racks</title>
+      <title>800V is retiring the 54V busbar data centers used for a decade</title>
       <link>https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n18</guid>
       <pubDate>Sat, 07 Nov 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
-      <description>New on forum.omc.network: a deep dive on the rack-power math that now shapes AI data-center build cost. Why 800 V direct current is replacing the legacy 54 V busbar in high-density racks, how busway losses and conversion stages scale with per-GPU wattage, and why the last meter of power delivery has become a compute-bottleneck problem, not just an electrical one. Read the deep dive →</description>
+      <description>New on forum.omc.network: the rack-power math now shaping AI data-center build cost. Why 800V direct current is replacing the legacy 54V busbar in high-density racks, how busway losses scale with per-GPU wattage, and why the last meter of power delivery has become a compute bottleneck, not just an electrical one. Read →</description>
     </item>
     <item>
-      <title>DCF forum: the workers-per-megawatt bottleneck — why a GW-scale AI site needs a small army, not just silicon</title>
+      <title>A gigawatt AI site needs an army of electricians, not just chips</title>
       <link>https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n17</guid>
       <pubDate>Tue, 03 Nov 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
-      <description>New on forum.omc.network: a deep dive on the labor queue behind AI compute. A single gigawatt of data-center capacity draws a large skilled-trades workforce — electricians, pipefitters, and cooling specialists — while lead times for transformers and switchgear now rival the GPU wait. Read the deep dive →</description>
+      <description>New on forum.omc.network: the labor queue behind AI compute. One gigawatt of data-center capacity draws a large skilled-trades workforce — electricians, pipefitters, cooling specialists — while transformer and switchgear lead times now rival the GPU wait. Read →</description>
     </item>
     <item>
-      <title>DCF forum: the network-fabric tax — why 800G ports and radix math cap cluster scale</title>
+      <title>The interconnect tax: why 800G ports — not GPUs — cap how big a cluster can get</title>
       <link>https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n16</guid>
       <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
-      <description>New on forum.omc.network: a deep dive on the interconnect, the compute bill everyone prices last. 800G ports, the radix math behind spine-leaf topology, and why one oversubscribed uplink can stall an entire training run. Read the deep dive →</description>
+      <description>New on forum.omc.network: a deep dive on the network fabric, the bill everyone prices last. 800G ports, the radix math behind spine-leaf topology, and why one oversubscribed uplink can stall an entire training run. Read →</description>
     </item>
     <item>
       <title>The OMC airdrop is open: 20,000,000 OMC, 1,000,000 slots, free to join</title>
@@ -41,7 +41,7 @@
       <description>Registration is live. 20,000,000 OMC is split into 1,000,000 slots of 20 OMC each, first come first served. No purchase and no presale — three social tasks plus a wallet signature. Claiming opens 1 January 2027 with a 0.01 BNB processing fee per entry. Read the announcement →</description>
     </item>
     <item>
-      <title>AITop glossary: quantization — the bits-per-weight dial that decides if a 70B model fits your GPU</title>
+      <title>The one dial that decides if a 70B model fits your GPU: quantization, explained</title>
       <link>https://top.omc.network/glossary/quantization?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n15</guid>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
@@ -49,116 +49,100 @@
       <description>New on top.omc.network: a plain-English glossary entry on quantization, the one formula (VRAM ≈ params × bytes/weight) every local-LLM buyer needs, and why Q4_K_M is the default. Read the glossary →</description>
     </item>
     <item>
-      <title>DCF forum: the 12x water multiplier — 92% of a data center&#x27;s water footprint sits at the power plant</title>
+      <title>AI data centers&#x27; hidden water bill is 12x what you see — we did the math</title>
       <link>https://forum.omc.network/posts/water-footprint-power-plant-2026?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n14</guid>
       <pubDate>Sun, 25 Oct 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
-      <description>New on forum.omc.network: a deep dive showing US data centers used 66B liters on site in 2023 vs ~800B generating their power — a 12x multiplier that rewrites the closed-loop cooling debate. Read the full breakdown →</description>
+      <description>New on forum.omc.network: US data centers used 66B liters on site in 2023, but ~800B generating their power — a 12x multiplier that rewrites the closed-loop cooling debate. The full breakdown, with sources. Read →</description>
     </item>
     <item>
-      <title>Contracts redeployed: the slashing and fee burns now reduce supply</title>
+      <title>We caught our own bug: the &#x27;burn&#x27; that wasn&#x27;t actually burning — and fixed it on-chain</title>
       <link>https://omc.network/testnet</link>
       <guid isPermaLink="false">omc-news-en-n12</guid>
       <pubDate>Sun, 11 Oct 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
-      <description>Our own review found that the two “burn” paths only moved tokens to a dead address, so totalSupply() never fell — a weak mechanism doing a different job from the one we had documented. Slashing and the settlement fee now call burn() on the token, and the whole set was redeployed in a cascade (the market stores the staking address, so both moved together). Verified on-chain: one 6.0 tOMC slash cut total supply by exactly 1.2, its 20% burn share. New addresses are in the site footer and on the Testnet page.</description>
+      <description>Our review found two &#x27;burn&#x27; paths only moved tokens to a dead address, so totalSupply() never dropped — a weak mechanism doing the wrong job. Slashing and the settlement fee now call burn() on the token, redeployed in a cascade. On-chain proof: one 6.0 tOMC slash cut supply by exactly 1.2 (its 20% burn share). New addresses in the footer. Read →</description>
     </item>
     <item>
-      <title>Self-review published — with reproducible bytecode verification</title>
-      <link>https://github.com/CBTdao/omc-network/blob/main/SECURITY.md</link>
-      <guid isPermaLink="false">omc-news-en-n13</guid>
-      <pubDate>Sun, 11 Oct 2026 00:00:00 +0000</pubDate>
-      <category>Engineering</category>
-      <description>The full security self-review is public: one High-severity defect (the refund path could not execute at all) was found and fixed, and the fix is deployed. Bytecode verification confirms the contracts running on testnet match the reviewed source, and property-based tests run 2,762 assertions against a real EVM. Being precise about what this is: automated testing plus a manual read-through by the team, not a third-party audit.</description>
-    </item>
-    <item>
-      <title>Ecosystem grows to three sites: DCF forum and AITop are live</title>
+      <title>OMC now spans three sites — and one of them ranks AI tools with zero affiliate links</title>
       <link>https://forum.omc.network/?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n7</guid>
       <pubDate>Sun, 04 Oct 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
-      <description>The OMC ecosystem now spans omc.network, top.omc.network (independent, no-affiliate AI tool rankings) and forum.omc.network — the Decentralized Compute Forum, with in-depth essays and open comment sections. All three are cross-linked.</description>
+      <description>The ecosystem now covers omc.network, top.omc.network (independent, no-affiliate AI tool rankings) and forum.omc.network — the Decentralized Compute Forum with deep essays and open comments. All three cross-link. Explore →</description>
     </item>
     <item>
-      <title>Industry voice: Jensen Huang — data centers are becoming “AI factories”</title>
+      <title>Jensen Huang says data centers are becoming &#x27;AI factories&#x27; — we&#x27;re building the marketplace for that intelligence</title>
       <link>https://forum.omc.network/posts/the-power-wall-not-gpus?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n8</guid>
       <pubDate>Sun, 04 Oct 2026 00:00:00 +0000</pubDate>
       <category>Industry Voices</category>
-      <description>At GTC 2024, NVIDIA&#x27;s CEO described a shift from file-cabinet data centers to AI factories that manufacture a new commodity at scale: intelligence. Compute and power — not chips — are becoming the binding constraint. Industry commentary, not an endorsement of OMC. Related analysis →</description>
+      <description>At GTC 2024, NVIDIA&#x27;s CEO described the shift from file-cabinet data centers to AI factories that manufacture intelligence at scale — with compute and power, not chips, as the binding constraint. That&#x27;s the exact problem OMC&#x27;s decentralized GPU marketplace is built to solve. Analysis → (industry commentary, not investment advice)</description>
     </item>
     <item>
-      <title>Industry voice: Vitalik Buterin — decentralized computing belongs in the d/acc toolbox</title>
+      <title>Vitalik says decentralized compute belongs in the d/acc toolbox — so we built it</title>
       <link>https://forum.omc.network/posts/depin-2026-who-actually-has-users?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n10</guid>
       <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
       <category>Industry Voices</category>
-      <description>In his November 2024 essay “d/acc”, the Ethereum founder argues that open, verifiable and decentralized computing is a defensive technology worth building — including markets that route idle GPUs to real workloads. Industry commentary, not an endorsement of OMC. Related analysis →</description>
+      <description>In &#x27;d/acc&#x27; (Nov 2024), Ethereum&#x27;s founder argues open, verifiable, decentralized computing is a defensive technology worth building — including markets that route idle GPUs to real workloads. OMC is our answer to that call. Analysis → (industry commentary, not investment advice)</description>
     </item>
     <item>
-      <title>DCF forum launches the GPU pricing deep-dive series</title>
+      <title>Cloud GPU pricing is a black box. We opened it — H100 spreads, spot arbitrage, methodology included</title>
       <link>https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n9</guid>
       <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
-      <description>New on forum.omc.network: a Pricing Watch series covering the real cost of a training run, H100 rate spreads between hyperscalers and decentralized marketplaces, and the reserved-vs-spot arbitrage. No sponsors, no affiliate links — the methodology is published with every piece.</description>
+      <description>New on forum.omc.network: a Pricing Watch series on the real cost of a training run, H100 rate spreads between hyperscalers and decentralized marketplaces, and reserved-vs-spot arbitrage. No sponsors, no affiliate links — the methodology ships with every piece. Read →</description>
     </item>
     <item>
-      <title>Industry voice: Sam Altman — the cost of intelligence trends toward the cost of energy</title>
+      <title>Altman: the cost of intelligence trends toward the cost of energy. Here&#x27;s why that&#x27;s our whole thesis</title>
       <link>https://forum.omc.network/posts/real-cost-of-training-a-model-2026?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n11</guid>
       <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <category>Industry Voices</category>
-      <description>In “The Intelligence Age” (September 2024), OpenAI&#x27;s CEO argues that intelligence becomes a utility as its cost falls toward the price of energy — making compute supply and power access the hard constraints. Industry commentary, not an endorsement of OMC. Related analysis →</description>
+      <description>In &#x27;The Intelligence Age&#x27; (Sep 2024), OpenAI&#x27;s CEO argues intelligence becomes a utility as its cost falls toward the price of energy — making compute supply and power access the hard constraints. OMC is built for exactly that world. Analysis → (industry commentary, not investment advice)</description>
     </item>
     <item>
-      <title>Roadmap updated: mainnet set for 1 January 2027</title>
+      <title>Mainnet is locked for Jan 1 2027 — here&#x27;s everything that ships with it</title>
       <link>https://omc.network/whitepaper#s5</link>
       <guid isPermaLink="false">omc-news-en-n5</guid>
       <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <category>Governance</category>
-      <description>Phase 1 covers testnet contract deployment on BNB Chain, the open-source node client, the public testnet and the 2% community airdrop. Participation is open now; mainnet — together with the airdrop claim window and staking — opens on 1 January 2027, so the OMC a wallet accumulates during the campaign becomes claimable and stakeable at the same moment. Zero-knowledge verification research and full DAO governance follow from 2027 Q4.</description>
+      <description>Phase 1 covers testnet deployment on BNB Chain, the open-source node client, the public testnet and the 2% community airdrop. Mainnet — airdrop claims and staking included — opens Jan 1 2027, so OMC you accumulate becomes claimable and stakeable the same moment. Zero-knowledge verification and full DAO governance follow from 2027 Q4. See the roadmap →</description>
     </item>
     <item>
-      <title>Phase 1 testnet is live on BNB Chain</title>
+      <title>OMC testnet is live on BNB Chain — and you can run a node in 4 steps, no waitlist</title>
       <link>https://omc.network/testnet</link>
       <guid isPermaLink="false">omc-news-en-n1</guid>
       <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
-      <description>The OMC public testnet is deployed to BNB Smart Chain Testnet (Chain ID 97). The test contract is verified on BscScan, and the RPC endpoints, faucet guidance and the four-step node onboarding guide are published on the Testnet page.</description>
+      <description>The public testnet is deployed on BNB Smart Chain Testnet (Chain ID 97), contract verified on BscScan. RPC endpoints, faucet guidance and a four-step node onboarding guide are all on the Testnet page. Spin one up today.</description>
     </item>
     <item>
-      <title>Community airdrop: participation open, claim at mainnet · 1 January 2027</title>
+      <title>Free to join, 0 cost up front, unlocks Jan 1 2027: how to grab one of 1,000,000 OMC airdrop slots</title>
       <link>https://omc.network/airdrop</link>
       <guid isPermaLink="false">omc-news-en-n2</guid>
       <pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
       <category>Airdrop</category>
-      <description>20,000,000 OMC — 2% of the fixed supply — is reserved for the community: 1,000,000 entries × 20 OMC. Up to 5 entries per wallet and 1 per day (resets 00:00 UTC+8). Registration is open now: complete the three social tasks and register entries ahead of launch. A base claim is 100 OMC and a maxed-out wallet holds 200 OMC; claiming costs a non-refundable 0.01 BNB, which funds development. Claiming opens with mainnet and staking on 1 January 2027, so the OMC a wallet accumulates can be staked the day it exists.</description>
+      <description>20,000,000 OMC — 2% of the fixed supply — split into 1,000,000 slots of 20 OMC, first come first served. No purchase, no presale: three social tasks plus a wallet signature. Each wallet can bank up to 5 entries; claiming opens with mainnet on Jan 1 2027 for a 0.01 BNB processing fee. Register now →</description>
     </item>
     <item>
-      <title>Whitepaper v2.0 published</title>
+      <title>The full OMC blueprint is live: architecture, verification, slashing and tokenomics in one place</title>
       <link>https://omc.network/whitepaper</link>
       <guid isPermaLink="false">omc-news-en-n3</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
-      <description>The full technical reference is live: the three-tier architecture, verification and slashing rules, the weighted task-matching engine and the complete tokenomics with vesting schedules — as a web page and as PDF downloads.</description>
+      <description>Whitepaper v3.0 is published as a web page and PDF: the three-tier architecture, per-job verification and slashing, the weighted task-matching engine, and the complete tokenomics with vesting. Read the reference →</description>
     </item>
     <item>
-      <title>Project repository open-sourced</title>
+      <title>We open-sourced the entire chain — here&#x27;s how to run a node and verify a contract yourself</title>
       <link>https://github.com/CBTdao/omc-network</link>
       <guid isPermaLink="false">omc-news-en-n4</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
-      <description>The repository is public: website source, whitepaper documents, contribution guide and an MIT license. Node operators and contributors can follow the client roadmap and open issues directly.</description>
-    </item>
-    <item>
-      <title>Anti-scam notice: registering is free, claiming costs 0.01 BNB</title>
-      <link>https://omc.network/airdrop</link>
-      <guid isPermaLink="false">omc-news-en-n6</guid>
-      <pubDate>Sun, 27 Sep 2026 00:00:00 +0000</pubDate>
-      <category>Airdrop</category>
-      <description>We never ask for your seed phrase, private key, or to send BNB to a wallet address. The only payment is the 0.01 BNB claim fee charged inside the claim transaction itself — any contract named OMC outside official announcements is fraudulent.</description>
+      <description>The repository is public: website source, whitepaper, contribution guide and an MIT license. Node operators and contributors can track the client roadmap and open issues directly on GitHub. Star it →</description>
     </item>
   </channel>
 </rss>

@@ -61,14 +61,6 @@ window.OMC_NEWS = [
     external: true
   },
   {
-    id: "n6",
-    date: "2026-09-27",
-    kind: "airdrop",
-    t: "nw6.t",
-    d: "nw6.d",
-    href: "/airdrop"
-  },
-  {
     id: "n7",
     date: "2026-10-04",
     kind: "eco",
@@ -121,15 +113,6 @@ window.OMC_NEWS = [
     t: "nw12.t",
     d: "nw12.d",
     href: "/testnet"
-  },
-  {
-    id: "n13",
-    date: "2026-10-11",
-    kind: "dev",
-    t: "nw13.t",
-    d: "nw13.d",
-    href: "https://github.com/CBTdao/omc-network/blob/main/SECURITY.md",
-    external: true
   },
   {
     id: "n14",
