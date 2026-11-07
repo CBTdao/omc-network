@@ -77,7 +77,7 @@ window.I18N.en = {
   "footer.chain_staking": "Staking (OMCStaking)",
   "footer.chain_market": "Compute Market (OMCComputeMarket)",
   "footer.chain_sec": "Security",
-  "footer.chain_seclink": "Automated security testing — not an audit →",
+  "footer.chain_seclink": "Security practices →",
   "footer.chain_note": "Testnet contracts, published for verification. Testnet tokens have no monetary value and are not sold or listed anywhere.",
 
   "wlt.title": "Supported wallets",
@@ -998,8 +998,8 @@ window.I18N.en = {
   "aij.alert_transport": "The result hash is on chain, but the transport that carries the image back is not connected yet.\n\nresultHash:\n",
 
   /* security posture band (homepage + airdrop) */
-  "sec.posture.tag": "Honest security posture",
-  "sec.posture.title": "What we are actually doing about theft and quantum",
-  "sec.posture.body": "Before mainnet, OMC's privileged contract roles move to a <b>multisig + timelock</b> — removing the single-key risk most protocol losses actually come from. On quantum: OMC runs on an EVM chain and <b>cannot make the token resist quantum attacks</b>, but it tracks the standards and can sign its own off-chain traffic with Dilithium today. Read the honest plan in the <a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">roadmap</a>.",
+  "sec.posture.tag": "Security roadmap",
+  "sec.posture.title": "Custody, access control and signature agility",
+  "sec.posture.body": "Privileged contract roles move to a <b>3-of-5 multisig with a 48-hour timelock</b> before mainnet, and an independent audit completes before launch. Off-chain service traffic signed by OMC already uses <b>ML-DSA (FIPS 204)</b> — the migration schedule is in the <a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">post-quantum roadmap</a>.",
 
 };

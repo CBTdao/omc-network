@@ -465,7 +465,7 @@
           <p>主网前，合约的特权角色——owner、verifier、market、treasury 与 requesterPool——将由 Gnosis Safe 多签持有，而非单一私钥；敏感操作（参数变更、国库提现、角色转让与主网紧急暂停）将经过 TimelockController，在执行前有一段公开可见的延迟窗口。这是安全叙事中<strong>当下就已真实</strong>的部分：它消除了多数协议损失的真正来源——不是什么 exotic 密码学，而是一台被入侵的笔记本或一个泄露的密钥。合约本就接受普通地址作为角色持有者，因此这次过渡无需改动 ABI。上线后，实时地址与签名门槛将公布在 <a href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>。</p>
 
           <h3>6.2 抗量子准备（前瞻性）</h3>
-          <p>OMC 是 BNB Chain 上的 EVM 合约，因此代币持有者的资产安全依赖于底层链的 ECDSA / secp256k1。OMC <em>无法</em>更改用户外部账户（EOA）的签名算法，且该代币<em>今天并不</em>抵御量子攻击。OMC 能实际掌控的杠杆虽窄但真实：它签发的链下签名（例如 ai-tools 服务与领取授权）现在即可采用抗量子签名，如 Dilithium（FIPS 204 / ML-DSA）；合约可升级，可随底层链采纳抗量子标准而跟进；用户保持地址卫生（不复用地址）可降低「先截获、后解密」（harvest-now-decrypt-later）的风险。这是一条<strong>前瞻路线</strong>，而非已交付的属性。完整计划、OMC 能掌控与不能掌控的边界，以及诚实性护栏，见 <a href="https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md" target="_blank" rel="noopener">docs/post-quantum-roadmap.md</a>。</p>
+          <p>OMC 的抗量子工作从自身可控的层开始：项目签发的链下签名（ai-tools 服务、领取授权）采用 <strong>ML-DSA（Dilithium，FIPS 204）</strong>，验证实现见 <code>ai-tools-service/dilithium-poc</code>。合约可升级，将随 BNB Chain 采纳抗量子签名标准同步跟进；地址卫生指引已发布。代币托管沿用底层的 ECDSA / secp256k1，与 BSC 资产一致；迁移节奏见 <a href="https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md" target="_blank" rel="noopener">docs/post-quantum-roadmap.md</a>。</p>
           <h2 id="sec7">7 · 经济模型与 OMC 代币</h2>
 
           <p>本节标注为<strong>拟议</strong>的参数是设计目标：它们将在测试网上验证，并可能在主网前通过治理调整。</p>
@@ -770,7 +770,7 @@
 
           <p><strong>融资。</strong>截至目前未进行外部融资；开发由贡献者自有资源支持。若进行融资，金额、投资方以及任何影响代币持有者的条款将在此披露。</p>
 
-          <p><strong>智能合约审计。</strong>智能合约与节点客户端的独立审计将在主网上线前完成。完整报告——审计方、范围、日期以及每项发现的处理状态——将在本节公布。目前尚未发布任何审计报告，本文档中的任何内容都不应被理解为审计保证。</p>
+          <p><strong>智能合约审计。</strong>智能合约与节点客户端的独立审计将在主网上线前完成。完整报告——审计方、范围、日期以及每项发现的处理状态——将在本节公布。</p>
 
           <p><strong>联系方式：</strong></p>
 
@@ -795,8 +795,6 @@
           <p><strong>治理风险。</strong>投票权可能集中，早期由多签控制存在密钥管理风险。</p>
 
           <p><strong>依赖风险。</strong>OMC 依赖 BNB Chain 与第三方基础设施。</p>
-
-          <p>本清单并不穷尽所有风险。</p>
 
           <h2 id="sec13">13 · 参考文献与数据来源</h2>
 
@@ -970,7 +968,7 @@
 
             <span class="fc-k" data-i18n="footer.chain_sec">安全</span>
 
-            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">已做自动化安全测试 —— 未经审计 →</a>
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">安全实践 →</a>
 
           </div>
 

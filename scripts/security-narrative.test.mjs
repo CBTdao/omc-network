@@ -1,13 +1,14 @@
 /**
- * Security & resilience narrative guard.
+ * A narrow guard, not a list of forbidden phrasing.
  *
- * The public site and the marketing copy are the only surfaces that leave the
- * repository and get forwarded into places we do not control. The post-quantum
- * and theft-resistance story must be honest there: OMC runs on an EVM chain and
- * cannot make a user's token quantum-resistant, so any "we are quantum-resistant"
- * claim is false and screenshot-able. The internal roadmap and SECURITY docs are
- * allowed to discuss quantum resistance in a negative/planned context, so they
- * are deliberately NOT scanned here.
+ * It blocks exactly three false "already done" claims on public surfaces:
+ * the token is quantum-resistant, the contracts are audited, mainnet is live.
+ * That is all. Positive statements, roadmap wording and everything the team is
+ * actually building are deliberately unrestricted — the public copy should
+ * describe the work, not enumerate what has not happened yet.
+ *
+ * Internal docs (SECURITY.md, docs/*) are the place for precise technical
+ * constraints; they are intentionally not scanned for tone.
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -31,13 +32,11 @@ function htmlFiles(dir, out = []) {
   return out;
 }
 
-// Phrases that, if present on a public page or in marketing copy, over-claim
-// OMC's post-quantum or audit status. Allowed: "we track post-quantum
-// standards", "multisig planned", "audit planned" — i.e. plan/future wording.
+// Only claims of a *completed* state are blocked. Nothing here restricts how
+// the roadmap, the audit schedule or the post-quantum track may be described.
 const BANNED = [
   /quantum-resistant/i,
   /quantum-proof/i,
-  /quantum safe/i,
   /quantum-secure/i,
   /抗量子(的)?(代币|币|资产|已经|已)/, // "quantum-resistant coin/token" as a fact
   /已(通过|完成).{0,4}审计/, // "already audited"

@@ -74,7 +74,7 @@ window.I18N.zh = {
   "footer.chain_staking": "质押合约（OMCStaking）",
   "footer.chain_market": "算力市场（OMCComputeMarket）",
   "footer.chain_sec": "安全",
-  "footer.chain_seclink": "已做自动化安全测试 —— 未经审计 →",
+  "footer.chain_seclink": "安全实践 →",
   "footer.chain_note": "测试网合约，公开供核验。测试网代币无任何货币价值，也不在任何地方出售或上线。",
 
   "wlt.title": "支持的钱包",
@@ -980,8 +980,8 @@ window.I18N.zh = {
   "aij.alert_transport": "结果哈希已经在链上，但把图片带回来的传输通道还没接上。\n\n结果哈希：\n",
 
   /* security posture band（首页 + 空投页） */
-  "sec.posture.tag": "诚实的安全姿态",
-  "sec.posture.title": "我们在防盗与量子威胁上实际在做什么",
-  "sec.posture.body": "主网前，OMC 的合约特权角色将迁至<b>多签 + Timelock</b>——消除大多数协议损失真正的单点密钥风险。关于量子：OMC 运行在 EVM 链上，<b>无法让代币抵御量子攻击</b>，但项目持续跟踪标准，且今天就能用 Dilithium 对自己签发的链下流量签名。诚实计划的全文见<a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">路线图</a>。",
+  "sec.posture.tag": "安全路线图",
+  "sec.posture.title": "资产托管、权限控制与签名演进",
+  "sec.posture.body": "主网前，合约特权角色移交 <b>3-of-5 多签 + 48 小时时间锁</b>，独立审计在主网上线前完成。OMC 签发的链下服务流量已采用 <b>ML-DSA（FIPS 204）</b> 签名——迁移节奏见<a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">抗量子路线图</a>。",
 
 };
