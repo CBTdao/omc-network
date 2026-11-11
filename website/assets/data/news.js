@@ -158,5 +158,14 @@ window.OMC_NEWS = [
     d: "nw18.d",
     href: "https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n19",
+    date: "2026-11-11",
+    kind: "eco",
+    t: "nw19.t",
+    d: "nw19.d",
+    href: "https://forum.omc.network/posts/gb200-nvl72-rental-price-spread-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];

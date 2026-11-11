@@ -498,6 +498,8 @@ window.I18N.en = {
   "nw17.d": "New on forum.omc.network: the labor queue behind AI compute. One gigawatt of data-center capacity draws a large skilled-trades workforce — electricians, pipefitters, cooling specialists — while transformer and switchgear lead times now rival the GPU wait. Read →",
   "nw18.t": "800V is retiring the 54V busbar data centers used for a decade",
   "nw18.d": "New on forum.omc.network: the rack-power math now shaping AI data-center build cost. Why 800V direct current is replacing the legacy 54V busbar in high-density racks, how busway losses scale with per-GPU wattage, and why the last meter of power delivery has become a compute bottleneck, not just an electrical one. Read →",
+  "nw19.t": "The same GB200 rack lists at $10.50, $10.58 and $27.04 per GPU-hour",
+  "nw19.d": "New on forum.omc.network: why one NVIDIA GB200 NVL72 rack carries three official per-GPU-hour prices across cloud providers, how reserved commitments collapse the spread toward the specialist band, and why list price is an anchor while commitments are the real market. Read →",
 
   "f.about": "About & Contact",
   "f.press": "Press Kit",
