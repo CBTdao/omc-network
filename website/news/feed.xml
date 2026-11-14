@@ -6,8 +6,16 @@
     <description>Official Omniverse Compute (OMC) updates: testnet milestones, airdrop campaigns, engineering progress and governance announcements.</description>
     <language>en</language>
     <atom:link href="https://omc.network/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Sat, 07 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>The same GB200 rack lists at $10.50, $10.58 and $27.04 per GPU-hour</title>
+      <link>https://forum.omc.network/posts/gb200-nvl72-rental-price-spread-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-en-n19</guid>
+      <pubDate>Wed, 11 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Ecosystem</category>
+      <description>New on forum.omc.network: why one NVIDIA GB200 NVL72 rack carries three official per-GPU-hour prices across cloud providers, how reserved commitments collapse the spread toward the specialist band, and why list price is an anchor while commitments are the real market. Read →</description>
+    </item>
     <item>
       <title>800V is retiring the 54V busbar data centers used for a decade</title>
       <link>https://omc.network/news/800v-retires-54v-busbar</link>

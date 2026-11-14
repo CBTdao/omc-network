@@ -1465,7 +1465,7 @@ Project Updates
 Official updates from the OMC core team — testnet milestones, airdrop campaigns, engineering progress and governance.
 All Engineering Airdrop Ecosystem Governance Industry Voices
 
-17 posts
+18 posts
 Airdrop Oct 27, 2026 📌 Pinned
 
 #### The OMC airdrop is open: 20,000,000 OMC, 1,000,000 slots, free to join
@@ -1480,6 +1480,11 @@ Engineering Oct 1, 2026 📌 Pinned
 
 #### OMC testnet is live on BNB Chain — and you can run a node in 4 steps, no waitlist
 The public testnet is deployed on BNB Smart Chain Testnet (Chain ID 97), contract verified on BscScan. RPC endpoints, faucet guidance and a four-step node onboarding guide are all on the Testnet page. Spin one up today.
+
+Ecosystem Nov 11, 2026
+
+#### The same GB200 rack lists at $10.50, $10.58 and $27.04 per GPU-hour
+New on forum.omc.network: why one NVIDIA GB200 NVL72 rack carries three official per-GPU-hour prices across cloud providers, how reserved commitments collapse the spread toward the specialist band, and why list price is an anchor while commitments are the real market. Read →
 
 Engineering Nov 7, 2026
 

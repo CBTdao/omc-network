@@ -6,8 +6,16 @@
     <description>泛宇宙算力（OMC）官方动态：测试网里程碑、空投活动、工程进展与治理公告。</description>
     <language>zh-cn</language>
     <atom:link href="https://omc.network/zh/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Sat, 07 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>同一台 GB200 机架，三方官网标价相差悬殊：每 GPU 小时 10.50、10.58 与 27.04 美元</title>
+      <link>https://forum.omc.network/posts/gb200-nvl72-rental-price-spread-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-zh-n19</guid>
+      <pubDate>Wed, 11 Nov 2026 00:00:00 +0000</pubDate>
+      <category>生态</category>
+      <description>论坛新文：同一台 NVIDIA GB200 NVL72 机架为何在云厂商处挂着三种官方每 GPU 小时价格、预留承诺如何把价差压向专业厂商区间，以及为什么标价只是锚点、承诺价才是真实市场。阅读 →</description>
+    </item>
     <item>
       <title>800V 正在让数据中心用了十年的 54V 母线排退休</title>
       <link>https://omc.network/zh/news/800v-retires-54v-busbar</link>
