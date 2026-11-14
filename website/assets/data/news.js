@@ -58,6 +58,7 @@ window.OMC_NEWS = [
     t: "nw4.t",
     d: "nw4.d",
     href: "https://github.com/CBTdao/omc-network",
+    slug: "open-sourced-the-chain",
     external: true
   },
   {
@@ -67,6 +68,7 @@ window.OMC_NEWS = [
     t: "nw7.t",
     d: "nw7.d",
     href: "https://forum.omc.network/?utm_source=site&utm_medium=news",
+    slug: "three-sites-ecosystem",
     external: true
   },
   {
@@ -76,6 +78,7 @@ window.OMC_NEWS = [
     t: "nw8.t",
     d: "nw8.d",
     href: "https://forum.omc.network/posts/the-power-wall-not-gpus?utm_source=site&utm_medium=news",
+    slug: "jensen-ai-factories",
     external: true
   },
   {
@@ -85,6 +88,7 @@ window.OMC_NEWS = [
     t: "nw9.t",
     d: "nw9.d",
     href: "https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam?utm_source=site&utm_medium=news",
+    slug: "gpu-cloud-pricing-watch",
     external: true
   },
   {
@@ -94,6 +98,7 @@ window.OMC_NEWS = [
     t: "nw10.t",
     d: "nw10.d",
     href: "https://forum.omc.network/posts/depin-2026-who-actually-has-users?utm_source=site&utm_medium=news",
+    slug: "vitalik-dacc-decentralized-compute",
     external: true
   },
   {
@@ -103,6 +108,7 @@ window.OMC_NEWS = [
     t: "nw11.t",
     d: "nw11.d",
     href: "https://forum.omc.network/posts/real-cost-of-training-a-model-2026?utm_source=site&utm_medium=news",
+    slug: "altman-cost-of-intelligence",
     external: true
   },
   {
@@ -121,6 +127,7 @@ window.OMC_NEWS = [
     t: "nw14.t",
     d: "nw14.d",
     href: "https://forum.omc.network/posts/water-footprint-power-plant-2026?utm_source=site&utm_medium=news",
+    slug: "ai-water-bill-12x",
     external: true
   },
   {
@@ -130,6 +137,7 @@ window.OMC_NEWS = [
     t: "nw15.t",
     d: "nw15.d",
     href: "https://top.omc.network/glossary/quantization?utm_source=site&utm_medium=news",
+    slug: "quantization-explained",
     external: true
   },
   {
@@ -139,6 +147,7 @@ window.OMC_NEWS = [
     t: "nw16.t",
     d: "nw16.d",
     href: "https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&utm_medium=news",
+    slug: "network-fabric-third-bill",
     external: true
   },
   {
@@ -148,6 +157,7 @@ window.OMC_NEWS = [
     t: "nw17.t",
     d: "nw17.d",
     href: "https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&utm_medium=news",
+    slug: "gigawatt-electricians",
     external: true
   },
   {
@@ -157,6 +167,7 @@ window.OMC_NEWS = [
     t: "nw18.t",
     d: "nw18.d",
     href: "https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026?utm_source=site&utm_medium=news",
+    slug: "800v-retires-54v-busbar",
     external: true
   },
   {

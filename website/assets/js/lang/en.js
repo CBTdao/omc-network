@@ -452,6 +452,7 @@ window.I18N.en = {
   "nw.empty": "No posts in this category yet.",
   "nw.latest": "Latest",
   "nw.open": "Open →",
+  "nw.read_full": "Read the full analysis →",
   "nw.side_t": "Follow the updates",
   "nw.side_d": "News is published here first, then mirrored to X and Telegram.",
   "nw.side_x": "Follow on X",

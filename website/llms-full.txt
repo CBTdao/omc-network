@@ -1,6 +1,6 @@
 # Omniverse Compute — complete site text (English)
 
-Generated 2026-11-08 from contracts/params.json v8 (2026-10-30) by
+Generated 2026-11-14 from contracts/params.json v8 (2026-10-30) by
 website/tools/build_llms_full.py. Every figure in this file comes from that one
 file; if a listing disagrees with something below, the listing is stale.
 

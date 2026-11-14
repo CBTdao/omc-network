@@ -10,7 +10,7 @@
     <generator>website/tools/build_news.py</generator>
     <item>
       <title>800V 正在让数据中心用了十年的 54V 母线排退休</title>
-      <link>https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/800v-retires-54v-busbar</link>
       <guid isPermaLink="false">omc-news-zh-n18</guid>
       <pubDate>Sat, 07 Nov 2026 00:00:00 +0000</pubDate>
       <category>工程</category>
@@ -18,7 +18,7 @@
     </item>
     <item>
       <title>一个 GW 级 AI 园区要的是一支电工大军，而不只是芯片</title>
-      <link>https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/gigawatt-electricians</link>
       <guid isPermaLink="false">omc-news-zh-n17</guid>
       <pubDate>Tue, 03 Nov 2026 00:00:00 +0000</pubDate>
       <category>生态</category>
@@ -26,7 +26,7 @@
     </item>
     <item>
       <title>互联税：为什么卡住集群规模的不是 GPU，而是 800G 端口</title>
-      <link>https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/network-fabric-third-bill</link>
       <guid isPermaLink="false">omc-news-zh-n16</guid>
       <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
       <category>工程</category>
@@ -42,7 +42,7 @@
     </item>
     <item>
       <title>决定 70B 模型能否塞进你显卡的那个旋钮：量化，讲人话</title>
-      <link>https://top.omc.network/glossary/quantization?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/quantization-explained</link>
       <guid isPermaLink="false">omc-news-zh-n15</guid>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <category>生态</category>
@@ -50,7 +50,7 @@
     </item>
     <item>
       <title>AI 数据中心的隐藏水账是肉眼所见 12 倍 —— 这账我们算出来了</title>
-      <link>https://forum.omc.network/posts/water-footprint-power-plant-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/ai-water-bill-12x</link>
       <guid isPermaLink="false">omc-news-zh-n14</guid>
       <pubDate>Sun, 25 Oct 2026 00:00:00 +0000</pubDate>
       <category>生态</category>
@@ -66,7 +66,7 @@
     </item>
     <item>
       <title>OMC 现在三站联动 —— 其中一个给 AI 工具排名，零返佣</title>
-      <link>https://forum.omc.network/?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/three-sites-ecosystem</link>
       <guid isPermaLink="false">omc-news-zh-n7</guid>
       <pubDate>Sun, 04 Oct 2026 00:00:00 +0000</pubDate>
       <category>生态</category>
@@ -74,7 +74,7 @@
     </item>
     <item>
       <title>黄仁勋说数据中心正在变成「AI 工厂」—— 我们就在建那个智能的交易市场</title>
-      <link>https://forum.omc.network/posts/the-power-wall-not-gpus?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/jensen-ai-factories</link>
       <guid isPermaLink="false">omc-news-zh-n8</guid>
       <pubDate>Sun, 04 Oct 2026 00:00:00 +0000</pubDate>
       <category>行业观点</category>
@@ -82,7 +82,7 @@
     </item>
     <item>
       <title>Vitalik 说去中心化计算属于 d/acc 拼图 —— 所以我们把它造出来了</title>
-      <link>https://forum.omc.network/posts/depin-2026-who-actually-has-users?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/vitalik-dacc-decentralized-compute</link>
       <guid isPermaLink="false">omc-news-zh-n10</guid>
       <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
       <category>行业观点</category>
@@ -90,7 +90,7 @@
     </item>
     <item>
       <title>云上 GPU 定价是个黑箱。我们把它拆开 —— H100 价差、竞价套利，连方法论一起给</title>
-      <link>https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/gpu-cloud-pricing-watch</link>
       <guid isPermaLink="false">omc-news-zh-n9</guid>
       <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
       <category>工程</category>
@@ -98,7 +98,7 @@
     </item>
     <item>
       <title>Altman：智能的成本将趋近能源的成本 —— 而这正是我们的全部论点</title>
-      <link>https://forum.omc.network/posts/real-cost-of-training-a-model-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/zh/news/altman-cost-of-intelligence</link>
       <guid isPermaLink="false">omc-news-zh-n11</guid>
       <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <category>行业观点</category>
@@ -138,7 +138,7 @@
     </item>
     <item>
       <title>我们把整条链开源了 —— 怎么跑节点、怎么自己校验合约，都给你</title>
-      <link>https://github.com/CBTdao/omc-network</link>
+      <link>https://omc.network/zh/news/open-sourced-the-chain</link>
       <guid isPermaLink="false">omc-news-zh-n4</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 +0000</pubDate>
       <category>生态</category>

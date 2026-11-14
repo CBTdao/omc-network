@@ -449,6 +449,7 @@ window.I18N.zh = {
   "nw.empty": "该分类下暂无动态。",
   "nw.latest": "最新一条",
   "nw.open": "查看详情 →",
+  "nw.read_full": "阅读完整分析 →",
   "nw.side_t": "关注项目动态",
   "nw.side_d": "动态会先在本站发布，随后同步到 X 与电报群。",
   "nw.side_x": "关注 X",

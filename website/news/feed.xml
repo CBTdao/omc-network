@@ -10,7 +10,7 @@
     <generator>website/tools/build_news.py</generator>
     <item>
       <title>800V is retiring the 54V busbar data centers used for a decade</title>
-      <link>https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/800v-retires-54v-busbar</link>
       <guid isPermaLink="false">omc-news-en-n18</guid>
       <pubDate>Sat, 07 Nov 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
@@ -18,7 +18,7 @@
     </item>
     <item>
       <title>A gigawatt AI site needs an army of electricians, not just chips</title>
-      <link>https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/gigawatt-electricians</link>
       <guid isPermaLink="false">omc-news-en-n17</guid>
       <pubDate>Tue, 03 Nov 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
@@ -26,7 +26,7 @@
     </item>
     <item>
       <title>The interconnect tax: why 800G ports — not GPUs — cap how big a cluster can get</title>
-      <link>https://forum.omc.network/posts/network-fabric-third-bill-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/network-fabric-third-bill</link>
       <guid isPermaLink="false">omc-news-en-n16</guid>
       <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
@@ -42,7 +42,7 @@
     </item>
     <item>
       <title>The one dial that decides if a 70B model fits your GPU: quantization, explained</title>
-      <link>https://top.omc.network/glossary/quantization?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/quantization-explained</link>
       <guid isPermaLink="false">omc-news-en-n15</guid>
       <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
@@ -50,7 +50,7 @@
     </item>
     <item>
       <title>AI data centers&#x27; hidden water bill is 12x what you see — we did the math</title>
-      <link>https://forum.omc.network/posts/water-footprint-power-plant-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/ai-water-bill-12x</link>
       <guid isPermaLink="false">omc-news-en-n14</guid>
       <pubDate>Sun, 25 Oct 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
@@ -66,7 +66,7 @@
     </item>
     <item>
       <title>OMC now spans three sites — and one of them ranks AI tools with zero affiliate links</title>
-      <link>https://forum.omc.network/?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/three-sites-ecosystem</link>
       <guid isPermaLink="false">omc-news-en-n7</guid>
       <pubDate>Sun, 04 Oct 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
@@ -74,7 +74,7 @@
     </item>
     <item>
       <title>Jensen Huang says data centers are becoming &#x27;AI factories&#x27; — we&#x27;re building the marketplace for that intelligence</title>
-      <link>https://forum.omc.network/posts/the-power-wall-not-gpus?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/jensen-ai-factories</link>
       <guid isPermaLink="false">omc-news-en-n8</guid>
       <pubDate>Sun, 04 Oct 2026 00:00:00 +0000</pubDate>
       <category>Industry Voices</category>
@@ -82,7 +82,7 @@
     </item>
     <item>
       <title>Vitalik says decentralized compute belongs in the d/acc toolbox — so we built it</title>
-      <link>https://forum.omc.network/posts/depin-2026-who-actually-has-users?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/vitalik-dacc-decentralized-compute</link>
       <guid isPermaLink="false">omc-news-en-n10</guid>
       <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
       <category>Industry Voices</category>
@@ -90,7 +90,7 @@
     </item>
     <item>
       <title>Cloud GPU pricing is a black box. We opened it — H100 spreads, spot arbitrage, methodology included</title>
-      <link>https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/gpu-cloud-pricing-watch</link>
       <guid isPermaLink="false">omc-news-en-n9</guid>
       <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
       <category>Engineering</category>
@@ -98,7 +98,7 @@
     </item>
     <item>
       <title>Altman: the cost of intelligence trends toward the cost of energy. Here&#x27;s why that&#x27;s our whole thesis</title>
-      <link>https://forum.omc.network/posts/real-cost-of-training-a-model-2026?utm_source=site&amp;utm_medium=news</link>
+      <link>https://omc.network/news/altman-cost-of-intelligence</link>
       <guid isPermaLink="false">omc-news-en-n11</guid>
       <pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
       <category>Industry Voices</category>
@@ -138,7 +138,7 @@
     </item>
     <item>
       <title>We open-sourced the entire chain — here&#x27;s how to run a node and verify a contract yourself</title>
-      <link>https://github.com/CBTdao/omc-network</link>
+      <link>https://omc.network/news/open-sourced-the-chain</link>
       <guid isPermaLink="false">omc-news-en-n4</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 +0000</pubDate>
       <category>Ecosystem</category>
