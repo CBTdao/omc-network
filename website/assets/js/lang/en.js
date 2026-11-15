@@ -501,6 +501,8 @@ window.I18N.en = {
   "nw18.d": "New on forum.omc.network: the rack-power math now shaping AI data-center build cost. Why 800V direct current is replacing the legacy 54V busbar in high-density racks, how busway losses scale with per-GPU wattage, and why the last meter of power delivery has become a compute bottleneck, not just an electrical one. Read →",
   "nw19.t": "The same GB200 rack lists at $10.50, $10.58 and $27.04 per GPU-hour",
   "nw19.d": "New on forum.omc.network: why one NVIDIA GB200 NVL72 rack carries three official per-GPU-hour prices across cloud providers, how reserved commitments collapse the spread toward the specialist band, and why list price is an anchor while commitments are the real market. Read →",
+  "nw20.t": "AI server builders are financing the GPU build-out, not just assembling it",
+  "nw20.d": "New on forum.omc.network: why the cash Dell, Supermicro and HPE tie up in GB200 inventory has become a hidden cost of AI capacity, how working-capital cycles shape who can scale rack production, and why the bottleneck is balance-sheet depth as much as silicon. Read →",
 
   "f.about": "About & Contact",
   "f.press": "Press Kit",

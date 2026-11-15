@@ -178,5 +178,14 @@ window.OMC_NEWS = [
     d: "nw19.d",
     href: "https://forum.omc.network/posts/gb200-nvl72-rental-price-spread-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n20",
+    date: "2026-11-15",
+    kind: "eco",
+    t: "nw20.t",
+    d: "nw20.d",
+    href: "https://forum.omc.network/posts/ai-server-builder-margin-cash-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
