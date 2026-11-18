@@ -187,5 +187,14 @@ window.OMC_NEWS = [
     d: "nw20.d",
     href: "https://forum.omc.network/posts/ai-server-builder-margin-cash-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n21",
+    date: "2026-11-18",
+    kind: "eco",
+    t: "nw21.t",
+    d: "nw21.d",
+    href: "https://forum.omc.network/posts/hyperscaler-depreciation-useful-life-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
