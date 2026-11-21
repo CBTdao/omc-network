@@ -17,6 +17,22 @@
       <description>New on forum.omc.network: why the signal in NVIDIA&#x27;s Q3 FY2027 results is gross margin guided down to 71–72%, not the record revenue — pre-priced orders honored against $390B of supply commitments, mostly memory. Read →</description>
     </item>
     <item>
+      <title>NIST closes its post-quantum transition plan — and the clock starts now</title>
+      <link>https://omc.network/post-quantum</link>
+      <guid isPermaLink="false">omc-news-en-n23</guid>
+      <pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Engineering</category>
+      <description>The final IR 8547 (27 Oct) deprecates current public-key algorithms after 2030 and disallows them after 2035. Ethereum&#x27;s PQ team targets 2029 and the Quantum Alliance is defining what &#x27;quantum-ready&#x27; means. See where OMC&#x27;s signature-agility roadmap fits. Read →</description>
+    </item>
+    <item>
+      <title>AI agents made 138M x402 payments on Base — 87% were under 10 cents</title>
+      <link>https://omc.network/agent-economy</link>
+      <guid isPermaLink="false">omc-news-en-n24</guid>
+      <pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Ecosystem</category>
+      <description>Chainalysis counted 138M cumulative x402 transactions on Base by Q3 2026; the protocol now sits in the Linux Foundation with Visa, Stripe and Google. BlackRock frames compute as a tradeable asset and machine-native payments as the settlement rail. See why OMC settles per verified result. Read →</description>
+    </item>
+    <item>
       <title>Four hyperscalers stretched server lifespans — then Amazon cut one back to five years</title>
       <link>https://forum.omc.network/posts/hyperscaler-depreciation-useful-life-2026?utm_source=site&amp;utm_medium=news</link>
       <guid isPermaLink="false">omc-news-en-n21</guid>

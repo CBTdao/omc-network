@@ -205,5 +205,21 @@ window.OMC_NEWS = [
     d: "nw22.d",
     href: "https://forum.omc.network/posts/nvidia-q3-fy27-margin-bottom-memory-commitments-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n23",
+    date: "2026-11-21",
+    kind: "dev",
+    t: "nw23.t",
+    d: "nw23.d",
+    href: "/post-quantum"
+  },
+  {
+    id: "n24",
+    date: "2026-11-21",
+    kind: "eco",
+    t: "nw24.t",
+    d: "nw24.d",
+    href: "/agent-economy"
   }
 ];

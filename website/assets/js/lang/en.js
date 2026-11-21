@@ -507,6 +507,10 @@ window.I18N.en = {
   "nw21.d": "New on forum.omc.network: how 2020–2024 useful-life extensions across Microsoft, Alphabet, Amazon and Meta lifted reported income, and why Amazon's January 2025 reversal — citing the pace of AI development — added $1.4B in depreciation. Read →",
   "nw22.t": "NVIDIA's first $115.8B quarter: the margin guide is the real headline",
   "nw22.d": "New on forum.omc.network: why the signal in NVIDIA's Q3 FY2027 results is gross margin guided down to 71–72%, not the record revenue — pre-priced orders honored against $390B of supply commitments, mostly memory. Read →",
+  "nw23.t": "NIST closes its post-quantum transition plan — and the clock starts now",
+  "nw23.d": "The final IR 8547 (27 Oct) deprecates current public-key algorithms after 2030 and disallows them after 2035. Ethereum's PQ team targets 2029 and the Quantum Alliance is defining what 'quantum-ready' means. See where OMC's signature-agility roadmap fits. Read →",
+  "nw24.t": "AI agents made 138M x402 payments on Base — 87% were under 10 cents",
+  "nw24.d": "Chainalysis counted 138M cumulative x402 transactions on Base by Q3 2026; the protocol now sits in the Linux Foundation with Visa, Stripe and Google. BlackRock frames compute as a tradeable asset and machine-native payments as the settlement rail. See why OMC settles per verified result. Read →",
 
   "f.about": "About & Contact",
   "f.press": "Press Kit",
@@ -1010,5 +1014,18 @@ window.I18N.en = {
   "sec.posture.tag": "Security roadmap",
   "sec.posture.title": "Custody, access control and signature agility",
   "sec.posture.body": "Privileged contract roles move to a <b>3-of-5 multisig with a 48-hour timelock</b> before mainnet, and an independent audit completes before launch. Off-chain service traffic signed by OMC already uses <b>ML-DSA (FIPS 204)</b> — the migration schedule is in the <a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">post-quantum roadmap</a>.",
+
+  /* homepage — thesis deep-dive cards */
+  "dives.eyebrow": "Explore the Thesis",
+  "dives.title": "Three ideas shaping the network",
+  "dive1.t": "Compute for the Agent Economy",
+  "dive1.d": "Autonomous agents buy GPU time, pay per verified result and settle machine-to-machine on BNB Chain.",
+  "dive1.cta": "Read the thesis →",
+  "dive2.t": "Verifiable Compute",
+  "dive2.d": "Escrow, spot-check re-execution, redundancy and TEEs — billed for results that pass verification, not GPU hours.",
+  "dive2.cta": "See how verification works →",
+  "dive3.t": "Post-Quantum Roadmap",
+  "dive3.d": "ML-DSA off-chain signatures, signature agility in contracts, and a migration path that follows BNB Chain.",
+  "dive3.cta": "Read the roadmap →",
 
 };
