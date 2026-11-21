@@ -54,6 +54,16 @@ PAGES_EN = [
     ("post-quantum.html", "https://omc.network/post-quantum"),
 ]
 
+# build_news.py renders one detail page per externally linked post. Discover
+# them here instead of listing them by hand: a new slug must not show up in the
+# sitemap while silently staying out of the full-text dump. The curated entry
+# above (omc-airdrop-is-open) keeps its reading-order position.
+_DETAIL_PAGES = [
+    (f"news/{p.name}", f"https://omc.network/news/{p.stem}")
+    for p in sorted((WEB / "news").glob("*.html"))
+]
+PAGES_EN += [entry for entry in _DETAIL_PAGES if entry not in PAGES_EN]
+
 # Derived from PAGES_EN rather than listed by hand: the hand-written version
 # silently kept five pages out of the dump after they were translated, and the
 # point of the dump is that a page cannot be missing from it.

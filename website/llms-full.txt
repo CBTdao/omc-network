@@ -2059,3 +2059,124 @@ Follow the address-hygiene guidance: avoid reuse, rotate keys where practical, a
 - Post-quantum roadmap
 - Whitepaper §6
 - Project news
+
+## 800V is retiring the 54V busbar data centers used for a decade
+URL: https://omc.network/news/800v-retires-54v-busbar · lang: en
+
+Engineering Nov 7, 2026
+
+## 800V is retiring the 54V busbar data centers used for a decade
+New on forum.omc.network: the rack-power math now shaping AI data-center build cost. Why 800V direct current is replacing the legacy 54V busbar in high-density racks, how busway losses scale with per-GPU wattage, and why the last meter of power delivery has become a compute bottleneck, not just an electrical one. Read →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## AI data centers' hidden water bill is 12x what you see
+URL: https://omc.network/news/ai-water-bill-12x · lang: en
+
+Ecosystem Oct 25, 2026
+
+## AI data centers' hidden water bill is 12x what you see — we did the math
+New on forum.omc.network: US data centers used 66B liters on site in 2023, but ~800B generating their power — a 12x multiplier that rewrites the closed-loop cooling debate. The full breakdown, with sources. Read →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## Altman: the cost of intelligence trends toward the cost of energ…
+URL: https://omc.network/news/altman-cost-of-intelligence · lang: en
+
+Industry Voices Oct 2, 2026
+
+## Altman: the cost of intelligence trends toward the cost of energy. Here's why that's our whole thesis
+In 'The Intelligence Age' (Sep 2024), OpenAI's CEO argues intelligence becomes a utility as its cost falls toward the price of energy — making compute supply and power access the hard constraints. OMC is built for exactly that world. Analysis → (industry commentary, not investment advice)
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## A gigawatt AI site needs an army of electricians, not just chips
+URL: https://omc.network/news/gigawatt-electricians · lang: en
+
+Ecosystem Nov 3, 2026
+
+## A gigawatt AI site needs an army of electricians, not just chips
+New on forum.omc.network: the labor queue behind AI compute. One gigawatt of data-center capacity draws a large skilled-trades workforce — electricians, pipefitters, cooling specialists — while transformer and switchgear lead times now rival the GPU wait. Read →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## Cloud GPU pricing is a black box. We opened it
+URL: https://omc.network/news/gpu-cloud-pricing-watch · lang: en
+
+Engineering Oct 3, 2026
+
+## Cloud GPU pricing is a black box. We opened it — H100 spreads, spot arbitrage, methodology included
+New on forum.omc.network: a Pricing Watch series on the real cost of a training run, H100 rate spreads between hyperscalers and decentralized marketplaces, and reserved-vs-spot arbitrage. No sponsors, no affiliate links — the methodology ships with every piece. Read →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## Jensen Huang says data centers are becoming 'AI…
+URL: https://omc.network/news/jensen-ai-factories · lang: en
+
+Industry Voices Oct 4, 2026
+
+## Jensen Huang says data centers are becoming 'AI factories' — we're building the marketplace for that intelligence
+At GTC 2024, NVIDIA's CEO described the shift from file-cabinet data centers to AI factories that manufacture intelligence at scale — with compute and power, not chips, as the binding constraint. That's the exact problem OMC's decentralized GPU marketplace is built to solve. Analysis → (industry commentary, not investment advice)
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## The interconnect tax: why 800G ports
+URL: https://omc.network/news/network-fabric-third-bill · lang: en
+
+Engineering Oct 30, 2026
+
+## The interconnect tax: why 800G ports — not GPUs — cap how big a cluster can get
+New on forum.omc.network: a deep dive on the network fabric, the bill everyone prices last. 800G ports, the radix math behind spine-leaf topology, and why one oversubscribed uplink can stall an entire training run. Read →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## We open-sourced the entire chain
+URL: https://omc.network/news/open-sourced-the-chain · lang: en
+
+Ecosystem Sep 28, 2026
+
+## We open-sourced the entire chain — here's how to run a node and verify a contract yourself
+The repository is public: website source, whitepaper, contribution guide and an MIT license. Node operators and contributors can track the client roadmap and open issues directly on GitHub. Star it →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## The one dial that decides if a 70B model fits your GPU: quantiza…
+URL: https://omc.network/news/quantization-explained · lang: en
+
+Ecosystem Oct 26, 2026
+
+## The one dial that decides if a 70B model fits your GPU: quantization, explained
+New on top.omc.network: a plain-English glossary entry on quantization, the one formula (VRAM ≈ params × bytes/weight) every local-LLM buyer needs, and why Q4_K_M is the default. Read the glossary →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## OMC now spans three sites
+URL: https://omc.network/news/three-sites-ecosystem · lang: en
+
+Ecosystem Oct 4, 2026
+
+## OMC now spans three sites — and one of them ranks AI tools with zero affiliate links
+The ecosystem now covers omc.network, top.omc.network (independent, no-affiliate AI tool rankings) and forum.omc.network — the Decentralized Compute Forum with deep essays and open comments. All three cross-link. Explore →
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.
+
+## Vitalik says decentralized compute belongs in the d/acc toolbox…
+URL: https://omc.network/news/vitalik-dacc-decentralized-compute · lang: en
+
+Industry Voices Oct 3, 2026
+
+## Vitalik says decentralized compute belongs in the d/acc toolbox — so we built it
+In 'd/acc' (Nov 2024), Ethereum's founder argues open, verifiable, decentralized computing is a defensive technology worth building — including markets that route idle GPUs to real workloads. OMC is our answer to that call. Analysis → (industry commentary, not investment advice)
+
+### Ready to join the grid?
+Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU into the testnet today.

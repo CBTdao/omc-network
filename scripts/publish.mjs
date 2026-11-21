@@ -36,6 +36,9 @@ const steps = [
   ["run Node guards", process.execPath, [
     "--test", "scripts/seo-coverage.test.mjs", "scripts/news-static.test.mjs",
     "scripts/entity-identity.test.mjs", "scripts/i18n-integrity.test.mjs",
+    // Catches pages that make it into the sitemap but not into llms-full.txt,
+    // e.g. a new per-article detail page whose slug was never registered.
+    "scripts/ai-readiness.test.mjs",
   ]],
 ];
 
