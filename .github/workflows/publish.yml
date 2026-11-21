@@ -1,0 +1,90 @@
+# Install as .github/workflows/publish.yml to enable this job. It lives at
+# scripts/publish.yml because the deploy PAT has no `workflow` scope and GitHub
+# refuses to let such a token create or update files under .github/workflows/.
+# Copy it into place on GitHub (the web UI uses the account's full permissions),
+# or push it once with a token that carries the Workflows write permission.
+# Until then, `node scripts/publish.mjs` runs the identical chain locally.
+name: Rebuild static outputs and ask for a crawl
+
+# Content posts land on main from the content bot, which writes the data source
+# but not the generated pages, feeds, full-text dumps or sitemap. This job is
+# the missing half of that publish. It runs the same build chain as
+# scripts/publish.mjs, commits any regenerated output, and then tells IndexNow
+# that the URLs changed. Without it, a perfectly correct sitemap can sit at
+# last month's lastmod while Bing goes weeks without fetching a new page.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    # The job's own commit carries [skip ci]; without this guard a page whose
+    # date stamp legitimately changes would trigger the job again forever.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # inject_facts.py reads git log for dateModified
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Rebuild news pages, feeds, full-text dumps and sitemap
+        run: |
+          python website/tools/build_news.py
+          python website/tools/build_llms_full.py
+          python website/tools/inject_facts.py
+          python website/tools/build_sitemap.py
+
+      - name: Verify generated output is current
+        run: |
+          python website/tools/build_news.py --check
+          python website/tools/inject_facts.py --check
+          python website/tools/build_sitemap.py --check
+          node --test scripts/*.test.mjs models/*.test.mjs db/tests/*.test.mjs
+
+      - name: Commit regenerated output
+        id: commit
+        run: |
+          if git diff --quiet -- website/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "All generated output already current."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/
+          git commit -m "chore: rebuild static outputs [skip ci]"
+          git pull --rebase origin main
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Ask IndexNow to crawl
+        if: steps.commit.outputs.changed == 'true'
+        run: node scripts/indexnow.mjs
+
+      # Bing's authenticated URL Submission API needs a key that lives outside
+      # the repo. When the secret is configured this submits the same URLs and
+      # makes LastCrawledDate readable back; when it is not, IndexNow still ran.
+      - name: Submit to Bing Webmaster Tools
+        env:
+          BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+        run: |
+          if [ -z "$BING_WEBMASTER_API_KEY" ]; then
+            echo "No BING_WEBMASTER_API_KEY secret; skipping authenticated submission."
+            exit 0
+          fi
+          node scripts/bing-submit.mjs
