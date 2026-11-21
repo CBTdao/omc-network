@@ -1,6 +1,6 @@
 # Omniverse Compute — complete site text (English)
 
-Generated 2026-11-14 from contracts/params.json v8 (2026-10-30) by
+Generated 2026-11-21 from contracts/params.json v8 (2026-10-30) by
 website/tools/build_llms_full.py. Every figure in this file comes from that one
 file; if a listing disagrees with something below, the listing is stale.
 
@@ -1465,7 +1465,7 @@ Project Updates
 Official updates from the OMC core team — testnet milestones, airdrop campaigns, engineering progress and governance.
 All Engineering Airdrop Ecosystem Governance Industry Voices
 
-18 posts
+21 posts
 Airdrop Oct 27, 2026 📌 Pinned
 
 #### The OMC airdrop is open: 20,000,000 OMC, 1,000,000 slots, free to join
@@ -1480,6 +1480,21 @@ Engineering Oct 1, 2026 📌 Pinned
 
 #### OMC testnet is live on BNB Chain — and you can run a node in 4 steps, no waitlist
 The public testnet is deployed on BNB Smart Chain Testnet (Chain ID 97), contract verified on BscScan. RPC endpoints, faucet guidance and a four-step node onboarding guide are all on the Testnet page. Spin one up today.
+
+Ecosystem Nov 21, 2026
+
+#### NVIDIA's first $115.8B quarter: the margin guide is the real headline
+New on forum.omc.network: why the signal in NVIDIA's Q3 FY2027 results is gross margin guided down to 71–72%, not the record revenue — pre-priced orders honored against $390B of supply commitments, mostly memory. Read →
+
+Ecosystem Nov 18, 2026
+
+#### Four hyperscalers stretched server lifespans — then Amazon cut one back to five years
+New on forum.omc.network: how 2020–2024 useful-life extensions across Microsoft, Alphabet, Amazon and Meta lifted reported income, and why Amazon's January 2025 reversal — citing the pace of AI development — added $1.4B in depreciation. Read →
+
+Ecosystem Nov 15, 2026
+
+#### AI server builders are financing the GPU build-out, not just assembling it
+New on forum.omc.network: why the cash Dell, Supermicro and HPE tie up in GB200 inventory has become a hidden cost of AI capacity, how working-capital cycles shape who can scale rack production, and why the bottleneck is balance-sheet depth as much as silicon. Read →
 
 Ecosystem Nov 11, 2026
 

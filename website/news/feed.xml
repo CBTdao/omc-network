@@ -6,8 +6,32 @@
     <description>Official Omniverse Compute (OMC) updates: testnet milestones, airdrop campaigns, engineering progress and governance announcements.</description>
     <language>en</language>
     <atom:link href="https://omc.network/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 11 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>NVIDIA&#x27;s first $115.8B quarter: the margin guide is the real headline</title>
+      <link>https://forum.omc.network/posts/nvidia-q3-fy27-margin-bottom-memory-commitments-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-en-n22</guid>
+      <pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Ecosystem</category>
+      <description>New on forum.omc.network: why the signal in NVIDIA&#x27;s Q3 FY2027 results is gross margin guided down to 71–72%, not the record revenue — pre-priced orders honored against $390B of supply commitments, mostly memory. Read →</description>
+    </item>
+    <item>
+      <title>Four hyperscalers stretched server lifespans — then Amazon cut one back to five years</title>
+      <link>https://forum.omc.network/posts/hyperscaler-depreciation-useful-life-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-en-n21</guid>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Ecosystem</category>
+      <description>New on forum.omc.network: how 2020–2024 useful-life extensions across Microsoft, Alphabet, Amazon and Meta lifted reported income, and why Amazon&#x27;s January 2025 reversal — citing the pace of AI development — added $1.4B in depreciation. Read →</description>
+    </item>
+    <item>
+      <title>AI server builders are financing the GPU build-out, not just assembling it</title>
+      <link>https://forum.omc.network/posts/ai-server-builder-margin-cash-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-en-n20</guid>
+      <pubDate>Sun, 15 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Ecosystem</category>
+      <description>New on forum.omc.network: why the cash Dell, Supermicro and HPE tie up in GB200 inventory has become a hidden cost of AI capacity, how working-capital cycles shape who can scale rack production, and why the bottleneck is balance-sheet depth as much as silicon. Read →</description>
+    </item>
     <item>
       <title>The same GB200 rack lists at $10.50, $10.58 and $27.04 per GPU-hour</title>
       <link>https://forum.omc.network/posts/gb200-nvl72-rental-price-spread-2026?utm_source=site&amp;utm_medium=news</link>

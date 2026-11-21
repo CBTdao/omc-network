@@ -6,8 +6,32 @@
     <description>泛宇宙算力（OMC）官方动态：测试网里程碑、空投活动、工程进展与治理公告。</description>
     <language>zh-cn</language>
     <atom:link href="https://omc.network/zh/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 11 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>英伟达首个 1158 亿美元季度：真正的看点是毛利率指引</title>
+      <link>https://forum.omc.network/posts/nvidia-q3-fy27-margin-bottom-memory-commitments-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-zh-n22</guid>
+      <pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
+      <category>生态</category>
+      <description>论坛新文：英伟达 2027 财年 Q3 财报里真正的信号不是创纪录营收，而是毛利率指引下调至 71–72%——在 3900 亿美元（主要为内存）供应承诺下仍按原价履约。阅读 →</description>
+    </item>
+    <item>
+      <title>四家超大规模厂商连年延长服务器折旧年限——亚马逊却在 2025 年把一部分改回五年</title>
+      <link>https://forum.omc.network/posts/hyperscaler-depreciation-useful-life-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-zh-n21</guid>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 +0000</pubDate>
+      <category>生态</category>
+      <description>论坛新文：2020–2024 年微软、Alphabet、亚马逊、Meta 延长服务器使用年限如何抬高报表利润，以及亚马逊 2025 年 1 月以 AI 迭代加速为由回调部分设备至五年、多计 14 亿美元折旧的原因。阅读 →</description>
+    </item>
+    <item>
+      <title>AI 服务器厂商不只是组装，而是在为 GPU 建设筹资</title>
+      <link>https://forum.omc.network/posts/ai-server-builder-margin-cash-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-zh-n20</guid>
+      <pubDate>Sun, 15 Nov 2026 00:00:00 +0000</pubDate>
+      <category>生态</category>
+      <description>论坛新文：戴尔、超微、HPE 在 GB200 库存上占压的现金，如何成为 AI 算力扩张的隐性成本；营运资金周期怎样决定谁能放大机架产能，以及为什么瓶颈既是硅、也是资产负债表深度。阅读 →</description>
+    </item>
     <item>
       <title>同一台 GB200 机架，三方官网标价相差悬殊：每 GPU 小时 10.50、10.58 与 27.04 美元</title>
       <link>https://forum.omc.network/posts/gb200-nvl72-rental-price-spread-2026?utm_source=site&amp;utm_medium=news</link>
