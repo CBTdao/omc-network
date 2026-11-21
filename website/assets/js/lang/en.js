@@ -505,6 +505,8 @@ window.I18N.en = {
   "nw20.d": "New on forum.omc.network: why the cash Dell, Supermicro and HPE tie up in GB200 inventory has become a hidden cost of AI capacity, how working-capital cycles shape who can scale rack production, and why the bottleneck is balance-sheet depth as much as silicon. Read →",
   "nw21.t": "Four hyperscalers stretched server lifespans — then Amazon cut one back to five years",
   "nw21.d": "New on forum.omc.network: how 2020–2024 useful-life extensions across Microsoft, Alphabet, Amazon and Meta lifted reported income, and why Amazon's January 2025 reversal — citing the pace of AI development — added $1.4B in depreciation. Read →",
+  "nw22.t": "NVIDIA's first $115.8B quarter: the margin guide is the real headline",
+  "nw22.d": "New on forum.omc.network: why the signal in NVIDIA's Q3 FY2027 results is gross margin guided down to 71–72%, not the record revenue — pre-priced orders honored against $390B of supply commitments, mostly memory. Read →",
 
   "f.about": "About & Contact",
   "f.press": "Press Kit",

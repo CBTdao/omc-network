@@ -196,5 +196,14 @@ window.OMC_NEWS = [
     d: "nw21.d",
     href: "https://forum.omc.network/posts/hyperscaler-depreciation-useful-life-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n22",
+    date: "2026-11-21",
+    kind: "eco",
+    t: "nw22.t",
+    d: "nw22.d",
+    href: "https://forum.omc.network/posts/nvidia-q3-fy27-margin-bottom-memory-commitments-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
