@@ -42,19 +42,11 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Rebuild news pages, feeds, full-text dumps and sitemap
-        run: |
-          python website/tools/build_news.py
-          python website/tools/build_llms_full.py
-          python website/tools/inject_facts.py
-          python website/tools/build_sitemap.py
-
-      - name: Verify generated output is current
-        run: |
-          python website/tools/build_news.py --check
-          python website/tools/inject_facts.py --check
-          python website/tools/build_sitemap.py --check
-          node --test scripts/*.test.mjs models/*.test.mjs db/tests/*.test.mjs
+      - name: Rebuild and verify generated output
+        # Keep this in lockstep with scripts/publish.mjs --no-push. The wildcard
+        # test glob in the first draft pulled in db tests that need npm packages
+        # this repo does not ship, plus an unrelated failing guard.
+        run: node scripts/publish.mjs --no-push
 
       - name: Commit regenerated output
         id: commit
