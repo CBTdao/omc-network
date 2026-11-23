@@ -47,6 +47,7 @@ PAGES_EN = [
     ("news.html", "https://omc.network/news"),
     ("press.html", "https://omc.network/press"),
     ("about.html", "https://omc.network/about"),
+    ("developers.html", "https://omc.network/developers"),
     ("privacy.html", "https://omc.network/privacy"),
     ("aup.html", "https://omc.network/aup"),
     ("agent-economy.html", "https://omc.network/agent-economy"),

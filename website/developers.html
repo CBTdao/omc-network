@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <title>Developers API &amp; Node Guide — OMC</title>
+  <meta name="description" content="OMC developer reference: the airdrop REST API, the canonical wallet-signature message, entry caps, and the four-step testnet node onboarding path.">
+  <link rel="canonical" href="https://omc.network/developers">
+  <link rel="alternate" hreflang="en" href="https://omc.network/developers" />
+  <link rel="alternate" hreflang="x-default" href="https://omc.network/developers" />
+  <link rel="alternate" hreflang="zh" href="https://omc.network/zh/developers" />
+  <link rel="alternate" type="application/rss+xml" title="OMC news" href="https://omc.network/news/feed.xml" />
+  <meta property="og:site_name" content="Omniverse Compute">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Developers API &amp; Node Guide — OMC">
+  <meta property="og:description" content="OMC developer reference: the airdrop REST API, the canonical wallet-signature message, entry caps, and the four-step testnet node onboarding path.">
+  <meta property="og:url" content="https://omc.network/developers">
+  <meta property="og:image" content="https://omc.network/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Omniverse_Depin">
+  <meta name="twitter:title" content="Developers API &amp; Node Guide — OMC">
+  <meta name="twitter:description" content="OMC developer reference: the airdrop REST API, the canonical wallet-signature message, entry caps, and the four-step testnet node onboarding path.">
+  <meta name="twitter:image" content="https://omc.network/og-image.png">
+  <link rel="stylesheet" href="assets/css/app.css?v=20261027a" />
+  <link rel="stylesheet" href="assets/css/footer-chain.css?v=20261027a" />
+  <link rel="stylesheet" href="assets/css/net-canvas.css?v=20261027a" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script type="application/ld+json">
+{"@id":"https://omc.network/#organization","alternateName":["泛宇宙算力","OMC"],"disambiguatingDescription":"Omniverse Compute (OMC) is an independent BNB Chain DePIN project building a decentralised GPU compute network that rents out idle GPUs. The name is distinct from NVIDIA's Omniverse 3D platform, from the Federal Open Market Committee (FOMC) and from any central bank.","@type":"Organization","name":"Omniverse Compute","url":"https://omc.network","logo":"https://omc.network/assets/img/logo.png","sameAs":["https://github.com/CBTdao","https://x.com/Omniverse_Depin","https://t.me/OmniverseCompute","https://dev.to/omniverse_depin"],"@context":"https://schema.org"}
+</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"Build on OMC","url":"https://omc.network/developers","description":"OMC developer reference: the airdrop REST API, the canonical wallet-signature message, entry caps, and the four-step testnet node onboarding path.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"},
+  "dateModified": "2026-11-23"
+}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://omc.network/"},{"@type":"ListItem","position":2,"name":"Build on OMC","item":"https://omc.network/developers"}]}
+  </script>
+</head>
+<body>
+
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <img class="logo" src="assets/img/logo.png" alt="OMC" width="36" height="36" loading="eager" decoding="async" />
+        <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/" data-i18n="nav.home">Home</a>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.product">Product</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/compute" data-i18n="nav.compute">Compute</a>
+            <a href="/ai-tools" data-i18n="nav.aitools">AI Tools</a>
+            <a href="/calculator" data-i18n="nav.calc">Calculator</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.eco">Ecosystem</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="nav.game">Real or AI</a>
+            <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="nav.forum">Compute Forum</a>
+            <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="nav.top">AI Top</a>
+          </div>
+        </div>
+        <div class="nav-drop">
+          <button class="nav-drop-btn" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav.network">Network</span> <span class="caret">▾</span></button>
+          <div class="nav-drop-menu">
+            <a href="/testnet" data-i18n="nav.testnet">Testnet</a>
+            <a href="/stake" data-i18n="nav.stake">Stake</a>
+          </div>
+        </div>
+        <a href="/news" data-i18n="nav.news">News</a>
+        <a href="/whitepaper" data-i18n="nav.wp">Whitepaper</a>
+        <a href="/airdrop" class="nav-cta" data-i18n="nav.claim">🎁 Claim Airdrop</a>
+        <div class="nav-wallet" id="walletNav"></div>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+        </select>
+        </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
+    <header class="hero" style="padding-bottom: 30px;">
+    <div class="container">
+      <div class="hero-badge"><span class="dot"></span><span>Developer documentation</span></div>
+      <h1>Build on OMC</h1>
+      <p class="sub">The public endpoints, the signed message format, and the node onboarding path — documented from the code that actually runs.</p>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="wp-body reveal" style="max-width: 820px; margin: 0 auto;">
+
+<p><strong>The Omniverse Compute (OMC) public surface is small on purpose: two read/write endpoints for the airdrop, one canonical signature message, and a documented node path. Everything below is taken from the code that runs in production, so the fields and error codes match what your client will actually receive.</strong></p>
+
+<h2 class="as-h3">Before you start</h2>
+<ul>
+<li><strong>Network.</strong> Testnet runs on BNB Smart Chain Testnet, chain ID <code>97</code>, symbol <code>tOMC</code>. Full RPC, explorer and faucet details live on the <a href="/testnet">testnet page</a>.</li>
+<li><strong>Wallet.</strong> Signing is gas-free — you sign a message, you do not send a transaction. The only on-chain fee in the project is the airdrop claim fee, charged later at claim, not at registration.</li>
+<li><strong>Base URL.</strong> All endpoints below are relative to <code>https://omc.network</code>.</li>
+</ul>
+
+<h2 class="as-h3">GET /api/airdrop/summary</h2>
+<p>Read service status, campaign caps, and — when a wallet is supplied — that wallet's recorded entries. Used on page load to drive the progress ticker and to resume a session on another device.</p>
+<table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.95rem">
+<tbody>
+<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Query</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><code>address</code> (optional) — <code>0x</code> + 40 hex characters. It is a lookup key only; reading another wallet reveals no more than the chain already shows.</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>200 — no address</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><code>{ ok, status, frozen?, totals?: { wallets, entries, amount, is_frozen }, caps: { base, referral, perEntry, total } }</code>. <code>totals</code> is omitted when the ledger migration has not yet applied — the page then falls back to its static copy rather than showing zeros as if they were real.</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>200 — with address</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><code>{ ok: true, entries: { base, referral, total, today, amount, cap }, day, canParticipate, caps, allocation }</code>.</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Errors</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><code>405 METHOD</code> (GET only) · <code>400 BAD_ADDRESS</code> · <code>503 UNAVAILABLE</code> / <code>SCHEMA_UNAVAILABLE</code> · <code>500 SERVER_ERROR</code>.</td></tr>
+</tbody>
+</table>
+<p><strong>Caps in effect:</strong> <code>base = 5</code> entries per wallet (lifetime), <code>referral = 5</code> bonus entries an inviter can earn (lifetime), <code>perEntry = 20</code> OMC, across <code>1,000,000</code> pool slots. These mirror the on-chain parameters and are asserted against them in the test suite.</p>
+
+<h2 class="as-h3">POST /api/airdrop/entry</h2>
+<p>Register one daily entry. The server rebuilds the signed message from its parsed fields and compares it byte for byte — a signer cannot quietly change the day or the referrer after signing — and the recovered signer must equal the claimed address.</p>
+<table style="width:100%;border-collapse:collapse;margin:18px 0;font-size:.95rem">
+<tbody>
+<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Body</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><code>{ address, message, signature, referrer? }</code> — all strings; <code>address</code> and any <code>referrer</code> are lower-cased <code>0x</code> addresses; <code>signature</code> is an ECDSA signature over <code>message</code>.</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>200 family</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><code>{ ok, code, ... }</code>. <code>code: "OK"</code> means the entry was recorded; other codes report the cap or pool state without a server error.</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><strong>Errors</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(128,128,128,.28)"><code>405 METHOD</code> (POST only) · <code>400 BAD_REQUEST / BAD_MESSAGE / BAD_SIGNATURE</code> · <code>409 STALE_MESSAGE</code> (the signature is bound to one UTC+8 day — yesterday's signature is dead) · <code>503 UNAVAILABLE / SCHEMA_UNAVAILABLE</code> · <code>500 SERVER_ERROR</code>.</td></tr>
+</tbody>
+</table>
+
+<h2 class="as-h3">The canonical signature message</h2>
+<p>Sign exactly this string. The server calls <code>buildMessage()</code> from the parsed fields and requires an exact match, so any reworded, reordered or appended text is rejected. The day inside the message is what kills replay: a signature harvested today cannot register an entry tomorrow.</p>
+<pre style="white-space:pre-wrap;background:rgba(128,128,128,.1);padding:16px;border-radius:8px;overflow-x:auto"><code>Omniverse Compute (OMC) — airdrop entry
+
+Address: 0x&lt;your 40-hex address&gt;
+Day: 2026-11-23 (UTC+8)
+Referrer: none
+Nonce: &lt;16 hex characters&gt;
+
+Signing this message registers one airdrop entry for the day above.
+It costs no gas and grants no spending rights.</code></pre>
+<ul>
+<li><code>Address</code>, <code>Referrer</code>: lower-case <code>0x</code> + 40 hex. Use <code>none</code> when there is no referrer; a referrer equal to the signer is rejected.</li>
+<li><code>Day</code>: the UTC+8 calendar day in <code>YYYY-MM-DD</code>. The campaign resets at 00:00 UTC+8.</li>
+<li><code>Nonce</code>: exactly 16 hex characters.</li>
+</ul>
+<p>Sign with a standard personal-sign flow (for example <code>eth_signMessage</code> / <code>personal_sign</code>). The server recovers the signer and requires it to equal the <code>Address</code> field.</p>
+
+<h2 class="as-h3">Run a testnet node</h2>
+<p>Consumer GPUs are enough for the testnet — an RTX 3090 or 4090 lands in tier 1 (under 24&nbsp;GB VRAM), which is what the faucet covers. The path is four steps, documented on the <a href="/testnet">testnet page</a>: add the network, fund the wallet from the faucet, stake tOMC to a tier, and register the node. One staking ladder — <code>20 / 100 / 500 / 1000 / 5000 tOMC</code> — runs on both testnet and mainnet; registering now positions the node for the same tier at launch.</p>
+<p>Each job runs under a per-job verification policy — spot-check re-execution or full redundancy across 2–3 nodes. Fraudulent outputs, timeouts and fake heartbeats are slashed: 50% to requesters, 30% to the DAO treasury, 20% burned.</p>
+
+<h2 class="as-h3">Other entry points</h2>
+<ul>
+<li><a href="/whitepaper">Whitepaper</a> — architecture, verification, staking and tokenomics.</li>
+<li><a href="/compute">Compute station</a> — the compute product surface.</li>
+<li><a href="/verifiable-compute">Verifiable compute</a> — how verification tiers are priced.</li>
+<li><a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener">Source on GitHub</a> — website, docs and contribution guide under MIT.</li>
+</ul>
+
+      </div>
+    </div>
+  </section>
+<footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="/">
+            <img class="logo" src="assets/img/logo.png" alt="OMC" width="36" height="36" loading="lazy" decoding="async" />
+            <span>Omniverse Compute<small>OMC · BNB Chain</small></span>
+          </a>
+          <p data-i18n="footer.tag">Decentralized high-performance GPU infrastructure network. Building the future of DeAI.</p>
+          <div class="socials">
+            <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>
+            <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" title="Telegram">✈️</a>
+            <a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener" title="GitHub">🐙</a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_protocol">Protocol</h2>
+          <a href="/whitepaper" data-i18n="f.wp">Whitepaper</a>
+          <a href="/testnet" data-i18n="f.testnet">Testnet</a>
+          <a href="/about#about" data-i18n="f.arch">Architecture</a>
+          <a href="/tokenomics" data-i18n="f.tokenomics">Tokenomics</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_community">Community</h2>
+          <a href="/airdrop" data-i18n="f.airdrop">Airdrop</a>
+          <a href="/news" data-i18n="nav.news">News</a>
+          <a href="https://x.com/Omniverse_Depin" target="_blank" rel="noopener" data-i18n="f.x">X / Twitter</a>
+          <a href="https://t.me/OmniverseCompute" target="_blank" rel="noopener" data-i18n="f.tg">Telegram</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_ecosystem">Ecosystem</h2>
+          <a href="https://top.omc.network" target="_blank" rel="noopener" data-i18n="f.aitop">AITop — AI Tool Comparisons</a>
+          <a href="https://forum.omc.network" target="_blank" rel="noopener" data-i18n="f.dcf">DCF — Compute Forum</a>
+          <a href="https://game.omc.network" target="_blank" rel="noopener" data-i18n="f.game">Real or AI — Daily Photo Game</a>
+        </div>
+        <div class="f-col">
+          <h3 class="as-h5" data-i18n="footer.h_resources">Resources</h2>
+          <a href="/calculator" data-i18n="f.calculator">GPU Cost Calculator</a>
+          <a href="/compute" data-i18n="f.compute">AI Compute Station</a>
+          <a href="/ai-tools" data-i18n="f.aitools">Image Upscaler</a>
+          <a href="assets/docs/OMC-Whitepaper-EN.pdf" target="_blank" data-i18n="f.wppdf">Whitepaper PDF</a>
+          <a href="assets/docs/OMC-Whitepaper-Deck.pdf" target="_blank" data-i18n="f.deckpdf">Whitepaper Deck</a>
+          <a href="/testnet#endpoints" data-i18n="f.rpc">RPC Endpoints</a>
+          <a href="/about" data-i18n="f.about">About &amp; Contact</a>
+          <a href="/press" data-i18n="f.press">Press Kit</a>
+          <a href="/privacy" data-i18n="f.privacy">Privacy Policy</a>
+          <a href="/aup" data-i18n="f.aup">Acceptable Use</a>
+        </div>
+      </div>
+      <!-- omc:contracts-block — network + deployed contracts, published for verification -->
+      <div class="footer-chain">
+        <div class="fc-head">
+          <span class="fc-title" data-i18n="footer.chain_t">On-chain contracts</span>
+          <span class="fc-badge" data-i18n="footer.chain_verified">BscScan verified</span>
+        </div>
+        <div class="fc-rows">
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_net">Network</span>
+            <span class="fc-v fc-plain" data-i18n="footer.chain_netv">BNB Smart Chain &middot; Testnet (chainId 97)</span>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_token">OMC token (tOMC)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/token/0xBEB21E40FB50A0F4ba9287C2058DC7851e450671" target="_blank" rel="noopener"><code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_staking">Staking (OMCStaking)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6" target="_blank" rel="noopener"><code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_market">Compute Market (OMCComputeMarket)</span>
+            <a class="fc-v" href="https://testnet.bscscan.com/address/0x7664f1e73c2CBCbaFE636a653C173378C369C40A" target="_blank" rel="noopener"><code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code></a>
+          </div>
+          <div class="fc-row">
+            <span class="fc-k" data-i18n="footer.chain_sec">Security</span>
+            <a class="fc-v fc-plain" href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.chain_seclink">Security practices &rarr;</a>
+          </div>
+        </div>
+        <p class="fc-note" data-i18n="footer.chain_note">Testnet contracts, published for verification. Testnet tokens have no monetary value and are not sold or listed anywhere.</p>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="disc" data-i18n="footer.disclaimer">Disclaimer: Omniverse Compute (OMC) is a utility token of a decentralized infrastructure protocol. Nothing on this site constitutes financial advice. Digital assets carry high risk — do your own research and comply with the laws of your jurisdiction.</div>
+        <div>© 2026 Omniverse Compute · omc.network<br /><span class="facts-v">Facts v8 · 2026-10-30 · <a href="https://github.com/CBTdao/omc-network/blob/main/contracts/params.json" target="_blank" rel="noopener">source</a></span></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang/en.js?v=20261027a"></script>
+  <script src="assets/js/lang/zh.js?v=20261027a"></script>
+  <script src="assets/js/i18n.js?v=20261027a"></script>
+  <script src="assets/js/i18n-meta.js?v=20261027a"></script>
+  <script src="assets/js/main.js?v=20261027a"></script>
+  <script src="assets/js/binance-w3w.js?v=20261027a"></script>
+  <script src="assets/js/wallet.js?v=20261027a"></script>
+</body>
+</html>

@@ -274,7 +274,7 @@ Each wallet can bank up to 5 entries. Five friends' wallets = five more shots. F
 Claiming opens Jan 1, 2027 with mainnet + staking. The OMC you stack during the campaign becomes claimable and stakeable the same day it exists.
 
 推 5:
-The 0.01 BNB fee per claim isn't a toll — it funds development and filters bots. One human, one claim path, on-chain.
+The 0.01 BNB fee per claim funds development and filters bots. One human, one claim path, on-chain.
 
 推 6:
 1,000,000 slots won't last forever. The early crowd is small right now. That's the window.

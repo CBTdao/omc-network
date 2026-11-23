@@ -1,6 +1,6 @@
 # Omniverse Compute — complete site text (English)
 
-Generated 2026-11-21 from contracts/params.json v8 (2026-10-30) by
+Generated 2026-11-23 from contracts/params.json v8 (2026-10-30) by
 website/tools/build_llms_full.py. Every figure in this file comes from that one
 file; if a listing disagrees with something below, the listing is stale.
 
@@ -1737,6 +1737,7 @@ The network is designed around an open marketplace where committed capacity supp
 - Public testnet on BNB Smart Chain — verified test contracts, published RPC endpoints and a node onboarding guide on the Testnet page.
 - Whitepaper v3.0 — architecture, verification and slashing rules, matching engine and full tokenomics, on the Whitepaper page.
 - Open-source repository — website and documentation sources under an MIT licence at github.com/CBTdao/omc-network.
+- Developer documentation — the public airdrop API, the canonical wallet-signature message and the node onboarding path, documented from the running code, on the Developers page.
 - Community airdrop — participation is open now; claiming opens with mainnet on 1 January 2027 (2% of supply; registering is free, each entry costs a non-refundable 0.01 BNB at claim — 0.05 BNB for a base claim of five, 0.1 BNB at the ten-entry cap — and the money funds development and operations; each entry is delivered in full when you claim it, with no cliff and no vesting tail). Details on the Airdrop page.
 - Companion sites — AITop for AI tool comparisons and the DCF forum for long-form compute research.
 Mainnet and compute mining are planned after the testnet phase; the current roadmap is published on the News page and in the whitepaper.
@@ -1765,6 +1766,64 @@ We will never ask for your seed phrase or private key, and we will never ask you
 
 ### Not financial advice
 OMC is a utility token used within a decentralized computing network. Nothing we publish constitutes financial, investment, legal or tax advice, or an offer to sell securities. Digital assets are volatile and carry the risk of total loss. Do your own research and comply with the laws of your jurisdiction.
+
+## Developers API & Node Guide
+URL: https://omc.network/developers · lang: en
+
+Developer documentation
+
+## Build on OMC
+The public endpoints, the signed message format, and the node onboarding path — documented from the code that actually runs.
+
+The Omniverse Compute (OMC) public surface is small on purpose: two read/write endpoints for the airdrop, one canonical signature message, and a documented node path. Everything below is taken from the code that runs in production, so the fields and error codes match what your client will actually receive.
+
+### Before you start
+
+- Network. Testnet runs on BNB Smart Chain Testnet, chain ID 97, symbol tOMC. Full RPC, explorer and faucet details live on the testnet page.
+- Wallet. Signing is gas-free — you sign a message, you do not send a transaction. The only on-chain fee in the project is the airdrop claim fee, charged later at claim, not at registration.
+- Base URL. All endpoints below are relative to https://omc.network.
+
+### GET /api/airdrop/summary
+Read service status, campaign caps, and — when a wallet is supplied — that wallet's recorded entries. Used on page load to drive the progress ticker and to resume a session on another device.
+Query | address (optional) — 0x + 40 hex characters. It is a lookup key only; reading another wallet reveals no more than the chain already shows.
+200 — no address | { ok, status, frozen?, totals?: { wallets, entries, amount, is_frozen }, caps: { base, referral, perEntry, total } }. totals is omitted when the ledger migration has not yet applied — the page then falls back to its static copy rather than showing zeros as if they were real.
+200 — with address | { ok: true, entries: { base, referral, total, today, amount, cap }, day, canParticipate, caps, allocation }.
+Errors | 405 METHOD (GET only) · 400 BAD_ADDRESS · 503 UNAVAILABLE / SCHEMA_UNAVAILABLE · 500 SERVER_ERROR.
+
+Caps in effect: base = 5 entries per wallet (lifetime), referral = 5 bonus entries an inviter can earn (lifetime), perEntry = 20 OMC, across 1,000,000 pool slots. These mirror the on-chain parameters and are asserted against them in the test suite.
+
+### POST /api/airdrop/entry
+Register one daily entry. The server rebuilds the signed message from its parsed fields and compares it byte for byte — a signer cannot quietly change the day or the referrer after signing — and the recovered signer must equal the claimed address.
+Body | { address, message, signature, referrer? } — all strings; address and any referrer are lower-cased 0x addresses; signature is an ECDSA signature over message.
+200 family | { ok, code, ... }. code: "OK" means the entry was recorded; other codes report the cap or pool state without a server error.
+Errors | 405 METHOD (POST only) · 400 BAD_REQUEST / BAD_MESSAGE / BAD_SIGNATURE · 409 STALE_MESSAGE (the signature is bound to one UTC+8 day — yesterday's signature is dead) · 503 UNAVAILABLE / SCHEMA_UNAVAILABLE · 500 SERVER_ERROR.
+
+### The canonical signature message
+Sign exactly this string. The server calls buildMessage() from the parsed fields and requires an exact match, so any reworded, reordered or appended text is rejected. The day inside the message is what kills replay: a signature harvested today cannot register an entry tomorrow.
+Omniverse Compute (OMC) — airdrop entry
+
+Address: 0x<your 40-hex address>
+Day: 2026-11-23 (UTC+8)
+Referrer: none
+Nonce: <16 hex characters>
+
+Signing this message registers one airdrop entry for the day above.
+It costs no gas and grants no spending rights.
+- Address, Referrer: lower-case 0x + 40 hex. Use none when there is no referrer; a referrer equal to the signer is rejected.
+- Day: the UTC+8 calendar day in YYYY-MM-DD. The campaign resets at 00:00 UTC+8.
+- Nonce: exactly 16 hex characters.
+Sign with a standard personal-sign flow (for example eth_signMessage / personal_sign). The server recovers the signer and requires it to equal the Address field.
+
+### Run a testnet node
+Consumer GPUs are enough for the testnet — an RTX 3090 or 4090 lands in tier 1 (under 24 GB VRAM), which is what the faucet covers. The path is four steps, documented on the testnet page: add the network, fund the wallet from the faucet, stake tOMC to a tier, and register the node. One staking ladder — 20 / 100 / 500 / 1000 / 5000 tOMC — runs on both testnet and mainnet; registering now positions the node for the same tier at launch.
+Each job runs under a per-job verification policy — spot-check re-execution or full redundancy across 2–3 nodes. Fraudulent outputs, timeouts and fake heartbeats are slashed: 50% to requesters, 30% to the DAO treasury, 20% burned.
+
+### Other entry points
+
+- Whitepaper — architecture, verification, staking and tokenomics.
+- Compute station — the compute product surface.
+- Verifiable compute — how verification tiers are priced.
+- Source on GitHub — website, docs and contribution guide under MIT.
 
 ## Privacy Policy
 URL: https://omc.network/privacy · lang: en

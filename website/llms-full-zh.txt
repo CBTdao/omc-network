@@ -1,6 +1,6 @@
 # 泛宇宙算力（Omniverse Compute，OMC）—— 全站正文（中文）
 
-2026 年 11 月 21 日 由 website/tools/build_llms_full.py 依据 contracts/params.json v8（2026-10-30）生成。
+2026 年 11 月 23 日 由 website/tools/build_llms_full.py 依据 contracts/params.json v8（2026-10-30）生成。
 下文每个数字都来自这一个文件；若第三方榜单与之冲突，是榜单过期了。
 
 这是 omc.network 中文版的完整正文，一个文件读完，检索方不必再发十次请求。
@@ -1693,6 +1693,7 @@ URL: https://omc.network/zh/about · lang: zh
 - 币安智能链上的公共测试网——已验证的测试合约、已公布的 RPC 端点，以及测试网页面上的节点接入指南。
 - 白皮书 v3.0——架构、验证与罚没规则、撮合引擎与完整的代币经济，见白皮书页面。
 - 开源仓库——网站与文档源码以 MIT 许可发布在 github.com/CBTdao/omc-network。
+- 开发者文档——公开空投 API、规范钱包签名消息与节点接入路径，全部依据实际运行的代码编写，见开发者页面。
 - 社区空投——报名已开放；领取随主网于 2027 年 1 月 1 日开放（占总量 2%；登记免费，每份在领取时收取 0.01 BNB 不可退还的处理手续费——五份的基础领取为 0.05 BNB，十份上限时为 0.1 BNB——这笔钱用于开发与运营；每份在你领取时全额到账，没有锁仓期，也没有线性释放尾巴）。详情见空投页面。
 - 配套站点——AITop 做 AI 工具对比，DCF 论坛 发表长篇算力研究。
 主网与算力挖矿计划在测试网阶段之后推进；当前路线图发布在动态页面与白皮书中。
@@ -1721,6 +1722,64 @@ URL: https://omc.network/zh/about · lang: zh
 
 ### 非投资建议
 OMC 是去中心化计算网络中使用的实用型代币。我们发布的任何内容都不构成财务、投资、法律或税务建议，也不构成出售证券的要约。数字资产波动剧烈，存在全部损失的风险。请自行研究，并遵守所在司法辖区的法律。
+
+## 开发者 API 与节点指南
+URL: https://omc.network/zh/developers · lang: zh
+
+开发者文档
+
+## 在 OMC 上开发
+公开接口、签名消息格式与节点接入路径——全部依据实际运行的代码编写。
+
+Omniverse Compute (OMC) 的公开接口刻意做得很小：空投的两个读写端点、一条规范签名消息，以及有文档的节点接入路径。以下全部取自生产环境实际运行的代码，字段与错误码与你的客户端真正收到的内容一致。
+
+### 开始之前
+
+- 网络。测试网运行在 BNB Smart Chain Testnet，链 ID 97，符号 tOMC。完整的 RPC、浏览器与水龙头信息见测试网页面。
+- 钱包。签名不消耗 gas——你签一条消息，不发交易。项目里唯一上链的费用是稍后在领取时收取的空投手续费，注册环节不收费。
+- 基础地址。下列端点均相对于 https://omc.network。
+
+### GET /api/airdrop/summary
+读取服务状态、活动名额上限，在提供钱包地址时还会返回该钱包已登记的名额。页面加载时用它驱动进度看板，也让用户在另一台设备上继续之前的进度。
+查询参数 | address（可选）——0x 开头 + 40 位十六进制字符。它只作为查询键；读取他人钱包不会得到链上本就公开之外的信息。
+200 · 无地址 | { ok, status, frozen?, totals?: { wallets, entries, amount, is_frozen }, caps: { base, referral, perEntry, total } }。当账本迁移尚未执行时 totals 会省略——页面随即回退到静态文案，而不是把零当成真实数据显示。
+200 · 带地址 | { ok: true, entries: { base, referral, total, today, amount, cap }, day, canParticipate, caps, allocation }。
+错误 | 405 METHOD（仅 GET）· 400 BAD_ADDRESS · 503 UNAVAILABLE / SCHEMA_UNAVAILABLE · 500 SERVER_ERROR。
+
+当前名额上限：每个钱包终身 base = 5 个自有名额，邀请人终身可得 referral = 5 个奖励名额，每个名额 perEntry = 20 OMC，共 1,000,000 个池位。这些数值与链上参数一致，并在测试套件中对照校验。
+
+### POST /api/airdrop/entry
+登记当日的一个名额。服务端会从解析出的字段重建签名消息并逐字节比对——签名者无法在签名后偷偷改动日期或邀请人——且恢复出的签名者必须等于声明的地址。
+请求体 | { address, message, signature, referrer? }——均为字符串；address 与可选的 referrer 为小写 0x 地址；signature 是对 message 的 ECDSA 签名。
+200 系列 | { ok, code, ... }。code: "OK" 表示名额已登记；其他 code 用于报告名额或池位状态，不属于服务端错误。
+错误 | 405 METHOD（仅 POST）· 400 BAD_REQUEST / BAD_MESSAGE / BAD_SIGNATURE · 409 STALE_MESSAGE（签名绑定单个 UTC+8 自然日——昨天的签名失效）· 503 UNAVAILABLE / SCHEMA_UNAVAILABLE · 500 SERVER_ERROR。
+
+### 规范签名消息
+请签署下面这条字符串。服务端会从解析出的字段调用 buildMessage() 并要求精确匹配，因此任何改写、重排或追加的文本都会被拒绝。消息里包含日期，正是它阻止了重放：今天截获的签名明天无法登记名额。
+Omniverse Compute (OMC) — airdrop entry
+
+Address: 0x<你的 40 位十六进制地址>
+Day: 2026-11-23 (UTC+8)
+Referrer: none
+Nonce: <16 位十六进制字符>
+
+Signing this message registers one airdrop entry for the day above.
+It costs no gas and grants no spending rights.
+- Address、Referrer：小写 0x + 40 位十六进制。无邀请人时填 none；邀请人等于签名者会被拒绝。
+- Day：UTC+8 自然日，格式 YYYY-MM-DD。活动在 UTC+8 00:00 重置。
+- Nonce：恰好 16 位十六进制字符。
+用标准的个人签名流程签署（例如 eth_signMessage / personal_sign）。服务端恢复签名者并要求其等于 Address 字段。
+
+### 运行测试网节点
+消费级显卡就足够跑测试网——RTX 3090 或 4090 落在档位一（显存低于 24 GB），正是水龙头覆盖的范围。路径分四步，详见测试网页面：添加网络、从水龙头为钱包注资、质押 tOMC 到某档位、注册节点。一条质押阶梯——20 / 100 / 500 / 1000 / 5000 tOMC——在测试网与主网通用；现在注册可让节点在上线时进入同一档位。
+每个任务按单独任务的验证策略执行——抽检复算，或 2–3 个节点全量冗余。虚假输出、超时与伪造心跳会被罚没：50% 归请求方，30% 归 DAO 金库，20% 永久销毁。
+
+### 其他入口
+
+- 白皮书——架构、验证、质押与代币经济。
+- 算力站——算力产品界面。
+- 可验证算力——验证档位如何定价。
+- GitHub 源码——网站、文档与贡献指南，MIT 许可。
 
 ## 隐私政策
 URL: https://omc.network/zh/privacy · lang: zh
