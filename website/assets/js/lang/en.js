@@ -511,6 +511,8 @@ window.I18N.en = {
   "nw23.d": "The final IR 8547 (27 Oct) deprecates current public-key algorithms after 2030 and disallows them after 2035. Ethereum's PQ team targets 2029 and the Quantum Alliance is defining what 'quantum-ready' means. See where OMC's signature-agility roadmap fits. Read →",
   "nw24.t": "AI agents made 138M x402 payments on Base — 87% were under 10 cents",
   "nw24.d": "Chainalysis counted 138M cumulative x402 transactions on Base by Q3 2026; the protocol now sits in the Linux Foundation with Visa, Stripe and Google. BlackRock frames compute as a tradeable asset and machine-native payments as the settlement rail. See why OMC settles per verified result. Read →",
+  "nw25.t": "AMD's record 35.5% server CPU share came with its smallest gain in a year",
+  "nw25.d": "New on forum.omc.network: server CPU shipments grew 20% year over year in Q3 2026, the fastest pace in five years, and Mercury Research puts AMD at a record 35.5% unit share. Intel's filing shows its defense was volume and higher ASPs while substrate and memory stayed supply-constrained. Read →",
 
   "f.about": "About & Contact",
   "f.press": "Press Kit",

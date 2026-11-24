@@ -221,5 +221,14 @@ window.OMC_NEWS = [
     t: "nw24.t",
     d: "nw24.d",
     href: "/agent-economy"
+  },
+  {
+    id: "n25",
+    date: "2026-11-24",
+    kind: "eco",
+    t: "nw25.t",
+    d: "nw25.d",
+    href: "https://forum.omc.network/posts/amd-server-cpu-share-record-q3-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
