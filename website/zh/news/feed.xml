@@ -6,8 +6,16 @@
     <description>泛宇宙算力（OMC）官方动态：测试网里程碑、空投活动、工程进展与治理公告。</description>
     <language>zh-cn</language>
     <atom:link href="https://omc.network/zh/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Sat, 21 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>AMD 服务器 CPU 份额创下 35.5% 纪录，单季增幅却为一年最小</title>
+      <link>https://forum.omc.network/posts/amd-server-cpu-share-record-q3-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-zh-n25</guid>
+      <pubDate>Tue, 24 Nov 2026 00:00:00 +0000</pubDate>
+      <category>生态</category>
+      <description>论坛新文：2026 年第三季度服务器 CPU 出货量同比增长 20%，为五年来最快；Mercury Research 数据显示 AMD 单位份额创下 35.5% 纪录。英特尔财报显示其依靠出货量与均价防守，基板和内存仍是供给瓶颈。阅读 →</description>
+    </item>
     <item>
       <title>英伟达首个 1158 亿美元季度：真正的看点是毛利率指引</title>
       <link>https://forum.omc.network/posts/nvidia-q3-fy27-margin-bottom-memory-commitments-2026?utm_source=site&amp;utm_medium=news</link>

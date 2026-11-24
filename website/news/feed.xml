@@ -6,8 +6,16 @@
     <description>Official Omniverse Compute (OMC) updates: testnet milestones, airdrop campaigns, engineering progress and governance announcements.</description>
     <language>en</language>
     <atom:link href="https://omc.network/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Sat, 21 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 24 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>AMD&#x27;s record 35.5% server CPU share came with its smallest gain in a year</title>
+      <link>https://forum.omc.network/posts/amd-server-cpu-share-record-q3-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-en-n25</guid>
+      <pubDate>Tue, 24 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Ecosystem</category>
+      <description>New on forum.omc.network: server CPU shipments grew 20% year over year in Q3 2026, the fastest pace in five years, and Mercury Research puts AMD at a record 35.5% unit share. Intel&#x27;s filing shows its defense was volume and higher ASPs while substrate and memory stayed supply-constrained. Read →</description>
+    </item>
     <item>
       <title>NVIDIA&#x27;s first $115.8B quarter: the margin guide is the real headline</title>
       <link>https://forum.omc.network/posts/nvidia-q3-fy27-margin-bottom-memory-commitments-2026?utm_source=site&amp;utm_medium=news</link>
