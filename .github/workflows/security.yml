@@ -30,11 +30,32 @@ jobs:
 
       # The reviewed baseline is 0 Critical / 0 High. Medium and Low findings are
       # triaged in docs/security-review.md; the gate only blocks a new High/Critical.
-      - name: Gate on new Critical or High findings
+      - name: Run Slither
         run: |
           slither contracts \
             --compile-force-framework solc \
             --solc-solcs-select 0.8.26 \
             --solc-disable-warnings \
-            --exclude-informational --exclude-low --exclude-medium \
-            --fail-high
+            --json slither-ci.json || true
+          echo "report bytes: $(wc -c < slither-ci.json)"
+
+      - name: Gate on Critical or High findings
+        run: |
+          python - <<'PY'
+          import json, sys
+          try:
+              with open("slither-ci.json", encoding="utf-8") as fh:
+                  data = json.load(fh)
+          except Exception as exc:
+              print(f"::error::Slither produced no parseable report: {exc}")
+              sys.exit(1)
+          hits = []
+          for detector in data.get("detectors", []):
+              impact = (detector.get("impact") or "").lower()
+              if impact in ("high", "critical"):
+                  hits.append(f"{impact}/{detector.get('check')}")
+          print(f"High/Critical findings: {len(hits)}")
+          if hits:
+              print("::error::" + ", ".join(sorted(set(hits))))
+              sys.exit(1)
+          PY
