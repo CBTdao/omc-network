@@ -36,8 +36,14 @@ jobs:
             --compile-force-framework solc \
             --solc-solcs-select 0.8.26 \
             --solc-disable-warnings \
-            --json slither-ci.json || true
-          echo "report bytes: $(wc -c < slither-ci.json)"
+            --json slither-ci.json > slither-out.txt 2>&1 || true
+          echo "=== slither output (tail) ==="
+          tail -30 slither-out.txt
+          if [ ! -s slither-ci.json ]; then
+            echo "::error::Slither report missing. tail: $(tail -c 700 slither-out.txt)"
+          else
+            echo "report bytes: $(wc -c < slither-ci.json)"
+          fi
 
       - name: Gate on Critical or High findings
         run: |
