@@ -248,7 +248,7 @@ URL: https://omc.network/airdrop · lang: en
 Free Airdrop — Participation Open
 
 ## 20,000,000 OMC
-2% of the total 1B supply is reserved for the community — 1,000,000 claim slots × 20 OMC each. The airdrop is free: complete three simple social tasks, connect your wallet, and register up to 5 entries — plus up to 5 more by inviting friends.
+Compute for the Agent Economy. 2% of the total 1B supply is reserved for the community — 1,000,000 claim slots × 20 OMC each. The airdrop is free: complete three simple social tasks, connect your wallet, and register up to 5 entries — plus up to 5 more by inviting friends.
 ✅ Free to Join No Purchase 🎯 Participation Open Now 🔓 Claim Opens 1 January 2027 🎁 Per Entry 20 OMC ♻️ Per Wallet 5 entries +5 by invite 📅 Daily Limit 1 entry 🔓 Unlock 100% at claim ⛽ Cost Zero tokens
 Claim opens in
 00Days
@@ -1737,7 +1737,7 @@ URL: https://omc.network/about · lang: en
 About
 
 ## About & Contact
-Who we are, what is live today, and how to reach us.
+Compute for the Agent Economy — who we are, what is live on testnet, and how to reach us.
 
 ### What we are building
 Omniverse Compute (OMC) is a decentralized GPU compute network. We aggregate idle and under-used GPU capacity — from independent node operators, small data centres and community hardware — and route it to workloads that need it: AI training and inference, rendering and scientific simulation.

@@ -27,6 +27,7 @@ linked here as soon as it is published.
 | Document | Contents |
 |---|---|
 | [`docs/security-review.md`](docs/security-review.md) | Full self-review: scope, method, tool versions, every finding, residual risk, reproduction commands |
+| [`docs/threat-model.md`](docs/threat-model.md) | Threat model, asset flows and privilege matrix — the map for external reviewers |
 | [`contracts/security/`](contracts/security/) | The harnesses and the raw triaged tool output |
 
 Summary of the 2026-10-11 self-review of `OMCTestToken.sol`, `OMCStaking.sol` and
