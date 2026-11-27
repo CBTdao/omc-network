@@ -513,6 +513,8 @@ window.I18N.en = {
   "nw24.d": "Chainalysis counted 138M cumulative x402 transactions on Base by Q3 2026; the protocol now sits in the Linux Foundation with Visa, Stripe and Google. BlackRock frames compute as a tradeable asset and machine-native payments as the settlement rail. See why OMC settles per verified result. Read →",
   "nw25.t": "AMD's record 35.5% server CPU share came with its smallest gain in a year",
   "nw25.d": "New on forum.omc.network: server CPU shipments grew 20% year over year in Q3 2026, the fastest pace in five years, and Mercury Research puts AMD at a record 35.5% unit share. Intel's filing shows its defense was volume and higher ASPs while substrate and memory stayed supply-constrained. Read →",
+  "nw26.t": "Intuit agreed to sell Mailchimp at a 69% write-down",
+  "nw26.d": "New on forum.omc.network: the announced enterprise value is about $3.68B against roughly $12B paid in 2021, while Mailchimp revenue has stayed flat since 2024. The deal is a public data point on how standalone subscription software was repriced as AI absorbed growth budgets. Read →",
 
   "f.about": "About & Contact",
   "f.press": "Press Kit",

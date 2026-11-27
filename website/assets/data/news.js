@@ -230,5 +230,14 @@ window.OMC_NEWS = [
     d: "nw25.d",
     href: "https://forum.omc.network/posts/amd-server-cpu-share-record-q3-2026?utm_source=site&utm_medium=news",
     external: true
+  },
+  {
+    id: "n26",
+    date: "2026-11-27",
+    kind: "eco",
+    t: "nw26.t",
+    d: "nw26.d",
+    href: "https://forum.omc.network/posts/mailchimp-sale-bending-spoons-2026?utm_source=site&utm_medium=news",
+    external: true
   }
 ];
