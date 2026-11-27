@@ -39,8 +39,12 @@ jobs:
             slither "contracts/$name.sol" \
               --compile-force-framework solc \
               --solc-solcs-select 0.8.26 \
+              --solc-args "--via-ir --optimize --optimize-runs 200" \
               --solc-disable-warnings \
               --json "slither-$name.json" >> slither-out.txt 2>&1 || true
+            if [ ! -s "slither-$name.json" ]; then
+              echo "::error::$name scan failed: $(tail -20 slither-out.txt | tr '\n' ' ' | cut -c1-900)"
+            fi
           done
           python - <<'PY'
           import glob, json, sys
