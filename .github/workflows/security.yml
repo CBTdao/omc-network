@@ -32,6 +32,9 @@ jobs:
       # triaged in docs/security-review.md; the gate only blocks a new High/Critical.
       - name: Gate on new Critical or High findings
         run: |
-          slither contracts/ \
+          slither contracts \
+            --compile-force-framework solc \
+            --solc-solcs-select 0.8.26 \
+            --solc-disable-warnings \
             --exclude-informational --exclude-low --exclude-medium \
             --fail-high
