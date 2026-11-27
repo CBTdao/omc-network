@@ -40,7 +40,8 @@ jobs:
           echo "=== slither output (tail) ==="
           tail -30 slither-out.txt
           if [ ! -s slither-ci.json ]; then
-            echo "::error::Slither report missing. tail: $(tail -c 700 slither-out.txt)"
+            DIAG=$(tail -20 slither-out.txt | tr '\n' ' ' | cut -c1-1800)
+            echo "::error::Slither failed: $DIAG"
           else
             echo "report bytes: $(wc -c < slither-ci.json)"
           fi
