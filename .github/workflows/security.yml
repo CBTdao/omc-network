@@ -32,13 +32,23 @@ jobs:
       # triaged in docs/security-review.md; the gate only blocks a new High/Critical.
       - name: Run Slither
         run: |
-          slither contracts \
+          # crytic-compile's solc platform needs a file target, not a directory.
+          # A temporary entry point pulls in the three production contracts.
+          cat > contracts/_slither_entry.sol <<'EOF'
+          // SPDX-License-Identifier: MIT
+          pragma solidity ^0.8.24;
+          import "./OMCTestToken.sol";
+          import "./OMCStaking.sol";
+          import "./OMCComputeMarket.sol";
+          EOF
+          slither contracts/_slither_entry.sol \
             --compile-force-framework solc \
             --solc-solcs-select 0.8.26 \
             --solc-disable-warnings \
             --json slither-ci.json > slither-out.txt 2>&1 || true
+          rm -f contracts/_slither_entry.sol
           echo "=== slither output (tail) ==="
-          tail -30 slither-out.txt
+          tail -15 slither-out.txt
           if [ ! -s slither-ci.json ]; then
             DIAG=$(tail -20 slither-out.txt | tr '\n' ' ' | cut -c1-1800)
             echo "::error::Slither failed: $DIAG"
