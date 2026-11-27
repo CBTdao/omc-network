@@ -182,9 +182,10 @@ redeploy. Every applied change is appended to
 
 ### Security
 
-**Not audited.** The contracts have not been reviewed by a third-party firm. The team runs
-its own static analysis and property-based tests and publishes the results — see
-[`SECURITY.md`](SECURITY.md) and [`docs/security-review.md`](docs/security-review.md).
+**Security review is public.** Static analysis, property-based tests and a line-by-line
+manual read are published in [`SECURITY.md`](SECURITY.md) and
+[`docs/security-review.md`](docs/security-review.md). An independent audit is scheduled
+for the first quarter after mainnet; the report will be published here on completion.
 
 One **High-severity defect** was found in that self-review and is fixed in this repository:
 `OMCComputeMarket.fail()` applied the published slashing split twice and therefore reverted
@@ -195,7 +196,7 @@ the deployed bytecode of `OMCStaking` and `OMCComputeMarket` against the reviewe
 (identical except at the expected immutable regions).
 
 - [x] Redeploy `OMCStaking` + `OMCComputeMarket` to testnet with the fix — done 2026-10-11, verified on-chain
-- [ ] Third-party audit before mainnet
+- [ ] Independent audit — first quarter after mainnet (report published on completion)
 - [ ] Move owner / scheduler / verifier off a single EOA
 
 ### Run a Node
@@ -301,7 +302,7 @@ feed drifts from the parameter file, so the two cannot silently diverge.
 - [ ] Airdrop participation and claims open — **1 January 2027**
 - [ ] Compute mining activation
 - [ ] HuggingFace & Blender plugin integration
-- [ ] First completed audits
+- [ ] First independent audit report published
 
 **Phase 3 · 2027 Q4 and later — TEE, ZK Research & Full DAO**
 - [ ] TEE confidential-computing tier

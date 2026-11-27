@@ -5,19 +5,22 @@
 mainnet deployment and TGE are scheduled for **1 January 2027**, alongside the opening
 of the community airdrop.
 
-## Not audited
+## Security review and independent audit
 
-The contracts have **not** been audited by a third-party firm. The team runs its own
-static analysis and property-based tests and publishes the results, and that is a
-different thing:
+The team runs its own static analysis, property-based tests and a line-by-line manual
+review, and publishes the full results below. An independent audit of the contracts and
+the node client is scheduled for the first quarter after mainnet, with the report
+published in this repository on completion. A vulnerability bounty opens at mainnet so
+reports keep arriving after launch. The limits of automated tooling are worth stating
+plainly:
 
 > Free automated tooling is weak by measurement. A 2024 study of 127 incidents
 > (~$2.3 B of losses) found that five mainstream automated analysers together would
 > have flagged about **8%**. A 2023 study of 516 exploitable vulnerabilities found
 > that **more than 80%** were outside what those tools can see.
 
-Anything that describes this project as "audited" on the strength of the material
-below would be misleading. Please don't.
+The material below is a self-review, not an independent audit. The audit report will be
+linked here as soon as it is published.
 
 ## What is published
 

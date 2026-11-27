@@ -486,7 +486,7 @@ window.I18N.en = {
   "nw12.t": "We caught our own bug: the 'burn' that wasn't actually burning — and fixed it on-chain",
   "nw12.d": "Our review found two 'burn' paths only moved tokens to a dead address, so totalSupply() never dropped — a weak mechanism doing the wrong job. Slashing and the settlement fee now call burn() on the token, redeployed in a cascade. On-chain proof: one 6.0 tOMC slash cut supply by exactly 1.2 (its 20% burn share). New addresses in the footer. Read →",
   "nw13.t": "Self-review published — with reproducible bytecode verification",
-  "nw13.d": "The full security self-review is public: one High-severity defect (the refund path could not execute at all) was found and fixed, and the fix is deployed. Bytecode verification confirms the contracts running on testnet match the reviewed source, and property-based tests run 2,762 assertions against a real EVM. Being precise about what this is: automated testing plus a manual read-through by the team, not a third-party audit.",
+  "nw13.d": "The full security self-review is public: one High-severity defect (the refund path could not execute at all) was found and fixed, and the fix is deployed. Bytecode verification confirms the contracts running on testnet match the reviewed source, and property-based tests run 2,762 assertions against a real EVM. An independent audit is scheduled for the first quarter after mainnet, with its report published on completion.",
   "nw14.t": "AI data centers' hidden water bill is 12x what you see — we did the math",
   "nw14.d": "New on forum.omc.network: US data centers used 66B liters on site in 2023, but ~800B generating their power — a 12x multiplier that rewrites the closed-loop cooling debate. The full breakdown, with sources. Read →",
   "nw.announce.t": "The OMC airdrop is open: 20,000,000 OMC, 1,000,000 slots, free to join",
@@ -1017,7 +1017,7 @@ window.I18N.en = {
   /* security posture band (homepage + airdrop) */
   "sec.posture.tag": "Security roadmap",
   "sec.posture.title": "Custody, access control and signature agility",
-  "sec.posture.body": "Privileged contract roles move to a <b>3-of-5 multisig with a 48-hour timelock</b> before mainnet, and an independent audit completes before launch. Off-chain service traffic signed by OMC already uses <b>ML-DSA (FIPS 204)</b> — the migration schedule is in the <a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">post-quantum roadmap</a>.",
+  "sec.posture.body": "Privileged contract roles move to a <b>3-of-5 multisig with a 48-hour timelock</b> before mainnet, the published self-review is open for inspection, and an independent audit is scheduled for the first quarter after mainnet. Off-chain service traffic signed by OMC already uses <b>ML-DSA (FIPS 204)</b> — the migration schedule is in the <a href=\"https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md\" target=\"_blank\" rel=\"noopener\">post-quantum roadmap</a>.",
 
   /* homepage — thesis deep-dive cards */
   "dives.eyebrow": "Explore the Thesis",

@@ -29,7 +29,7 @@
 
 {"@context":"https://schema.org","@type":"WebPage","name":"Whitepaper","url":"https://omc.network/whitepaper","description":"The OMC v3.0 whitepaper: architecture, tokenomics, roadmap and compute-market design.","isPartOf":{"@type":"WebSite","name":"Omniverse Compute","url":"https://omc.network"},
 
-  "dateModified": "2026-11-08"
+  "dateModified": "2026-11-27"
 
 }
 
@@ -459,7 +459,7 @@
 
           <p><strong>提供方保护。</strong>资源限制与滥用检测保护提供方免受恶意容器侵害。被禁止的内容与负载在官网发布的《可接受使用政策》中定义。</p>
 
-          <p><strong>保障。</strong>主网前计划进行独立安全审计，报告可在第 11 节查阅。漏洞赏金计划拟自主网上线起运行，在公开赏金平台上按严重程度发放奖励，关键发现的起始金额为 50,000 美元（<strong>拟议</strong>）。目前合约仅在测试网上经过自审——见 <a href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>。</p>
+          <p><strong>保障。</strong>团队已公开完整安全自审（见第 11 节），独立审计安排在主网后首个季度，报告完成后即公布。漏洞赏金计划拟自主网上线起运行，在公开赏金平台上按严重程度发放奖励，关键发现的起始金额为 50,000 美元（<strong>拟议</strong>）。目前合约仅在测试网上经过自审——见 <a href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>。</p>
 
           <h3>6.1 主网访问控制：多签与 Timelock</h3>
           <p>主网前，合约的特权角色——owner、verifier、market、treasury 与 requesterPool——将由 Gnosis Safe 多签持有，而非单一私钥；敏感操作（参数变更、国库提现、角色转让与主网紧急暂停）将经过 TimelockController，在执行前有一段公开可见的延迟窗口。这是安全叙事中<strong>当下就已真实</strong>的部分：它消除了多数协议损失的真正来源——不是什么 exotic 密码学，而是一台被入侵的笔记本或一个泄露的密钥。合约本就接受普通地址作为角色持有者，因此这次过渡无需改动 ABI。上线后，实时地址与签名门槛将公布在 <a href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a>。</p>
@@ -754,7 +754,7 @@
 
           <tr><td>1</td><td>2026 Q4</td><td>在 BNB Chain 上部署测试网智能合约、开源节点客户端、公共测试网、参与开放可用的社区空投活动</td><td><strong>进行中。</strong>测试网已运行在 BNB Chain 测试网（Chapel）；代币 <code>tOMC</code> 位于 <code>0xBEB21E40FB50A0F4ba9287C2058DC7851e450671</code>；质押合约 <code>OMCStaking</code> 位于 <code>0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6</code>；算力市场 <code>OMCComputeMarket</code> 位于 <code>0x7664f1e73c2CBCbaFE636a653C173378C369C40A</code>；浏览器 <code>testnet.bscscan.com</code>；仓库 <code>github.com/CBTdao/omc-network</code>；测试网代币无任何货币价值；2% 社区空投（20,000,000 OMC）——任务与份数登记自本阶段起开放，而领取窗口随主网与质押于 2027 年 1 月 1 日开启，持续三个月</td></tr>
 
-          <tr><td>2</td><td>2027 Q1（1 月 1 日）</td><td>主网上线、社区空投领取开放（首日即开放领取窗口与质押）、奖励释放启动、Hugging Face 与 Blender 集成、完成审计</td><td><strong>计划中。</strong>主网于 2027 年 1 月 1 日开启。社区空投领取窗口与质押在同一时刻开放，因此钱包在活动期间积累的 OMC——登记自第一阶段起就开放——可以同时领取并质押。奖励释放、Hugging Face 与 Blender 集成以及首批完成的审计在本阶段内跟进。审计报告完成后即在此发布</td></tr>
+          <tr><td>2</td><td>2027 Q1（1 月 1 日）</td><td>主网上线、社区空投领取开放（首日即开放领取窗口与质押）、奖励释放启动、Hugging Face 与 Blender 集成、独立审计报告</td><td><strong>计划中。</strong>主网于 2027 年 1 月 1 日开启。社区空投领取窗口与质押在同一时刻开放，因此钱包在活动期间积累的 OMC——登记自第一阶段起就开放——可以同时领取并质押。奖励释放、Hugging Face 与 Blender 集成并在本阶段启动首次独立审计，报告完成后即在此发布</td></tr>
 
           <tr><td>3</td><td>2027 Q4 及以后</td><td>TEE 层级、零知识验证研究成果、DAO 过渡、跨链结算</td><td>计划中</td></tr>
 
@@ -770,7 +770,7 @@
 
           <p><strong>融资。</strong>截至目前未进行外部融资；开发由贡献者自有资源支持。若进行融资，金额、投资方以及任何影响代币持有者的条款将在此披露。</p>
 
-          <p><strong>智能合约审计。</strong>智能合约与节点客户端的独立审计将在主网上线前完成。完整报告——审计方、范围、日期以及每项发现的处理状态——将在本节公布。</p>
+          <p><strong>智能合约审计。</strong>团队的安全自审——静态分析、属性测试与逐行人工复核——已在 <a href="https://github.com/CBTdao/omc-network/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a> 公开。智能合约与节点客户端的独立审计安排在主网后首个季度；完整报告——审计方、范围、日期以及每项发现的处理状态——将在本节公布。</p>
 
           <p><strong>联系方式：</strong></p>
 

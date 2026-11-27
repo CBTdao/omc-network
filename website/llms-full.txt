@@ -240,7 +240,7 @@ Claim your share of the 20,000,000 OMC community airdrop, or plug your idle GPU 
 Security roadmap
 
 #### Custody, access control and signature agility
-Privileged contract roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, and an independent audit completes before launch. Off-chain service traffic signed by OMC already uses ML-DSA (FIPS 204) — the migration schedule is in the post-quantum roadmap.
+Privileged contract roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, the published self-review is open for inspection, and an independent audit is scheduled for the first quarter after mainnet. Off-chain service traffic signed by OMC already uses ML-DSA (FIPS 204) — the migration schedule is in the post-quantum roadmap.
 
 ## Free OMC Airdrop
 URL: https://omc.network/airdrop · lang: en
@@ -347,7 +347,7 @@ Read the technical architecture or run a testnet node to stack rewards before ma
 Security roadmap
 
 #### Custody, access control and signature agility
-Privileged contract roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, and an independent audit completes before launch. Off-chain service traffic signed by OMC already uses ML-DSA (FIPS 204) — the migration schedule is in the post-quantum roadmap.
+Privileged contract roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, the published self-review is open for inspection, and an independent audit is scheduled for the first quarter after mainnet. Off-chain service traffic signed by OMC already uses ML-DSA (FIPS 204) — the migration schedule is in the post-quantum roadmap.
 
 ## OMC Airdrop Is Open
 URL: https://omc.network/news/omc-airdrop-is-open · lang: en
@@ -562,7 +562,7 @@ These are testnet contracts and tOMC has no monetary value. It is not sold anywh
 - Whitepaper section 7 — the authoritative text for payments, distribution, the emission schedule and slashing, on the Whitepaper page.
 - Testnet page — RPC endpoints, deployment records and the node onboarding guide, at /testnet.
 - Staking page — the ladder, the live emission rate in force and the exit procedure, at /stake.
-- Repository — contract sources, deployment manifests and the automated security-testing evidence, at github.com/CBTdao/omc-network. The contracts have been through automated security testing, with an independent audit scheduled before mainnet — see SECURITY.md.
+- Repository — contract sources, deployment manifests and the automated security-testing evidence, at github.com/CBTdao/omc-network. The contracts have been through automated security testing, with the published security self-review open for inspection and an independent audit scheduled for the first quarter after mainnet — see SECURITY.md.
 
 ### Not financial advice
 Nothing on this page is an offer to sell, or a solicitation of an offer to buy, any token or security. OMC is a utility token for a decentralized computing network. Digital assets are volatile and carry the risk of total loss. Do your own research and comply with the laws of your jurisdiction.
@@ -665,7 +665,7 @@ Encryption. Inputs, outputs and images are encrypted in transit and at rest. Key
 Data-protection levels. Standard (public or non-sensitive data), Protected (encrypted, ephemeral storage wiped after the job), and Confidential (TEE-only nodes).
 Honest limitation. On non-TEE nodes, a malicious provider could in principle observe data or model weights in GPU memory. Requesters with proprietary models or regulated data should choose the Confidential level or not use the network.
 Provider protection. Resource limits and abuse detection protect providers from malicious containers. Prohibited content and workloads are defined in the Acceptable Use Policy published on the official website.
-Assurance. An independent security audit is planned before mainnet, and any report will be published when available (see Section 11). A bug bounty program is proposed to run from mainnet, paying severity-based rewards starting at $50,000 for critical findings on a public bounty platform (proposed). The contracts are currently self-reviewed on testnet — see SECURITY.md.
+Assurance. The team's full security self-review is published, covering static analysis, property-based tests and a line-by-line read (see Section 11); an independent audit is scheduled for the first quarter after mainnet and the report will be published as soon as it is complete. A bug bounty program is proposed to run from mainnet, paying severity-based rewards starting at $50,000 for critical findings on a public bounty platform (proposed). The contracts are currently self-reviewed on testnet — see SECURITY.md.
 
 #### 6.1 Mainnet access control: multisig and timelock
 Before mainnet, privileged contract roles — owner, verifier, market, treasury and the requester pool — will be held by a Gnosis Safe multisig rather than a single key, and sensitive operations (parameter changes, treasury withdrawals, role transfers and the emergency pause) will pass through a TimelockController so every change is publicly visible for a delay window before it executes. This is the part of the security story that is real today: it removes the single-key risk that most protocol losses actually come from — not exotic cryptography, but one compromised laptop or one leaked secret. The contracts already accept a plain address as the role holder, so this transition needs no ABI change. Live addresses and the signing threshold will be published in SECURITY.md once deployed.
@@ -800,7 +800,7 @@ The characteristics OMC intends to differentiate on — verification policy by j
 Phase | Target | Deliverables | Status and evidence
 
 1 | 2026 Q4 | Testnet smart-contract deployment on BNB Chain, open-source node client, public testnet, community airdrop campaign built with participation open | In progress. Testnet live on BNB Chain testnet (Chapel); token tOMC at 0xBEB21E40FB50A0F4ba9287C2058DC7851e450671; staking contract OMCStaking at 0xa70B8506a1a614Fd83D0C70d73Da1E21fdcf1fB6; compute market OMCComputeMarket at 0x7664f1e73c2CBCbaFE636a653C173378C369C40A; explorer testnet.bscscan.com; repository github.com/CBTdao/omc-network; testnet tokens carry no monetary value; 2% community airdrop (20,000,000 OMC) — tasks and entry registration are open from this phase, while the claim window opens with mainnet and staking on 1 January 2027 and runs for three months
-2 | 2027 Q1 (1 January) | Mainnet launch, community airdrop claim opens (claim window and staking from day one), reward emission start, Hugging Face and Blender integrations, completed audits | Planned. Mainnet opens on 1 January 2027. The community airdrop claim window and staking open at the same moment, so the OMC a wallet accumulated during the campaign — registration has been open since Phase 1 — becomes claimable and stakeable together. Reward emissions, the Hugging Face and Blender integrations and the first completed audits follow within this phase. Audit reports are published here as they are completed
+2 | 2027 Q1 (1 January) | Mainnet launch, community airdrop claim opens (claim window and staking from day one), reward emission start, Hugging Face and Blender integrations, independent audit report | Planned. Mainnet opens on 1 January 2027. The community airdrop claim window and staking open at the same moment, so the OMC a wallet accumulated during the campaign — registration has been open since Phase 1 — becomes claimable and stakeable together. Reward emissions, the Hugging Face and Blender integrations and the first independent audit is commissioned within this phase, with its report published here on completion
 3 | 2027 Q4 and later | TEE tier, zero-knowledge verification research results, DAO transition, cross-chain settlement | Planned
 
 Each milestone will be accompanied by measurable indicators published on the dashboard: active nodes, total TFLOPS, jobs completed, verified failure rate, settled volume and average time to settlement.
@@ -809,7 +809,7 @@ Each milestone will be accompanied by measurable indicators published on the das
 Core team and advisors. OMC is developed by a pseudonymous collective of core contributors. Consistent with that practice, the project does not publish individual names, employment histories or personal profiles at this stage, and no advisory board is disclosed. All code contributions are public and attributable to the contributing accounts in the repository. If named advisors are engaged, their roles and the scope of their engagement will be published in this section.
 Legal entity and jurisdiction. The network and the token are operated as an open-source project. The legal entity that will issue and hold the token, its registration details and the jurisdiction governing the token will be published in this section and on the official website before the token generation event. Until that disclosure is made, no other statement of entity or jurisdiction should be relied upon.
 Funding. No external financing has been raised to date; development has been funded by contributor resources. If financing is raised, the amount, the investors and any terms that affect token holders will be disclosed here.
-Smart contract audits. Independent audits of the smart contracts and the node client will be completed before mainnet launch. The full reports — auditor, scope, date and the status of every finding — will be published in this section.
+Smart contract audits. The team's security self-review — static analysis, property-based tests and a line-by-line manual read — is public in SECURITY.md. An independent audit of the smart contracts and the node client is scheduled for the first quarter after mainnet; the full report — auditor, scope, date and the status of every finding — will be published in this section.
 Contacts:
 
 - Website: https://omc.network
@@ -1661,8 +1661,8 @@ Protocol fee | 8% of settled job volume, charged to the requester: 50% burned, 3
 What a node does | Stakes OMC, registers hardware, executes compute jobs, proves completion, earns fees and emission
 Airdrop | 20,000,000 OMC — 1,000,000 slots of 20 OMC. Free to join; first come, first served. Claiming opens 1 January 2027 with a 0.01 BNB processing charge per entry.
 Mainnet / TGE | 1 January 2027 — scheduled, not shipped
-Live today | Public testnet (chainId 97), node client, staking and compute-market contracts, airdrop registration
-Not live | Mainnet, OMC token contract, third-party audit, exchange listing, token price. Any contract naming OMC today is fraudulent.
+Live today | Public testnet (chainId 97), node client, staking and compute-market contracts, airdrop registration, published security self-review
+Not live | Mainnet, OMC token contract, exchange listing, token price. Any contract naming OMC today is fraudulent.
 Source | github.com/CBTdao/omc-network — public, including every number on this page
 
 ### Brand assets
@@ -1684,8 +1684,9 @@ project. Any figure quoted as "the OMC price" is invented.
 - The airdrop is free to join. Three social actions and a wallet signature.
 A separate 0.01 BNB per entry is charged at claim time, inside the claim
 transaction — a processing charge, not a purchase, and not a discount on OMC.
-- Say "testnet" when describing what runs today. Mainnet, the token contract,
-the audit and any listing are scheduled for 1 January 2027 or later.
+- Say "testnet" when describing what runs today. Mainnet, the token contract
+and any listing are scheduled for 1 January 2027; an independent audit follows in
+the first quarter after mainnet.
 - Staking APR is a division, not a promise. It is annual emission divided by
 total staked, capped at 100%, and it is zero until the network earns fees. Do not
 quote an APR as a yield.
@@ -2095,7 +2096,7 @@ The ai-tools service and claim authorizations are the parts of the stack whose s
 Starting here has a practical advantage: the service layer ships on our schedule, while base-layer signature support moves on the chain's schedule. Both tracks advance in parallel.
 
 ### Signature agility in the contracts
-Upgradeable contracts plus a verification interface that can accept new schemes are the mechanism that makes a later migration an orderly rollout. Privileged roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, and independent audits complete before launch — the same access-control work that governs every other upgrade.
+Upgradeable contracts plus a verification interface that can accept new schemes are the mechanism that makes a later migration an orderly rollout. Privileged roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, the published self-review is open for inspection, and an independent audit is scheduled for the first quarter after mainnet — the same access-control work that governs every other upgrade.
 The post-quantum roadmap tracks the standards work, the address-hygiene guidance and the migration stages in one place.
 
 ### Address hygiene and harvest-now-decrypt-later

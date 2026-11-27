@@ -95,8 +95,8 @@ EN_FACTS = table([
                 "charge per entry."),
     ("Mainnet / TGE", '<time datetime="2027-01-01">1 January 2027</time> — scheduled, not shipped'),
     ("Live today", "Public testnet (chainId 97), node client, staking and compute-market "
-                   "contracts, airdrop registration"),
-    ("Not live", "Mainnet, OMC token contract, third-party audit, exchange listing, "
+                   "contracts, airdrop registration, published security self-review"),
+    ("Not live", "Mainnet, OMC token contract, exchange listing, "
                  "token price. Any contract naming OMC today is fraudulent."),
     ("Source", '<a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener">'
                "github.com/CBTdao/omc-network</a> — public, including every number on this page"),
@@ -180,8 +180,9 @@ EN_BODY = f"""
         <li><b>The airdrop is free to join.</b> Three social actions and a wallet signature.
             A separate 0.01 BNB per entry is charged at claim time, inside the claim
             transaction — a processing charge, not a purchase, and not a discount on OMC.</li>
-        <li><b>Say "testnet" when describing what runs today.</b> Mainnet, the token contract,
-            the audit and any listing are scheduled for 1 January 2027 or later.</li>
+        <li><b>Say "testnet" when describing what runs today.</b> Mainnet, the token contract
+            and any listing are scheduled for 1 January 2027; an independent audit follows in
+            the first quarter after mainnet.</li>
         <li><b>Staking APR is a division, not a promise.</b> It is annual emission divided by
             total staked, capped at 100%, and it is zero until the network earns fees. Do not
             quote an APR as a yield.</li>
@@ -245,8 +246,8 @@ ZH_FACTS = table([
     ("空投", "20,000,000 OMC —— 1,000,000 份、每份 20 OMC。免费参与，先到先得。"
              "2027 年 1 月 1 日起可领取，每份收取 0.01 BNB 领取手续费。"),
     ("主网 / TGE", '<time datetime="2027-01-01">2027 年 1 月 1 日</time> —— 计划中，尚未上线'),
-    ("今天已上线", "公开测试网（chainId 97）、节点客户端、质押与算力市场合约、空投报名"),
-    ("尚未上线", "主网、OMC 代币合约、第三方审计、交易所上线、代币价格。"
+    ("今天已上线", "公开测试网（chainId 97）、节点客户端、质押与算力市场合约、空投报名、已公开的安全自审报告"),
+    ("尚未上线", "主网、OMC 代币合约、交易所上线、代币价格。"
                  "今天任何以 OMC 为名的合约都是诈骗。"),
     ("源码", '<a href="https://github.com/CBTdao/omc-network" target="_blank" rel="noopener">'
              "github.com/CBTdao/omc-network</a> —— 公开，包含本页每一个数字的来源"),
@@ -322,7 +323,7 @@ ZH_BODY = f"""
         <li><b>目前没有价格。</b>OMC 未在任何地方上线，项目方也不出售。任何被称为「OMC 价格」的数字都是编的。</li>
         <li><b>空投是免费参与的。</b>三个社交动作加一次钱包签名。每份 0.01 BNB 在领取时、在领取交易内收取，
             是处理手续费，不是购买，也不是对 OMC 的折价。</li>
-        <li><b>描述「今天在跑的」请说测试网。</b>主网、代币合约、审计与上线，都在 2027 年 1 月 1 日或之后。</li>
+        <li><b>描述「今天在跑的」请说测试网。</b>主网、代币合约与交易所上线都在 2027 年 1 月 1 日；独立审计在主网后首个季度。</li>
         <li><b>质押年化是一次除法，不是承诺。</b>等于年释放量除以全网质押量，上限 100%，网络没有费收时为零。
             请不要把年化当作收益率引用。</li>
       </ul>

@@ -291,7 +291,7 @@ TOPICS = [
 <p>Starting here has a practical advantage: the service layer ships on our schedule, while base-layer signature support moves on the chain's schedule. Both tracks advance in parallel.</p>
 
 <h2 class="as-h3">Signature agility in the contracts</h2>
-<p>Upgradeable contracts plus a verification interface that can accept new schemes are the mechanism that makes a later migration an orderly rollout. Privileged roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, and independent audits complete before launch — the same access-control work that governs every other upgrade.</p>
+<p>Upgradeable contracts plus a verification interface that can accept new schemes are the mechanism that makes a later migration an orderly rollout. Privileged roles move to a 3-of-5 multisig with a 48-hour timelock before mainnet, the published self-review is open for inspection, and an independent audit is scheduled for the first quarter after mainnet — the same access-control work that governs every other upgrade.</p>
 <p>The <a href="https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md" target="_blank" rel="noopener">post-quantum roadmap</a> tracks the standards work, the address-hygiene guidance and the migration stages in one place.</p>
 
 <h2 class="as-h3">Address hygiene and harvest-now-decrypt-later</h2>
@@ -332,7 +332,7 @@ TOPICS = [
 <p>从这里起步有一个现实优势：服务层按我们的排期推进，底层签名支持按链的排期推进，两条线并行前进。</p>
 
 <h2 class="as-h3">合约里的签名敏捷性</h2>
-<p>可升级合约，加上能够接纳新方案的验证接口，让后续迁移成为一次有序 rollout。主网前，合约特权角色移交 3-of-5 多签 + 48 小时时间锁，独立审计在主网上线前完成——同一套访问控制也管着其他所有升级。</p>
+<p>可升级合约，加上能够接纳新方案的验证接口，让后续迁移成为一次有序 rollout。主网前，合约特权角色移交 3-of-5 多签 + 48 小时时间锁，安全自审报告已公开可查，独立审计安排在主网后首个季度——同一套访问控制也管着其他所有升级。</p>
 <p><a href="https://github.com/CBTdao/omc-network/blob/main/docs/post-quantum-roadmap.md" target="_blank" rel="noopener">抗量子路线图</a>把标准跟进、地址卫生指引与各迁移阶段收在一处。</p>
 
 <h2 class="as-h3">地址卫生与「先收割、后解密」</h2>

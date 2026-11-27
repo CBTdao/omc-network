@@ -194,7 +194,8 @@ sequence are specified in [`docs/mainnet-access-control.md`](mainnet-access-cont
 | When | Theft resistance | Post-quantum |
 |---|---|---|
 | Testnet now | This roadmap + SECURITY hardening published | Off-chain Dilithium PoC; standards tracking |
-| Before mainnet (≤ 2027-01-01) | Multisig + timelock deployed; audit; pause confirmed; user education live | Upgrade-headroom decision locked at genesis |
+| Before mainnet (≤ 2027-01-01) | Multisig + timelock deployed; self-review report published; pause confirmed; user education live | Upgrade-headroom decision locked at genesis |
+| 2027 Q1, after mainnet | Independent audit commissioned; report published on completion | Follow base-layer account-abstraction; multi-chain hedge option |
 | Long-term | Continuous CI + bounty | Follow base-layer account-abstraction; multi-chain hedge option |
 
 ---
