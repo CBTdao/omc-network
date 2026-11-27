@@ -1,6 +1,6 @@
 # Omniverse Compute — complete site text (English)
 
-Generated 2026-11-24 from contracts/params.json v8 (2026-10-30) by
+Generated 2026-11-27 from contracts/params.json v8 (2026-10-30) by
 website/tools/build_llms_full.py. Every figure in this file comes from that one
 file; if a listing disagrees with something below, the listing is stale.
 
@@ -1485,7 +1485,7 @@ Project Updates
 Official updates from the OMC core team — testnet milestones, airdrop campaigns, engineering progress and governance.
 All Engineering Airdrop Ecosystem Governance Industry Voices
 
-24 posts
+25 posts
 Airdrop Oct 27, 2026 📌 Pinned
 
 #### The OMC airdrop is open: 20,000,000 OMC, 1,000,000 slots, free to join
@@ -1500,6 +1500,11 @@ Engineering Oct 1, 2026 📌 Pinned
 
 #### OMC testnet is live on BNB Chain — and you can run a node in 4 steps, no waitlist
 The public testnet is deployed on BNB Smart Chain Testnet (Chain ID 97), contract verified on BscScan. RPC endpoints, faucet guidance and a four-step node onboarding guide are all on the Testnet page. Spin one up today.
+
+Ecosystem Nov 27, 2026
+
+#### Intuit agreed to sell Mailchimp at a 69% write-down
+New on forum.omc.network: the announced enterprise value is about $3.68B against roughly $12B paid in 2021, while Mailchimp revenue has stayed flat since 2024. The deal is a public data point on how standalone subscription software was repriced as AI absorbed growth budgets. Read →
 
 Ecosystem Nov 24, 2026
 

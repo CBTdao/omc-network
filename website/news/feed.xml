@@ -6,8 +6,16 @@
     <description>Official Omniverse Compute (OMC) updates: testnet milestones, airdrop campaigns, engineering progress and governance announcements.</description>
     <language>en</language>
     <atom:link href="https://omc.network/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Tue, 24 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>Intuit agreed to sell Mailchimp at a 69% write-down</title>
+      <link>https://forum.omc.network/posts/mailchimp-sale-bending-spoons-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-en-n26</guid>
+      <pubDate>Fri, 27 Nov 2026 00:00:00 +0000</pubDate>
+      <category>Ecosystem</category>
+      <description>New on forum.omc.network: the announced enterprise value is about $3.68B against roughly $12B paid in 2021, while Mailchimp revenue has stayed flat since 2024. The deal is a public data point on how standalone subscription software was repriced as AI absorbed growth budgets. Read →</description>
+    </item>
     <item>
       <title>AMD&#x27;s record 35.5% server CPU share came with its smallest gain in a year</title>
       <link>https://forum.omc.network/posts/amd-server-cpu-share-record-q3-2026?utm_source=site&amp;utm_medium=news</link>

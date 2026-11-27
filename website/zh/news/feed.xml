@@ -6,8 +6,16 @@
     <description>泛宇宙算力（OMC）官方动态：测试网里程碑、空投活动、工程进展与治理公告。</description>
     <language>zh-cn</language>
     <atom:link href="https://omc.network/zh/news/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Tue, 24 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 00:00:00 +0000</lastBuildDate>
     <generator>website/tools/build_news.py</generator>
+    <item>
+      <title>Intuit 同意以减记 69% 的价格出售 Mailchimp</title>
+      <link>https://forum.omc.network/posts/mailchimp-sale-bending-spoons-2026?utm_source=site&amp;utm_medium=news</link>
+      <guid isPermaLink="false">omc-news-zh-n26</guid>
+      <pubDate>Fri, 27 Nov 2026 00:00:00 +0000</pubDate>
+      <category>生态</category>
+      <description>论坛新文：官宣企业价值约 36.8 亿美元，对照 2021 年约 120 亿美元的收购价；Mailchimp 营收自 2024 年起持平。这笔交易成为订阅软件在增长预算转向 AI 后被重新定价的公开样本。阅读 →</description>
+    </item>
     <item>
       <title>AMD 服务器 CPU 份额创下 35.5% 纪录，单季增幅却为一年最小</title>
       <link>https://forum.omc.network/posts/amd-server-cpu-share-record-q3-2026?utm_source=site&amp;utm_medium=news</link>
