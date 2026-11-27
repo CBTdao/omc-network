@@ -32,21 +32,33 @@ jobs:
       # triaged in docs/security-review.md; the gate only blocks a new High/Critical.
       - name: Run Slither
         run: |
-          # crytic-compile's solc platform needs a file target, not a directory.
-          # A temporary entry point pulls in the three production contracts.
-          cat > contracts/_slither_entry.sol <<'EOF'
-          // SPDX-License-Identifier: MIT
-          pragma solidity ^0.8.24;
-          import "./OMCTestToken.sol";
-          import "./OMCStaking.sol";
-          import "./OMCComputeMarket.sol";
-          EOF
-          slither contracts/_slither_entry.sol \
-            --compile-force-framework solc \
-            --solc-solcs-select 0.8.26 \
-            --solc-disable-warnings \
-            --json slither-ci.json > slither-out.txt 2>&1 || true
-          rm -f contracts/_slither_entry.sol
+          # crytic-compile's solc platform needs a file target, and the contracts
+          # each declare their own IERC20Like interface — scan them separately.
+          : > slither-out.txt
+          for name in OMCTestToken OMCStaking OMCComputeMarket; do
+            slither "contracts/$name.sol" \
+              --compile-force-framework solc \
+              --solc-solcs-select 0.8.26 \
+              --solc-disable-warnings \
+              --json "slither-$name.json" >> slither-out.txt 2>&1 || true
+          done
+          python - <<'PY'
+          import glob, json, sys
+          reports = sorted(glob.glob("slither-OMC*.json"))
+          if len(reports) != 3:
+              print(f"::error::Expected 3 Slither reports, got {len(reports)}")
+              sys.exit(1)
+          merged = {"detectors": []}
+          for path in reports:
+              with open(path, encoding="utf-8") as fh:
+                  try:
+                      merged["detectors"].extend(json.load(fh).get("detectors", []))
+                  except Exception:
+                      continue
+          with open("slither-ci.json", "w", encoding="utf-8") as fh:
+              json.dump(merged, fh)
+          print("merged detectors:", len(merged["detectors"]))
+          PY
           echo "=== slither output (tail) ==="
           tail -15 slither-out.txt
           if [ ! -s slither-ci.json ]; then
